@@ -1,0 +1,66 @@
+.monograph-editor {
+  margin: 0 74px;
+  min-height: calc(100vh - 200px);
+  box-sizing: border-box;
+  background-color: #fff;
+  padding: 20px 20px 60px 20px;
+}
+
+.public-DraftStyleDefault-block {
+  margin: 0;
+}
+
+.public-DraftStyleDefault-block,
+table {
+  padding-bottom: 1em;
+  margin-bottom: 0;
+}
+
+
+code > .public-DraftStyleDefault-block {
+  padding-bottom: 0;
+}
+
+.public-DraftEditor-content h2 {
+  margin: 0;
+}
+
+.public-DraftEditor-content > div > pre {
+  margin-bottom: 1em;
+  background-color: #f4f9fd;
+  padding: 10px;
+}
+
+.public-DraftEditor-content blockquote {
+  padding-top: 1em;
+  background-color: #f4f9fd;
+  border-left: 1px solid #d8e0ea;
+  padding-left: 20px;
+  margin-left: 20px;
+}
+
+pre, figure, img {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  margin: 10px auto;
+}
+
+.thumbnail {
+  max-width: 150px;
+  border: 1px dashed #ddd;
+}
+
+.thumbnail:hover {
+  border: 1px dashed #999;
+}
+
+.thumbnail-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 1em;
+}

@@ -1,0 +1,124 @@
+# projectId: cje3vj5fd056b0157bl9808q7
+# version: 4
+
+type File @model {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  secret: String! @isUnique
+  size: Int!
+  updatedAt: DateTime!
+  url: String! @isUnique
+}
+
+type User @model {
+  role: UserRole! @defaultValue(value: "ADMIN")
+  createdAt: DateTime!
+  id: ID! @isUnique
+  updatedAt: DateTime!
+  posts: [Post!]! @relation(name: "UserOnPost")
+  email: String @isUnique
+  name: String
+  password: String
+  projects: [Project!]! @relation(name: "UserOnProject")
+  accessGroups: [AccessGroup!]! @relation(name: "AccessGroupUsers")
+  secret: String
+}
+
+type Image @model {
+  id: ID! @isUnique
+  url: String!
+  post: Post @relation(name: "PostOnImage")
+}
+
+type Post @model {
+  markdown: String
+  html: String
+  title: String
+  createdAt: DateTime!
+  id: ID! @isUnique
+  updatedAt: DateTime!
+  user: User @relation(name: "UserOnPost")
+  json: Json
+  fields: Json
+  postMeta: PostMeta @relation(name: "PostOnPostMeta")
+  project: Project @relation(name: "ProjectOnPost")
+  accessGroups: [AccessGroup!]! @relation(name: "AccessGroupPosts")
+  slug: String
+  status: PostStatus! @defaultValue(value: "DRAFT") @migrationValue(value: "PUBLISHED")
+  excerpt: String
+  date: DateTime
+  images: [Image!]! @relation(name: "PostOnImage")
+  document: Document @relation(name: "PostOnDocument")
+}
+
+type PostMeta @model {
+  id: ID! @isUnique
+  createdAt: DateTime!
+  slug: String
+  title: String
+  status: PostStatus! @defaultValue(value: "DRAFT")
+  date: DateTime
+  post: Post @relation(name: "PostOnPostMeta")
+}
+
+type Version @model {
+  id: ID! @isUnique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  raw: Json!
+  document: Document! @relation(name: "DocumentOnVersion")
+}
+
+type Document @model {
+  id: ID! @isUnique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  raw: Json! @defaultValue(value: { text: "" })
+  versions: [Version!]! @relation(name: "DocumentOnVersion")
+  post: Post! @relation(name: "PostOnDocument")
+  html: String
+  excerpt: String
+}
+
+type Domain @model {
+  id: ID! @isUnique
+  project: Project! @relation(name: "ProjectOnDomain")
+  name: String!
+}
+
+type Project @model {
+  id: ID! @isUnique
+  name: String!
+  posts: [Post!]! @relation(name: "ProjectOnPost")
+  user: User @relation(name: "UserOnProject")
+  accessGroups: [AccessGroup!]! @relation(name: "AccessGroupProjects")
+  domains: [Domain!]! @relation(name: "ProjectOnDomain")
+}
+
+type AccessGroup @model {
+  id: ID! @isUnique
+  operation: AccessGroupOperation!
+  users: [User!]! @relation(name: "AccessGroupUsers")
+  posts: [Post!]! @relation(name: "AccessGroupPosts")
+  projects: [Project!]! @relation(name: "AccessGroupProjects")
+}
+
+enum UserRole {
+  EDITOR,
+  MODERATOR,
+  ADMIN
+}
+
+enum AccessGroupOperation {
+  READ,
+  UPDATE,
+  DELETE,
+  CREATE
+}
+
+enum PostStatus {
+  PUBLISHED,
+  DRAFT
+}

@@ -1,0 +1,42 @@
+# project: cjdywm23q3mj10104qshuujk5
+# version: 21
+
+type File @model {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  secret: String! @isUnique
+  size: Int!
+  updatedAt: DateTime!
+  url: String! @isUnique
+}
+
+type User @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  updatedAt: DateTime!
+  posts: [Post!]! @relation(name: "UserOnPost")
+  email: String @isUnique
+  name: String
+  password: String
+  projects: [Project!]! @relation(name: "UserOnProject")
+}
+
+type Post @model {
+  content: String
+  title: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  updatedAt: DateTime!
+  user: User @relation(name: "UserOnPost")
+  json: Json
+  project: Project @relation(name: "ProjectOnPost")
+}
+
+type Project @model {
+  id: ID! @isUnique
+  name: String!
+  posts: [Post!]! @relation(name: "ProjectOnPost")
+  user: User @relation(name: "UserOnProject")
+}
