@@ -10,6 +10,6 @@
     "graphcool-lib": "^0.1.0",
     "graphql-request": "^1.4.0",
     "jsonwebtoken": "^8.1.1",
-    "validator": "^9.0.0"
+    "validator": "^10.2.0"
   }
 }
