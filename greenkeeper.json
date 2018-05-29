@@ -1,0 +1,10 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "graphcool-auth/package.json",
+        "package.json"
+      ]
+    }
+  }
+}
