@@ -1,0 +1,35 @@
+query create($node_id: ID!, $user_id: ID!) {
+  SomePostExists(filter: {
+    id: $node_id
+    user: {
+      id: $user_id
+    }
+  })
+}
+
+query read($node_id: ID!, $user_id: ID!) {
+  SomePostExists(filter: {
+    id: $node_id
+    user: {
+      id: $user_id
+    }
+  })
+}
+
+query update($node_id: ID!, $user_id: ID!) {
+  SomePostExists(filter: {
+    id: $node_id
+    user: {
+      id: $user_id
+    }
+  })
+}
+
+query delete($node_id: ID!, $user_id: ID!) {
+  SomePostExists(filter: {
+    id: $node_id
+    user: {
+      id: $user_id
+    }
+  })
+}

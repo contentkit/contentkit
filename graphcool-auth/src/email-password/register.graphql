@@ -1,0 +1,8 @@
+type RegisterProjectPayload {
+  secret: String!
+  id: ID!
+}
+
+extend type Mutation {
+  registerProject(id: ID!): RegisterProjectPayload
+}

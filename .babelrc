@@ -1,0 +1,18 @@
+{
+  "presets": [
+    "env",
+    "react",
+    "flow"
+  ],
+  "plugins": [
+    "transform-flow-strip-types",
+    "transform-object-rest-spread",
+    ["transform-runtime", {
+      "helpers": true,
+      "polyfill": true,
+      "regenerator": true,
+      "moduleName": "babel-runtime"
+    }],
+    "transform-class-properties"
+  ]
+}
