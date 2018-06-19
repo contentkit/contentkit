@@ -5,10 +5,13 @@ branches:
   only:
   - master
 before_install:
-- openssl aes-256-cbc -K $encrypted_21f2578023fe_key -iv $encrypted_21f2578023fe_iv -in env.js.enc -out edge/env.js -d
+- curl -sf https://up.apex.sh/install | sh
+- up version
+- npm i -g up-env
 install:
 - yarn --ignore-engines
+- mkdir up
+- cp up.json up/
 script:
-- yarn run build
+- yarn run build:up
 after_script:
-- yarn run deploy

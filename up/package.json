@@ -1,0 +1,16 @@
+{
+  "name": "contentkit-up",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "../node_modules/.bin/parcel build ../src/index.html --public-url /assets/ --out-dir dist",
+    "clean": "../node_modules/.bin/rimraf dist && ../node_modules/.bin/rimraf .cache",
+    "start": "node server"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "graphql-request": "^1.6.0"
+  },
+  "devDependencies": {}
+}

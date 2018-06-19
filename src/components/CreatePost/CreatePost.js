@@ -9,7 +9,6 @@ import CreatePostInput from '../CreatePostInput'
 import { slugify, genProjectName } from '../../lib/util'
 import Grid from '@material-ui/core/Grid'
 import DefaultPaper from '../DefaultPaper'
-// import moment from 'moment'
 
 class CreatePost extends React.Component {
   static propTypes = {
@@ -93,8 +92,9 @@ class CreatePost extends React.Component {
     this.project = genProjectName()
   }
 
-  handleChange = ({ currentTarget }) => {
-    this.setState({ newPostTitle: currentTarget.value })
+  handleChange = (evt) => {
+    console.log(evt)
+    this.setState({ newPostTitle: evt.target.value })
   }
 
   render () {
@@ -112,7 +112,7 @@ class CreatePost extends React.Component {
           <Grid item xs={9}>
             <FormControl margin={'normal'} fullWidth className={classes.formControl}>
               <CreatePostInput
-                classes={classes}
+                autoFocus
                 createPost={createPost}
                 createNewPost={this.createNewPost}
                 submitContent={this.submitContent}
@@ -144,18 +144,11 @@ export const styles = () => ({
   paper: {
     padding: '20px'
   },
-  input: {
-    padding: '0 0 0 5px',
-    boxSizing: 'border-box'
-  },
   button: {
     border: 'none',
     boxShadow: 'none',
     borderBottomLeftRadius: 0,
     borderTopLeftRadius: 0
-  },
-  adornment: {
-    maxHeight: 'max-content'
   },
   formControl: {
     flexGrow: 1

@@ -26,7 +26,7 @@ export const LoadingOverlay = ({ loading, children }) => (
   </React.Fragment>
 )
 
-const shouldRedirect = props => !(props.logged || props.loading || window.location.pathname === '/login')
+const shouldRedirect = props => !(props.logged || props.loading || /login/.test(window.location.pathname))
 
 const withRedirect = Component => props =>
   shouldRedirect(props)
@@ -35,19 +35,25 @@ const withRedirect = Component => props =>
 
 const withAsyncComponent = withAsync(LoadingOverlay)
 
-export const Dashboard = withAsyncComponent(() => import('../containers/Dashboard'))
+export const Dashboard = withRedirect(withAsyncComponent(
+  () => import('../containers/Dashboard'))
+)
 
-export const SignIn = withAsyncComponent(
+export const SignIn = withRedirect(withAsyncComponent(
   () => import('../containers/Login')
-)
-export const PostEditor = withAsyncComponent(
+))
+export const PostEditor = withRedirect(withAsyncComponent(
   () => import('../containers/PostEditor')
-)
-export const Projects = withAsyncComponent(() => import('../containers/Projects'))
+))
+export const Projects = withRedirect(withAsyncComponent(() => import('../containers/Projects')))
 
-export const Playground = withAsyncComponent(
+export const Playground = withRedirect(withAsyncComponent(
   () => import('../containers/Playground')
-)
+))
+
+export const Profile = withRedirect(withAsyncComponent(
+  () => import('../containers/Profile')
+))
 
 // export const Dashboard = _Dashboard |> withAsyncComponent |> withRedirect
 // export const SignIn = _SignIn |> withAsyncComponent |> withRedirect

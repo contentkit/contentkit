@@ -14,10 +14,10 @@ type Props = {
   setDialogState: (any) => void
 }
 
-//const InspectorDialog = withAsync()(
+// const InspectorDialog = withAsync()(
 //  () => import('../PostEditorInspectorDialog')
-//)
-//const ContentPreviewDialog = withAsync()(() => import('../PostEditorContentPreviewDialog'))
+// )
+// const ContentPreviewDialog = withAsync()(() => import('../PostEditorContentPreviewDialog'))
 
 // const ContentPreviewDialog = asyncComponent(() => import('../PostEditorContentPreviewDialog'))
 // const PostMetaModal = asyncComponent(() => import('../PostEditorMetaModal'))

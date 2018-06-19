@@ -27,7 +27,6 @@ class SearchInput extends React.Component {
   }
 
   render () {
-    console.log(this.props)
     const {
       handleChange,
       query,

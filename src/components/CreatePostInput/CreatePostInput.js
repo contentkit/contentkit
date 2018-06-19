@@ -3,6 +3,7 @@ import React from 'react'
 import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import ButtonWithSpinner from '../ButtonWithSpinner'
+import { withStyles } from '@material-ui/core/styles'
 
 const inputProps = {
   style: {
@@ -25,12 +26,14 @@ const CreatePostInput = ({
   createNewPost,
   submitContent,
   value,
-  handleChange
+  handleChange,
+  autoFocus
 }: props) => (
   <Input
     className={classes.input}
     inputProps={inputProps}
     disableUnderline
+    autoFocus
     endAdornment={
       <InputAdornment position='end' className={classes.adornment}>
         <ButtonWithSpinner
@@ -45,9 +48,23 @@ const CreatePostInput = ({
       </InputAdornment>
     }
     value={value}
-    onKeyDown={submitContent}
+    // onKeyDown={submitContent}
     onChange={handleChange}
   />
 )
 
-export default CreatePostInput
+export default withStyles({
+  input: {
+    padding: '0 0 0 5px',
+    boxSizing: 'border-box'
+  },
+  button: {
+    border: 'none',
+    boxShadow: 'none',
+    borderBottomLeftRadius: 0,
+    borderTopLeftRadius: 0
+  },
+  adornment: {
+    maxHeight: 'max-content'
+  }
+})(CreatePostInput)

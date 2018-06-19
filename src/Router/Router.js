@@ -1,9 +1,7 @@
 import React from 'react'
-import { Router, Route } from 'react-router-dom'
-
+import { BrowserRouter, Route } from 'react-router-dom'
 import { APP_PATH, PROFILE_PATH } from '../lib/config'
 import '../css/style.scss'
-import history from '../lib/history'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import theme from '../lib/theme'
 import { Dashboard, Profile, SignIn, PostEditor, Projects, Playground } from './pages'
@@ -11,6 +9,8 @@ import { Dashboard, Profile, SignIn, PostEditor, Projects, Playground } from './
 import { unstable_deferredUpdates as deferredUpdates } from 'react-dom'
 import { store } from '../redux'
 import { Provider } from 'react-redux'
+
+const UP_STAGE = process.env.UP_STAGE || undefined
 
 class AppRouter extends React.Component {
   state = {
@@ -57,16 +57,16 @@ class AppRouter extends React.Component {
 
     return (
       <Provider store={store}>
-        <Router history={history}>
+        <BrowserRouter basename={UP_STAGE}>
           <MuiThemeProvider theme={theme}>
             <Route
               exact
-              path={APP_PATH}
+              path={'/'}
               render={() => <Dashboard {...props} />}
             />
             <Route
               exact
-              path={PROFILE_PATH}
+              path={'/profile'}
               render={() => <Profile {...props} />}
             />
             <Route
@@ -89,7 +89,7 @@ class AppRouter extends React.Component {
               render={() => <Playground {...props} />}
             />
           </MuiThemeProvider>
-        </Router>
+        </BrowserRouter>
       </Provider>
     )
   }

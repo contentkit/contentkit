@@ -1,4 +1,5 @@
 // @flow
+import type { EditorState } from 'draft-js'
 
 export type { Raw } from './Raw'
 export type { Domain, Project, ProjectsQuery, ProjectQuery } from './Project'
@@ -20,3 +21,10 @@ export type FetchMore = ({
   variables: any,
   updateQuery: (previousResult: any, nextResult: any) => Promise<any>
 }) => void
+
+export type Client = {
+  query: (args: any) => void,
+  mutate: (args: any) => void
+}
+
+export type SetEditorState = (editorState: EditorState) => void

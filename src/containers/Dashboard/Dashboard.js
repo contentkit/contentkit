@@ -12,11 +12,23 @@ import debounce from 'lodash.debounce'
 import { postsQueryShape } from '../../shapes'
 import { EditorState, convertFromRaw } from 'draft-js'
 import { expand } from 'draft-js-compact'
+import type { Raw, Client, PostsQuery, Post, SetEditorState } from '../../types'
 
-class Dashboard extends React.Component<{
+type Props = {
   history: any,
-  auth: any
-}> {
+  posts: PostsQuery,
+  client: Client,
+  setEditorState: SetEditorState,
+  editorState: EditorState
+}
+
+type State = {
+  query: string,
+  raw: Raw,
+  selectedPost: Post,
+}
+
+class Dashboard extends React.Component<Props, State> {
   static defaultProps = {
     project: {},
     selected: undefined
@@ -64,8 +76,9 @@ class Dashboard extends React.Component<{
     if (!raw) {
       raw = await this.fetchRaw()
     }
+    let expanded = expand(raw)
     let contentState = convertFromRaw(
-      expand(raw)
+      expanded
     )
     this.props.setEditorState(
       EditorState.push(
@@ -120,12 +133,17 @@ class Dashboard extends React.Component<{
     })
   }
 
-  handleNext = () => this.updateVariables({
-    after: this.props.posts.data.allPosts[this.props.posts.data.allPosts.length - 1].id,
-    before: undefined,
-    first: 5,
-    last: undefined
-  })
+  handleNext = () => {
+    let { posts: { data: { allPosts } } } = this.props
+    let after = allPosts[allPosts.length - 1].id
+
+    return this.updateVariables({
+      after: after,
+      before: undefined,
+      first: 5,
+      last: undefined
+    })
+  }
 
   handlePrev = () => this.updateVariables({
     before: this.props.posts.data.allPosts[0].id,

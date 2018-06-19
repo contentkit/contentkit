@@ -35,6 +35,7 @@ export const CREATE_POST = gql`
         title
         slug
         status
+        date
       }
     }
   }

@@ -11,7 +11,6 @@ import MonographEditor from './MonographEditor'
 import Modals from '../../components/PostEditorModals'
 import {
   hydrate,
-  LocalStore,
   toKey,
   restoreContentState,
   getRawDiff,
@@ -20,23 +19,24 @@ import {
   shouldIncrement,
   setDiff
 } from './util'
+import { LocalStorage } from './LocalStorage'
 import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
 import { setEditorState } from '../../redux'
 import { createVersion } from './mutations'
 import memoize from 'lodash.memoize'
 import { postShape } from '../../shapes'
-import type { Post, User } from '../../types'
 import { EditorState } from 'draft-js'
 import { wrapWithLoadingState } from '../../lib/util'
+import type { Post, User, SetEditorState } from '../../types'
 
 const _getVersions = memoize((cacheKey, id) => {
   const key = toKey(id, 'versions')
-  const versions = new LocalStore().get(key)
+  const versions = new LocalStorage().get(key)
   return versions
 })
 
-class BaseEditor extends React.Component<{
+type Props = {
   history: any,
   post: {
     Post: Post
@@ -45,7 +45,7 @@ class BaseEditor extends React.Component<{
     user: User
   },
   editorState: EditorState,
-  setEditorState: (editorState: EditorState) => void,
+  setEditorState: SetEditorState,
   hydrated: boolean,
   logged: boolean,
   updateDocument: ({
@@ -53,11 +53,15 @@ class BaseEditor extends React.Component<{
   }) => void,
   updatePost: () => void,
   client: any
-}, {
+}
+
+type State = {
   open: boolean,
   html: string,
   loading: boolean
-}> {
+}
+
+class BaseEditor extends React.Component<Props, State> {
   cacheKey: number
   _hasUnmounted: boolean
   decorators: any
@@ -256,7 +260,8 @@ class BaseEditor extends React.Component<{
 export default connect(
   state => state,
   dispatch => ({
-    setEditorState: editorState => dispatch(setEditorState(editorState)),
-    preloadDiffs: diffs => dispatch(preloadDiffs(diffs))
+    setEditorState: (editorState: EditorState) => dispatch(
+      setEditorState(editorState)
+    )
   })
 )(BaseEditor)

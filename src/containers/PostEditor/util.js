@@ -5,6 +5,9 @@ import escapeHtml from 'lodash.escape'
 import { decompress, compress } from './compress'
 import * as diffPatch from 'jsondiffpatch'
 import { Seq } from 'immutable'
+import LocalStorage from './LocalStorage'
+
+const storage = new LocalStorage()
 
 export const convertToHtml = editorState => escapeHtml(exportHtml(editorState))
 
@@ -22,7 +25,12 @@ export const hydrate = ({ editorState, post: { Post } }) => (
   fromRaw(Post.document.raw || Post.json)
 )
 
-export const update = ({ raw, updateDocument, editorState, document }) => {
+export const update = ({
+  raw,
+  updateDocument,
+  editorState,
+  document
+}) => {
   const html = convertToHtml(editorState)
   const excerpt = document.excerpt || raw.blocks[0].text
   updateDocument.mutate({
@@ -48,24 +56,6 @@ export const getCurrentVersion = ({ versions }) => (
   versions[versions.length - 1]
 )
 
-export class LocalStore {
-  get (key) {
-    return JSON.parse(window.localStorage.getItem(key))
-  }
-
-  set (key, value) {
-    return window.localStorage.setItem(key, JSON.stringify(value))
-  }
-
-  push (key, value) {
-    let data = this.get(key) || []
-    data.push(value)
-    this.set(key, data)
-  }
-}
-
-const storage = new LocalStore()
-
 export const setDiff = ({ diff, document }) => {
   if (!(document.versions && document.versions.length)) return /* eslint-disable-line */
   const documentId = document.id
@@ -89,7 +79,7 @@ export const getRawDiff = (editorState, document) => {
 
 window.getRawDiff = getRawDiff
 
-export const getVersions = (id) => {
+export const getVersions = (id: string) => {
   const key = toKey(id, 'versions')
   const versions = new LocalStore().get(key)
   return versions

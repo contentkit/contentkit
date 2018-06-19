@@ -1,0 +1,30 @@
+{
+  "name": "contentkit",
+  "regions": ["us-west-1"],
+  "lambda": {
+    "memory": 1536
+  },
+  "static": {
+    "dir": "dist",
+    "prefix": "/assets/"
+  },
+  "environment": {
+    "ROOT_TOKEN": "${ssm:/contentkit/ROOT_TOKEN}",
+    "BUCKET_NAME": "contentkit-dev-deploymentbucket-3hlcbqx9f9nl",
+    "GRAPH_COOL_ENDPOINT": "https://api.graph.cool/simple/v1/cje3vj5fd056b0157bl9808q7"
+  },
+  "hooks": {
+    "build": "up-env load && yarn run build",
+    "postdeploy": "up-env restore && yarn run clean"
+  },
+  "stages": {
+    "staging": {
+      "domain": "dev.contentkit.co",
+      "zone": "dev.contentkit.co"
+    },
+    "production": {
+      "domain": "contentkit.co",
+      "zone": "contentkit.co"
+    }
+  }
+}

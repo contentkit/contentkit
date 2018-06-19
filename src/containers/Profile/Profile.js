@@ -1,10 +1,11 @@
+// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
 import Layout from '../Layout'
 import UserForm from '../../components/ProfileUserForm'
-import { USER_QUERY, GENERATE_TOKEN, UPDATE_USER } from './mutations'
-import { Mutation } from 'react-apollo'
-import { withRouter } from 'react-router-dom'
+import { USER_QUERY } from '../../Router'
+import CodeSnippet from '../../components/CodeSnippet'
+import Paper from '../../components/DefaultPaper'
 
 class Profile extends React.Component {
   static propTypes = {
@@ -18,17 +19,16 @@ class Profile extends React.Component {
   }
 
   handleChange = (e, key) => {
-    const { client } = this.props
-    const input = {
+    this.props.client.writeQuery({
       query: USER_QUERY,
       data: {
+        ...this.props.auth.data,
         user: {
-          [key]: e.target.value,
-          ...this.props.auth.user
+          ...this.props.auth.data.user,
+          [key]: e.target.value
         }
       }
-    }
-    client.writeQuery(input)
+    })
   }
 
   onCopy = () => {
@@ -50,64 +50,16 @@ class Profile extends React.Component {
           setRef={ref => { this.ref = ref }}
           {...user}
         />
+        <Paper styles={{
+          maxWidth: '500px',
+          padding: '2em',
+          margin: '1em auto'
+        }}>
+          <CodeSnippet {...this.props} />
+        </Paper>
       </Layout>
     )
   }
 }
 
-class ProfileWithData extends React.Component {
-  generateToken = ({ auth, mutate }) =>
-    variables => mutate({
-      variables,
-      optimisticResponse: {
-        __typename: 'Mutation',
-        generateToken: {
-          __typename: 'User',
-          ...auth.user,
-          secret: 'xxx'
-        }
-      },
-      update: (store, { data: { generateToken } }) => {
-        const user = {
-          ...auth.user,
-          secret: generateToken.secret
-        }
-
-        store.writeQuery({
-          query: USER_QUERY,
-          data: { user }
-        })
-      }
-    })
-
-  render () {
-    const { auth } = this.props
-    return (
-      <Mutation mutation={UPDATE_USER}>
-        {(updateUser, updateUserData) => {
-          return (
-            <Mutation mutation={GENERATE_TOKEN}>
-              {(generateToken, generateTokenData) => {
-                return (
-                  <Profile
-                    {...this.props}
-                    updateUser={{
-                      mutate: variables => updateUser({ variables }),
-                      ...updateUserData
-                    }}
-                    generateToken={{
-                      mutate: generateToken,
-                      ...generateTokenData
-                    }}
-                  />
-                )
-              }}
-            </Mutation>
-          )
-        }}
-      </Mutation>
-    )
-  }
-}
-
-export default withRouter(ProfileWithData)
+export default Profile

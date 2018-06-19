@@ -1,0 +1,16 @@
+!dist
+.vscode
+.cache
+bin
+edge
+flow-typed
+graphcool-auth
+src
+.babelrc
+.flowconfig
+.gitignore
+.travis.yml
+.uglifyrc
+env.js.enc
+parlay.yml
+yarn-error.log

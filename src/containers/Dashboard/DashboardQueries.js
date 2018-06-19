@@ -8,22 +8,45 @@ import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
 import { selectProject, setEditorState } from '../../redux'
 import PropTypes from 'prop-types'
+import { StateEnteredEventDetails } from 'aws-sdk/clients/stepfunctions';
+import type { etEditorState, Project, Client } from '../../types'
+import type { EditorState } from 'draft-js'
 
 let count = Math.round((window.innerHeight - 230) / 50)
 
-class DashboardQueries extends React.Component<{
+type Props = {
   auth: {
     user: {
       id: string
     }
+  },
+  setEditorState: SetEditorState,
+  selectedProject: Project,
+  client: Client,
+  selectProject: (project: Project) => void,
+  render: (args: any) => void
+}
+
+type State = {
+  variables: {
+    before: string,
+    after: string,
+    first: number,
+    query: string,
+    id: string,
+    projectId: string,
+    skip: number
   }
-}> {
+}
+
+class DashboardQueries extends React.Component<Props, State> {
   static propTypes = {
     auth: PropTypes.object,
     selectedProject: PropTypes.string,
     setEditorState: PropTypes.func,
     selectProject: PropTypes.func,
-    client: PropTypes.object
+    client: PropTypes.object,
+    render: PropTypes.func
   }
 
   state = {
@@ -32,13 +55,13 @@ class DashboardQueries extends React.Component<{
       after: undefined,
       first: count,
       query: '',
-      id: this.props.auth.user.id,
+      id: this.props.auth.user && this.props.auth.user.id,
       projectId: undefined,
       skip: undefined
     }
   }
 
-  handleSearch = debounce(({ query }) => {
+  handleSearch = debounce(({ query }: { query: string }) => {
     this.setState({ query })
   }, 300)
 
@@ -102,7 +125,7 @@ class DashboardQueries extends React.Component<{
 export default connect(
   state => state,
   dispatch => ({
-    setEditorState: editorState => dispatch(setEditorState(editorState)),
-    selectProject: project => dispatch(selectProject(project))
+    setEditorState: (editorState: EditorState) => dispatch(setEditorState(editorState): any),
+    selectProject: (project: Project) => dispatch(selectProject(project): any)
   })
 )(DashboardQueries)

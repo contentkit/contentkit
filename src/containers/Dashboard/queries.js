@@ -33,7 +33,6 @@ export const POSTS_QUERY = gql`
       after: $after,
       before: $before, 
       skip: $skip,
-      orderBy: createdAt_DESC, 
       filter: {
         user: {
           id: $id

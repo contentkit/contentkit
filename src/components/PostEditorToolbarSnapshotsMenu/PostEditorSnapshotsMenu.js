@@ -101,8 +101,8 @@ class SnapshotsMenu extends React.Component<{
     let text = contentState.getBlockMap().toArray().map(b => b.text || '')
     let { diff, format } = await import('jsondiffpatch').then(module => {
       return {
-       diff: module.diff,
-       format: module.formatters.html.format
+        diff: module.diff,
+        format: module.formatters.html.format
       }
     })
     // const diff = jsondiffpatch.diff
@@ -122,7 +122,6 @@ class SnapshotsMenu extends React.Component<{
   }
 
   handleMenuItemMouseLeave = (key) => {
-    console.log('handleMenuItemMouseLeave')
     this.props.deferredUpdate(prevState => {
       if ((prevState.tooltip && prevState.tooltip.key) !== key) {
         return null

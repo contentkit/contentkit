@@ -19,7 +19,6 @@ class SelectProject extends React.Component<{
   }
 
   render () {
-    console.log('p',this.props)
     const {
       selectedProject,
       allProjects

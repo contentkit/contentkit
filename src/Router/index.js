@@ -5,7 +5,7 @@ import { Query, withApollo } from 'react-apollo'
 import AppRouter from './Router'
 import { Redirect, withRouter } from 'react-router-dom'
 
-const USER_QUERY = gql`
+export const USER_QUERY = gql`
   query {
     user {
       ...UserFields
@@ -22,10 +22,13 @@ class AuthQuery extends React.Component {
   render () {
     return (
       <Query query={USER_QUERY}>
-        {({ loading, data }) => {
-          if (loading) return (<div />)
-
-          return <AppRouter {...this.props} auth={data} />
+        {(userQuery) => {
+          if (userQuery.loading) return (<div />)
+          let auth = {
+            ...userQuery,
+            ...userQuery.data
+          }
+          return <AppRouter {...this.props} auth={auth} />
         }}
       </Query>
     )
