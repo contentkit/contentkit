@@ -2,7 +2,6 @@ edge/env.js
 .DS_Store
 .cache
 dist
-.parlay
 
 # Logs
 logs

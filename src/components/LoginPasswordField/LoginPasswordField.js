@@ -5,8 +5,6 @@ import Visibility from '@material-ui/icons/es/Visibility'
 import VisibilityOff from '@material-ui/icons/es/VisibilityOff'
 import EnhancedInput from '../EnhancedInput'
 
-// const Visibility = () => <span />
-// const VisibilityOff = () => <span />
 class PasswordField extends React.Component {
   state = {
     password: '',

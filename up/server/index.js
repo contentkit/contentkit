@@ -1,6 +1,18 @@
+const { environment } = require('../up.json')
+
+process.env.ROOT_TOKEN = environment.ROOT_TOKEN
+process.env.BUCKET_NAME = environment.BUCKET_NAME
+process.env.GRAPH_COOL_ENDPOINT = environment.GRAPH_COOL_ENDPOINT
+
 const express = require('express')
 const path = require('path')
 const app = express()
+
+const {
+  PORT = 1234,
+  BUCKET_NAME
+} = process.env
+
 const AWS = require('aws-sdk')
 const s3 = new AWS.S3({ region: 'us-east-1' })
 const {
@@ -9,14 +21,10 @@ const {
   checkAuth
 } = require('./api')
 
-const {
-  PORT = 1234,
-  BUCKET_NAME
-} = process.env
-
-app.get('/favicon.ico', (req, res) => {
-  res.status(204)
-})
+//app.get('/favicon.ico', (req, res) => {
+//  res.status(204)
+//})
+app.use(express.static(path.join(__dirname, 'icons')))
 
 app.get('/static/:postId/:file', (req, res) => {
   let { postId, file } = req.params
@@ -95,14 +103,16 @@ app.get('/api/v1/project/:id', (req, res) => {
   }
 })
 
-// const Bundler = require('parcel-bundler')
-// const bundler = new Bundler('src/index.html', {
-//  publicUrl: '/'
-// })
-// app.use(bundler.middleware())
-
 let dir = path.join(__dirname, '../dist')
+
+app.use('/assets', express.static(dir))
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(dir, 'index.html'))
+})
+
 app.use('*', express.static(dir))
+
 app.listen(PORT, () => {
   console.log(`listening on ${PORT}`)
 })

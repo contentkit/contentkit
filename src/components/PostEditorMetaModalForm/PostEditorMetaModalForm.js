@@ -14,7 +14,7 @@ const PostEditorMetaModalForm = (props) => {
   const { Post } = post
   const title = (Post && Post.postMeta.title) || ''
   const slug = (Post && Post.postMeta.slug) || ''
-  const excerpt = (Post && Post.document.excerpt) || ''
+  const excerpt = (Post && Post.postMeta.excerpt) || ''
   const selectedProject = (Post && Post.project.id) || ''
   const allProjects = (projects && projects.data.allProjects) || []
   return (

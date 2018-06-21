@@ -1,5 +1,5 @@
 // @flow
-import React from 'react'
+import * as React from 'react'
 import PropTypes from 'prop-types'
 import Header from '../../components/Header'
 
@@ -7,8 +7,8 @@ type Props = {
   history: any,
   logged: bool,
   loading: bool,
-  render: () => React$ComponentType<*>,
-  children: Array<React$Node>
+  render: () => React.Node,
+  children: React.Node
 }
 
 type State = {

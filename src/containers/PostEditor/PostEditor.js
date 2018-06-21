@@ -7,7 +7,7 @@ import { exportHtml } from 'monograph/lib/util'
 import insertImage from 'monograph/lib/modifiers/insertImage'
 import PostEditorToolbar from '../../components/PostEditorToolbar'
 import escapeHtml from 'lodash.escape'
-import MonographEditor from './MonographEditor'
+import MonographEditor from '../../components/MonographEditor'
 import Modals from '../../components/PostEditorModals'
 import {
   hydrate,
@@ -19,7 +19,7 @@ import {
   shouldIncrement,
   setDiff
 } from './util'
-import { LocalStorage } from './LocalStorage'
+import LocalStorage from './LocalStorage'
 import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
 import { setEditorState } from '../../redux'
@@ -129,7 +129,7 @@ class BaseEditor extends React.Component<Props, State> {
       () => this.syncContent({ raw, diff }),
       () => this._isUnmounted
     )
-  }, 3000)
+  }, 8000)
 
   saveDocument = ({ raw }) => {
     const { editorState } = this.props
@@ -168,7 +168,7 @@ class BaseEditor extends React.Component<Props, State> {
       shouldIncrement(postDocument)
     ) {
       let { data } = await createVersion({ client, post, raw })
-      document = data.document
+      document = data.Post.document
     }
     setDiff({ diff, document })
     this.saveDocument({ raw })
@@ -178,9 +178,9 @@ class BaseEditor extends React.Component<Props, State> {
     const { post, hydrated } = this.props
     if (!post.Post) return
     if (!hydrated) return
-    const decorator = this.props.editorState.getDecorator()
-    if (!decorator) return
-    this.decorators = decorator.decorators
+    // const decorator = this.props.editorState.getDecorator()
+    // if (!decorator) return
+    // this.decorators = decorator.decorators
     this.sync()
   }
 

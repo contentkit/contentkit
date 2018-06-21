@@ -4,6 +4,7 @@ import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import ButtonWithSpinner from '../ButtonWithSpinner'
 import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
 
 const inputProps = {
   style: {
@@ -20,38 +21,49 @@ interface props {
   handleChange: () => void
 }
 
-const CreatePostInput = ({
-  classes,
-  createPost,
-  createNewPost,
-  submitContent,
-  value,
-  handleChange,
-  autoFocus
-}: props) => (
-  <Input
-    className={classes.input}
-    inputProps={inputProps}
-    disableUnderline
-    autoFocus
-    endAdornment={
+class CreatePostInput extends React.Component {
+  renderAdornment = () => {
+    const {
+      classes,
+      createNewPost,
+      createPost
+    } = this.props
+    return (
       <InputAdornment position='end' className={classes.adornment}>
-        <ButtonWithSpinner
+        <Button
           className={classes.button}
           onClick={createNewPost}
           color='primary'
           variant='raised'
           loading={createPost.loading}
         >
-        Create New
-        </ButtonWithSpinner>
+          Create New
+        </Button>
       </InputAdornment>
-    }
-    value={value}
-    // onKeyDown={submitContent}
-    onChange={handleChange}
-  />
-)
+    )
+  }
+
+  render () {
+    const {
+      classes,
+      createPost,
+      createNewPost,
+      submitContent,
+      value,
+      handleChange,
+    } = this.props
+    return (
+      <Input
+        className={classes.input}
+        inputProps={inputProps}
+        disableUnderline
+        endAdornment={this.renderAdornment()}
+        value={value}
+        onChange={handleChange}
+      />
+    )
+  }
+}
 
 export default withStyles({
   input: {

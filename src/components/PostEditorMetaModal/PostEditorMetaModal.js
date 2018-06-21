@@ -40,7 +40,8 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {
     onClose: PropTypes.func,
     client: PropTypes.object,
     post: PropTypes.object,
-    open: PropTypes.bool
+    open: PropTypes.bool,
+    auth: PropTypes.object
   }
 
   handlePostMetaUpdate = (evt: any) => {

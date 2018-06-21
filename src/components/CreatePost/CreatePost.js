@@ -112,7 +112,6 @@ class CreatePost extends React.Component {
           <Grid item xs={9}>
             <FormControl margin={'normal'} fullWidth className={classes.formControl}>
               <CreatePostInput
-                autoFocus
                 createPost={createPost}
                 createNewPost={this.createNewPost}
                 submitContent={this.submitContent}

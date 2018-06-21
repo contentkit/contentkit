@@ -164,6 +164,7 @@ class SnapshotsMenu extends React.Component<{
             paper: this.props.classes.paper
           }}
           onMouseLeave={this.handleMenuItemMouseLeave}
+          disableAutoFocus
         >
           <div>
             <div>

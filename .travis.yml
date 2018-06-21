@@ -1,17 +1,23 @@
 language: node_js
 node_js:
-- 9
+- 10
 branches:
   only:
   - master
-before_install:
-- curl -sf https://up.apex.sh/install | sh
-- up version
-- npm i -g up-env
 install:
-- yarn --ignore-engines
-- mkdir up
-- cp up.json up/
+  - yarn --ignore-engines
+  - yarn add up-env --ignore-engines
+before_script:
+  - node_modules/.bin/up-env load --region us-east-1
 script:
-- yarn run build:up
-after_script:
+  - yarn add travis-up
+before_deploy:
+  - ./bin/up version
+deploy:
+  provider: script
+  script: ./bin/up deploy production
+  skip_cleanup: true
+
+env:
+  global:
+    AWS_REGION: us-west-2

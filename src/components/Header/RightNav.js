@@ -45,6 +45,7 @@ function RightNav (props) {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={() => props.setAnchorEl({ currentTarget: null })}
+        disableAutoFocus
         classes={{
           paper: classes.menu
         }}

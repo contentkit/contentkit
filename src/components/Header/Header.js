@@ -76,7 +76,7 @@ class DefaultAppBar extends React.Component {
           <Toolbar className={classes.toolbar}>
             <Link to='/' className={classes.flex}>
               <Typography variant='title' style={{color: '#fff'}}>
-                Monograph
+                ContentKit
               </Typography>
             </Link>
             <RightNav

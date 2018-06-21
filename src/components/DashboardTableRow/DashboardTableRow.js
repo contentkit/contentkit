@@ -5,6 +5,7 @@ import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import Checkbox from '@material-ui/core/Checkbox'
 import EmptyTableRow from '../DashboardTableEmptyRow'
+import { withStyles } from '@material-ui/core/styles'
 import type { Post } from '../../types'
 
 type Props = {
@@ -51,7 +52,7 @@ class DashboardTableRow extends React.Component<Props, {}> {
     const title = (post && post.postMeta.title) || ''
     const status = (post && post.postMeta.status) || ''
     const projectName = (post && post.project.name) || ''
-    const needsRefresh = !(post.postMeta || post.document)
+    const date = (post && post.postMeta.date) || ''
     return (
       <TableRow
         onClick={this.handleClick}
@@ -76,12 +77,19 @@ class DashboardTableRow extends React.Component<Props, {}> {
         </TableCell>
         <TableCell>{status}</TableCell>
         <TableCell>{projectName}</TableCell>
-        <TableCell>{needsRefresh ? 'Needs Refresh' : 'OK'}</TableCell>
+        <TableCell>{date}</TableCell>
       </TableRow>
     )
   }
 }
 
-const Row = props => props.loading ? <EmptyTableRow {...props} /> : <DashboardTableRow {...props} />
-
-export default Row
+export default withStyles({
+  cell: {},
+  '@media (max-width: 480px)': {
+    cell: {
+      display: 'none'
+    }
+  }
+})(props => props.loading
+  ? <EmptyTableRow {...props} />
+  : <DashboardTableRow {...props} />)

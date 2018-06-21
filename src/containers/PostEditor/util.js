@@ -2,14 +2,15 @@
 import { EditorState, convertFromRaw } from 'draft-js'
 import { exportHtml, convertToRaw } from 'monograph'
 import escapeHtml from 'lodash.escape'
-import { decompress, compress } from './compress'
+import { expand, compress } from 'draft-js-compact'
 import * as diffPatch from 'jsondiffpatch'
 import { Seq } from 'immutable'
 import LocalStorage from './LocalStorage'
 
 const storage = new LocalStorage()
 
-export const convertToHtml = editorState => escapeHtml(exportHtml(editorState))
+export const convertToHtml = editorState =>
+  escapeHtml(exportHtml(editorState))
 
 export const isLoaded = ({ post }) => Boolean(post && post.Post)
 
@@ -18,7 +19,7 @@ export const toRaw = editorState => compress(
 )
 
 export const fromRaw = raw => EditorState.createWithContent(
-  convertFromRaw(decompress(raw))
+  convertFromRaw(expand(raw))
 )
 
 export const hydrate = ({ editorState, post: { Post } }) => (
@@ -81,7 +82,7 @@ window.getRawDiff = getRawDiff
 
 export const getVersions = (id: string) => {
   const key = toKey(id, 'versions')
-  const versions = new LocalStore().get(key)
+  const versions = new LocalStorage().get(key)
   return versions
 }
 
@@ -118,5 +119,5 @@ export const restoreContentState = (document, diffKey) => {
       console.warn(err)
     }
   }
-  return convertFromRaw(decompress(patched))
+  return convertFromRaw(expand(patched))
 }

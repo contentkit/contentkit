@@ -10,8 +10,23 @@ import Button from '@material-ui/core/Button'
 import { Monograph } from 'monograph'
 import { fromKey, toKey } from '../../containers/PostEditor/util'
 import { removeVersions } from './removeVersions'
+import type { Version, SetEditorState, Post, Client } from '../../types'
 
-class DraftEditorDialog extends React.Component {
+type Props = {
+  open: boolean,
+  version: Version,
+  adapter: any,
+  setEditorState: SetEditorState,
+  editorState: EditorState,
+  post: Post,
+  client: Client,
+  handleClose: () => void,
+  onChange: (editorState: EditorState) => void
+}
+
+class DraftEditorDialog extends React.Component<Props, {}> {
+  version: string
+
   static propTypes = {
     open: PropTypes.bool,
     version: PropTypes.shape({
@@ -23,7 +38,8 @@ class DraftEditorDialog extends React.Component {
     editorState: PropTypes.object,
     post: PropTypes.object,
     client: PropTypes.object,
-    handleClose: PropTypes.func
+    handleClose: PropTypes.func,
+    onChange: PropTypes.func
   }
 
   componentDidUpdate () {
@@ -67,10 +83,6 @@ class DraftEditorDialog extends React.Component {
   }
 
   render () {
-    // let decorators = this.props.decorators
-    // if (decorators) {
-    //  decorators = decorators.toArray()
-    // }
     return (
       <Dialog
         open={this.props.open}

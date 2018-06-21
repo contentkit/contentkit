@@ -1,6 +1,8 @@
 {
   "name": "contentkit",
-  "regions": ["us-west-1"],
+  "regions": [
+    "us-west-2"
+  ],
   "lambda": {
     "memory": 1536
   },
@@ -14,7 +16,7 @@
     "GRAPH_COOL_ENDPOINT": "https://api.graph.cool/simple/v1/cje3vj5fd056b0157bl9808q7"
   },
   "hooks": {
-    "build": "up-env load && yarn run build",
+    "build": "yarn build",
     "postdeploy": "up-env restore && yarn run clean"
   },
   "stages": {
