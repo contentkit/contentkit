@@ -10,7 +10,7 @@ import type { Posts, Projects } from '../../types'
 type Props = {
   posts: Posts,
   projects: Projects,
-  render: ({ loading: boolean }) => React$Node
+  render: ({ loading: boolean }) => React.Node
 }
 
 class LazyLoad extends React.Component<Props, { loading: boolean }> {

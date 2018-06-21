@@ -1,8 +1,9 @@
-const { environment } = require('../up.json')
-
-process.env.ROOT_TOKEN = environment.ROOT_TOKEN
-process.env.BUCKET_NAME = environment.BUCKET_NAME
-process.env.GRAPH_COOL_ENDPOINT = environment.GRAPH_COOL_ENDPOINT
+if (!process.env.UP_STAGE) {
+  const { environment } = require('../up.json')
+  process.env.ROOT_TOKEN = environment.ROOT_TOKEN
+  process.env.BUCKET_NAME = environment.BUCKET_NAME
+  process.env.GRAPH_COOL_ENDPOINT = environment.GRAPH_COOL_ENDPOINT
+}
 
 const express = require('express')
 const path = require('path')
@@ -13,17 +14,14 @@ const {
   BUCKET_NAME
 } = process.env
 
-const AWS = require('aws-sdk')
-const s3 = new AWS.S3({ region: 'us-east-1' })
+const S3 = require('aws-sdk/clients/s3')
+const s3 = new S3({ region: 'us-east-1' })
 const {
   postQuery,
   allPostsQuery,
   checkAuth
 } = require('./api')
 
-//app.get('/favicon.ico', (req, res) => {
-//  res.status(204)
-//})
 app.use(express.static(path.join(__dirname, 'icons')))
 
 app.get('/static/:postId/:file', (req, res) => {

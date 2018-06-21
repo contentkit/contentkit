@@ -6,8 +6,7 @@
   "scripts": {
     "build": "../node_modules/.bin/parcel build ../src/index.html --public-url /assets/ --out-dir dist",
     "clean": "../node_modules/.bin/rimraf dist && ../node_modules/.bin/rimraf .cache",
-    "start": "node server",
-    "deploy": "up-env load --region us-east-1 && up deploy production"
+    "start": "node server"
   },
   "dependencies": {
     "express": "^4.16.3",

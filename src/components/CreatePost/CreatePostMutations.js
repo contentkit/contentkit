@@ -5,7 +5,6 @@ import { CREATE_POST, CREATE_PROJECT, UPDATE_POST } from './mutations'
 import { POSTS_QUERY, PROJECTS_QUERY } from '../../containers/Dashboard/queries'
 import CreatePost from './CreatePost'
 import { genKey, genDate } from '../../lib/util'
-import gql from 'graphql-tag'
 import type { Document, PostMeta, ProjectsQuery, PostsQuery } from '../../types'
 
 type Props = {

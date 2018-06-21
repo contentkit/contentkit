@@ -22,6 +22,9 @@ interface props {
 }
 
 class CreatePostInput extends React.Component {
+  state = {
+    autoFocus: true
+  }
   renderAdornment = () => {
     const {
       classes,
@@ -43,6 +46,10 @@ class CreatePostInput extends React.Component {
     )
   }
 
+  componentDidUpdate () {
+    this.ref.focus()
+  }
+
   render () {
     const {
       classes,
@@ -50,10 +57,13 @@ class CreatePostInput extends React.Component {
       createNewPost,
       submitContent,
       value,
-      handleChange,
+      handleChange
     } = this.props
     return (
       <Input
+        inputRef={ref => {
+          this.ref = ref
+        }}
         className={classes.input}
         inputProps={inputProps}
         disableUnderline

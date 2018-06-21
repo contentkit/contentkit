@@ -1,6 +1,5 @@
 // @flow
 import React from 'react'
-import { withAsync } from 'with-async-component'
 import ContentPreviewDialog from '../PostEditorContentPreviewDialog'
 import InspectorDialog from '../PostEditorInspectorDialog'
 import PostMetaModal from '../PostEditorMetaModal'
