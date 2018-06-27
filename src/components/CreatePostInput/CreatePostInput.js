@@ -20,6 +20,7 @@ const styles = {
   adornment: {
     maxHeight: 'max-content'
   },
+  
   label: {
     left: 5
   }
