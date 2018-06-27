@@ -15,7 +15,8 @@ const styles = theme => ({
     flexWrap: 'wrap'
   },
   formControl: {
-    minWidth: 120,
+    // minWidth: 120,
+    width: '100%',
     margin: 'dense'
   },
   selectEmpty: {
@@ -99,7 +100,6 @@ class Select extends React.Component<Props> {
             value={value}
             onChange={onChange}
             MenuProps={{
-              // transitionDuration: 0,
               TransitionComponent: Fade
             }}
             input={this.renderInput()}

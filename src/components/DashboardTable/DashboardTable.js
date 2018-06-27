@@ -2,6 +2,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Table from '@material-ui/core/Table'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import TableCell from '@material-ui/core/TableCell'
 import TableBody from '@material-ui/core/TableBody'
 import Paper from '@material-ui/core/Paper'
 import { withStyles } from '@material-ui/core/styles'
@@ -60,6 +63,15 @@ class DashboardTable extends React.Component<Props, {}> {
       <LazyLoad {...this.props} render={({ loading }) => (
         <TableWrapper classes={this.props.classes}>
           <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Title</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Project</TableCell>
+                <TableCell>Date</TableCell>
+              </TableRow>
+            </TableHead>
             <TableBody>{
               allPosts.map((post, i) => (
                 <DashboardTableRow
