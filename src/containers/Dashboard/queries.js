@@ -61,7 +61,6 @@ export const POSTS_QUERY = gql`
       document {
         id
         raw
-        excerpt
         versions {
           id
         }
@@ -77,7 +76,6 @@ export const POST_QUERY = gql`
       document {
         id
         raw
-        excerpt
         versions {
           id
         }

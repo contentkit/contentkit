@@ -15,52 +15,7 @@ const awsConfig = {
   endpoint: config.AWS_BUCKET_URL + '/'
 }
 
-const MonographEditor = props => {
-  const {
-    classes,
-    editorState,
-    deleteImage,
-    createImage,
-    post,
-    onChange,
-    mutate,
-    save,
-    insertImage,
-    loading,
-    ...rest /* eslint-disable-line */
-  } = props
-  const toolbarProps = {
-    config: awsConfig,
-    id: post.Post.id,
-    images: post.Post.images,
-    deleteImage,
-    createImage,
-    insertImage
-  }
-  const variant = loading ? 'indeterminate' : 'determinate'
-  return (
-    <React.Fragment>
-      <Monograph
-        editorState={editorState}
-        onChange={onChange}
-        save={save}
-        plugins={plugins.plugins}
-      />
-      <div className={classes.footer}>
-        <LinearProgress value={100} variant={variant} classes={{
-          root: classes.root,
-          colorPrimary: classes.colorPrimary,
-          barColorPrimary: classes.barColorPrimary
-        }} />
-        <div className={classes.toolbar}>
-          <Toolbar {...toolbarProps} />
-        </div>
-      </div>
-    </React.Fragment>
-  )
-}
-
-export default withStyles(theme => ({
+const styles = theme => ({
   footer: {
     position: 'fixed',
     width: '100%',
@@ -93,4 +48,53 @@ export default withStyles(theme => ({
   barColorPrimary: {
     backgroundColor: '#4c6072'
   }
-}))(MonographEditor)
+})
+
+const MonographEditor = props => {
+  const {
+    classes,
+    editorState,
+    deleteImage,
+    createImage,
+    post,
+    onChange,
+    mutate,
+    save,
+    insertImage,
+    loading,
+    ...rest /* eslint-disable-line */
+  } = props
+  const toolbarProps = {
+    config: awsConfig,
+    id: post.Post.id,
+    images: post.Post.images,
+    deleteImage,
+    createImage,
+    insertImage
+  }
+  const variant = loading ? 'indeterminate' : 'determinate'
+  return (
+    <React.Fragment>
+      <Monograph
+        editorState={editorState}
+        onChange={onChange}
+        save={save}
+        plugins={plugins.plugins}
+      />
+      <div className={classes.footer}>
+        <LinearProgress
+          value={100}
+          variant={variant}
+          classes={{
+            root: classes.root,
+            colorPrimary: classes.colorPrimary,
+            barColorPrimary: classes.barColorPrimary
+          }}
+        />
+        <Toolbar {...toolbarProps} />
+      </div>
+    </React.Fragment>
+  )
+}
+
+export default withStyles(styles)(MonographEditor)

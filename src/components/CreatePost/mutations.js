@@ -1,7 +1,6 @@
 // @flow
 import gql from 'graphql-tag'
 import fragments from '../../lib/fragments'
-import { findIndex } from '../../lib/util'
 
 export const CREATE_POST = gql`
   mutation createPost(
@@ -25,7 +24,6 @@ export const CREATE_POST = gql`
       document {
         id
         raw
-        excerpt
         versions {
           id
         }
@@ -36,6 +34,7 @@ export const CREATE_POST = gql`
         slug
         status
         date
+        excerpt
       }
     }
   }

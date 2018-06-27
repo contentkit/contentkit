@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles'
 import CreatePostInput from '../CreatePostInput'
 import { slugify, genProjectName } from '../../lib/util'
 import Grid from '@material-ui/core/Grid'
-import DefaultPaper from '../DefaultPaper'
+import Paper from '@material-ui/core/Paper'
 
 class CreatePost extends React.Component {
   static propTypes = {
@@ -31,7 +31,7 @@ class CreatePost extends React.Component {
   }
 
   state = {
-    newPostTitle: '',
+    title: '',
     project: undefined
   }
 
@@ -52,8 +52,7 @@ class CreatePost extends React.Component {
     )
   }
 
-  createPost = async ({ project, raw }) => {
-    let { newPostTitle: title } = this.state
+  createPost = async ({ project, raw, title }) => {
     const slug = slugify(title)
     const { createPost, user } = this.props
     return createPost.mutate({
@@ -63,7 +62,6 @@ class CreatePost extends React.Component {
         raw: {
           blocks: [{ text: '' }]
         },
-        excerpt: '',
         versions: [{
           raw: {
             blocks: [{ text: '' }]
@@ -83,9 +81,11 @@ class CreatePost extends React.Component {
   createNewPost = async () => {
     const raw = { blocks: [{ text: '' }] }
     let project = this.state.project || await this.createNewProject()
-    await this.createPost({ project, raw })
-    this.setState({ newPostTitle: '' })
-    this.reset()
+    let title = '' + this.state.title.slice(0)
+    this.setState({ title: '' }, () => {
+      this.createPost({ project, raw, title })
+      this.reset()
+    })
   }
 
   reset = () => {
@@ -93,8 +93,7 @@ class CreatePost extends React.Component {
   }
 
   handleChange = (evt) => {
-    console.log(evt)
-    this.setState({ newPostTitle: evt.target.value })
+    this.setState({ title: evt.target.value })
   }
 
   render () {
@@ -107,15 +106,14 @@ class CreatePost extends React.Component {
       createProject
     } = this.props
     return (
-      <DefaultPaper>
+      <Paper className={classes.paper} elevation={0}>
         <Grid container spacing={24} alignContent={'space-between'}>
           <Grid item xs={9}>
-            <FormControl margin={'normal'} fullWidth className={classes.formControl}>
+            <FormControl margin={'none'} fullWidth className={classes.formControl}>
               <CreatePostInput
                 createPost={createPost}
-                createNewPost={this.createNewPost}
-                submitContent={this.submitContent}
-                value={this.state.newPostTitle}
+                createPostMutation={this.createNewPost}
+                value={this.state.title}
                 handleChange={this.handleChange}
               />
             </FormControl>
@@ -132,7 +130,7 @@ class CreatePost extends React.Component {
           open={createProject.loading}
           newProjectName={createProject.data && createProject.data.createProject.name}
         />
-      </DefaultPaper>
+      </Paper>
     )
   }
 }
@@ -141,7 +139,8 @@ export const CreatePostBare = CreatePost
 
 export const styles = () => ({
   paper: {
-    padding: '20px'
+    padding: '20px',
+    marginBottom: '1em'
   },
   button: {
     border: 'none',

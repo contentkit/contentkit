@@ -8,8 +8,7 @@ import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
 import { selectProject, setEditorState } from '../../redux'
 import PropTypes from 'prop-types'
-import { StateEnteredEventDetails } from 'aws-sdk/clients/stepfunctions'
-import type { etEditorState, Project, Client } from '../../types'
+import type { SetEditorState, Project, Client } from '../../types'
 import type { EditorState } from 'draft-js'
 
 let count = Math.round((window.innerHeight - 230) / 50)

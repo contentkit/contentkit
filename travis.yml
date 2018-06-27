@@ -15,7 +15,7 @@ before_deploy:
   - ./bin/up version
 deploy:
   provider: script
-  script: ./bin/up deploy production --chdir="./up"
+  script: ./bin/up deploy staging --chdir="./up"
   skip_cleanup: true
 
 env:

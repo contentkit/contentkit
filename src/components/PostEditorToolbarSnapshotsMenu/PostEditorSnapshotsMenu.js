@@ -3,20 +3,51 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Menu from '@material-ui/core/Menu'
-import Tooltip from '@material-ui/core/Tooltip'
+// import Tooltip from '@material-ui/core/es/Tooltip'
 import { unstable_deferredUpdates as deferredUpdates } from 'react-dom'
 import ToolbarButton from '../PostEditorToolbarButton'
 import memoize from 'lodash.memoize'
 import { fromKey } from '../../containers/PostEditor/util'
-// import * as jsondiffpatch from 'jsondiffpatch'
 import * as compact from 'draft-js-compact'
 import SnapshotsMenuItemContent from './SnapshotsMenuItemContent'
 import { EditorState, ContentState } from 'draft-js'
 import type { LocalStorageVersion, Post, Adapter } from '../../types'
-// import * as jsondiffpatch from 'jsondiffpatch'
+import Tooltip from '../Tooltip'
 
 type snapshotMenuAnchorEl = ?HTMLElement
 type anchorEl = ?HTMLElement
+
+const styles = theme => ({
+  paper: {
+    width: 300,
+    maxHeight: 500
+  },
+  tooltip: {
+    backgroundColor: '#fff',
+    color: '#4c6072',
+    width: 300,
+    height: 200,
+    marginTop: 10,
+    overflow: 'hidden',
+    '&$open': {
+      opacity: 1
+    }
+  },
+  open: {},
+  content: {
+    display: 'inline-flex',
+    justifyContent: 'center',
+    width: '100%'
+  },
+  menuItem: {
+    padding: '16px 32px'
+  },
+  menuList: {
+    '&:focus': {
+      outline: 'none'
+    }
+  }
+})
 
 class SnapshotsMenu extends React.Component<{
   post: Post,
@@ -66,11 +97,8 @@ class SnapshotsMenu extends React.Component<{
   }
 
   loadEditor = (key) => {
-    console.time('loadEditor')
     const { editorState } = this.props
     const contentState = this.props.adapter.restore(key)
-    console.timeEnd('loadEditor')
-
     return EditorState.push(editorState, contentState, 'insert-fragment')
   }
 
@@ -96,15 +124,15 @@ class SnapshotsMenu extends React.Component<{
     if (!versions) return ''
     let snapshot = versions.find(({ id }) => id === versionId)
     if (!snapshot) return ''
-    let snapshotText = compact.expand(snapshot && snapshot.raw).blocks.map(b => b.text || '') /* eslint-disable-line */
+    let snapshotText = compact.expand(snapshot && snapshot.raw).blocks
+      .map(b => b.text || '') /* eslint-disable-line */
     const contentState = this.props.adapter.restore(key)
     let text = contentState.getBlockMap().toArray().map(b => b.text || '')
-    let { diff, format } = await import('jsondiffpatch').then(module => {
-      return {
+    let { diff, format } = await import('jsondiffpatch')
+      .then(module => ({
         diff: module.diff,
         format: module.formatters.html.format
-      }
-    })
+      }))
     // const diff = jsondiffpatch.diff
     // const format = jsondiffpatch.formatters.html.format
     let delta = diff(snapshotText, text)
@@ -131,40 +159,35 @@ class SnapshotsMenu extends React.Component<{
   }
 
   render () {
-    const { anchorEl, tooltip } = this.props
+    const { anchorEl, tooltip, classes } = this.props
     const versions = this.state.versions || []
     const html = tooltip && tooltip.html
     return (
       <React.Fragment>
         <Tooltip
-          title={<div dangerouslySetInnerHTML={{ __html: html }} />}  /* eslint-disable-line */
-          classes={{
-            tooltip: this.props.classes.tooltip
-          }}
-          open={Boolean(anchorEl && html)} /* eslint-disable-line */
+          open={Boolean(anchorEl && html)}
+          dangerouslySetInnerHTML={{ __html: html }}
           placement={'left'}
-          disableFocusListener
-          disableHoverListener
-          disableTouchListener
+        />
+        <ToolbarButton
+          aria-owns={anchorEl ? 'simple-menu' : null}
+          aria-haspopup='true'
+          onClick={this.handleButtonClick}
+          onMouseEnter={this.onMouseEnter}
         >
-          <ToolbarButton
-            aria-owns={anchorEl ? 'simple-menu' : null}
-            aria-haspopup='true'
-            onClick={this.handleButtonClick}
-            onMouseEnter={this.onMouseEnter}
-          >
             History
-          </ToolbarButton>
-        </Tooltip>
+        </ToolbarButton>
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={this.handleMenuClose}
           classes={{
-            paper: this.props.classes.paper
+            paper: classes.paper
           }}
           onMouseLeave={this.handleMenuItemMouseLeave}
           disableAutoFocus
+          transitionDuration={0}
+          MenuListProps={{ className: classes.menuList }}
         >
           <div>
             <div>
@@ -174,8 +197,9 @@ class SnapshotsMenu extends React.Component<{
                   handleMenuClose={this.handleMenuClose}
                   handleMenuItemClick={this.handleMenuItemClick(version)}
                   handleMenuItemMouseEnter={this.handleMenuItemMouseEnter}
-                  handleMenuItemMouseLeave={() => {}}
+                  handleMenuItemMouseLeave={this.handleMenuItemMouseLeave}
                   key={version.key}
+                  className={classes.content}
                 />
               )
               )}
@@ -187,23 +211,4 @@ class SnapshotsMenu extends React.Component<{
   }
 }
 
-export default withStyles(
-  theme => ({
-    paper: {
-      width: 300,
-      maxHeight: 500
-    },
-    tooltip: {
-      backgroundColor: '#fff',
-      color: '#4c6072',
-      width: 300,
-      height: 200,
-      marginTop: 10,
-      overflow: 'hidden',
-      '&$open': {
-        opacity: 1
-      }
-    },
-    open: {}
-  })
-)(SnapshotsMenu)
+export default withStyles(styles)(SnapshotsMenu)

@@ -10,7 +10,7 @@ import PostMetaForm from '../PostEditorMetaModalForm'
 import { POST_QUERY } from '../../containers/PostEditor/mutations'
 import gql from 'graphql-tag'
 import type { Post } from '../../types'
-import moment from 'moment'
+import { createInitialState, convertToDate } from 'draft-js-dates'
 
 type Props = {
   updatePost: () => void,
@@ -25,14 +25,12 @@ type Props = {
 
 const getDate = ({ post: { Post }}) => {
   let date = (Post && Post.postMeta.date)
-  return date ? moment(date) : moment()
+  return date ? new Date(date) : new Date()
 }
 
-export default class EditPostMetaModal extends React.PureComponent<Props, {
-  date: moment
-}> {
+export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
   state = {
-    date: getDate(this.props)
+    dateInputState: createInitialState(getDate(this.props))
   }
 
   static propTypes = {
@@ -49,7 +47,8 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {
       postMeta,
       document
     } = this.props.post.Post
-
+    let date = convertToDate(this.state.dateInputState).toISOString()
+    console.log({ date })
     this.props.client.mutate({
       mutation: gql`
         mutation(
@@ -72,7 +71,7 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {
       `,
       variables: {
         ...postMeta,
-        date: this.state.date.toISOString()
+        date: date
       }
     })
     this.props.onClose()
@@ -96,8 +95,8 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {
     })
   }
 
-  onDateChange = (date) => {
-    this.setState({ date })
+  handleDateInputChange = (dateInputState) => {
+    this.setState({ dateInputState })
   }
 
   render () {
@@ -118,8 +117,8 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {
               post={this.props.post}
               handleChange={this.handleChange}
               auth={this.props.auth}
-              date={this.state.date}
-              onDateChange={this.onDateChange}
+              dateInputState={this.state.dateInputState}
+              handleDateInputChange={this.handleDateInputChange}
             />
           </DialogContent>
           <DialogActions>

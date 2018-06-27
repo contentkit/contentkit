@@ -5,7 +5,17 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import FormControl from '@material-ui/core/FormControl'
 import { withStyles } from '@material-ui/core/styles'
 
-function EnhancedInput (props) {
+const styles = theme => ({
+  label: {
+    marginLeft: '4px'
+  },
+  formControl: {
+    width: '100%'
+  },
+  input: {}
+})
+
+const EnhancedInput = (props) => {
   const {
     label,
     classes,
@@ -52,15 +62,4 @@ EnhancedInput.defaultProps = {
   variant: 'normal'
 }
 
-export default withStyles(
-  theme => ({
-    label: {
-      marginLeft: '4px'
-    },
-    formControl: {
-      width: '100%'
-    },
-    input: {
-    }
-  })
-)(EnhancedInput)
+export default withStyles(styles)(EnhancedInput)

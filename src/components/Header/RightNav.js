@@ -5,7 +5,8 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import MoreVertIcon from '@material-ui/icons/es/MoreVert'
 import { withStyles } from '@material-ui/core/styles'
-// const MoreVertIcon = () => <span />
+import Fade from '@material-ui/core/Fade'
+
 const styles = {
   root: {
     display: 'flex',
@@ -21,6 +22,11 @@ const styles = {
     '&:hover': {
       color: '#4ba8ff',
       backgroundColor: '#fff'
+    }
+  },
+  '@media (max-width: 767px)': {
+    root: {
+      margin: '12px 0 0 0'
     }
   }
 }
@@ -49,6 +55,7 @@ function RightNav (props) {
         classes={{
           paper: classes.menu
         }}
+        TransitionComponent={Fade}
       >
         {options.map(option =>
           <MenuItem

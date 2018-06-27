@@ -25,10 +25,11 @@ class SnapshotsMenuItemContent extends React.Component<Props, {}> {
       handleMenuClose,
       handleMenuItemClick,
       handleMenuItemMouseEnter,
-      handleMenuItemMouseLeave
+      handleMenuItemMouseLeave,
+      className
     } = this.props
     return (
-      <div style={{display: 'inline-flex', justifyContent: 'center', width: '100%'}}>
+      <div className={className}>
         <MenuItem
           onMouseEnter={() => handleMenuItemMouseEnter(version.key)}
           onMouseLeave={() => handleMenuItemMouseLeave(version.key)}

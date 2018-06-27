@@ -6,14 +6,15 @@
     "clean": "rimraf .cache && rimraf dist && rimraf lib",
     "dev": "UP_STAGE='/staging' parcel src/index.html",
     "watch": "babel src -d lib --copy-files --watch",
-    "build": "parcel build src/index.html --public-url /assets/ --out-dir dist",
+    "build": "parcel build src/index.html --public-url /assets/ --out-dir up/dist",
     "lint": "standard \"src/**/*.js\" --verbose --fix | snazzy"
   },
   "resolutions": {
-    "react": "16.4.0-alpha.0911da3",
-    "react-dom": "16.4.0-alpha.0911da3"
+    "react": "16.4.1",
+    "react-dom": "16.4.1"
   },
   "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.51",
     "@material-ui/core": "^1.2.3",
     "@material-ui/icons": "^1.1.0",
     "apollo-cache-inmemory": "^1.2.0",
@@ -27,6 +28,7 @@
     "dotenv": "^6.0.0",
     "draft-js": "^0.10.5",
     "draft-js-compact": "0.0.4",
+    "draft-js-dates": "^0.0.4",
     "express": "^4.16.3",
     "graphql": "^0.13.2",
     "graphql-request": "^1.6.0",
@@ -39,13 +41,12 @@
     "lodash.isequal": "^4.5.0",
     "lodash.memoize": "^4.1.2",
     "lodash.unescape": "^4.0.1",
-    "monograph": "^0.0.27",
+    "monograph": "0.0.30",
     "prop-types": "^15.5.10",
     "query-string": "^6.0.0",
-    "react": "16.4.0-alpha.0911da3",
+    "react": "^16.4.1",
     "react-apollo": "^2.1.4",
-    "react-dates": "^16.6.1",
-    "react-dom": "16.4.0-alpha.0911da3",
+    "react-dom": "^16.4.1",
     "react-inspector": "^2.3.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.1.2",

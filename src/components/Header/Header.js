@@ -30,6 +30,12 @@ const styles = {
   toolbar: {
     flexWrap: 'wrap',
     justifyContent: 'space-between'
+  },
+  '@media (max-width: 767px)': {
+    toolbar: {
+      flexDirection: 'column',
+      padding: '10px 0px'
+    }
   }
 }
 

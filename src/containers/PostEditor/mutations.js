@@ -5,13 +5,11 @@ export const UPDATE_DOCUMENT = gql`
     $id: ID!,
     $raw: Json!
     $html: String
-    $excerpt: String
   ) {
     updateDocument(
       id: $id
       raw: $raw
       html: $html
-      excerpt: $excerpt
     ) {
       id
       raw

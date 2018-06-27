@@ -7,6 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import { default as MuiSelect } from '@material-ui/core/Select'
+import Fade from '@material-ui/core/Fade'
 
 const styles = theme => ({
   root: {
@@ -27,6 +28,9 @@ const styles = theme => ({
     '&:focus': {
       background: 'transparent'
     }
+  },
+  label: {
+    left: 5
   }
 })
 
@@ -61,6 +65,22 @@ class Select extends React.Component<Props> {
     options: []
   }
 
+  renderInput = () => {
+    const {
+      value,
+      label
+    } = this.props
+    const id = label.replace(' ', '-').toLowerCase()
+    return (
+      <Input
+        value={value}
+        disableUnderline
+        name={id}
+        id={id}
+      />
+    )
+  }
+
   render () {
     const {
       classes,
@@ -73,19 +93,16 @@ class Select extends React.Component<Props> {
     return (
       <form className={classes.root} autoComplete='off'>
         <FormControl className={classes.formControl}>
-          <InputLabel htmlFor={id}>{label}</InputLabel>
+          <InputLabel htmlFor={id} className={classes.label}>{label}</InputLabel>
           <MuiSelect
             className={classes.select}
             value={value}
             onChange={onChange}
-            input={
-              <Input
-                value={value}
-                disableUnderline
-                name={id}
-                id={id}
-              />
-            }
+            MenuProps={{
+              // transitionDuration: 0,
+              TransitionComponent: Fade
+            }}
+            input={this.renderInput()}
           >
             {options.map((option, i) => (
               <MenuItem

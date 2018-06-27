@@ -31,6 +31,7 @@ import { wrapWithLoadingState } from '../../lib/util'
 import type { Post, User, SetEditorState } from '../../types'
 
 const _getVersions = memoize((cacheKey, id) => {
+  console.log({ cacheKey, id })
   const key = toKey(id, 'versions')
   const versions = new LocalStorage().get(key)
   return versions
@@ -129,7 +130,7 @@ class BaseEditor extends React.Component<Props, State> {
       () => this.syncContent({ raw, diff }),
       () => this._isUnmounted
     )
-  }, 8000)
+  }, 3000)
 
   saveDocument = ({ raw }) => {
     const { editorState } = this.props

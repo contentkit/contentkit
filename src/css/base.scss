@@ -1,3 +1,7 @@
+*:focus {
+  outline:none;
+}
+
 html, body, #root {
   min-height: 100%;
   margin: 0;
@@ -14,6 +18,34 @@ article, .content {
   padding: 41px 0 40px 0;
 }
 
+.draft-js-dates {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+.draft-js-dates > div {
+  margin-right: 5px;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #d8e0ea;
+  border-radius: 3px;
+  color: #6d859e;
+}
+
+.draft-js-dates-error {
+  color:#e4567b;
+}
+
+.draft-js-dates .public-DraftStyleDefault-block span > span::selection {
+  color: #4ba8ff;
+  background-color: #ecf3f8;
+}
+
+.draft-js-dates .public-DraftStyleDefault-block {
+  padding-bottom: 0;
+}
 @keyframes fadeOut {
   from {
     opacity: 0.5;
@@ -44,17 +76,6 @@ article, .content {
   animation-name: fadeIn;
   animation-duration: 2s;
   animation-fill-mode: both;
-}
-
-.admin-table {
-  /* display: grid; */
-  /* grid-template-columns: 5% auto 5%; */
-  /* grid-template-rows: 25% 100px auto; */
-}
-
-.create-post {
-  /* grid-column-start: 1; */
-  /* grid-row-start: 1; */
 }
 
 .project-modal-content {

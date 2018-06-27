@@ -1,81 +1,12 @@
 // @flow
 import React from 'react'
 import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import ButtonWithSpinner from '../ButtonWithSpinner'
 import { withStyles } from '@material-ui/core/styles'
-import Button from '@material-ui/core/Button'
 
-const inputProps = {
-  style: {
-    height: '100%'
-  }
-}
-
-interface props {
-  classes: any,
-  createPost: () => void,
-  createNewPost: () => void,
-  submitContent: () => void,
-  value: string,
-  handleChange: () => void
-}
-
-class CreatePostInput extends React.Component {
-  state = {
-    autoFocus: true
-  }
-  renderAdornment = () => {
-    const {
-      classes,
-      createNewPost,
-      createPost
-    } = this.props
-    return (
-      <InputAdornment position='end' className={classes.adornment}>
-        <Button
-          className={classes.button}
-          onClick={createNewPost}
-          color='primary'
-          variant='raised'
-          loading={createPost.loading}
-        >
-          Create New
-        </Button>
-      </InputAdornment>
-    )
-  }
-
-  componentDidUpdate () {
-    this.ref.focus()
-  }
-
-  render () {
-    const {
-      classes,
-      createPost,
-      createNewPost,
-      submitContent,
-      value,
-      handleChange
-    } = this.props
-    return (
-      <Input
-        inputRef={ref => {
-          this.ref = ref
-        }}
-        className={classes.input}
-        inputProps={inputProps}
-        disableUnderline
-        endAdornment={this.renderAdornment()}
-        value={value}
-        onChange={handleChange}
-      />
-    )
-  }
-}
-
-export default withStyles({
+const styles = {
   input: {
     padding: '0 0 0 5px',
     boxSizing: 'border-box'
@@ -88,5 +19,102 @@ export default withStyles({
   },
   adornment: {
     maxHeight: 'max-content'
+  },
+  label: {
+    left: 5
   }
-})(CreatePostInput)
+}
+
+const inputProps = {
+  style: {
+    height: '100%'
+  }
+}
+
+type Props = {
+  classes: any,
+  createPost: () => void,
+  createPostMutation: () => void,
+  value: string,
+  handleChange: () => void
+}
+
+type State = {
+  autoFocus: boolean
+}
+
+class CreatePostInput extends React.Component<Props, State> {
+  state = {
+    autoFocus: true,
+    value: ''
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    return nextProps.value !== this.props.value ||
+    nextProps.createPost.loading !== this.props.createPost.loading ||
+    nextState.value !== this.state.value
+  }
+
+  renderAdornment = () => {
+    const {
+      classes,
+      createPostMutation,
+      createPost
+    } = this.props
+    return (
+      <InputAdornment position='end' className={classes.adornment}>
+        <ButtonWithSpinner
+          className={classes.button}
+          onClick={createPostMutation}
+          color='primary'
+          variant='raised'
+          loading={createPost.loading}
+        >
+          Create New
+        </ButtonWithSpinner>
+      </InputAdornment>
+    )
+  }
+
+  componentDidMount () {
+    // this.ref.focus()
+  }
+
+  handleChange = (evt) => {
+    this.setState({ value: evt.target.value })
+  }
+
+  render () {
+    console.log({ props: this.props })
+    const {
+      classes,
+      value,
+      handleChange
+    } = this.props
+    return (
+      <React.Fragment>
+        <InputLabel
+          htmlFor='create-post'
+          className={classes.label}
+          disableAnimation>
+            Name
+        </InputLabel>
+        <Input
+          inputRef={ref => {
+            this.ref = ref
+          }}
+          className={classes.input}
+          inputProps={inputProps}
+          disableUnderline
+          endAdornment={this.renderAdornment()}
+          value={value}
+          onChange={handleChange}
+          name={'create-post'}
+          id={'create-post'}
+        />
+      </React.Fragment>
+    )
+  }
+}
+
+export default withStyles(styles)(CreatePostInput)

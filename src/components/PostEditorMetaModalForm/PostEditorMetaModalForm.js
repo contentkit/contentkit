@@ -19,7 +19,6 @@ const PostEditorMetaModalForm = (props) => {
   const allProjects = (projects && projects.data.allProjects) || []
   return (
     <div className='modal-content'>
-      <div className='modal-left'>
         <EnhancedInput
           label={'title'}
           value={title}
@@ -50,8 +49,6 @@ const PostEditorMetaModalForm = (props) => {
             {...props}
           />
         </FormControl>
-      </div>
-      <div className='modal-right' />
     </div>
   )
 }
