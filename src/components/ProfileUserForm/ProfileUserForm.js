@@ -24,8 +24,17 @@ const UserForm = props => {
         onChange={(e) => props.handleChange(e, 'email')}
       />
       <ApiKeyInput {...props} />
-      <div>
+      <div className={props.classes.flex}>
         <Button
+          className={props.classes.button}
+          variant='raised'
+          color='secondary'
+          onClick={() => props.generateToken({ id: props.id })}
+        >
+          Generate Token
+        </Button>
+        <Button
+          className={props.classes.button}
           variant='raised'
           color='primary'
           onClick={() => {
@@ -75,6 +84,14 @@ export default withStyles(
       padding: '2px 8px',
       color: '#4c6072',
       height: '100%'
+    },
+    flex: {
+      display: 'flex',
+      marginLeft: -10,
+      marginRight: -10
+    },
+    button: {
+      margin: theme.spacing.unit
     }
   })
 )(UserForm)

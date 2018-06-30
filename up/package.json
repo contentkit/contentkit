@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "express": "^4.16.3",
-    "graphql-request": "^1.6.0"
+    "graphql-request": "^1.6.0",
+    "up-env": "^0.0.10"
   },
   "devDependencies": {}
 }

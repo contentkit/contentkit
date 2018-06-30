@@ -108,7 +108,7 @@ class CreatePost extends React.Component {
     return (
       <Paper className={classes.paper} elevation={0}>
         <Grid container spacing={24} alignContent={'space-between'}>
-          <Grid item xs={9}>
+          <Grid item xs={8}>
             <FormControl margin={'none'} fullWidth className={classes.formControl}>
               <CreatePostInput
                 createPost={createPost}
@@ -118,7 +118,7 @@ class CreatePost extends React.Component {
               />
             </FormControl>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <ProjectSelect
               selectedProject={this.props.selectedProject}
               allProjects={projects.data && projects.data.allProjects}

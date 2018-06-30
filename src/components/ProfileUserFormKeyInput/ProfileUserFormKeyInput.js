@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
 import RefreshIcon from '@material-ui/icons/es/Autorenew'
 
-function ApiKeyInput (props: any) {
+const ApiKeyInput = (props: any) => {
   const {
     onCopy,
     setRef,
@@ -18,11 +18,6 @@ function ApiKeyInput (props: any) {
     classes,
     id
   } = props
-  if (!secret) {
-    return (
-      <Button onClick={() => generateToken({ id })}>Generate Token</Button>
-    )
-  }
   return (
     <FormControl fullWidth margin='normal'>
       <InputLabel htmlFor='api-key'>API Key</InputLabel>

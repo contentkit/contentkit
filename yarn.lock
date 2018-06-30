@@ -2557,18 +2557,18 @@ draft-js-compact@0.0.4:
   dependencies:
     is-plain-object "^2.0.4"
 
-draft-js-custom-buttons@^0.0.30:
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/draft-js-custom-buttons/-/draft-js-custom-buttons-0.0.30.tgz#cc4492e1209e091c598bd5de961c340405c6b1cb"
+draft-js-custom-buttons@^0.0.32:
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/draft-js-custom-buttons/-/draft-js-custom-buttons-0.0.32.tgz#07a0e6e4cfa67434f5b4a29988f9b7559c9fa223"
   dependencies:
     draft-js-blocks "^0.0.18"
     react-valid-attributes "^0.0.1"
     scope "^0.10.1"
     union-class-names "^1.0.0"
 
-draft-js-custom-toolbar-plugin@^0.0.30:
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/draft-js-custom-toolbar-plugin/-/draft-js-custom-toolbar-plugin-0.0.30.tgz#f59ecc7002b545b58681a4c7395fd300534673f5"
+draft-js-custom-toolbar-plugin@^0.0.32:
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/draft-js-custom-toolbar-plugin/-/draft-js-custom-toolbar-plugin-0.0.32.tgz#62de4581e8605864a223934bb1d16d980ad451d6"
   dependencies:
     decorate-component-with-props "^1.0.2"
     lodash.debounce "^4.0.8"
@@ -2610,9 +2610,9 @@ draft-js-modifiers@~0.2.2:
     draft-js "~0.10.5"
     immutable "~3.7.4"
 
-draft-js-new-line-plugin@^0.0.30:
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/draft-js-new-line-plugin/-/draft-js-new-line-plugin-0.0.30.tgz#6a9e16b341292a97c217f431aefa9be258ab80a8"
+draft-js-new-line-plugin@^0.0.32:
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/draft-js-new-line-plugin/-/draft-js-new-line-plugin-0.0.32.tgz#3715ef63852d848ead3ceee36a174c2b4bd46fe8"
   dependencies:
     deepmerge "^2.1.0"
     draft-js-blocks "^0.0.18"
@@ -2629,9 +2629,9 @@ draft-js-prism@^1.0.6:
     extend "^3.0.0"
     immutable "*"
 
-draft-js-scripts-plugin@^0.0.30:
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/draft-js-scripts-plugin/-/draft-js-scripts-plugin-0.0.30.tgz#dd4d0dcff396a2caa9aae6c921887d133d81243a"
+draft-js-scripts-plugin@^0.0.33:
+  version "0.0.33"
+  resolved "https://registry.yarnpkg.com/draft-js-scripts-plugin/-/draft-js-scripts-plugin-0.0.33.tgz#9c1ec660ce1cc97775d77e43d9bcf1530e6739d9"
   dependencies:
     append-stylesheet "^0.0.1"
     draft-js-blocks "^0.0.18"
@@ -2639,9 +2639,9 @@ draft-js-scripts-plugin@^0.0.30:
     union-class-names "^1.0.0"
     url "^0.11.0"
 
-draft-js-tables-plugin@^0.0.30:
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/draft-js-tables-plugin/-/draft-js-tables-plugin-0.0.30.tgz#4e18ab69a597f2d3a98cdb38784b4c232c04ed95"
+draft-js-tables-plugin@^0.0.32:
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/draft-js-tables-plugin/-/draft-js-tables-plugin-0.0.32.tgz#d79a68974a16cd3cd6f58d35c6d381c01efe4d14"
   dependencies:
     draft-js-blocks "^0.0.18"
 
@@ -5573,23 +5573,23 @@ mkdirp@0.5.1, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
-monograph@0.0.30:
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/monograph/-/monograph-0.0.30.tgz#0211e9b7d8cb1864e77c7444a88e1d037dfae3a8"
+monograph@0.0.33:
+  version "0.0.33"
+  resolved "https://registry.yarnpkg.com/monograph/-/monograph-0.0.33.tgz#c3a0d24fdc58fccae46165889b2f35a55732e7c6"
   dependencies:
     decorate-component-with-props "^1.1.0"
     draft-js-anchor-plugin "^2.0.2"
     draft-js-blocks "^0.0.18"
     draft-js-code-block-plugin "^0.0.25"
-    draft-js-custom-buttons "^0.0.30"
-    draft-js-custom-toolbar-plugin "^0.0.30"
+    draft-js-custom-buttons "^0.0.32"
+    draft-js-custom-toolbar-plugin "^0.0.32"
     draft-js-export-html "^1.2.0"
     draft-js-focus-plugin "^2.0.4"
     draft-js-markdown "^0.0.16"
-    draft-js-new-line-plugin "^0.0.30"
+    draft-js-new-line-plugin "^0.0.32"
     draft-js-prism "^1.0.6"
-    draft-js-scripts-plugin "^0.0.30"
-    draft-js-tables-plugin "^0.0.30"
+    draft-js-scripts-plugin "^0.0.33"
+    draft-js-tables-plugin "^0.0.32"
     eslint-web "^0.0.24"
     html-element-attributes "^1.3.1"
     lodash.groupby "^4.6.0"

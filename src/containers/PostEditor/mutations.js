@@ -88,7 +88,6 @@ export const POST_QUERY = gql`
         id
         raw
         html
-        excerpt
         versions {
           id
           raw

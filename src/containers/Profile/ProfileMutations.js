@@ -7,20 +7,20 @@ import { withRouter } from 'react-router-dom'
 import Profile from './Profile'
 
 class ProfileWithData extends React.Component {
-  generateToken = ({ auth, mutate }) =>
+  generateToken = ({ mutate }) =>
     variables => mutate({
       variables,
       optimisticResponse: {
         __typename: 'Mutation',
         generateToken: {
           __typename: 'User',
-          ...auth.user,
-          secret: 'xxx'
+          ...this.props.auth.user,
+          secret: 'pending...'
         }
       },
       update: (store, { data: { generateToken } }) => {
         const user = {
-          ...auth.user,
+          ...this.props.auth.user,
           secret: generateToken.secret
         }
 
@@ -47,7 +47,7 @@ class ProfileWithData extends React.Component {
                       ...updateUserData
                     }}
                     generateToken={{
-                      mutate: generateToken,
+                      mutate: this.generateToken({ mutate: generateToken }),
                       ...generateTokenData
                     }}
                   />

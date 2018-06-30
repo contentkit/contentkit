@@ -20,9 +20,9 @@ const styles = {
   adornment: {
     maxHeight: 'max-content'
   },
-  
   label: {
-    left: 5
+    left: 5,
+    lineHeight: '1.4'
   }
 }
 
@@ -71,7 +71,7 @@ class CreatePostInput extends React.Component<Props, State> {
           variant='raised'
           loading={createPost.loading}
         >
-          Create New
+          Create New Post
         </ButtonWithSpinner>
       </InputAdornment>
     )
@@ -86,7 +86,6 @@ class CreatePostInput extends React.Component<Props, State> {
   }
 
   render () {
-    console.log({ props: this.props })
     const {
       classes,
       value,
@@ -97,8 +96,9 @@ class CreatePostInput extends React.Component<Props, State> {
         <InputLabel
           htmlFor='create-post'
           className={classes.label}
-          disableAnimation>
-            Name
+          disableAnimation
+        >
+            Post Title 
         </InputLabel>
         <Input
           inputRef={ref => {

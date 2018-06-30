@@ -33,9 +33,6 @@ type Image @model {
 }
 
 type Post @model {
-  markdown: String
-  html: String
-  title: String
   createdAt: DateTime!
   id: ID! @isUnique
   updatedAt: DateTime!
@@ -45,10 +42,6 @@ type Post @model {
   postMeta: PostMeta @relation(name: "PostOnPostMeta")
   project: Project @relation(name: "ProjectOnPost")
   accessGroups: [AccessGroup!]! @relation(name: "AccessGroupPosts")
-  slug: String
-  status: PostStatus! @defaultValue(value: "DRAFT") @migrationValue(value: "PUBLISHED")
-  excerpt: String
-  date: DateTime
   images: [Image!]! @relation(name: "PostOnImage")
   document: Document @relation(name: "PostOnDocument")
 }
@@ -80,7 +73,6 @@ type Document @model {
   versions: [Version!]! @relation(name: "DocumentOnVersion")
   post: Post! @relation(name: "PostOnDocument")
   html: String
-  excerpt: String
 }
 
 type Domain @model {
