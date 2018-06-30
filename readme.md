@@ -26,3 +26,5 @@ fetch('https://contentkit.co/api/v1/cjj0n1be8akko01031wadmjmz', {
   console.log(resp)
 })
 ```
+
+![https://raw.githubusercontent.com/unshift/contentkit/master/meta/contentkit-editor-demo.png](https://raw.githubusercontent.com/unshift/contentkit/master/meta/contentkit-login.png)
