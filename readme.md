@@ -6,7 +6,8 @@
 
 ### Features
 
-- Markdown editor ([Monograph](https://github.com/unshift/monograph) - a wrapper around [DraftJs](https://draftjs.org/).
+- Markdown editor ([Monograph](https://github.com/unshift/monograph) - a wrapper around [DraftJs](https://draftjs.org/)).
+- Version control
 - REST API
 - Project and team management
 
