@@ -8,24 +8,24 @@ import EnhancedInput from '../EnhancedInput'
 class PasswordField extends React.Component {
   state = {
     password: '',
-    showPassword: false
+    reveal: false
   }
 
-  handleMouseDownPassword = (event) => {
+  reveal = (event) => {
     event.preventDefault()
   }
 
-  handleClickShowPasssword = () => {
-    this.setState({ showPassword: !this.state.showPassword })
+  handleReveal = () => {
+    this.setState(prevState => ({ reveal: !prevState.reveal }))
   }
 
   renderAdornment = () => (
     <IconButton
       color='primary'
-      onClick={this.handleClickShowPasssword}
-      onMouseDown={this.handleMouseDownPassword}
+      onClick={this.handleReveal}
+      onMouseDown={this.reveal}
     >
-      {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+      {this.state.reveal ? <VisibilityOff /> : <Visibility />}
     </IconButton>
   )
 
@@ -34,7 +34,7 @@ class PasswordField extends React.Component {
       <div>
         <EnhancedInput
           label='password'
-          type={this.state.showPassword ? 'text' : 'password'}
+          type={this.state.reveal ? 'text' : 'password'}
           adornment={this.renderAdornment()}
           {...this.props}
         />

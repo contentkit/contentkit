@@ -1,5 +1,5 @@
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles'
 import debounce from 'lodash.debounce'
 import { unstable_deferredUpdates as deferredUpdates } from 'react-dom'
 

@@ -98,7 +98,7 @@ class CreatePostInput extends React.Component<Props, State> {
           className={classes.label}
           disableAnimation
         >
-            Post Title 
+            Post Title
         </InputLabel>
         <Input
           inputRef={ref => {

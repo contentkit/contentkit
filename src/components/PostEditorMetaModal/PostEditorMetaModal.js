@@ -30,7 +30,8 @@ const getDate = ({ post: { Post }}) => {
 
 export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
   state = {
-    dateInputState: createInitialState(getDate(this.props))
+    dateInputState: createInitialState(getDate(this.props)),
+    projectId: this.props.post.Post.project.id
   }
 
   static propTypes = {
@@ -42,14 +43,13 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
     auth: PropTypes.object
   }
 
-  handlePostMetaUpdate = (evt: any) => {
+  handlePostMetaUpdate = async (evt: any) => {
     let {
       postMeta,
       document
     } = this.props.post.Post
     let date = convertToDate(this.state.dateInputState).toISOString()
-    console.log({ date })
-    this.props.client.mutate({
+    await this.props.client.mutate({
       mutation: gql`
         mutation(
           $id: ID!,
@@ -74,6 +74,57 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
         date: date
       }
     })
+    if (this.state.projectId !== this.props.post.Post.project.id) {
+      await this.props.client.mutate({
+        mutation: gql`
+          mutation (
+            $postsPostId: ID!
+            $projectProjectId: ID!
+          ) {
+            removeFromProjectOnPost (
+              postsPostId: $postsPostId
+              projectProjectId: $projectProjectId
+            ) {
+              postsPost {
+                id
+              }
+              projectProject {
+                id
+              }
+            }
+          }
+        `,
+        variables: {
+          postsPostId: this.props.post.Post.id,
+          projectProjectId: this.state.projectId
+        }
+      })
+
+      await this.props.client.mutate({
+        mutation: gql`
+          mutation (
+            $projectProjectId: ID!
+            $postsPostId: ID!
+          ) {
+            addToProjectOnPost(
+              projectProjectId: $projectProjectId
+              postsPostId: $postsPostId
+            ) {
+              postsPost {
+                id
+              }
+              projectProject {
+                id
+              }
+            }
+          }
+        `,
+        variables: {
+          projectProjectId: this.props.post.Post.project.id,
+          postsPostId: this.props.post.Post.id
+        }
+      })
+    }
     this.props.onClose()
   }
 
@@ -95,6 +146,24 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
     })
   }
 
+  selectProject = (id) => {
+    console.log(id)
+    let { Post } = this.props.post
+    this.props.client.writeQuery({
+      query: POST_QUERY,
+      variables: this.props.post.variables,
+      data: {
+        Post: {
+          ...Post,
+          project: {
+            __typename: 'Project',
+            id
+          }
+        }
+      }
+    })
+  }
+
   handleDateInputChange = (dateInputState) => {
     this.setState({ dateInputState })
   }
@@ -102,7 +171,7 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
   render () {
     const { post: { Post }, open, onClose } = this.props
     if (!Post) return false
-
+    console.log(this.props)
     return (
       <div>
         <Dialog
@@ -119,6 +188,7 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
               auth={this.props.auth}
               dateInputState={this.state.dateInputState}
               handleDateInputChange={this.handleDateInputChange}
+              selectProject={this.selectProject}
             />
           </DialogContent>
           <DialogActions>

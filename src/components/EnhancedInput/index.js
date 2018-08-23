@@ -23,6 +23,7 @@ const EnhancedInput = (props) => {
     adornment,
     margin,
     variant,
+    value,
     ...rest
   } = props
 
@@ -49,6 +50,7 @@ const EnhancedInput = (props) => {
         inputRef={inputRef}
         endAdornment={endAdornment}
         {...rest}
+        value={value || ''}
       />
     </FormControl>
   )

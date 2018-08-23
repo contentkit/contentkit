@@ -15,11 +15,9 @@ class Footer extends React.Component {
   render () {
     const { classes } = this.props
     return (
-      <footer className={classes.footer}>
-      
-      </footer>
+      <footer className={classes.footer} />
     )
-  } 
+  }
 }
 
 export default withStyles(styles)(Footer)

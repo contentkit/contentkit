@@ -179,9 +179,6 @@ class BaseEditor extends React.Component<Props, State> {
     const { post, hydrated } = this.props
     if (!post.Post) return
     if (!hydrated) return
-    // const decorator = this.props.editorState.getDecorator()
-    // if (!decorator) return
-    // this.decorators = decorator.decorators
     this.sync()
   }
 

@@ -20,13 +20,13 @@ const ApiKeyInput = (props: any) => {
   } = props
   return (
     <FormControl fullWidth margin='normal'>
-      <InputLabel htmlFor='api-key'>API Key</InputLabel>
       <Input
         className={classes.input}
         disableUnderline
         id='api-key'
-        value={secret}
+        value={secret || ''}
         inputRef={setRef}
+        placeholder={'API key'}
         endAdornment={
           <InputAdornment position='end'>
             <IconButton

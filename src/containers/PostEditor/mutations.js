@@ -36,11 +36,13 @@ export const UPDATE_POST = gql`
     $id: ID!,
     $postMeta: PostpostMetaPostMeta!
     $document: PostdocumentDocument!
+    $projectId: ID
     ) {
     updatePost(
       id: $id
       postMeta: $postMeta
       document: $document
+      projectId: $projectId
     ) {
       id
       createdAt

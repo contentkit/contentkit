@@ -4,13 +4,13 @@ import PropTypes from 'prop-types'
 import EnhancedInput from '../../components/EnhancedInput'
 import PostStatusSelect from '../PostEditorMetaModalSelect'
 import ProjectSelect from '../../components/ProjectSelect'
-import { Query } from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
 import FormControl from '@material-ui/core/FormControl'
 
 const PostEditorMetaModalForm = (props) => {
-  const { handleChange, post, projects } = props
+  const { handleChange, post, projects, selectProject } = props
   const { Post } = post
   const title = (Post && Post.postMeta.title) || ''
   const slug = (Post && Post.postMeta.slug) || ''
@@ -19,36 +19,36 @@ const PostEditorMetaModalForm = (props) => {
   const allProjects = (projects && projects.data.allProjects) || []
   return (
     <div className='modal-content'>
-        <EnhancedInput
-          label={'title'}
-          value={title}
-          onChange={e => handleChange(e, 'title')}
+      <EnhancedInput
+        label={'title'}
+        value={title}
+        onChange={e => handleChange(e, 'title')}
+      />
+      <PostStatusSelect
+        handleChange={handleChange}
+        post={post}
+      />
+      <EnhancedInput
+        label={'slug'}
+        value={slug}
+        onChange={e => handleChange(e, 'slug')}
+      />
+      <EnhancedInput
+        multiline
+        label={'excerpt'}
+        value={excerpt}
+        onChange={e => handleChange(e, 'excerpt')}
+      />
+      <ProjectSelect
+        allProjects={allProjects}
+        selectedProject={selectedProject}
+        selectProject={selectProject}
+      />
+      <FormControl fullWidth margin={'normal'}>
+        <PostMetaDatePicker
+          {...props}
         />
-        <PostStatusSelect
-          handleChange={handleChange}
-          post={post}
-        />
-        <EnhancedInput
-          label={'slug'}
-          value={slug}
-          onChange={e => handleChange(e, 'slug')}
-        />
-        <EnhancedInput
-          multiline
-          label={'excerpt'}
-          value={excerpt}
-          onChange={e => handleChange(e, 'excerpt')}
-        />
-        <ProjectSelect
-          allProjects={allProjects}
-          selectedProject={selectedProject}
-          selectProject={() => {}}
-        />
-        <FormControl fullWidth margin={'normal'}>
-          <PostMetaDatePicker
-            {...props}
-          />
-        </FormControl>
+      </FormControl>
     </div>
   )
 }
@@ -77,7 +77,13 @@ export default props => (
     variables={{ id: props.auth.user.id }}
   >
     {projects => {
-      return <PostEditorMetaModalForm {...props} projects={projects} />
+      console.log(projects)
+      return (
+        <PostEditorMetaModalForm
+          {...props}
+          projects={projects}
+        />
+      )
     }}
   </Query>
 )
