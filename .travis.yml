@@ -12,6 +12,7 @@ before_script:
 script: 
   - yarn add travis-up
 before_deploy:
+  - ls -lat
   - ./bin/up version
 deploy:
   provider: script
