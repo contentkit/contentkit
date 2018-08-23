@@ -34,7 +34,6 @@ const EnhancedInput = (props) => {
   let inputId = label
     ? label.toLowerCase().replace(' ', '-')
     : undefined
-
   return (
     <FormControl fullWidth margin={margin}>
       {label && <InputLabel htmlFor={inputId} className={classes.label}>{label}</InputLabel>}
