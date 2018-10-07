@@ -2557,7 +2557,7 @@ draft-js-compact@0.0.4:
   dependencies:
     is-plain-object "^2.0.4"
 
-draft-js-custom-buttons@0.0.34:
+draft-js-custom-buttons@^0.0.34:
   version "0.0.34"
   resolved "https://registry.yarnpkg.com/draft-js-custom-buttons/-/draft-js-custom-buttons-0.0.34.tgz#679e1715028b616e00f3e3c1052e5256ec9e5a81"
   dependencies:
@@ -2610,7 +2610,7 @@ draft-js-modifiers@~0.2.2:
     draft-js "~0.10.5"
     immutable "~3.7.4"
 
-draft-js-new-line-plugin@0.0.34:
+draft-js-new-line-plugin@^0.0.34:
   version "0.0.34"
   resolved "https://registry.yarnpkg.com/draft-js-new-line-plugin/-/draft-js-new-line-plugin-0.0.34.tgz#e8eb092ecd7fc4ed65a4fb302811f8ab200d4b50"
   dependencies:
@@ -2629,9 +2629,9 @@ draft-js-prism@^1.0.6:
     extend "^3.0.0"
     immutable "*"
 
-draft-js-scripts-plugin@0.0.34:
-  version "0.0.34"
-  resolved "https://registry.yarnpkg.com/draft-js-scripts-plugin/-/draft-js-scripts-plugin-0.0.34.tgz#31a93f9093abbbb38d0bdc13d0d8ecbff32d73c0"
+draft-js-scripts-plugin@0.0.36:
+  version "0.0.36"
+  resolved "https://registry.yarnpkg.com/draft-js-scripts-plugin/-/draft-js-scripts-plugin-0.0.36.tgz#9ede974873ed12d60c0fc97250d6c6cf15a987d6"
   dependencies:
     append-stylesheet "^0.0.1"
     draft-js-blocks "^0.0.20"
@@ -2639,7 +2639,7 @@ draft-js-scripts-plugin@0.0.34:
     union-class-names "^1.0.0"
     url "^0.11.0"
 
-draft-js-tables-plugin@0.0.34:
+draft-js-tables-plugin@^0.0.34:
   version "0.0.34"
   resolved "https://registry.yarnpkg.com/draft-js-tables-plugin/-/draft-js-tables-plugin-0.0.34.tgz#67fa57090a99937367b0c7c1638d8800eacdc929"
   dependencies:
@@ -5573,23 +5573,23 @@ mkdirp@0.5.1, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
-monograph@^0.0.34:
-  version "0.0.34"
-  resolved "https://registry.yarnpkg.com/monograph/-/monograph-0.0.34.tgz#6ed1588cefba6b0f9e7ee28ca2ec90171f640a92"
+monograph@^0.0.36:
+  version "0.0.36"
+  resolved "https://registry.yarnpkg.com/monograph/-/monograph-0.0.36.tgz#c84cd664594bd9d5cb99e633cce0bd6bb6d9c543"
   dependencies:
     decorate-component-with-props "^1.1.0"
     draft-js-anchor-plugin "^2.0.2"
     draft-js-blocks "^0.0.20"
     draft-js-code-block-plugin "^0.0.26"
-    draft-js-custom-buttons "0.0.34"
+    draft-js-custom-buttons "^0.0.34"
     draft-js-custom-toolbar-plugin "^0.0.32"
     draft-js-export-html "^1.2.0"
     draft-js-focus-plugin "^2.0.4"
     draft-js-markdown "^0.0.17"
-    draft-js-new-line-plugin "0.0.34"
+    draft-js-new-line-plugin "^0.0.34"
     draft-js-prism "^1.0.6"
-    draft-js-scripts-plugin "0.0.34"
-    draft-js-tables-plugin "0.0.34"
+    draft-js-scripts-plugin "0.0.36"
+    draft-js-tables-plugin "^0.0.34"
     eslint-web "^0.0.24"
     html-element-attributes "^1.3.1"
     lodash.groupby "^4.6.0"

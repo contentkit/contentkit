@@ -20,8 +20,8 @@ class LoginPage extends React.Component {
   }
 
   state = {
-    email: 'example@example.com',
-    password: 'test',
+    email: '',
+    password: '',
     error: undefined
   }
 
