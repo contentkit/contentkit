@@ -47,10 +47,6 @@ export const PostEditor = withRedirect(withAsyncComponent(
 ))
 export const Projects = withRedirect(withAsyncComponent(() => import('../containers/Projects')))
 
-export const Playground = withRedirect(withAsyncComponent(
-  () => import('../containers/Playground')
-))
-
 export const Profile = withRedirect(withAsyncComponent(
   () => import('../containers/Profile')
 ))

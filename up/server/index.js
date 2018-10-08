@@ -1,5 +1,5 @@
 if (!process.env.UP_STAGE) {
-  const { environment } = require('../up.json')
+  const { environment } = require('./up.json')
   process.env.ROOT_TOKEN = environment.ROOT_TOKEN
   process.env.BUCKET_NAME = environment.BUCKET_NAME
   process.env.GRAPH_COOL_ENDPOINT = environment.GRAPH_COOL_ENDPOINT

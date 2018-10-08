@@ -1,13 +1,12 @@
 import React from 'react'
 import { BrowserRouter, Route } from 'react-router-dom'
-import { APP_PATH, PROFILE_PATH } from '../lib/config'
 import '../css/style.scss'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import theme from '../lib/theme'
-import { Dashboard, Profile, SignIn, PostEditor, Projects, Playground } from './pages'
+import { Dashboard, Profile, SignIn, PostEditor, Projects } from './pages'
 
 import { unstable_deferredUpdates as deferredUpdates } from 'react-dom'
-import { store } from '../redux'
+import { store } from '../lib/redux'
 import { Provider } from 'react-redux'
 
 const UP_STAGE = process.env.UP_STAGE || undefined
@@ -82,11 +81,6 @@ class AppRouter extends React.Component {
               exact
               path={'/projects/:id?'}
               render={() => <Projects {...props} />}
-            />
-            <Route
-              exact
-              path={'/playground'}
-              render={() => <Playground {...props} />}
             />
           </MuiThemeProvider>
         </BrowserRouter>

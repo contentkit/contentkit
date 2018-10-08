@@ -1,5 +1,4 @@
 // @flow
-import { POST_QUERY } from './queries'
 import gql from 'graphql-tag'
 
 export const temporarySchemaUpdate = async ({

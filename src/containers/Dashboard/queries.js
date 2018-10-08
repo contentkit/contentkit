@@ -14,7 +14,6 @@ export const PROJECTS_QUERY = gql`
   }
   ${fragments.project}
 `
-// orderBy: createdAt_DESC,
 
 export const POSTS_QUERY = gql`
   query (

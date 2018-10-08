@@ -22,7 +22,7 @@ import {
 import LocalStorage from './LocalStorage'
 import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
-import { setEditorState } from '../../redux'
+import { setEditorState } from '../../lib/redux'
 import { createVersion } from './mutations'
 import memoize from 'lodash.memoize'
 import { postShape } from '../../shapes'
@@ -31,7 +31,6 @@ import { wrapWithLoadingState } from '../../lib/util'
 import type { Post, User, SetEditorState } from '../../types'
 
 const _getVersions = memoize((cacheKey, id) => {
-  console.log({ cacheKey, id })
   const key = toKey(id, 'versions')
   const versions = new LocalStorage().get(key)
   return versions
@@ -124,7 +123,6 @@ class BaseEditor extends React.Component<Props, State> {
       (this.props.post.Post.document)
     )
     if (!diff) return
-    console.log('syncing...')
     wrapWithLoadingState(
       (...args) => this.setState(...args),
       () => this.syncContent({ raw, diff }),

@@ -1,6 +1,0 @@
-{
-	"compress": {
-	  "join_vars": false,
-	  "reduce_vars": false
-	}
-}
