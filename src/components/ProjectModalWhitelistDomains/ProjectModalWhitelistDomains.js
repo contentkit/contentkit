@@ -43,8 +43,8 @@ WhitelistChips.propTypes = {
 const WhitelistChipsWithStyles = withStyles(styles)(WhitelistChips)
 
 class WhitelistDomains extends React.Component<{
-  createDomain: (data: any) => void,
-  deleteDomain: (data: any) => void,
+  createOrigin: (data: any) => void,
+  deleteOrigin: (data: any) => void,
   project: ProjectQuery
 }, {
   value: string
@@ -54,13 +54,13 @@ class WhitelistDomains extends React.Component<{
   }
 
   static propTypes = {
-    createDomain: PropTypes.func.isRequired,
-    deleteDomain: PropTypes.func.isRequired,
+    creatOrigin: PropTypes.func.isRequired,
+    deleteOrigin: PropTypes.func.isRequired,
     project: projectQueryShape
   }
 
   onDelete = (id) => {
-    this.props.deleteDomain({
+    this.props.deleteOrigin({
       id
     })
   }
@@ -70,20 +70,20 @@ class WhitelistDomains extends React.Component<{
   }
 
   onKeyDown = (e) => {
-    let projectId = this.props.project.data.Project.id
+    let projectId = this.props.project.data.project.id
     let name = (' ' + this.state.value).slice(1)
     if (e.key === 'Enter') {
       this.setState({
         value: ''
       }, () => {
-        this.props.createDomain({ name, projectId })
+        this.props.createOrigin({ name, projectId })
       })
     }
   }
 
   render () {
     const { project } = this.props
-    const domains = project && project.data && project.data.Project.domains
+    const domains = project && project.data && project.data.project.origins
     if (!domains) return false
     return (
       <div>

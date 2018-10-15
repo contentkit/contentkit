@@ -1,7 +1,10 @@
-edge/env.js
 .DS_Store
 .cache
 dist
+tmp
+flow-typed
+.vscode
+
 
 # Logs
 logs

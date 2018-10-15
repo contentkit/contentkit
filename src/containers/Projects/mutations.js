@@ -13,11 +13,11 @@ export const findIndex = (arr, id) => {
 }
 
 export const CREATE_PROJECT = gql`
-  mutation ($name: String!, $userId: ID!) {
-    createProject(name: $name, userId: $userId) {
+  mutation ($name: String!) {
+    createProject(name: $name) {
       name
       id
-      domains {
+      origins {
         id
       }
     }
@@ -32,7 +32,7 @@ export const UPDATE_PROJECT = gql`
     ) {
       id
       name
-      domains {
+      origins {
         id
         name
       }
@@ -51,15 +51,11 @@ export const DELETE_PROJECT = gql`
 `
 
 export const PROJECTS_QUERY = gql`
-  query ($id: ID!) {
-    allProjects(filter: {
-      user: {
-        id: $id
-      }
-    }) {
+  query {
+    allProjects {
       id
       name
-      domains {
+      origins {
         id
         name
       }

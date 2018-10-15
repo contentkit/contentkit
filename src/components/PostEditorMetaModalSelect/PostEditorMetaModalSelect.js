@@ -14,7 +14,7 @@ const PostEditorMetaModalSelect = (props: any) => {
     value: 'PUBLISHED',
     label: 'Published'
   }]
-  const value = (post.Post && post.Post.postMeta.status)
+  const value = (post.data.post && post.data.post.status)
 
   return (
     <DefaultSelect

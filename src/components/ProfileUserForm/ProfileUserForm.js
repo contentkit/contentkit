@@ -27,20 +27,19 @@ const UserForm = props => {
       <div className={props.classes.flex}>
         <Button
           className={props.classes.button}
-          variant='raised'
+          variant='contained'
           color='secondary'
-          onClick={() => props.generateToken({ id: props.id })}
+          onClick={() => props.generateToken()}
         >
           Generate Token
         </Button>
         <Button
           className={props.classes.button}
-          variant='raised'
+          variant='contained'
           color='primary'
           onClick={() => {
             props.updateUser({
               name: props.name,
-              id: props.id,
               email: props.email
             })
           }}

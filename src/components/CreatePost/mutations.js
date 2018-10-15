@@ -4,19 +4,16 @@ import fragments from '../../lib/fragments'
 
 export const CREATE_POST = gql`
   mutation createPost(
-    $userId: ID!,
-    $postMeta: PostpostMetaPostMeta!
-    $document: PostdocumentDocument!
+    $title: String!
     $projectId: ID!
   ) {
     createPost(
-      userId: $userId
-      document: $document
+      title: $title,
       projectId: $projectId
-      postMeta: $postMeta
     ) {
       id
       createdAt
+      publishedAt
       project {
         id
         name
@@ -28,14 +25,11 @@ export const CREATE_POST = gql`
           id
         }
       }
-      postMeta {
-        id
-        title
-        slug
-        status
-        date
-        excerpt
-      }
+      id
+      title
+      slug
+      status
+      excerpt
     }
   }
 `
@@ -66,8 +60,8 @@ export const USER_QUERY = gql`
 `
 
 export const CREATE_PROJECT = gql`
-  mutation ($name: String!, $userId: ID!) {
-    createProject(name: $name, userId: $userId) {
+  mutation ($name: String!) {
+    createProject(name: $name) {
       name
       id
     }

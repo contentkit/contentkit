@@ -42,11 +42,11 @@ class ProjectModalContent extends React.Component<{
         <div>
           <ProjectModalForm
             classes={this.props.classes}
-            Project={project.data && project.data.Project} /* eslint-disable-line */
+            Project={project.data && project.data.project} /* eslint-disable-line */
             onChange={this.props.onChange}
           />
           <ProjectIdInput
-            value={project.data && project.data.Project.id} /* eslint-disable-line */
+            value={project.data && project.data.project.id} /* eslint-disable-line */
             setRef={
               (ref) => { this.ref = ref }
             }

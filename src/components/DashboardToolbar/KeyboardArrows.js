@@ -1,6 +1,6 @@
 import React from 'react'
-import KeyboardArrowLeft from '@material-ui/icons/es/KeyboardArrowLeft'
-import KeyboardArrowRight from '@material-ui/icons/es/KeyboardArrowRight'
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import IconButton from '@material-ui/core/IconButton'
 
 // const KeyboardArrowLeft = () => <span />

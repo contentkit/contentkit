@@ -1,0 +1,156 @@
+scalar JSON
+
+enum UserRole {
+  ADMIN
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum OriginType {
+  DOMAIN
+  IP_ADDRESS
+}
+
+type Origin {
+  id: ID!
+  name: String!
+  project: Project!
+  originType: OriginType!
+}
+
+type User {
+  role: UserRole!
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  email: String
+  name: String
+  password: String
+  secret: String
+  token: String
+  projects: [Project]
+}
+
+type Post {
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  postMeta: PostMeta!
+  document: Document!
+  images: [Image]
+  project: Project
+  title: String
+  slug: String
+  excerpt: String
+  publishedAt: String
+  status: PostStatus
+}
+
+type Document {
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  raw: JSON
+  html: String
+  versions: [Version]
+}
+
+type Version {
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  raw: JSON!
+  document: Document!
+}
+
+type PostMeta {
+  id: ID!
+  createdAt: String!
+  date: String!
+  slug: String
+  title: String
+  status: PostStatus!
+  excerpt: String
+}
+
+type Image {
+  id: ID!
+  url: String!
+}
+
+type Query {
+  user: User
+  allUsers: [User]
+  post(id: ID!): Post
+  allPosts(limit: Int, offset: Int, query: String, projectId: ID): [Post]
+  document(id: ID!): Document
+  allDocuments: [Document]
+  version(id: ID!): Version
+  allVersions: [Version]
+  project(id: ID!): Project
+  allProjects: [Project]
+}
+
+input PostMetaInput {
+  id: ID!
+  title: String
+  excerpt: String
+  slug: String
+  date: String
+  status: PostStatus
+}
+
+input DocumentInput {
+  id: ID!
+  raw: JSON
+  html: String
+}
+
+type Project {
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  name: String!
+  posts: [Post]
+  origins: [Origin]
+}
+
+type Mutation {
+   signinUser(
+    email: String!
+    password: String!
+  ): User
+  createUser(
+    email: String!
+    password: String!
+  ): User
+  createPost(title: String!, projectId: ID!): Post
+  updateDocument(
+    id: ID!
+    raw: JSON!
+    html: String!
+  ): Document
+  deleteVersion(id: ID!): Version
+  updatePostMeta(
+    id: ID!
+    title: String!
+    publishedAt: String
+    status: PostStatus
+  ): Post
+  updatePostProject(id: ID!, projectId: ID!): Post
+  deletePost(id: ID!): Post
+  deleteDocument(id: ID!): Document
+  createDocument(raw: JSON!, postId: ID!): Document
+  createImage(postId: ID!, url: String!): Image
+  deleteImage(id: ID!): Image
+  createVersion(raw: JSON!, documentId: ID!): Version
+  createProject(name: String!): Project
+  generateToken: User
+  updateUser(email: String!, name: String!): User
+  createOrigin(name: String!, projectId: ID!, originType: OriginType): Origin
+  deleteOrigin(id: ID!): Origin
+  updateProject(id: ID!, name: String!): Project
+}

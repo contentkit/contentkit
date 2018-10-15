@@ -3,7 +3,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Menu from '@material-ui/core/Menu'
-// import Tooltip from '@material-ui/core/es/Tooltip'
 import { unstable_deferredUpdates as deferredUpdates } from 'react-dom'
 import ToolbarButton from '../PostEditorToolbarButton'
 import memoize from 'lodash.memoize'
@@ -119,8 +118,8 @@ class SnapshotsMenu extends React.Component<{
 
   getTooltipHtml = memoize(async (key) => {
     let [versionId] = fromKey(key)
-    let { post: { Post } } = this.props
-    let versions = Post && Post.document && Post.document.versions
+    let post = this.props.post
+    let versions = post && post.data.post.document && post.data.post.document.versions
     if (!versions) return ''
     let snapshot = versions.find(({ id }) => id === versionId)
     if (!snapshot) return ''

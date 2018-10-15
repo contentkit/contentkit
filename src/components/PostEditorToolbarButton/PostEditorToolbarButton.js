@@ -13,7 +13,7 @@ const PostEditorToolbarButton = withStyles(
   <Button
     className={classes.button}
     color='primary'
-    variant='raised'
+    variant='contained'
     {...rest}
   >
     {rest.children}

@@ -1,6 +1,6 @@
 import React from 'react'
 import EnhancedInput from '../EnhancedInput'
-import SearchIcon from '@material-ui/icons/es/Search'
+import SearchIcon from '@material-ui/icons/Search'
 
 import PropTypes from 'prop-types'
 

@@ -7,16 +7,17 @@ branches:
 install:
   - yarn --ignore-engines
 before_script:
-  - node_modules/.bin/up-env load --cwd up --aws-region us-east-1
-  - yarn --cwd up
+  - node_modules/.bin/up-env load --cwd server --aws-region us-east-1
+  - yarn --cwd server
 script: 
   - yarn add travis-up
+  - yarn run build
 before_deploy:
   - ls -lat
   - ./bin/up version
 deploy:
   provider: script
-  script: ./bin/up deploy staging --chdir="./up"
+  script: ./bin/up deploy staging --chdir="./server"
   skip_cleanup: true
 
 env:

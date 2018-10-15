@@ -50,13 +50,10 @@ class DashboardQueries extends React.Component<Props, State> {
 
   state = {
     variables: {
-      before: undefined,
-      after: undefined,
-      first: count,
+      limit: 10,
+      offset: 0,
       query: '',
-      id: this.props.auth.user && this.props.auth.user.id,
-      projectId: undefined,
-      skip: undefined
+      projectId: undefined
     }
   }
 
@@ -81,7 +78,6 @@ class DashboardQueries extends React.Component<Props, State> {
     const variables = {
       ...this.state.variables,
       projectId: this.props.selectedProject,
-      id: auth.user.id
     }
     return (
       <Query query={POSTS_QUERY} variables={variables}>
@@ -90,9 +86,7 @@ class DashboardQueries extends React.Component<Props, State> {
             return null
           }
           return (
-            <Query query={PROJECTS_QUERY}
-              variables={{ id: this.props.auth.user.id }}
-            >
+            <Query query={PROJECTS_QUERY}>
               {(projects) => {
                 if (!(projects.data && projects.data.allProjects)) {
                   return null

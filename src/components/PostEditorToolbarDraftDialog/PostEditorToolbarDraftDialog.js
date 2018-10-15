@@ -66,8 +66,8 @@ class DraftEditorDialog extends React.Component<Props, {}> {
   }
 
   handleCleanUp = () => {
-    const { Post } = this.props.post
-    const documentKey = Post.document.id
+    const { post } = this.props.post.data
+    const documentKey = post.document.id
     let [versionId, diffNumber] = fromKey(this.props.version.key)
     let key = toKey(documentKey, 'versions')
     let allDeltas = JSON.parse(
@@ -97,7 +97,7 @@ class DraftEditorDialog extends React.Component<Props, {}> {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleRestore} color='primary' variant='raised'>
+          <Button onClick={this.handleRestore} color='primary' variant='contained'>
             Restore
           </Button>
           <Button onClick={this.props.handleClose} color='primary' autoFocus>

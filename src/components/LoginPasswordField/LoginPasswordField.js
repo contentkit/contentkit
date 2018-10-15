@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import IconButton from '@material-ui/core/IconButton'
-import Visibility from '@material-ui/icons/es/Visibility'
-import VisibilityOff from '@material-ui/icons/es/VisibilityOff'
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import EnhancedInput from '../EnhancedInput'
 
 class PasswordField extends React.Component {

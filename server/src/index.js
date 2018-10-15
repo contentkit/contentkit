@@ -1,16 +1,9 @@
-if (!process.env.UP_STAGE) {
-  const { environment } = require('./up.json')
-  process.env.ROOT_TOKEN = environment.ROOT_TOKEN
-  process.env.BUCKET_NAME = environment.BUCKET_NAME
-  process.env.GRAPH_COOL_ENDPOINT = environment.GRAPH_COOL_ENDPOINT
-}
-
 const express = require('express')
 const path = require('path')
 const app = express()
 
 const {
-  PORT = 1234,
+  PORT = 5000,
   BUCKET_NAME
 } = process.env
 
@@ -21,6 +14,9 @@ const {
   allPostsQuery,
   checkAuth
 } = require('./api')
+const graphQLServer = require('./graphql')
+
+graphQLServer.applyMiddleware({ app })
 
 app.use(express.static(path.join(__dirname, 'icons')))
 

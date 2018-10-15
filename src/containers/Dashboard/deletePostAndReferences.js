@@ -1,5 +1,5 @@
 // @flow
-import { DELETE_DOCUMENT, DELETE_POST } from './mutations'
+import { DELETE_POST } from './mutations'
 import { POSTS_QUERY } from './queries'
 import gql from 'graphql-tag'
 
@@ -8,21 +8,21 @@ const deletePost = ({ client, id }) => client.mutate({
   variables: { id }
 })
 
-const deleteDocument = ({ client, post }) => client.mutate({
-  mutation: DELETE_DOCUMENT,
-  variables: { id: post.document.id }
-})
+// const deleteDocument = ({ client, post }) => client.mutate({
+//  mutation: DELETE_DOCUMENT,
+//  variables: { id: post.document.id }
+// })
 
-const deleteVersion = ({ client }) => ({ id }) => client.mutate({
-  mutation: gql`
-    mutation($id: ID!) {
-      deleteVersion(id: $id) {
-        id
-      }
-    }
-  `,
-  variables: { id }
-})
+// const deleteVersion = ({ client }) => ({ id }) => client.mutate({
+//  mutation: gql`
+//    mutation($id: ID!) {
+//      deleteVersion(id: $id) {
+//        id
+//      }
+//    }
+//  `,
+//  variables: { id }
+// })
 
 const updateCache = ({ client, posts, id }) => {
   const allPosts = [...posts.data.allPosts].filter(post =>
@@ -46,12 +46,12 @@ export const deletePostAndReferences = ({ posts, client }) => async ({ id }) => 
 
   if (post.document) {
     if (post.document.versions.length) {
-      await Promise.all(
-        post.document.versions.map(deleteVersion({ client }))
-      )
+      // await Promise.all(
+      //  post.document.versions.map(deleteVersion({ client }))
+      // )
     }
 
-    await deleteDocument({ client, post })
+    // await deleteDocument({ client, post })
   }
   return deletePost({ client, id })
 }

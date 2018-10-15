@@ -10,7 +10,7 @@ const withStylesProps = styles =>
     }
 
 const styles = props => theme => {
-  let color = (props.variant && props.variant === 'raised')
+  let color = (props.variant && props.variant === 'contained')
     ? theme.palette[props.color].main
     : '#ffffff'
   let contrastColor = theme.palette.getContrastText(color)

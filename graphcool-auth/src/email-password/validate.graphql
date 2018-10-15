@@ -1,8 +1,0 @@
-type ValidateDomainPayload {
-  valid: Boolean!
-  secret: String
-}
-
-extend type Mutation {
-  validateDomain(project: ID!, ipAddress: String!): ValidateDomainPayload
-}

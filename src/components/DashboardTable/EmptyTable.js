@@ -14,7 +14,7 @@ const styles = {
 const EmptyTable = () => (
   <DefaultPaper>
     <div style={styles}>
-      <Typography variant='title' gutterBottom>
+      <Typography variant='h3' gutterBottom>
         This project doesn't have any posts to display yet :(
       </Typography>
     </div>

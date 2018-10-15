@@ -18,8 +18,7 @@ export const removeVersions = (
   client: client,
   versionId: string
 ) => {
-  const { Post } = post
-  let allVersions = Post.document.versions
+  let allVersions = post.data.post.document.versions
   let documentVersion = allVersions.find(v => v.id === versionId)
   let toDelete = Seq(allVersions)
     .skipUntil(v => v.id === versionId)
@@ -41,12 +40,12 @@ export const removeVersions = (
   }
   client.cache.writeQuery({
     query: POST_QUERY,
-    variables: { id: Post.id },
+    variables: { id: post.data.post.id },
     data: {
-      Post: {
-        ...Post,
+      post: {
+        ...post.data.post,
         document: {
-          ...Post.document,
+          ...post.data.post.document,
           versions: Seq(allVersions)
             .takeWhile(v => v.id !== versionId)
             .toArray()

@@ -16,7 +16,7 @@ export const AUTHENTICATE_USER = gql`
     $email: String!
     $password: String!
   ) {
-    authenticateUser(
+    signinUser(
       email: $email,
       password: $password
     ) {
@@ -30,10 +30,10 @@ export const SIGNUP_USER = gql`
     $email: String!,
     $password: String!,
   ) {
-    signupUser(email: $email, password: $password) {
+    createUser(email: $email, password: $password) {
       id
     }
-    authenticateUser(
+    signinUser(
       email: $email,
       password: $password
     ) {

@@ -18,15 +18,13 @@ class EditorMutations extends React.Component<{}, {}> {
       updatePost: {
         __typename: 'Post',
         ...post.Post,
+        title: variables.title,
+        status: variables.status,
+        publishedAt: variables.publishedAt,
         document: {
           __typename: 'Document',
-          ...post.Post.document,
-          ...variables.document
-        },
-        postMeta: {
-          __typename: 'PostMeta',
-          ...post.Post.postMeta,
-          ...variables.postMeta
+          ...post.data.post.document,
+          ...(variables.document || {})
         }
       }
     },
@@ -35,13 +33,10 @@ class EditorMutations extends React.Component<{}, {}> {
         query: POST_QUERY,
         variables: post.variables,
         data: {
-          Post: {
-            ...post.Post,
+          post: {
+            ...post.data.post,
             document: {
               ...data.updatePost.document
-            },
-            postMeta: {
-              ...data.updatePost.postMeta
             }
           }
         }
@@ -60,18 +55,17 @@ class EditorMutations extends React.Component<{}, {}> {
       }
     },
     update: (store, { data: { createImage } }) => {
-      const Post = {...post.Post}
-      const images = [...Post.images]
+      const images = [...post.data.post.images]
       images.push(createImage)
-      Post.images = images
       store.writeQuery({
         query: POST_QUERY,
         data: {
-          Post
+          post: {
+            ...post.data.post,
+            images
+          }
         },
-        variables: {
-          id: this.props.auth.user.id
-        }
+        variables: post.variables
       })
     }
   })
@@ -86,16 +80,17 @@ class EditorMutations extends React.Component<{}, {}> {
       }
     },
     update: (store, { data: { deleteImage } }) => {
-      let images = [...post.Post.images]
+      let images = [...post.data.post.images]
       images = images.filter(img => img.id !== variables.id)
-      const Post = {...post.Post}
-      Post.images = images
       store.writeQuery({
         query: POST_QUERY,
-        data: { Post },
-        variables: {
-          id: this.props.auth.user.id
-        }
+        data: {
+          post: {
+            ...post.data.post,
+            images
+          }
+        },
+        variables: post.variables
       })
     }
   })
@@ -107,19 +102,19 @@ class EditorMutations extends React.Component<{}, {}> {
         __typename: 'Mutation',
         updateDocument: {
           __typename: 'Document',
-          ...post.Post.document,
+          ...post.data.post.document,
           ...variables
         }
       },
       update: (store, { data: { updateDocument } }) => {
         const data = {
           query: POST_QUERY,
-          variables: { id: post.Post.id },
+          variables: { id: post.data.post.id },
           data: {
-            Post: {
-              ...post.Post,
+            post: {
+              ...post.data.post,
               document: {
-                ...post.Post.document,
+                ...post.data.post.document,
                 ...updateDocument
               }
             }
@@ -132,12 +127,8 @@ class EditorMutations extends React.Component<{}, {}> {
   render () {
     return (
       <Query variables={{...this.props.match.params}} query={POST_QUERY}>
-        {({ data, ...rest }) => {
-          if (!(data && data.Post)) return null
-          const post = {
-            ...data,
-            ...rest
-          }
+        {(post) => {
+          if (post.loading) return null
           return (
             <Mutation mutation={UPDATE_POST}>
               {(updatePost, { data: updatePostData }) => {

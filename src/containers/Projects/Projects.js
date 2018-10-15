@@ -63,8 +63,7 @@ class Projects extends React.Component {
 
   createProject = () => {
     this.props.createProject.mutate({
-      name: haikunator.haikunate(),
-      userId: this.props.auth.user.id
+      name: haikunator.haikunate()
     })
   }
 
@@ -103,7 +102,7 @@ class Projects extends React.Component {
             />
           </div>
           <Button
-            variant='raised'
+            variant='contained'
             color='primary'
             onClick={this.createProject}
           >

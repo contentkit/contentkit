@@ -56,10 +56,10 @@ class Dashboard extends React.Component<Props, State> {
   }
 
   fetchRaw = async () => {
-    const { data: { Post } } = await this.props.client.query({
+    const { data: { post } } = await this.props.client.query({
       query: gql`
         query($id: ID!) {
-          Post(id: $id) {
+          post(id: $id) {
             document {
               raw
             }
@@ -68,7 +68,7 @@ class Dashboard extends React.Component<Props, State> {
       `,
       variables: { id: this.state.selectedPost.id }
     })
-    return Post.document.raw
+    return post.document.raw
   }
 
   handleEdit = async () => {
@@ -135,21 +135,14 @@ class Dashboard extends React.Component<Props, State> {
 
   handleNext = () => {
     let { posts: { data: { allPosts } } } = this.props
-    let after = allPosts[allPosts.length - 1].id
 
     return this.updateVariables({
-      after: after,
-      before: undefined,
-      first: 5,
-      last: undefined
+      offset: this.props.variables.offset + 10
     })
   }
 
   handlePrev = () => this.updateVariables({
-    before: this.props.posts.data.allPosts[0].id,
-    after: undefined,
-    last: 5,
-    first: undefined
+    offset: Math.max(0, this.props.variables.offset - 10)
   })
 
   renderToolbar = () => {

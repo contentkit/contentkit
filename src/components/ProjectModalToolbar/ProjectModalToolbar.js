@@ -22,7 +22,7 @@ const ProjectModalToolbar = (props: Props) => {
     <Toolbar disableGutters style={{justifyContent: 'space-between'}}>
       <Button
         className={classes.button}
-        variant='flat'
+        variant='text'
         color='secondary'
         onClick={handleDelete}>
           Delete
@@ -30,13 +30,13 @@ const ProjectModalToolbar = (props: Props) => {
       <div>
         <Button
           className={classes.button}
-          variant='raised'
+          variant='contained'
           color='secondary'
           onClick={() => handleClose()}>
             Close
         </Button>
         <Button
-          variant='raised'
+          variant='contained'
           color='primary'
           onClick={handleSave}>
             Save

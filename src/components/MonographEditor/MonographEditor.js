@@ -66,8 +66,8 @@ const MonographEditor = props => {
   } = props
   const toolbarProps = {
     config: awsConfig,
-    id: post.Post.id,
-    images: post.Post.images,
+    id: post.data.post.id,
+    images: post.data.post.images,
     deleteImage,
     createImage,
     insertImage

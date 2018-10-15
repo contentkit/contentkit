@@ -29,14 +29,11 @@ type createPostMutation = ({
 class CreatePostMutations extends React.Component<Props> {
   createPost = ({ mutate, ownProps }) =>
     ({
-      projectId,
-      userId,
-      ...rest
+      title,
+      projectId
     }: {
       projectId: string,
-      userId: string,
-      document: Document,
-      postMeta: PostMeta
+      title: string
     }) => {
       let { allProjects } = this.props.projects.data
       let project = allProjects.find(({ id }) => id === projectId)
@@ -47,7 +44,11 @@ class CreatePostMutations extends React.Component<Props> {
           __typename: 'Post',
           id: genKey(),
           createdAt: genDate(),
-          ...rest,
+          title: title,
+          slug: '',
+          publishedAt: genDate(),
+          excerpt: null,
+          status: 'DRAFT',
           project: {
             __typename: 'Project',
             ...(project || { id: projectId })
@@ -55,22 +56,16 @@ class CreatePostMutations extends React.Component<Props> {
           document: {
             __typename: 'Document',
             id: genKey(),
-            ...rest.document,
+            raw: null,
             versions: [{
               __typename: 'Version',
-              id: genKey(),
-              ...rest.document.versions[0]
+              id: genKey()
             }]
-          },
-          postMeta: {
-            __typename: 'PostMeta',
-            id: genKey(),
-            ...rest.postMeta
           }
         }
       }
       return mutate({
-        variables: { projectId, userId, ...rest },
+        variables: { projectId, title },
         optimisticResponse,
         update: (store, { data: { createPost } }) => {
           const allPosts = [...ownProps.posts.data.allPosts]

@@ -68,10 +68,10 @@ class CreatePostInput extends React.Component<Props, State> {
           className={classes.button}
           onClick={createPostMutation}
           color='primary'
-          variant='raised'
+          variant='contained'
           loading={createPost.loading}
         >
-          Create New Post
+          Create
         </ButtonWithSpinner>
       </InputAdornment>
     )

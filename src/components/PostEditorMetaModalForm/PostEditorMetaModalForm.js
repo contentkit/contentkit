@@ -11,11 +11,10 @@ import FormControl from '@material-ui/core/FormControl'
 
 const PostEditorMetaModalForm = (props) => {
   const { handleChange, post, projects, selectProject } = props
-  const { Post } = post
-  const title = (Post && Post.postMeta.title) || ''
-  const slug = (Post && Post.postMeta.slug) || ''
-  const excerpt = (Post && Post.postMeta.excerpt) || ''
-  const selectedProject = (Post && Post.project.id) || ''
+  const title = (post.data.post && post.data.post.title) || ''
+  const slug = (post.data.post && post.data.post.slug) || ''
+  const excerpt = (post.data.post && post.data.post.excerpt) || ''
+  const selectedProject = (post.data.post && post.data.post.project.id) || ''
   const allProjects = (projects && projects.data.allProjects) || []
   return (
     <div className='modal-content'>
@@ -59,12 +58,8 @@ PostEditorMetaModalForm.propTypes = {
 }
 
 export const PROJECTS_QUERY = gql`
-  query ($id: ID!) {
-    allProjects(filter: {
-      user: {
-        id: $id
-      }
-    }) {
+  query {
+    allProjects {
       id
       name
     }
@@ -74,7 +69,6 @@ export const PROJECTS_QUERY = gql`
 export default props => (
   <Query
     query={PROJECTS_QUERY}
-    variables={{ id: props.auth.user.id }}
   >
     {projects => {
       console.log(projects)

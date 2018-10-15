@@ -69,7 +69,9 @@ class BaseEditor extends React.Component<Props, State> {
   static propTypes = {
     history: PropTypes.object.isRequired,
     post: PropTypes.shape({
-      Post: postShape
+      data: PropTypes.shape({
+        post: postShape
+      })
     }),
     editorState: PropTypes.object,
     setEditorState: PropTypes.func,
@@ -89,11 +91,11 @@ class BaseEditor extends React.Component<Props, State> {
 
   adapter = {
     getVersions: () => {
-      const { post: { Post: { document } } } = this.props
+      const { post: { data: { post: { document } } } } = this.props
       return _getVersions(this.cacheKey, document.id)
     },
     restore: (diffKey) => {
-      const { post: { Post: { document } } } = this.props
+      const { post: { data: { post: { document } } } } = this.props
       return restoreContentState(document, diffKey)
     }
   }
@@ -120,7 +122,7 @@ class BaseEditor extends React.Component<Props, State> {
   sync = debounce(() => {
     const { diff, raw } = getRawDiff(
       this.props.editorState,
-      (this.props.post.Post.document)
+      (this.props.post.data.post.document)
     )
     if (!diff) return
     wrapWithLoadingState(
@@ -132,33 +134,31 @@ class BaseEditor extends React.Component<Props, State> {
 
   saveDocument = ({ raw }) => {
     const { editorState } = this.props
-    const { Post } = this.props.post
-    const { document } = Post
-    const excerpt = document.excerpt || raw.blocks[0].text || ''
+    const { data: { post } } = this.props.post
+    const { document } = post
     const html = convertToHtml(editorState)
     this.props.updateDocument.mutate({
       id: document.id,
       raw: raw,
-      excerpt: excerpt,
       html: html
     })
     this.cacheKey++
   }
 
   manualSave = () => {
-    this.sync.cancel()
+    // this.sync.cancel()
     const raw = toRaw(this.props.editorState)
-    wrapWithLoadingState(
-      (...args) => this.setState(...args),
-      () => this.saveDocument({ raw }),
-      () => this._hasUnmounted
-    )
+    // wrapWithLoadingState(
+    //  (...args) => this.setState(...args),
+    //  () => this.saveDocument({ raw }),
+    //  () => this._hasUnmounted
+    // )
+    this.saveDocument({ raw })
   }
 
   syncContent = async ({ diff, raw }) => {
     const { client, post } = this.props
-    const { Post } = post
-    const { document: postDocument } = Post
+    const { document: postDocument } = post.data.post
     let document = postDocument
     if (!postDocument) return
     if (!diff) return
@@ -167,7 +167,7 @@ class BaseEditor extends React.Component<Props, State> {
       shouldIncrement(postDocument)
     ) {
       let { data } = await createVersion({ client, post, raw })
-      document = data.Post.document
+      document = data.post.document
     }
     setDiff({ diff, document })
     this.saveDocument({ raw })
@@ -175,9 +175,9 @@ class BaseEditor extends React.Component<Props, State> {
 
   componentDidUpdate (prevProps, prevState) {
     const { post, hydrated } = this.props
-    if (!post.Post) return
+    if (!post.data.post) return
     if (!hydrated) return
-    this.sync()
+    // this.sync()
   }
 
   getHtml = (editorState = this.props.editorState) =>

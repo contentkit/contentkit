@@ -49,10 +49,10 @@ class DashboardTableRow extends React.Component<Props, {}> {
       post,
       selected
     } = this.props
-    const title = (post && post.postMeta.title) || ''
-    const status = (post && post.postMeta.status) || ''
+    const title = (post && post.title) || ''
+    const status = (post && post.status) || ''
     const projectName = (post && post.project.name) || ''
-    const date = (post && post.postMeta.date) || ''
+    const date = (post && post.publishedAt) || ''
     return (
       <TableRow
         onClick={this.handleClick}

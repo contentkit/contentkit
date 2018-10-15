@@ -11,12 +11,12 @@
     "prefix": "/assets/"
   },
   "environment": {
-    "ROOT_TOKEN": "${ssm:/contentkit/ROOT_TOKEN}",
     "BUCKET_NAME": "contentkit-dev-deploymentbucket-3hlcbqx9f9nl",
-    "GRAPH_COOL_ENDPOINT": "https://api.graph.cool/simple/v1/cje3vj5fd056b0157bl9808q7"
-  },
-  "hooks": {
-    "postdeploy": "../node_modules/.bin/up-env restore && yarn run clean"
+    "PGHOST": "${ssm:/contentkit/PGHOST}",
+    "PGUSER": "postgres",
+    "PGDATABASE": "contentkit",
+    "PGPASSWORD": "${ssm:/contentkit/PGPASSWORD}",
+    "PGPORT": "5432"
   },
   "stages": {
     "staging": {

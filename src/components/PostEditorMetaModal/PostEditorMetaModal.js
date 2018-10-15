@@ -23,15 +23,15 @@ type Props = {
   }
 }
 
-const getDate = ({ post: { Post }}) => {
-  let date = (Post && Post.postMeta.date)
+const getDate = ({ post: { data: { post } } }) => {
+  let date = post && post.publishedAt
   return date ? new Date(date) : new Date()
 }
 
 export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
   state = {
     dateInputState: createInitialState(getDate(this.props)),
-    projectId: this.props.post.Post.project.id
+    projectId: this.props.post.data.post.project.id
   }
 
   static propTypes = {
@@ -45,102 +45,67 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
 
   handlePostMetaUpdate = async (evt: any) => {
     let {
-      postMeta,
-      document
-    } = this.props.post.Post
+      document,
+      id,
+      title,
+      status,
+      publishedAt,
+      ...rest
+    } = this.props.post.data.post
     let date = convertToDate(this.state.dateInputState).toISOString()
     await this.props.client.mutate({
       mutation: gql`
         mutation(
           $id: ID!,
-          $title: String,
-          $slug: String,
-          $status: PostStatus!,
-          $date: DateTime
+          $title: String!,
+          $status: PostStatus,
+          $publishedAt: String
         ) {
           updatePostMeta (
             id: $id,
             title: $title,
-            slug: $slug,
             status: $status,
-            date: $date
+            publishedAt: $publishedAt
           ) {
             id
           }
         }
       `,
       variables: {
-        ...postMeta,
-        date: date
+        id,
+        title,
+        status,
+        publishedAt
       }
     })
-    if (this.state.projectId !== this.props.post.Post.project.id) {
-      await this.props.client.mutate({
-        mutation: gql`
-          mutation (
-            $postsPostId: ID!
-            $projectProjectId: ID!
-          ) {
-            removeFromProjectOnPost (
-              postsPostId: $postsPostId
-              projectProjectId: $projectProjectId
-            ) {
-              postsPost {
-                id
-              }
-              projectProject {
-                id
-              }
-            }
-          }
-        `,
-        variables: {
-          postsPostId: this.props.post.Post.id,
-          projectProjectId: this.state.projectId
-        }
-      })
 
-      await this.props.client.mutate({
-        mutation: gql`
-          mutation (
-            $projectProjectId: ID!
-            $postsPostId: ID!
-          ) {
-            addToProjectOnPost(
-              projectProjectId: $projectProjectId
-              postsPostId: $postsPostId
-            ) {
-              postsPost {
-                id
-              }
-              projectProject {
-                id
-              }
-            }
+    await this.props.client.mutate({
+      mutation: gql`
+        mutation($id: ID!, $projectId: ID!) {
+          updatePostProject(id: $id, projectId: $projectId) {
+            id
           }
-        `,
-        variables: {
-          projectProjectId: this.props.post.Post.project.id,
-          postsPostId: this.props.post.Post.id
         }
-      })
-    }
+      `,
+      variables: {
+        projectId: rest.project.id,
+        id: id
+      }
+    })
+
     this.props.onClose()
   }
 
   handleChange = (evt: any, key: string) => {
-    let { Post } = this.props.post
+    let { post } = this.props.post.data
     let value = evt.target.value
     this.props.client.writeQuery({
       query: POST_QUERY,
       variables: this.props.post.variables,
       data: {
-        Post: {
-          ...Post,
-          postMeta: {
-            ...Post.postMeta,
-            [key]: value
-          }
+        post: {
+          ...post,
+          [key]: value
         }
       }
     })
@@ -148,13 +113,13 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
 
   selectProject = (id) => {
     console.log(id)
-    let { Post } = this.props.post
+    let { post } = this.props.post.data
     this.props.client.writeQuery({
       query: POST_QUERY,
       variables: this.props.post.variables,
       data: {
-        Post: {
-          ...Post,
+        post: {
+          ...post,
           project: {
             __typename: 'Project',
             id
@@ -169,8 +134,8 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { post: { Post }, open, onClose } = this.props
-    if (!Post) return false
+    const { post: { data: { post } }, open, onClose } = this.props
+    if (!post) return false
     console.log(this.props)
     return (
       <div>
@@ -193,12 +158,12 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
           </DialogContent>
           <DialogActions>
             <Button
-              variant='flat'
+              variant='text'
               color='primary'
               onClick={onClose}
             >Cancel</Button>
             <Button
-              variant='raised'
+              variant='contained'
               color='primary'
               onClick={this.handlePostMetaUpdate}
             >Update</Button>

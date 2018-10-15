@@ -4,7 +4,7 @@ import '../css/style.scss'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import theme from '../lib/theme'
 import { Dashboard, Profile, SignIn, PostEditor, Projects } from './pages'
-
+import Button from '@material-ui/core/Button'
 import { unstable_deferredUpdates as deferredUpdates } from 'react-dom'
 import { store } from '../lib/redux'
 import { Provider } from 'react-redux'
@@ -58,6 +58,11 @@ class AppRouter extends React.Component {
       <Provider store={store}>
         <BrowserRouter basename={UP_STAGE}>
           <MuiThemeProvider theme={theme}>
+            {/*<Route
+              exact
+              path={'/'}
+              render={() => <Button>OK</Button>}
+            />*/}
             <Route
               exact
               path={'/'}

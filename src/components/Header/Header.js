@@ -81,9 +81,9 @@ class DefaultAppBar extends React.Component {
           {this.props.loading ? <LinearProgress /> : <div className={classes.spacer} />}
           <Toolbar className={classes.toolbar}>
             <Link to='/' className={classes.flex}>
-              <Typography variant='title' style={{color: '#fff'}}>
+              <div style={{color: '#fff'}}>
                 ContentKit
-              </Typography>
+              </div>
             </Link>
             <RightNav
               anchorEl={this.props.anchorEl}

@@ -17,8 +17,8 @@ type Props = {
   client: any,
   handleDelete: ({ id: string }) => void,
   handleClose: () => void,
-  deleteDomain: () => void,
-  createDomain: ({ projectId: string, name: string }) => void,
+  deleteOrigin: () => void,
+  createOrigin: ({ projectId: string, name: string }) => void,
   project: {
     variables: {},
     data: {
@@ -48,7 +48,7 @@ class ProjectModal extends React.Component<Props, State> {
     query: PROJECT_QUERY,
     data: {
       Project: {
-        ...this.props.project.data.Project,
+        ...this.props.project.data.project,
         ...data
       }
     },
@@ -56,12 +56,12 @@ class ProjectModal extends React.Component<Props, State> {
   })
 
   handleSave = () => {
-    this.props.updateProject.mutate(this.props.project.data.Project)
+    this.props.updateProject.mutate(this.props.project.data.project)
     this.props.handleClose()
   }
 
   handleDelete = () => {
-    const { id } = this.props.project.data.Project
+    const { id } = this.props.project.data.project
     this.props.handleDelete({ id })
     this.props.handleClose()
   }
@@ -80,8 +80,8 @@ class ProjectModal extends React.Component<Props, State> {
             handleDelete={this.handleDelete}
             handleClose={this.props.handleClose}
             project={this.props.project}
-            deleteDomain={this.props.deleteDomain}
-            createDomain={this.props.createDomain}
+            deleteOrigin={this.props.deleteOrigin}
+            createOrigin={this.props.createOrigin}
           />
         </div>
       </Modal>

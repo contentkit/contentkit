@@ -92,7 +92,7 @@ class LoginPage extends React.Component {
               className={classes.button}
               fullWidth
               loading={signin.loading}
-              variant='flat'
+              variant='text'
               color='secondary'
               id='submit-login'
               onClick={this.signin}
@@ -103,7 +103,7 @@ class LoginPage extends React.Component {
               className={classes.button}
               fullWidth
               loading={create.loading}
-              variant='raised'
+              variant='contained'
               color='primary'
               onClick={this.createAccount}
             >

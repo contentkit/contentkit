@@ -86,7 +86,7 @@ class ProjectsMutations extends React.Component<{}, {}> {
   render () {
     const { auth } = this.props
     return (
-      <Query query={PROJECTS_QUERY} variables={{ id: auth.user.id }}>
+      <Query query={PROJECTS_QUERY}>
         {(projects) => {
           const { data, loading } = projects
           if (loading) return false

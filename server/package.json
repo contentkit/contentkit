@@ -1,0 +1,22 @@
+{
+  "name": "contentkit-server",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node src"
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.1.0",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.3",
+    "graphql": "^14.0.2",
+    "graphql-request": "^1.6.0",
+    "graphql-type-json": "^0.2.1",
+    "jsonwebtoken": "^8.3.0",
+    "pg": "^7.5.0",
+    "postgres-tools": "^0.0.7",
+    "up-env": "^0.0.10"
+  },
+  "devDependencies": {}
+}

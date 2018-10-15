@@ -2,42 +2,46 @@
 import React from 'react'
 import {
   PROJECT_QUERY,
-  CREATE_DOMAIN,
-  DELETE_DOMAIN
+  DELETE_ORIGIN,
+  CREATE_ORIGIN
 } from './mutations'
 import { Mutation, Query } from 'react-apollo'
 import ProjectModal from './ProjectModal'
 import { genKey } from '../../lib/util'
 
 class ProjectModalMutations extends React.Component<{}, {}> {
-  deleteDomain = ({ mutate, project }) => variables => mutate({
+  deleteOrigin = ({ mutate, project }) => variables => mutate({
     variables,
     optimisticResponse: {
       __typename: 'Mutation',
-      deleteDomain: {
-        __typename: 'Domain',
+      deleteOrigin: {
+        __typename: 'Origin',
         id: variables.id
       }
     },
-    update: (store, { data: { deleteDomain } }) => {
-      const { id } = deleteDomain
-      const { data: { Project } } = project
-      let domains = [...Project.domains]
-      domains = domains.filter(domain => domain.id !== id)
+    update: (store, { data: { deleteOrigin } }) => {
+      const { id } = deleteOrigin
+      let origins = [...project.data.project.origins]
+      origins = origins.filter(origin => origin.id !== id)
       store.writeQuery({
         query: PROJECT_QUERY,
-        data: { Project: { ...Project, domains } },
-        variables: { id: Project.id }
+        data: {
+          project: {
+            ...project.data.project,
+            origins
+          }
+        },
+        variables: project.variables
       })
     }
   })
 
-  createDomain = ({ mutate, project }) => variables => mutate({
+  createOrigin = ({ mutate, project }) => variables => mutate({
     variables,
     optimisticResponse: {
       __typename: 'Mutation',
-      createDomain: {
-        __typename: 'Domain',
+      createOrigin: {
+        __typename: 'Origin',
         id: genKey(),
         name: variables.name,
         project: {
@@ -46,20 +50,19 @@ class ProjectModalMutations extends React.Component<{}, {}> {
         }
       }
     },
-    update: (store, { data: { createDomain } }) => {
-      const { data: { Project } } = project
-      let domains = [...Project.domains]
-      domains.push(createDomain)
+    update: (store, { data: { createOrigin } }) => {
+      let origins = [...project.data.project.origins]
+      origins.push(createOrigin)
       store.writeQuery({
         query: PROJECT_QUERY,
         data: {
           ...project.data,
-          Project: {
-            ...Project,
-            domains
+          project: {
+            ...project.data.project,
+            origins
           }
         },
-        variables: { id: Project.id }
+        variables: project.variables
       })
     }
   })
@@ -76,21 +79,21 @@ class ProjectModalMutations extends React.Component<{}, {}> {
         {(project) => {
           if (project.loading) return false
           return (
-            <Mutation mutation={CREATE_DOMAIN}>
-              {(createDomain, createDomainData) => {
+            <Mutation mutation={CREATE_ORIGIN}>
+              {(createOrigin, createOriginData) => {
                 return (
-                  <Mutation mutation={DELETE_DOMAIN}>
-                    {(deleteDomain, deleteDomainData) => {
+                  <Mutation mutation={DELETE_ORIGIN}>
+                    {(deleteOrigin, deleteOriginData) => {
                       return (
                         <ProjectModal
                           {...this.props}
                           project={project}
-                          createDomain={this.createDomain({
-                            mutate: createDomain,
+                          createOrigin={this.createOrigin({
+                            mutate: createOrigin,
                             project
                           })}
-                          deleteDomain={this.deleteDomain({
-                            mutate: deleteDomain,
+                          deleteOrigin={this.deleteOrigin({
+                            mutate: deleteOrigin,
                             project
                           })}
                         />

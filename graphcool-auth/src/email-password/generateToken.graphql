@@ -1,8 +1,0 @@
-type GenerateTokenPayload {
-  secret: String!
-  id: ID!
-}
-
-extend type Mutation {
-  generateToken(id: ID!): GenerateTokenPayload
-}

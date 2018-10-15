@@ -2,8 +2,8 @@
 import gql from 'graphql-tag'
 
 export const UPDATE_USER = gql`
-  mutation updateUser($name: String!, $id: ID!, $email: String!) {
-    updateUser(name: $name, id: $id, email: $email) {
+  mutation updateUser($name: String!, $email: String!) {
+    updateUser(name: $name, email: $email) {
       id
       email
       name
@@ -24,10 +24,8 @@ export const USER_QUERY = gql`
 `
 
 export const GENERATE_TOKEN = gql`
-  mutation ($id: ID!) {
-    generateToken (
-      id: $id
-    ) {
+  mutation {
+    generateToken {
       id
       secret
     }

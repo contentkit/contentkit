@@ -13,7 +13,7 @@ class LoginMutations extends React.Component {
     const client = this.props.client
     try {
       const resp = await mutate({ variables })
-      const { data: { authenticateUser: { token } } } = resp
+      const { data: { signinUser: { token } } } = resp
       if (resp.errors && resp.errors.length) {
         throw resp.errors
       }
@@ -33,7 +33,7 @@ class LoginMutations extends React.Component {
     if (resp.errors && resp.errors.length) {
       throw resp.errors
     }
-    const { data: { authenticateUser: { token } } } = resp
+    const { data: { signinUser: { token } } } = resp
     if (token) {
       window.localStorage.setItem('token', token)
       await client.resetStore()

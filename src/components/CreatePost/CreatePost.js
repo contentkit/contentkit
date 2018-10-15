@@ -43,47 +43,26 @@ class CreatePost extends React.Component {
   }
 
   createNewProject = () => {
-    const { user, createProject: { mutate } } = this.props
+    const { createProject: { mutate } } = this.props
     return mutate({
-      name: this.project,
-      userId: user
+      name: this.project
     }).then(({ data }) =>
       data.createProject
     )
   }
 
-  createPost = async ({ project, raw, title }) => {
-    const slug = slugify(title)
-    const { createPost, user } = this.props
-    return createPost.mutate({
-      userId: user,
+  createPost = async ({ project, title }) => {
+    return this.props.createPost.mutate({
       projectId: project.id,
-      document: {
-        raw: {
-          blocks: [{ text: '' }]
-        },
-        versions: [{
-          raw: {
-            blocks: [{ text: '' }]
-          }
-        }]
-      },
-      postMeta: {
-        title: title,
-        slug: slug,
-        status: 'DRAFT',
-        date: new Date().toISOString(),
-        excerpt: ''
-      }
+      title
     })
   }
 
   createNewPost = async () => {
-    const raw = { blocks: [{ text: '' }] }
     let project = this.state.project || await this.createNewProject()
     let title = '' + this.state.title.slice(0)
     this.setState({ title: '' }, () => {
-      this.createPost({ project, raw, title })
+      this.createPost({ project, title })
       this.reset()
     })
   }

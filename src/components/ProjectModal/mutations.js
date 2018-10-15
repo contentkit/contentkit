@@ -3,10 +3,10 @@ import gql from 'graphql-tag'
 
 export const PROJECT_QUERY = gql`
   query ($id: ID!) {
-    Project(id: $id) {
+    project(id: $id) {
       id
       name
-      domains {
+      origins {
         id
         name
       }
@@ -14,9 +14,9 @@ export const PROJECT_QUERY = gql`
   }
 `
 
-export const DELETE_DOMAIN = gql`
+export const DELETE_ORIGIN = gql`
   mutation ($id: ID!) {
-    deleteDomain (
+    deleteOrigin (
       id: $id
     ) {
       id
@@ -24,11 +24,12 @@ export const DELETE_DOMAIN = gql`
   }
 `
 
-export const CREATE_DOMAIN = gql`
+export const CREATE_ORIGIN = gql`
   mutation ($projectId: ID!, $name: String!) {
-    createDomain (
+    createOrigin (
       projectId: $projectId,
-      name: $name
+      name: $name,
+      originType: DOMAIN
     ) {
       name
       id

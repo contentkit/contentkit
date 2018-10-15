@@ -22,8 +22,8 @@ export const fromRaw = raw => EditorState.createWithContent(
   convertFromRaw(expand(raw))
 )
 
-export const hydrate = ({ editorState, post: { Post } }) => (
-  fromRaw(Post.document.raw || Post.json)
+export const hydrate = ({ editorState, post }) => (
+  fromRaw(post.data.post.document.raw)
 )
 
 export const update = ({
