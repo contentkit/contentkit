@@ -3,8 +3,8 @@
   "version": "0.0.21",
   "main": "dist",
   "scripts": {
-    "clean": "rimraf .cache && rimraf dist && rimraf up/dist && rimraf server/.cache",
-    "dev": "UP_STAGE='/staging' parcel src/index.html",
+    "clean": "rimraf server/dist && rimraf server/.cache",
+    "dev": "UP_STAGE='/staging' parcel src/index.html --out-dir server/dist",
     "build": "parcel build src/index.html --public-url /assets/ --out-dir server/dist",
     "lint": "standard \"src/**/*.js\" --verbose --fix | snazzy"
   },

@@ -7,8 +7,8 @@ branches:
 install:
   - yarn --ignore-engines
 before_script:
-  - node_modules/.bin/up-env load --cwd server --aws-region us-east-1
   - yarn --cwd server
+  - node_modules/.bin/up-env load --cwd server --aws-region us-east-1
 script: 
   - yarn add travis-up
   - yarn run build
