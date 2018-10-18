@@ -6,6 +6,9 @@ import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { withStyles } from '@material-ui/core/styles'
 import SearchInput from '../DashboardToolbarSearchInput'
+import gql from 'graphql-tag'
+import { EditorState, convertFromRaw } from 'draft-js'
+import { expand } from 'draft-js-compact'
 
 const styles = {
   toolbar: {
@@ -18,33 +21,73 @@ const styles = {
   }
 }
 
-class DashboardToolbar extends React.Component<{}> {
-  // shouldComponentUpdate (nextProps, nextState) {
-  //  return nextProps?.selected?.id !== this.props?.selected?.id
-  // }
+const fetchRaw = async ({ client, selected }) => {
+  const { data: { post } } = await client.query({
+    query: gql`
+      query($id: ID!) {
+        post(id: $id) {
+          document {
+            raw
+          }
+        }
+      }
+    `,
+    variables: { id: selected.id }
+  })
+  return post.document.raw
+}
 
+class DashboardToolbar extends React.Component<{}> {
+  state = { 
+    raw: undefined
+  }
   static propTypes = {
-    handleEdit: PropTypes.func,
-    handleDelete: PropTypes.func,
     handleChange: PropTypes.func,
     handleSearch: PropTypes.func,
-    open: PropTypes.bool,
     classes: PropTypes.object
   }
 
-  handleEdit = () => this.props.handleEdit(
-    this.props.selected.id
-  )
+  onMouseEnter = async () => {
+    if (this.state.raw) return
+    if (!this.props.selected) return
 
-  handleDelete = () => this.props.handleDelete(
-    this.props.selected.id
-  )
+    let raw = await fetchRaw({
+      client: this.props.client,
+      selected: this.props.selected
+    })
+    this.setState({ raw })
+  }
+
+  handleDelete = () => {
+    this.props.deletePost({
+      id: this.props.selected.id
+    })
+  }
+
+  handleEdit = async () => {
+    let raw = this.state.raw
+    if (!raw) {
+      raw = await fetchRaw({
+        client: this.props.client,
+        selected: this.props.selected
+      })
+    }
+    this.props.setEditorState(
+      EditorState.push(
+        this.props.editorState,
+        convertFromRaw(
+          expand(raw)
+        ),
+        'insert-fragment'
+      )
+    )
+    this.props.history.push('/posts/' + this.props.selected.id)
+  }
 
   render () {
     const {
       handleChange,
       handleSearch,
-      onMouseEnter,
       query,
       width,
       selected,
@@ -55,7 +98,7 @@ class DashboardToolbar extends React.Component<{}> {
       <React.Fragment>
         <IconButton
           onClick={this.handleEdit}
-          onMouseEnter={onMouseEnter}
+          onMouseEnter={this.onMouseEnter}
           disabled={!open}
         >
           <EditIcon />

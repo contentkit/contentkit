@@ -11,7 +11,7 @@ class Profile extends React.Component {
   static propTypes = {
     history: PropTypes.object,
     logged: PropTypes.bool,
-    auth: PropTypes.object
+    user: PropTypes.object
   }
 
   state = {
@@ -22,9 +22,8 @@ class Profile extends React.Component {
     this.props.client.writeQuery({
       query: USER_QUERY,
       data: {
-        ...this.props.auth.data,
         user: {
-          ...this.props.auth.data.user,
+          ...this.props.user.data.user,
           [key]: e.target.value
         }
       }
@@ -37,7 +36,7 @@ class Profile extends React.Component {
   }
 
   render () {
-    let { user } = this.props.auth
+    let { user } = this.props
     return (
       <Layout
         {...this.props}

@@ -54,7 +54,7 @@ class WhitelistDomains extends React.Component<{
   }
 
   static propTypes = {
-    creatOrigin: PropTypes.func.isRequired,
+    createOrigin: PropTypes.func.isRequired,
     deleteOrigin: PropTypes.func.isRequired,
     project: projectQueryShape
   }
@@ -83,8 +83,7 @@ class WhitelistDomains extends React.Component<{
 
   render () {
     const { project } = this.props
-    const domains = project && project.data && project.data.project.origins
-    if (!domains) return false
+    const domains = project?.data?.project?.origins || []
     return (
       <div>
         <WhitelistChipsWithStyles

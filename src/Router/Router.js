@@ -1,13 +1,14 @@
 import React from 'react'
 import { BrowserRouter, Route } from 'react-router-dom'
-import '../css/style.scss'
 import { MuiThemeProvider } from '@material-ui/core/styles'
+import { Provider } from 'react-redux'
+
+import '../css/style.scss'
 import theme from '../lib/theme'
 import { Dashboard, Profile, SignIn, PostEditor, Projects } from './pages'
-import Button from '@material-ui/core/Button'
-import { unstable_deferredUpdates as deferredUpdates } from 'react-dom'
 import { store } from '../lib/redux'
-import { Provider } from 'react-redux'
+import { USER_QUERY } from '../graphql/queries'
+import { Query, withApollo } from 'react-apollo'
 
 const UP_STAGE = process.env.UP_STAGE || undefined
 
@@ -18,9 +19,7 @@ class AppRouter extends React.Component {
     status: 'online'
   }
 
-  static defaultProps = {
-    auth: {}
-  }
+  static defaultProps = {}
 
   static displayName = 'AppRouter'
 
@@ -35,7 +34,7 @@ class AppRouter extends React.Component {
   }
 
   handleStatus = ({ type }) => {
-    deferredUpdates(() => this.setState(() => {
+    window.requestIdleCallback(() => this.setState(() => {
       if (type !== this.state.status) {
         return null
       }
@@ -44,12 +43,11 @@ class AppRouter extends React.Component {
   }
 
   render () {
-    const auth = this.props.auth
+    const { user } = this.props
     const { status } = this.state
     const props = {
-      logged: Boolean(auth && auth.user), /* eslint-disable-line */
-      loading: auth.loading,
-      auth: auth,
+      logged: Boolean(user?.data?.user), /* eslint-disable-line */
+      user: user,
       client: this.props.client,
       status
     }
@@ -58,11 +56,6 @@ class AppRouter extends React.Component {
       <Provider store={store}>
         <BrowserRouter basename={UP_STAGE}>
           <MuiThemeProvider theme={theme}>
-            {/*<Route
-              exact
-              path={'/'}
-              render={() => <Button>OK</Button>}
-            />*/}
             <Route
               exact
               path={'/'}
@@ -94,4 +87,10 @@ class AppRouter extends React.Component {
   }
 }
 
-export default AppRouter
+export default withApollo(props => (
+  <Query query={USER_QUERY}>
+    {(user) => {
+      return <AppRouter {...props} user={user} />
+    }}
+  </Query>
+))

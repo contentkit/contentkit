@@ -1,11 +1,9 @@
 // @flow
 import React from 'react'
 import Input from '@material-ui/core/Input'
-import InputLabel from '@material-ui/core/InputLabel'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import ClipboardIcon from '@material-ui/icons/FileCopy'
 import IconButton from '@material-ui/core/IconButton'
-import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
 import RefreshIcon from '@material-ui/icons/Autorenew'
 

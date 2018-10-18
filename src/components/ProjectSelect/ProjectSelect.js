@@ -14,6 +14,10 @@ class SelectProject extends React.Component<{
     selectProject: PropTypes.func.isRequired
   }
 
+  static defaultProps = {
+    allProjects: []
+  }
+
   onChange = ({ target }) => {
     this.props.selectProject(target.value)
   }

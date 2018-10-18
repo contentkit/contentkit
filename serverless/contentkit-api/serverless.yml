@@ -1,0 +1,38 @@
+service: contentkit-api
+
+custom:
+  stage: prod
+  debug: "*"
+  deploymentBucket: 'global-deployment-bucket'
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: ${self:custom.stage}
+  region: us-east-1
+  deploymentBucket:
+    name: ${self:custom.deploymentBucket}
+  environment:
+   
+  iamRoleStatements:
+    - Effect: "Allow"
+      Resource: "*"
+      Action:
+        - "s3:*"
+
+functions:
+  handler:
+    timeout: 300
+    handler: handler.handler
+    events:
+      - http:
+          path: project/{id}
+          cors: true
+      - http:
+          path: post/{slug}
+          cors: true
+resources:
+  Resources:
+    HandlerLogGroup:
+      Properties:
+        RetentionInDays: 7

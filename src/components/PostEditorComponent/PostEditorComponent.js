@@ -50,7 +50,7 @@ const styles = theme => ({
   }
 })
 
-const MonographEditor = props => {
+const PostEditorComponent = props => {
   const {
     classes,
     editorState,
@@ -97,4 +97,4 @@ const MonographEditor = props => {
   )
 }
 
-export default withStyles(styles)(MonographEditor)
+export default withStyles(styles)(PostEditorComponent)

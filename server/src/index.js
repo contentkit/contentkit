@@ -29,6 +29,16 @@ app.get('/static/:postId/:file', (req, res) => {
   res.redirect(url)
 })
 
+// app.use('/api/v1/*', (req, res, next) => {
+//  let token
+//  let auth = req.headers.authorization
+//  if (auth) {
+//    token = auth.replace(/[B|b]earer\s?/, '')
+//    console.log(token)
+//  }
+//  return next()
+// })
+
 app.get('/api/v1/presigned/:id', (req, res) => {
   let contentType = decodeURIComponent(req.query.type)
   let id = decodeURIComponent(req.params.id)

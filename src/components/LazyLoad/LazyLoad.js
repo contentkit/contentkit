@@ -2,13 +2,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Spinner from '../Spinner'
-import { unstable_deferredUpdates as deferredUpdates } from 'react-dom'
 import debounce from 'lodash.debounce'
 import { wrapWithLoadingState } from '../../lib/util'
 import type { Posts, Projects } from '../../types'
 
 type Props = {
-  posts: Posts,
   projects: Projects,
   render: ({ loading: boolean }) => React.Node
 }
@@ -17,7 +15,7 @@ class LazyLoad extends React.Component<Props, { loading: boolean }> {
   timerId: TimeoutID
 
   static propTypes = {
-    posts: PropTypes.object,
+    feed: PropTypes.object,
     projects: PropTypes.object,
     render: PropTypes.func
   }
@@ -40,27 +38,33 @@ class LazyLoad extends React.Component<Props, { loading: boolean }> {
   }
 
   load = () => {
-    const { posts } = this.props
-    const { variables, data: { allPosts } } = posts
-    let after = allPosts[allPosts.length - 1].id
-    return posts.fetchMore({
+    const { feed } = this.props
+    const { variables } = feed
+    let { posts, count } = feed.data.feed
+
+    if (posts.length + 20 > count) {
+      return
+    }
+    return feed.fetchMore({
       variables: {
         ...variables,
-        first: 3,
-        after: after
+        offset: variables.offset + 10
       },
       updateQuery: (previousResult, nextResult) => {
         const { fetchMoreResult } = nextResult
         return {
           ...previousResult,
-          allPosts: [...previousResult.allPosts, ...fetchMoreResult.allPosts]
+          feed: {
+            ...previousResult.feed,
+            posts: [...previousResult.feed.posts, ...fetchMoreResult.feed.posts]
+          }
         }
       }
     }).then(() => this.reset())
   }
 
   fetchMore = () => wrapWithLoadingState(
-    (state) => deferredUpdates(() => this.setState(state)),
+    (state) => window.requestIdleCallback(() => this.setState(state)),
     () => this.load(),
     () => this._hasUnmounted
   )

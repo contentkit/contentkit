@@ -52,24 +52,24 @@ class CreatePostInput extends React.Component<Props, State> {
 
   shouldComponentUpdate (nextProps, nextState) {
     return nextProps.value !== this.props.value ||
-    nextProps.createPost.loading !== this.props.createPost.loading ||
+    nextProps.loading !== this.props.loading ||
     nextState.value !== this.state.value
   }
 
   renderAdornment = () => {
     const {
       classes,
-      createPostMutation,
-      createPost
+      createPost,
+      loading
     } = this.props
     return (
       <InputAdornment position='end' className={classes.adornment}>
         <ButtonWithSpinner
           className={classes.button}
-          onClick={createPostMutation}
+          onClick={createPost}
           color='primary'
           variant='contained'
-          loading={createPost.loading}
+          loading={loading}
         >
           Create
         </ButtonWithSpinner>

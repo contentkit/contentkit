@@ -1,2 +1,2 @@
 // @flow
-export { default } from './ProfileMutations'
+export { default } from './ProfileWithData'

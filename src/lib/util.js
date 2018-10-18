@@ -1,5 +1,4 @@
 import format from 'date-fns/format'
-import { unstable_deferredUpdates as deferredUpdates } from 'react-dom'
 import Haikunator from 'haikunator'
 
 const seenKeys = {}
@@ -36,7 +35,7 @@ export const wrapWithLoadingState = async (update, asyncFn, isUnmounted) => {
   })
   if (!shouldProceed) return
   await asyncFn()
-  deferredUpdates(
+  window.requestIdleCallback(
     () => update(prevState => {
       if (!prevState.loading || isUnmounted()) {
         console.warn('Could not update loading state to false')

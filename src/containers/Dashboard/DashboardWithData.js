@@ -1,9 +1,10 @@
 // @flow
 import React from 'react'
-import { unstable_deferredUpdates as deferredUpdates } from 'react-dom'
 import { Query } from 'react-apollo'
-import { POSTS_QUERY, PROJECTS_QUERY } from './queries'
-import { deletePostAndReferences } from './deletePostAndReferences'
+
+import { FEED_QUERY, PROJECTS_QUERY } from '../../graphql/queries'
+import { DELETE_POST } from '../../graphql/mutations'
+
 import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
 import { selectProject, setEditorState } from '../../lib/redux'
@@ -11,14 +12,7 @@ import PropTypes from 'prop-types'
 import type { SetEditorState, Project, Client } from '../../types'
 import type { EditorState } from 'draft-js'
 
-let count = Math.round((window.innerHeight - 230) / 50)
-
 type Props = {
-  auth: {
-    user: {
-      id: string
-    }
-  },
   setEditorState: SetEditorState,
   selectedProject: Project,
   client: Client,
@@ -38,9 +32,26 @@ type State = {
   }
 }
 
-class DashboardQueries extends React.Component<Props, State> {
+const deletePost = feed => ({ id }) => {
+  feed.client.mutate({
+    mutation: DELETE_POST,
+    variables: { id }
+  })
+  return feed.client.cache.writeQuery({
+    query: FEED_QUERY,
+    data: {
+      feed: {
+        ...feed.data.feed,
+        posts: feed.data.feed.posts.filter((post) => post.id !== id)
+      }
+    },
+    variables: feed.variables
+  })
+}
+
+class DashboardWithData extends React.Component<Props, State> {
   static propTypes = {
-    auth: PropTypes.object,
+    user: PropTypes.object,
     selectedProject: PropTypes.string,
     setEditorState: PropTypes.func,
     selectProject: PropTypes.func,
@@ -62,7 +73,7 @@ class DashboardQueries extends React.Component<Props, State> {
   }, 300)
 
   updateVariables = variables => {
-    deferredUpdates(() =>
+    window.requestIdleCallback(() =>
       this.setState(prevState => ({
         variables: {
           ...prevState.variables,
@@ -73,24 +84,23 @@ class DashboardQueries extends React.Component<Props, State> {
   }
 
   render () {
-    const { auth } = this.props
-    if (!(auth && auth.user)) return null
+    const { user } = this.props
     const variables = {
       ...this.state.variables,
-      projectId: this.props.selectedProject,
+      projectId: this.props.selectedProject
     }
     return (
-      <Query query={POSTS_QUERY} variables={variables}>
-        {(posts) => {
-          if (!(posts.data && posts.data.allPosts)) {
-            return null
-          }
+      <Query query={FEED_QUERY} variables={variables}>
+        {(feed) => {
+          //if (!(feed.data && feed.data.feed)) {
+          //  return null
+          //}
           return (
             <Query query={PROJECTS_QUERY}>
               {(projects) => {
-                if (!(projects.data && projects.data.allProjects)) {
-                  return null
-                }
+                //if (!(projects.data && projects.data.allProjects)) {
+                // return null
+                //}
                 return this.props.render({
                   editorState: this.props.editorState,
                   setEditorState: this.props.setEditorState,
@@ -99,12 +109,9 @@ class DashboardQueries extends React.Component<Props, State> {
                   updateVariables: this.updateVariables,
                   variables: variables,
                   handleSearch: this.handleSearch,
-                  posts: posts,
+                  feed: feed,
                   projects: projects,
-                  deletePost: deletePostAndReferences({
-                    posts,
-                    client: this.props.client
-                  })
+                  deletePost: deletePost(feed)
                 })
               }}
             </Query>
@@ -121,4 +128,4 @@ export default connect(
     setEditorState: (editorState: EditorState) => dispatch(setEditorState(editorState): any),
     selectProject: (project: Project) => dispatch(selectProject(project): any)
   })
-)(DashboardQueries)
+)(DashboardWithData)

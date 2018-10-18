@@ -1,2 +1,2 @@
 // @flow
-export { default } from './LoginMutations'
+export { default } from './LoginWithData'

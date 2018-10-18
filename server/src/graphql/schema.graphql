@@ -85,6 +85,7 @@ type Query {
   user: User
   allUsers: [User]
   post(id: ID!): Post
+  feed(limit: Int, offset: Int, query: String, projectId: ID): Feed
   allPosts(limit: Int, offset: Int, query: String, projectId: ID): [Post]
   document(id: ID!): Document
   allDocuments: [Document]
@@ -118,6 +119,11 @@ type Project {
   origins: [Origin]
 }
 
+type Feed {
+  posts: [Post]
+  count: Int!
+}
+
 type Mutation {
    signinUser(
     email: String!
@@ -139,6 +145,13 @@ type Mutation {
     title: String!
     publishedAt: String
     status: PostStatus
+  ): Post
+  updatePost(
+    id: ID!
+    title: String
+    publishedAt: String
+    status: PostStatus
+    projectId: ID
   ): Post
   updatePostProject(id: ID!, projectId: ID!): Post
   deletePost(id: ID!): Post

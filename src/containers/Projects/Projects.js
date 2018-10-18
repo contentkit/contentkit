@@ -5,6 +5,7 @@ import ProjectModal from '../../components/ProjectModal'
 import Button from '@material-ui/core/Button'
 import Haikunator from 'haikunator'
 import ProjectsList from '../../components/ProjectsList'
+import { withStyles } from '@material-ui/core/styles'
 
 const haikunator = new Haikunator()
 
@@ -70,7 +71,8 @@ class Projects extends React.Component {
   render () {
     const {
       createProject,
-      projects
+      projects,
+      classes
     } = this.props
     return (
       <Layout
@@ -85,13 +87,8 @@ class Projects extends React.Component {
           handleClose={this.handleClose}
           handleDelete={this.handleDelete}
         />
-        <div style={{
-          width: '660px',
-          margin: '2em auto'
-        }}>
-          <div style={{
-            margin: '2em 0'
-          }}>
+        <div className={classes.container}>
+          <div className={classes.inner}>
             <ProjectsList
               allProjects={projects.data && projects.data.allProjects}
               handleClick={this.handleClick}
@@ -114,4 +111,14 @@ class Projects extends React.Component {
   }
 }
 
-export default Projects
+const styles = theme => ({
+  container: {
+    width: '660px',
+    margin: '2em auto'
+  },
+  inner: {
+    margin: '2em 0'
+  }
+})
+
+export default withStyles(styles)(Projects)

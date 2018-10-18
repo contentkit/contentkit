@@ -20,13 +20,13 @@ export const LoadingOverlay = ({ loading, children }) => (
     <div className={loading ? '' : 'fadeIn'}>
       {children}
     </div>
-    <div style={{...styles}} className={loading ? '' : 'fadeOut'}>
+    <div style={{ ...styles }} className={loading ? '' : 'fadeOut'}>
       <Spinner />
     </div>
   </React.Fragment>
 )
 
-const shouldRedirect = props => !(props.logged || props.loading || /login/.test(window.location.pathname))
+const shouldRedirect = props => !(props.user?.loading || props.user?.data?.user || /login/.test(window.location.pathname))
 
 const withRedirect = Component => props =>
   shouldRedirect(props)
@@ -50,9 +50,3 @@ export const Projects = withRedirect(withAsyncComponent(() => import('../contain
 export const Profile = withRedirect(withAsyncComponent(
   () => import('../containers/Profile')
 ))
-
-// export const Dashboard = _Dashboard |> withAsyncComponent |> withRedirect
-// export const SignIn = _SignIn |> withAsyncComponent |> withRedirect
-// export const PostEditor = _PostEditor |> withAsyncComponent |> withRedirect
-// export const Projects = _Projects |> withAsyncComponent |> withRedirect
-// export const Playground = _Playground |> withAsyncComponent |> withRedirect

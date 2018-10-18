@@ -1,8 +1,16 @@
 // @flow
 import React from 'react'
 import { Mutation } from 'react-apollo'
-import { CREATE_POST, CREATE_PROJECT, UPDATE_POST } from './mutations'
-import { POSTS_QUERY, PROJECTS_QUERY } from '../../containers/Dashboard/queries'
+import {
+  CREATE_POST,
+  CREATE_PROJECT,
+  UPDATE_POST
+} from '../../graphql/mutations'
+import {
+  FEED_QUERY,
+  PROJECTS_QUERY
+} from '../../graphql/queries'
+
 import CreatePost from './CreatePost'
 import { genKey, genDate } from '../../lib/util'
 import type { Document, PostMeta, ProjectsQuery, PostsQuery } from '../../types'
@@ -20,66 +28,46 @@ type createPostVariables = {
   document: Document
 }
 
-type createPostMutation = ({
-  variables: createPostVariables,
-  optimisticResponse: any,
-  update: (store: { writeQuery: (data: any) => void }, { data: { createPost: { Post: Post } } }) => any
-}) => Promise<any>
-
-class CreatePostMutations extends React.Component<Props> {
-  createPost = ({ mutate, ownProps }) =>
-    ({
-      title,
-      projectId
-    }: {
-      projectId: string,
-      title: string
-    }) => {
-      let { allProjects } = this.props.projects.data
-      let project = allProjects.find(({ id }) => id === projectId)
-
-      const optimisticResponse = {
-        __typename: 'Mutation',
-        createPost: {
-          __typename: 'Post',
-          id: genKey(),
-          createdAt: genDate(),
-          title: title,
-          slug: '',
-          publishedAt: genDate(),
-          excerpt: null,
-          status: 'DRAFT',
-          project: {
-            __typename: 'Project',
-            ...(project || { id: projectId })
-          },
-          document: {
-            __typename: 'Document',
-            id: genKey(),
-            raw: null,
-            versions: [{
-              __typename: 'Version',
-              id: genKey()
-            }]
-          }
+const createPost = ({ mutate, ownProps }) => ({ title, projectId }) => {
+  return mutate({
+    variables: { projectId, title },
+    optimisticResponse: {
+      __typename: 'Mutation',
+      createPost: {
+        __typename: 'Post',
+        id: genKey(),
+        createdAt: genDate(),
+        title: title,
+        slug: '',
+        publishedAt: genDate(),
+        excerpt: null,
+        status: 'DRAFT',
+        project: {
+          __typename: 'Project',
+          id: projectId,
+          name: ''
         }
       }
-      return mutate({
-        variables: { projectId, title },
-        optimisticResponse,
-        update: (store, { data: { createPost } }) => {
-          const allPosts = [...ownProps.posts.data.allPosts]
-          allPosts.unshift(createPost)
-          let data = {
-            query: POSTS_QUERY,
-            data: { allPosts },
-            variables: ownProps.posts.variables
+    },
+    update: (store, { data: { createPost } }) => {
+      const posts = [...ownProps.feed.data.feed.posts]
+      posts.unshift(createPost)
+      store.writeQuery({
+        query: FEED_QUERY,
+        data: {
+          ...ownProps.feed.data,
+          feed: {
+            ...ownProps.feed.data.feed,
+            posts: posts
           }
-          store.writeQuery(data)
-        }
+        },
+        variables: ownProps.feed.variables
       })
     }
+  })
+}
 
+class CreatePostWithData extends React.Component<Props> {
   createProject = ({ mutate }) => (variables: { name: string }) => {
     return mutate({
       variables: variables,
@@ -109,7 +97,7 @@ class CreatePostMutations extends React.Component<Props> {
   render () {
     return (
       <Mutation mutation={CREATE_POST}>
-        {(createPost, createPostData) => {
+        {(createPostMutation, createPostData) => {
           return (
             <Mutation mutation={CREATE_PROJECT}>
               {(createProject, createProjectData) => {
@@ -120,8 +108,8 @@ class CreatePostMutations extends React.Component<Props> {
                         <CreatePost
                           {...this.props}
                           createPost={{
-                            mutate: this.createPost({
-                              mutate: createPost,
+                            mutate: createPost({
+                              mutate: createPostMutation,
                               ownProps: this.props
                             }),
                             ...createPostData
@@ -154,4 +142,4 @@ class CreatePostMutations extends React.Component<Props> {
   }
 }
 
-export default CreatePostMutations
+export default CreatePostWithData

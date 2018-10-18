@@ -1,6 +1,6 @@
 // @flow
 
-import EditorMutations from './EditorMutations'
+import PostEditorWithData from './PostEditorWithData'
 import { withRouter } from 'react-router-dom'
 
-export default withRouter(EditorMutations)
+export default withRouter(PostEditorWithData)

@@ -4,22 +4,15 @@ import ContentPreviewDialog from '../PostEditorContentPreviewDialog'
 import InspectorDialog from '../PostEditorInspectorDialog'
 import PostMetaModal from '../PostEditorMetaModal'
 import { convertToRaw, exportHtml } from 'monograph/lib/util'
+import PostEditorHistoryModal from '../PostEditorHistoryModal'
 
 type Props = {
   editorState: any,
   open: bool,
   html: string,
-  auth: any,
+  user: any,
   setDialogState: (any) => void
 }
-
-// const InspectorDialog = withAsync()(
-//  () => import('../PostEditorInspectorDialog')
-// )
-// const ContentPreviewDialog = withAsync()(() => import('../PostEditorContentPreviewDialog'))
-
-// const ContentPreviewDialog = asyncComponent(() => import('../PostEditorContentPreviewDialog'))
-// const PostMetaModal = asyncComponent(() => import('../PostEditorMetaModal'))
 
 const PostEditorModals = (props: Props) => {
   const {
@@ -27,12 +20,22 @@ const PostEditorModals = (props: Props) => {
     open,
     html,
     setDialogState,
-    auth,
+    user,
     ...rest
   } = props
+  console.log(props)
+
   if (!open) return false
   return (
     <React.Fragment>
+      <PostEditorHistoryModal
+        open={open === 'history'}
+        onClose={() => setDialogState(undefined)}
+        post={props.post}
+        saveDocument={props.saveDocument}
+        editorState={props.editorState}
+        setEditorState={props.setEditorState}
+      />
       <ContentPreviewDialog
         open={open === 'preview'}
         onClose={() => setDialogState(undefined)}
@@ -46,8 +49,8 @@ const PostEditorModals = (props: Props) => {
         convertToRaw={convertToRaw}
       />
       <PostMetaModal
-        auth={auth}
         open={open === 'postmeta'}
+        user={user}
         onClose={() => setDialogState(undefined)}
         client={rest.client}
         updatePost={rest.updatePost}

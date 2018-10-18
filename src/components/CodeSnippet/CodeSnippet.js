@@ -12,19 +12,20 @@ const highlight = code =>
 
 class CodeSnippet extends React.Component {
   render () {
-    let projectId = this.props.auth.user.projects[0].id
-    let token = this.props.auth.user.secret
+    let user = this.props.user?.data?.user
+    let projects = user?.projects
+    let projectId = projects.length && projects[0].id
     const code = highlight(`
     fetch('https://contentkit.co/api/v1/${projectId}', {
       headers: {
-        Authorization: 'Bearer ' + ${token},
+        Authorization: 'Bearer ' + ${user.secret},
         Accept: 'application/json'
       }
     })
       .then(resp => resp.json())
     `)
     return (
-      <pre style={{overflow: 'hidden'}}>
+      <pre style={{ overflow: 'hidden' }}>
         <code dangerouslySetInnerHTML={{ __html: code }} />
       </pre>
     )

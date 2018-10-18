@@ -46,15 +46,37 @@ class DashboardTable extends React.Component<Props, {}> {
     selectedPost: PropTypes.object
   }
 
+  renderRows = () => {
+    let { feed, selectedPost, handlePostSelect } = this.props
+    let allPosts = feed?.data?.feed?.posts || []
+    if (!allPosts.length) {
+      return (
+        <React.Fragment>
+          <EmptyTableRow />
+          <EmptyTableRow />
+          <EmptyTableRow />
+          <EmptyTableRow />
+          <EmptyTableRow />
+        </React.Fragment>
+      )
+    }
+    return allPosts.map(post => (
+      <DashboardTableRow
+        selected={selectedPost?.id === post.id}
+        post={post}
+        key={post.id}
+        loading={feed?.loading}
+        handlePostSelect={handlePostSelect}
+      />
+    ))
+  }
+
   render () {
     const {
-      handlePostSelect,
-      selectedPost,
-      posts
+      feed
     } = this.props
-    const allPosts = (posts.data && posts.data.allPosts) || []
-    const postsLoading = posts.loading || !allPosts.length
-    if (!postsLoading && !allPosts.length) {
+    let allPosts = feed?.data?.feed?.posts
+    if (!feed?.loading && !allPosts.length) {
       return (
         <EmptyTable />
       )
@@ -72,17 +94,8 @@ class DashboardTable extends React.Component<Props, {}> {
                 <TableCell>Date</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>{
-              allPosts.map((post, i) => (
-                <DashboardTableRow
-                  selected={(selectedPost && selectedPost.id) === post.id}
-                  post={post}
-                  key={`${post.id}-${i}`}
-                  id={`${post.id}-${i}`}
-                  loading={postsLoading} /* eslint-disable-line */
-                  handlePostSelect={handlePostSelect}
-                />
-              ))}
+            <TableBody>
+              {this.renderRows()}
               {loading && <EmptyTableRow edge />}
             </TableBody>
           </Table>

@@ -1,4 +1,3 @@
-const g = require('graphql-request')
 const client = require('postgres-tools')
 const dns = require('dns')
 
@@ -8,16 +7,6 @@ const lookup = (ipAddress) => new Promise((resolve, reject) => {
     else resolve(hostnames || [])
   })
 })
-
-// function makeRequest (token, query) {
-//  const client = new g.GraphQLClient(GRAPH_COOL_ENDPOINT, {
-//    headers: {
-//      Authorization: `Bearer ${token}`
-//    }
-//  })
-//  return client.request(query)
-//    .then(data => data.Project)
-// }
 
 function postQuery (token, projectId, slug) {
   return client.query(`
@@ -29,22 +18,15 @@ function postQuery (token, projectId, slug) {
       JSON_BUILD_OBJECT(
         'email', users.email,
         'name', users.name
-      ) as user,
-      JSON_BUILD_OBJECT(
-        'url', images.url,
-        'id', images.id
-      ) as images
+      ) as user
     FROM
       posts
     JOIN
       documents ON (documents.post_id = posts.id)
     JOIN
       users ON (users.id = posts.user_id)
-    JOIN
-      images ON (images.post_id = posts.id)
     WHERE project_id = '${projectId}'
     AND slug = '${slug}'
-    ORDER BY created_at DESC
   `, { head: true })
 }
 
@@ -55,17 +37,11 @@ function allPostsQuery (token, projectId) {
       JSON_BUILD_OBJECT(
         'email', users.email,
         'name', users.name
-      ) as user,
-      JSON_BUILD_OBJECT(
-        'url', images.url,
-        'id', images.id
-      ) as images
+      ) as user
     FROM
       posts
     JOIN
       users ON (users.id = posts.user_id)
-    JOIN
-      images ON (images.post_id = posts.id)
     WHERE project_id = '${projectId}'
     ORDER BY created_at DESC
   `)

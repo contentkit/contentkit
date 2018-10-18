@@ -6,18 +6,16 @@ import NewProjectSnackbar from '../CreatePostSnackbar'
 import FormControl from '@material-ui/core/FormControl'
 import { withStyles } from '@material-ui/core/styles'
 import CreatePostInput from '../CreatePostInput'
-import { slugify, genProjectName } from '../../lib/util'
+import { genProjectName } from '../../lib/util'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 
 class CreatePost extends React.Component {
   static propTypes = {
-    user: PropTypes.string,
     classes: PropTypes.object,
     selectedProject: PropTypes.string,
     selectProject: PropTypes.func.isRequired,
-    projects: PropTypes.object,
-    posts: PropTypes.object
+    projects: PropTypes.object
   }
 
   static getDerivedStateFromProps (nextProps, nextState) {
@@ -78,9 +76,9 @@ class CreatePost extends React.Component {
   render () {
     const {
       classes,
-      selectedProject,
       projects,
       selectProject,
+      selectedProject,
       createPost,
       createProject
     } = this.props
@@ -90,24 +88,24 @@ class CreatePost extends React.Component {
           <Grid item xs={8}>
             <FormControl margin={'none'} fullWidth className={classes.formControl}>
               <CreatePostInput
-                createPost={createPost}
-                createPostMutation={this.createNewPost}
+                createPost={this.createNewPost}
                 value={this.state.title}
                 handleChange={this.handleChange}
+                loading={createPost.loading}
               />
             </FormControl>
           </Grid>
           <Grid item xs={4}>
             <ProjectSelect
-              selectedProject={this.props.selectedProject}
-              allProjects={projects.data && projects.data.allProjects}
+              selectedProject={selectedProject}
+              allProjects={projects?.data?.allProjects}
               selectProject={selectProject}
             />
           </Grid>
         </Grid>
         <NewProjectSnackbar
           open={createProject.loading}
-          newProjectName={createProject.data && createProject.data.createProject.name}
+          newProjectName={createProject?.data?.createProject?.name}
         />
       </Paper>
     )

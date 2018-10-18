@@ -3,7 +3,7 @@ import React from 'react'
 import Modal from '@material-ui/core/Modal'
 import {
   PROJECT_QUERY
-} from './mutations'
+} from '../../graphql/queries'
 import ProjectModalContent from '../ProjectModalContent'
 import PropTypes from 'prop-types'
 import type { Project } from '../../types'

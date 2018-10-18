@@ -31,11 +31,27 @@ export const documentShape = PropTypes.shape({
 
 export const postShape = PropTypes.shape({
   id: PropTypes.string,
-  postMeta: postMetaShape,
+  title: PropTypes.string,
+  slug: PropTypes.string,
+  status: PropTypes.string,
+  publishedAt: PropTypes.string,
+  createdAt: PropTypes.string,
+  updatedAt: PropTypes.string,
   document: documentShape
 })
 
 export const allPostsShape = PropTypes.arrayOf(postShape)
+
+export const feedShape = PropTypes.shape({
+  count: PropTypes.number,
+  posts: PropTypes.arrayOf(postShape)
+})
+
+export const feedQueryShape = PropTypes.shape({
+  data: PropTypes.shape({
+    feed: feedShape
+  })
+})
 
 export const postsQueryShape = PropTypes.shape({
   data: PropTypes.shape({
@@ -49,6 +65,6 @@ export const postsQueryShape = PropTypes.shape({
 
 export const projectQueryShape = PropTypes.shape({
   data: PropTypes.shape({
-    Project: projectShape
+    project: projectShape
   })
 })

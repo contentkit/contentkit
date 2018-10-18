@@ -6,10 +6,10 @@ import CreatePost from '../../components/CreatePost'
 import DashboardTable from '../../components/DashboardTable'
 import { withRouter } from 'react-router-dom'
 import DashboardToolbar from '../../components/DashboardToolbar'
-import DashboardQueries from './DashboardQueries'
+import DashboardWithData from './DashboardWithData'
 import gql from 'graphql-tag'
 import debounce from 'lodash.debounce'
-import { postsQueryShape } from '../../shapes'
+import { feedQueryShape } from '../../shapes'
 import { EditorState, convertFromRaw } from 'draft-js'
 import { expand } from 'draft-js-compact'
 import type { Raw, Client, PostsQuery, Post, SetEditorState } from '../../types'
@@ -36,58 +36,14 @@ class Dashboard extends React.Component<Props, State> {
 
   static propTypes = {
     history: propTypes.object.isRequired,
-    posts: postsQueryShape
+    feed: feedQueryShape.isRequired
   }
 
   static displayName = 'Dashboard'
 
   state = {
     query: '',
-    raw: undefined,
     selectedPost: undefined
-  }
-
-  onMouseEnter = async () => {
-    if (this.state.raw) return
-    if (!this.state.selectedPost) return
-
-    let raw = await this.fetchRaw()
-    this.setState({ raw })
-  }
-
-  fetchRaw = async () => {
-    const { data: { post } } = await this.props.client.query({
-      query: gql`
-        query($id: ID!) {
-          post(id: $id) {
-            document {
-              raw
-            }
-          }
-        }
-      `,
-      variables: { id: this.state.selectedPost.id }
-    })
-    return post.document.raw
-  }
-
-  handleEdit = async () => {
-    let raw = this.state.raw
-    if (!raw) {
-      raw = await this.fetchRaw()
-    }
-    let expanded = expand(raw)
-    let contentState = convertFromRaw(
-      expanded
-    )
-    this.props.setEditorState(
-      EditorState.push(
-        this.props.editorState,
-        contentState,
-        'insert-fragment'
-      )
-    )
-    this.props.history.push('/posts/' + this.state.selectedPost.id)
   }
 
   handleProjectSelect = (selectedProject) => {
@@ -108,12 +64,6 @@ class Dashboard extends React.Component<Props, State> {
     })
   }
 
-  handleDelete = () => {
-    this.props.deletePost({
-      id: this.state.selectedPost.id
-    })
-  }
-
   handleChange = ({ currentTarget }) => {
     const { value: query } = currentTarget
     this.setState({ query })
@@ -122,7 +72,7 @@ class Dashboard extends React.Component<Props, State> {
   handleSearch = debounce(({ query }) => this.updateVariables({ query }), 1000)
 
   updateVariables = (variables) => {
-    this.props.posts.fetchMore({
+    this.props.feed.fetchMore({
       variables: {
         ...this.props.variables,
         ...variables
@@ -133,30 +83,18 @@ class Dashboard extends React.Component<Props, State> {
     })
   }
 
-  handleNext = () => {
-    let { posts: { data: { allPosts } } } = this.props
-
-    return this.updateVariables({
-      offset: this.props.variables.offset + 10
-    })
-  }
-
-  handlePrev = () => this.updateVariables({
-    offset: Math.max(0, this.props.variables.offset - 10)
-  })
-
   renderToolbar = () => {
     return (
       <DashboardToolbar
-        handleEdit={this.handleEdit}
-        handleDelete={this.handleDelete}
-        handleNext={this.handleNext}
-        handlePrev={this.handlePrev}
+        deletePost={this.props.deletePost}
         handleChange={this.handleChange}
         handleSearch={this.handleSearch}
         selected={this.state.selectedPost}
         query={this.state.query}
-        onMouseEnter={this.onMouseEnter}
+        client={this.props.client}
+        history={this.props.history}
+        editorState={this.props.editorState}
+        setEditorState={this.props.setEditorState}
       />
     )
   }
@@ -171,17 +109,16 @@ class Dashboard extends React.Component<Props, State> {
         selectedPost={this.state.selectedPost}
         query={this.state.query}
       >
-        <div style={{margin: '0 1em'}}>
+        <div style={{ margin: '0 1em' }}>
           <CreatePost
+            feed={this.props.feed}
             selectedProject={this.props.selectedProject}
-            user={this.props.auth && this.props.auth.user.id} /* eslint-disable-line */
             projects={this.props.projects}
-            posts={this.props.posts}
             selectProject={this.props.selectProject}
             client={this.props.client}
           />
           <DashboardTable
-            posts={this.props.posts}
+            feed={this.props.feed}
             projects={this.props.projects}
             selectedPost={this.state.selectedPost}
             handlePostSelect={this.handlePostSelect}
@@ -194,7 +131,7 @@ class Dashboard extends React.Component<Props, State> {
 }
 
 export default withRouter(props => (
-  <DashboardQueries
+  <DashboardWithData
     {...props}
     render={data => (
       <Dashboard

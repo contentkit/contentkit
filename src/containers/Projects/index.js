@@ -1,6 +1,8 @@
 // @flow
 import React from 'react'
-import { PROJECTS_QUERY, UPDATE_PROJECT, CREATE_PROJECT } from './mutations'
+import { PROJECTS_QUERY } from '../../graphql/queries'
+import { UPDATE_PROJECT, CREATE_PROJECT } from '../../graphql/mutations'
+
 import { Query, Mutation } from 'react-apollo'
 import { withRouter } from 'react-router-dom'
 import gql from 'graphql-tag'
@@ -47,31 +49,16 @@ class ProjectsMutations extends React.Component<{}, {}> {
   })
 
   deleteProject = ({ projects }) => async ({ id }) => {
-    const { client } = this.props
-    const project = projects.data.allProjects.find(project => project.id === id)
-    const { domains } = project
-    client.cache.writeQuery({
+    this.props.client.cache.writeQuery({
       query: PROJECTS_QUERY,
       variables: projects.variables,
       data: {
-        allProjects: projects.data.allProjects.filter(project => project.id !== id)
+        allProjects: projects.data.allProjects.filter(project =>
+          project.id !== id
+        )
       }
     })
-    if (domains.length) {
-      await Promise.all(
-        domains.map(domain => client.mutate({
-          mutation: gql`
-            mutation($id: ID!) {
-              deleteDomain(id: $id) {
-                id
-              }
-            }
-          `,
-          variables: { id: domain.id }
-        }))
-      )
-    }
-    client.mutate({
+    this.props.client.mutate({
       mutation: gql`
         mutation($id: ID!) {
           deleteProject(id: $id) {
@@ -84,7 +71,7 @@ class ProjectsMutations extends React.Component<{}, {}> {
   }
 
   render () {
-    const { auth } = this.props
+    const { user } = this.props
     return (
       <Query query={PROJECTS_QUERY}>
         {(projects) => {
@@ -101,7 +88,9 @@ class ProjectsMutations extends React.Component<{}, {}> {
                           data={data}
                           projects={projects}
                           updateProject={{
-                            mutate: this.updateProject({ mutate: updateProject }),
+                            mutate: this.updateProject({
+                              mutate: updateProject
+                            }),
                             ...updateProjectData
                           }}
                           deleteProject={{
@@ -132,6 +121,6 @@ class ProjectsMutations extends React.Component<{}, {}> {
   }
 }
 
-export default withRouter(props => props.auth && props.auth.user
+export default withRouter(props => props.user?.data?.user
   ? <ProjectsMutations {...props} />
   : <div />)

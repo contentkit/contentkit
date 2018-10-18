@@ -3,12 +3,13 @@ import React from 'react'
 import {
   SIGNUP_USER,
   AUTHENTICATE_USER
-} from './mutations'
+} from '../../graphql/mutations'
+
 import { Mutation } from 'react-apollo'
-import LoginPage from './LoginPage'
+import Login from './Login'
 import { withRouter } from 'react-router-dom'
 
-class LoginMutations extends React.Component {
+class LoginWithData extends React.Component {
   signin = ({ ownProps, mutate }) => async variables => {
     const client = this.props.client
     try {
@@ -49,7 +50,7 @@ class LoginMutations extends React.Component {
             <Mutation mutation={AUTHENTICATE_USER}>
               {(authenticateUser, authenticateUserData) => {
                 return (
-                  <LoginPage
+                  <Login
                     {...this.props}
                     signin={{
                       mutate: this.signin({
@@ -76,4 +77,4 @@ class LoginMutations extends React.Component {
   }
 }
 
-export default withRouter(LoginMutations)
+export default withRouter(LoginWithData)

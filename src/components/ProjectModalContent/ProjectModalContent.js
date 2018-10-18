@@ -54,7 +54,9 @@ class ProjectModalContent extends React.Component<{
             classes={classes}
           />
           <WhitelistDomains
-            {...this.props}
+            deleteOrigin={this.props.deleteOrigin}
+            createOrigin={this.props.createOrigin}
+            project={this.props.project}
           />
         </div>
 

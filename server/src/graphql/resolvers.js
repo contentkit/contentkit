@@ -1,7 +1,8 @@
 const client = require('postgres-tools')
-const crypto = require('crypto')
-const jwt = require('jsonwebtoken')
 const GraphQLJSON = require('graphql-type-json')
+// const diffpatch = require('jsondiffpatch')
+// const crypto = require('crypto')
+const snakeCase = require('lodash.snakecase')
 
 async function createUser (_, { id, email, password }) {
   let user = await client.query(`
@@ -24,34 +25,6 @@ async function createUser (_, { id, email, password }) {
   }
 }
 
-async function createToken ({
-  sub = crypto.randomBytes(8).toString('hex'),
-  expiresIn = '72h',
-  clientId,
-  clientSecret
-}) {
-  const payload = {
-    sub
-  }
-
-  const options = {
-    audience: clientId,
-    expiresIn: expiresIn
-  }
-
-  return new Promise((resolve, reject) => {
-    jwt.sign(
-      payload,
-      clientSecret,
-      options,
-      (err, token) => {
-        if (err) reject(err)
-        else resolve({ token, payload })
-      }
-    )
-  })
-}
-
 async function signinUser (_, { email, password }) {
   const query = `
     SELECT
@@ -59,7 +32,7 @@ async function signinUser (_, { email, password }) {
       sign(
         JSON_BUILD_OBJECT(
           'sub', users.id,
-          'exp', (select extract(epoch from now() + interval '1' day))
+          'exp', (select extract(epoch from now() + interval '1' day)::int)
         ),
         users.password
       ) as token
@@ -77,12 +50,6 @@ async function signinUser (_, { email, password }) {
   })
   if (user) {
     return user
-    // const jwt = await createToken({
-    //  sub: user.id,
-    //  clientSecret: user.password,
-    //  clientId: CLIENT_AUTH_ID
-    // })
-    // return { ...user, token: jwt.token }
   }
 }
 
@@ -109,7 +76,13 @@ const createPost = (_, { title, projectId }, context) => {
   `, { head: true })
 }
 
-const updateDocument = (_, { id, raw, html }) => {
+const updateDocument = async (_, { id, raw, html }) => {
+  //let document = await client.query(`
+  //  SELECT * FROM documents WHERE id = '${id}'
+  //`, { head: true })
+
+  //let delta = diffpatch.diff(document.raw, raw)
+  //console.log(delta)
   return client.query(`
     UPDATE documents set raw = '${JSON.stringify(raw)}'::jsonb, html = '${html}'
     WHERE id = '${id}' returning *
@@ -138,8 +111,30 @@ const updatePostMeta = (parent, args, context) => {
   `, { head: true })
 }
 
+const updatePost = (parent, args, context) => {
+  args.status = args.status || 'DRAFT'
+  let { id, ...rest } = args
+
+  let params = Object.keys(rest).reduce((acc, key) => {
+    let type = key === 'publishedAt'
+      ? 'timestamp'
+      : key === 'status'
+        ? 'post_status'
+        : 'text'
+    acc.push(`SET ${snakeCase(key)} = '${rest[key]}'::${type}`)
+    return acc
+  }, [])
+  return client.query(`
+    UPDATE
+      posts
+    SET
+      ${params.join('\n')}
+    WHERE id = '${args.id}'
+    RETURNING *
+  `, { head: true })
+}
+
 const updatePostProject = async (parent, args, context) => {
-  console.log(args)
   const query = `
     UPDATE posts
     SET project_id = '${args.projectId}'
@@ -316,6 +311,46 @@ const resolvers = {
       return client.query(`
         SELECT * FROM projects WHERE id = '${args.id}'
       `, { head: true })
+    },
+    feed: async (parent, args, context) => {
+      let limit = args.limit || 10
+      let offset = args.offset || 0
+      let query = args.query
+        ? `AND posts.title ILIKE '%${args.query}%'`
+        : ''
+      let project = args.projectId
+        ? `AND project_id = '${args.projectId}'`
+        : ''
+     
+      let data = await client.query(`
+        SELECT
+        ARRAY(
+          SELECT
+            json_build_object(
+              'id', posts.id,
+              'createdAt', posts.created_at,
+              'updatedAt', posts.updated_at,
+              'projectId', posts.project_id,
+              'userId', posts.user_id,
+              'title', posts.title,
+              'slug', posts.slug,
+              'status', posts.status,
+              'excerpt', posts.excerpt,
+              'publishedAt', posts.published_at
+            )
+          FROM
+            posts
+          WHERE
+            user_id = '${context.user}' ${project} ${query}
+          ORDER BY
+            posts.created_at DESC
+          LIMIT ${limit}
+          OFFSET ${offset}
+        ) posts,
+        (SELECT count(*) FROM posts) count
+      `, { head: true })
+      console.log(data)
+      return data
     }
   },
   Mutation: {
@@ -337,8 +372,10 @@ const resolvers = {
     updateUser: updateUser,
     createOrigin: createOrigin,
     deleteOrigin: deleteOrigin,
-    updateProject: updateProject
+    updateProject: updateProject,
+    updatePost: updatePost
   },
+  Feed: {},
   Post: {
     document: (parent, args, context) => {
       console.log(parent)
