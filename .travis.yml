@@ -5,7 +5,7 @@ branches:
   only:
   - master
 install:
-  - yarn --ignore-engines
+  - yarn install
 before_script:
 script: 
   - yarn add travis-up
