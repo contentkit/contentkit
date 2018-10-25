@@ -2,28 +2,31 @@
 import React from 'react'
 import propTypes from 'prop-types'
 import Button from '@material-ui/core/Button'
-import ApiKeyInput from '../ProfileUserFormKeyInput'
+import ProfileUserFormKeyInput from '../ProfileUserFormKeyInput'
 import { withStyles } from '@material-ui/core/styles'
 import EnhancedInput from '../EnhancedInput'
 
 const UserForm = props => {
+  let email = props?.user?.data?.user?.email || ''
+  let name = props?.user?.data?.user?.name || ''
+
   return (
     <div className={props.classes.container}>
       <EnhancedInput
         fullWidth
         id='name'
         placeholder='Name'
-        value={props.name}
+        value={name}
         onChange={(e) => props.handleChange(e, 'name')}
       />
       <EnhancedInput
         fullWidth
         id='email'
         placeholder='Email'
-        value={props.email}
+        value={email}
         onChange={(e) => props.handleChange(e, 'email')}
       />
-      <ApiKeyInput {...props} />
+      <ProfileUserFormKeyInput {...props} />
       <div className={props.classes.flex}>
         <Button
           className={props.classes.button}
@@ -39,8 +42,8 @@ const UserForm = props => {
           color='primary'
           onClick={() => {
             props.updateUser({
-              name: props.name,
-              email: props.email
+              name: name,
+              email: email
             })
           }}
         >
@@ -58,9 +61,7 @@ UserForm.defaultProps = {
 }
 
 UserForm.propTypes = {
-  name: propTypes.string,
-  id: propTypes.string,
-  email: propTypes.string,
+  user: propTypes.object,
   updateUser: propTypes.func.isRequired,
   handleChange: propTypes.func.isRequired
 }

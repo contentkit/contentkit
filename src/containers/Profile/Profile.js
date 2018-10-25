@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Layout from '../Layout'
 import UserForm from '../../components/ProfileUserForm'
-import { USER_QUERY } from '../../Router'
+import { USER_QUERY } from '../../graphql/queries'
 import CodeSnippet from '../../components/CodeSnippet'
 import Paper from '../../components/DefaultPaper'
 
@@ -14,12 +14,8 @@ class Profile extends React.Component {
     user: PropTypes.object
   }
 
-  state = {
-    ref: undefined
-  }
-
   handleChange = (e, key) => {
-    this.props.client.writeQuery({
+    let q = {
       query: USER_QUERY,
       data: {
         user: {
@@ -27,7 +23,9 @@ class Profile extends React.Component {
           [key]: e.target.value
         }
       }
-    })
+    }
+    console.log(q)
+    this.props.client.writeQuery(q)
   }
 
   onCopy = () => {
@@ -47,7 +45,7 @@ class Profile extends React.Component {
           generateToken={this.props.generateToken.mutate}
           onCopy={this.onCopy}
           setRef={ref => { this.ref = ref }}
-          {...user}
+          user={user}
         />
         <Paper styles={{
           maxWidth: '500px',

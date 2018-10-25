@@ -39,6 +39,7 @@ export const CREATE_PROJECT = gql`
       id
       origins {
         id
+        name
       }
     }
   }
@@ -104,7 +105,6 @@ export const UPDATE_POST = gql`
           createdAt
         }
       }
-      id
       title
       slug
       status
@@ -232,4 +232,3 @@ export const CREATE_ORIGIN = gql`
     }
   }
 `
-

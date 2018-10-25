@@ -43,12 +43,12 @@ class AppRouter extends React.Component {
   }
 
   render () {
-    const { user } = this.props
+    const { user, client } = this.props
     const { status } = this.state
     const props = {
       logged: Boolean(user?.data?.user), /* eslint-disable-line */
       user: user,
-      client: this.props.client,
+      client: client,
       status
     }
 

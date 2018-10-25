@@ -12,6 +12,19 @@ import gql from 'graphql-tag'
 import type { Post } from '../../types'
 import { createInitialState, convertToDate } from 'draft-js-dates'
 
+export const _POST_QUERY = gql`
+  query ($id: ID!) {
+    post (id: $id) {
+      id
+      publishedAt
+      title
+      slug
+      status
+      excerpt
+    }
+  }
+`
+
 type Props = {
   updatePost: () => void,
   onClose: () => void,
@@ -101,6 +114,7 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
 
   selectProject = (id) => {
     let { post } = this.props.post.data
+
     this.props.client.writeQuery({
       query: POST_QUERY,
       variables: this.props.post.variables,
@@ -140,6 +154,7 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
               dateInputState={this.state.dateInputState}
               handleDateInputChange={this.handleDateInputChange}
               selectProject={this.selectProject}
+              data={this.props.post?.data?.post}
             />
           </DialogContent>
           <DialogActions>

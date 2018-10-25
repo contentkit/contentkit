@@ -14,50 +14,49 @@ type Props = {
   setDialogState: (any) => void
 }
 
-const PostEditorModals = (props: Props) => {
-  const {
-    editorState,
-    open,
-    html,
-    setDialogState,
-    user,
-    ...rest
-  } = props
-  console.log(props)
+class PostEditorModals extends React.Component {
+  render () {
+    const {
+      editorState,
+      open,
+      html,
+      setDialogState,
+      user,
+      ...rest
+    } = this.props
 
-  if (!open) return false
-  return (
-    <React.Fragment>
-      <PostEditorHistoryModal
-        open={open === 'history'}
-        onClose={() => setDialogState(undefined)}
-        post={props.post}
-        saveDocument={props.saveDocument}
-        editorState={props.editorState}
-        setEditorState={props.setEditorState}
-      />
-      <ContentPreviewDialog
-        open={open === 'preview'}
-        onClose={() => setDialogState(undefined)}
-        editorState={editorState}
-        exportHtml={exportHtml}
-      />
-      <InspectorDialog
-        open={open === 'inspector'}
-        onClose={() => setDialogState(undefined)}
-        editorState={editorState}
-        convertToRaw={convertToRaw}
-      />
-      <PostMetaModal
-        open={open === 'postmeta'}
-        user={user}
-        onClose={() => setDialogState(undefined)}
-        client={rest.client}
-        updatePost={rest.updatePost}
-        post={rest.post}
-      />
-    </React.Fragment>
-  )
+    return (
+      <React.Fragment>
+        <PostEditorHistoryModal
+          open={open === 'history'}
+          onClose={() => setDialogState(undefined)}
+          post={this.props.post}
+          saveDocument={this.props.saveDocument}
+          editorState={this.props.editorState}
+          setEditorState={this.props.setEditorState}
+        />
+        <ContentPreviewDialog
+          open={open === 'preview'}
+          onClose={() => setDialogState(undefined)}
+          editorState={editorState}
+          exportHtml={exportHtml}
+        />
+        <InspectorDialog
+          open={open === 'inspector'}
+          onClose={() => setDialogState(undefined)}
+          editorState={editorState}
+          convertToRaw={convertToRaw}
+        />
+        <PostMetaModal
+          open={open === 'postmeta'}
+          user={user}
+          onClose={() => setDialogState(undefined)}
+          client={this.props.client}
+          post={this.props.post}
+        />
+      </React.Fragment>
+    )
+  }
 }
 
 PostEditorModals.defaultProps = {

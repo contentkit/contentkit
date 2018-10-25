@@ -12,17 +12,18 @@ const ApiKeyInput = (props: any) => {
     onCopy,
     setRef,
     generateToken,
-    secret,
+    user,
     classes,
     id
   } = props
+  let secret = user?.data?.user?.secret || ''
   return (
     <FormControl fullWidth margin='normal'>
       <Input
         className={classes.input}
         disableUnderline
         id='api-key'
-        value={secret || ''}
+        value={secret}
         inputRef={setRef}
         placeholder={'API key'}
         endAdornment={
@@ -36,7 +37,7 @@ const ApiKeyInput = (props: any) => {
             </IconButton>
             <IconButton
               className={classes.iconButton}
-              onClick={() => generateToken({ id })}>
+              onClick={() => generateToken()}>
               <RefreshIcon />
             </IconButton>
           </InputAdornment>

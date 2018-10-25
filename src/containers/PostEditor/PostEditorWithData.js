@@ -94,8 +94,9 @@ class EditorMutations extends React.Component<{}, {}> {
 
   render () {
     return (
-      <Query variables={{ ...this.props.match.params }} query={POST_QUERY}>
+      <Query variables={{ id: this.props.match.params.id }} query={POST_QUERY}>
         {(post) => {
+          console.log({ post })
           if (post.loading) return null
           return (
             <Mutation mutation={UPDATE_DOCUMENT}>

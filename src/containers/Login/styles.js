@@ -5,7 +5,7 @@ export const styles = theme => ({
   container: {
     ...background,
     position: 'absolute',
-    width: '100%'
+    width: '100vw'
   },
   login: {
     boxShadow: '0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07)',
@@ -17,6 +17,15 @@ export const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between'
+  },
+  '@media (max-width: 480px)': {
+    login: {
+      width: '90%',
+      maxWidth: '90%',
+      overflow: 'hidden',
+      // height: '100vh',
+      margin: 0
+    }
   },
   row: {
     display: 'flex',

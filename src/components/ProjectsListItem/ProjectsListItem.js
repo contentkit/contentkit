@@ -21,7 +21,7 @@ const ProjectsListItem = (props: any) => (
       <ListItemIcon>
         <ProjectAvatar id={props.project.id} />
       </ListItemIcon>
-      <ListItemText inset primary={props.project.name} secondary={'Posts'} />
+      <ListItemText inset primary={<span>{props.project.name}</span>} secondary={<span>Posts</span>} />
     </MenuItem>
   </div>
 )

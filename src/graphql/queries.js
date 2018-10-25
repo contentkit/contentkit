@@ -13,34 +13,6 @@ export const PROJECTS_QUERY = gql`
   }
 `
 
-export const POSTS_QUERY = gql`
-  query (
-    $limit: Int, 
-    $offset: Int, 
-    $query: String,
-    $projectId: ID
-  ) {
-    allPosts(
-      limit: $limit,
-      offset: $offset,
-      query: $query,
-      projectId: $projectId
-    ) {
-      id
-      createdAt
-      publishedAt
-      project {
-        id
-        name
-      }
-      title
-      slug
-      status
-      excerpt
-    }
-  }
-`
-
 export const FEED_QUERY = gql`
   query (
     $limit: Int, 

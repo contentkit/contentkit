@@ -28,7 +28,7 @@ class ProjectsMutations extends React.Component<{}, {}> {
         __typename: 'Project',
         ...variables,
         id: Math.floor(Math.random(1e6)),
-        domains: []
+        origins: []
       }
     },
     update: (store, { data: { createProject } }) => {
@@ -75,6 +75,7 @@ class ProjectsMutations extends React.Component<{}, {}> {
     return (
       <Query query={PROJECTS_QUERY}>
         {(projects) => {
+          console.log(projects)
           const { data, loading } = projects
           if (loading) return false
           return (
@@ -121,6 +122,4 @@ class ProjectsMutations extends React.Component<{}, {}> {
   }
 }
 
-export default withRouter(props => props.user?.data?.user
-  ? <ProjectsMutations {...props} />
-  : <div />)
+export default withRouter(ProjectsMutations)

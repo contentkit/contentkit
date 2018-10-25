@@ -1,0 +1,53 @@
+service: contentkit-graphql
+
+plugins:
+  - serverless-domain-manager
+
+custom:
+  stage: prod
+  debug: "*"
+  deploymentBucket: 'global-deployment-bucket'
+  customDomain:
+    domainName: api.contentkit.co
+    stage: ${self:provider.stage}
+    certificateName: '*.contentkit.co'
+    createRoute53Record: true
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: ${self:custom.stage}
+  region: us-east-1
+  deploymentBucket:
+    name: ${self:custom.deploymentBucket}
+  environment:
+    PGHOST: ${ssm:/contentkit/PGHOST}
+    PGUSER: postgres
+    PGDATABASE: contentkit
+    PGPASSWORD: ${ssm:/contentkit/PGPASSWORD~true}
+    PGPORT: 5432
+    BUCKET_NAME: contentkit-dev-deploymentbucket-3hlcbqx9f9nl
+  iamRoleStatements:
+    - Effect: "Allow"
+      Resource: "*"
+      Action:
+        - "s3:*"
+
+functions:
+  handler:
+    handler: src/handler.handler
+    events:
+      - http:
+          path: graphql
+          method: post
+          cors: true
+      - http:
+          path: graphql
+          method: get
+          cors: true
+
+resources:
+  Resources:
+    HandlerLogGroup:
+      Properties:
+        RetentionInDays: 7

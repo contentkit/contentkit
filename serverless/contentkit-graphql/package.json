@@ -1,0 +1,17 @@
+{
+  "name": "contentkit-lambda",
+  "version": "0.0.1",
+  "main": "src/handler.js",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server-lambda": "latest",
+    "graphql": "^14.0.2",
+    "graphql-type-json": "^0.2.1",
+    "lodash.snakecase": "^4.1.1",
+    "pg": "^7.5.0",
+    "postgres-tools": "^0.0.7"
+  },
+  "devDependencies": {
+    "serverless-domain-manager": "^2.6.5"
+  }
+}

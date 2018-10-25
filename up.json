@@ -6,17 +6,16 @@
   "lambda": {
     "memory": 1536
   },
+  "type": "static",
   "static": {
     "dir": "dist",
     "prefix": "/assets/"
   },
-  "environment": {
-    "BUCKET_NAME": "contentkit-dev-deploymentbucket-3hlcbqx9f9nl",
-    "PGHOST": "${ssm:/contentkit/PGHOST}",
-    "PGUSER": "postgres",
-    "PGDATABASE": "contentkit",
-    "PGPASSWORD": "${ssm:/contentkit/PGPASSWORD}",
-    "PGPORT": "5432"
+  "redirects": {
+    "/*": {
+      "location": "/",
+      "status": 200
+    }
   },
   "stages": {
     "staging": {

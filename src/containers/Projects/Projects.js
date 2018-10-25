@@ -25,9 +25,7 @@ class Projects extends React.Component {
     data: {
       allProjects: []
     },
-    activeProject: undefined,
-    handleClick: () => {},
-    handleClose: () => {}
+    activeProject: undefined
   }
 
   state = {
@@ -69,10 +67,10 @@ class Projects extends React.Component {
   }
 
   render () {
+    const { classes, ...rest } = this.props
     const {
       createProject,
-      projects,
-      classes
+      projects
     } = this.props
     return (
       <Layout
@@ -82,8 +80,9 @@ class Projects extends React.Component {
         render={() => null}
       >
         <ProjectModal
-          {...this.props}
-          {...this.state}
+          {...rest}
+          activeProject={this.state.activeProject}
+          open={this.state.open}
           handleClose={this.handleClose}
           handleDelete={this.handleDelete}
         />

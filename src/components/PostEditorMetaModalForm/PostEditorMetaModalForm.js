@@ -10,6 +10,7 @@ import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
 import FormControl from '@material-ui/core/FormControl'
 
 const PostEditorMetaModalForm = (props) => {
+  console.log('meta', props)
   const { handleChange, post, projects, selectProject } = props
   const title = (post.data.post && post.data.post.title) || ''
   const slug = (post.data.post && post.data.post.slug) || ''

@@ -69,12 +69,12 @@ class BaseEditor extends React.Component<Props, State> {
     this._hasUnmounted = true
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    return nextProps.editorState !== this.props.editorState ||
-      nextState.open !== this.state.open ||
-      nextProps.logged !== this.props.logged ||
-      nextState.loading !== this.state.loading
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //  return nextProps.editorState !== this.props.editorState ||
+  //    nextState.open !== this.state.open ||
+  //    nextProps.logged !== this.props.logged ||
+  //    nextState.loading !== this.state.loading
+  // }
 
   saveDocument = ({ editorState }) => {
     const {
