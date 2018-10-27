@@ -2872,10 +2872,10 @@ draft-js-code-block-plugin@^0.0.27:
     lodash.debounce "^4.0.8"
     react-subscriptions "^0.0.10"
 
-draft-js-compact@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/draft-js-compact/-/draft-js-compact-0.0.4.tgz#afb826e3a6c89482645d592740c955c7e95c03ca"
-  integrity sha512-rnjiBnkqN7rem1NXyIraOYyZ+GBbpPUrWQt+8QwZEFDGfl3z+gR7i1Ii33Z4tW3pNoWR1PQI5RqG38p5eFb1Jg==
+draft-js-compact@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/draft-js-compact/-/draft-js-compact-0.0.5.tgz#6a74dec1a95634e6d1a3481e6586b9135f356eb5"
+  integrity sha512-S5yP77wJITWGx1VUCCX1/2uCXSU+5QxgWsU/fz1naHWiyVNThRgHz+giNncmJfXTIczcKXw2ytZrYIeNaeJgXA==
   dependencies:
     is-plain-object "^2.0.4"
 
@@ -2900,10 +2900,10 @@ draft-js-custom-toolbar-plugin@^0.0.43:
     prop-types "^15.5.8"
     scope "^0.10.1"
 
-draft-js-dates@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/draft-js-dates/-/draft-js-dates-0.0.4.tgz#374cfbec5bff67107d3f916c86d33ae2175881e4"
-  integrity sha512-DfG5oJoZIKnNqGPey1Iv1z7aYw4HDldC815ocX/bLAIfQ/tQbahV+ipo5YmmTXhlu/LzZ22I228bZMH8dhUfcg==
+draft-js-dates@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/draft-js-dates/-/draft-js-dates-0.0.5.tgz#77f956daac5f2f5b643dfcd7c6c96ce503e0e2d3"
+  integrity sha512-BLcn6XWrLrsZ7sP6hJh1Tj8cjLvLKZz2TVmxJBmUjeybX6/2ZV0qFp3WFYbvbfe3JeSM/KXD/HNNCKOpbFf3FQ==
 
 draft-js-export-html@^1.2.0:
   version "1.2.0"
