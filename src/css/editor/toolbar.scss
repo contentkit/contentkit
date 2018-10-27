@@ -3,11 +3,11 @@
   z-index: 2 !important;
 }
 
-.codeLanguageWrapper {
+.code-language-wrapper {
   width: 100%;
 }
 
-.codeLanguageInput {
+.code-language-input {
   height: 34px;
   width: 220px;
   padding: 0 12px;
@@ -18,15 +18,15 @@
   color: #444;
 }
 
-.codeLanguageInput:focus {
+.code-language-input:focus {
   outline: none;
 }
 
-.codeLanguageInput::placeholder {
+.code-languageinput::placeholder {
   color: #888;
 }
 
-.codeLanguageInputInvalid {
+.code-language-input-invalid {
   color: #e65757;
 }
 
@@ -54,7 +54,7 @@
   align-items: center;
 }
 
-.customToolbar {
+.custom-toolbar {
   border-radius: 2px;
   display: grid;
   grid-template-columns: repeat(auto-fill, 40px);
@@ -64,18 +64,18 @@
   width: 100%;
 }
 
-.customToolbar:hover {
+.custom-toolbar:hover {
   opacity: 1;
 }
 
-.buttonWrapper {
+.button-wrapper {
   width: 40px;
   height: 40px;
   display: block;
 }
 
 .button,
-.buttonText {
+.button-text {
   color: #f4f9fd;
   background: #4c6072;
   font-size: 18px;
@@ -130,7 +130,7 @@
   color: #bdc9d6;
 }
 
-.inputInvalid {
+.input-invalid {
   color: #e65757;
 }
 

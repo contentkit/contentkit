@@ -1928,7 +1928,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.5:
+classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
@@ -2846,7 +2846,14 @@ draft-js-blocks@0.0.20, draft-js-blocks@^0.0.20:
   dependencies:
     left-indent "0.0.6"
 
-draft-js-checkable-list-item@^3.0.1:
+draft-js-blocks@^0.0.23:
+  version "0.0.23"
+  resolved "https://registry.yarnpkg.com/draft-js-blocks/-/draft-js-blocks-0.0.23.tgz#8104663563586b73a8eb5f4d4a213bfc473b6ff2"
+  integrity sha512-itHB8nfFr2Vh3PGghbb6mYK4iM79yTztXE+RkuKR3sMaCjORGQ4NJxJSlg45WV6wn5RHpwTRHt9xmxsTsbcqYw==
+  dependencies:
+    left-indent "0.0.6"
+
+draft-js-checkable-list-item@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/draft-js-checkable-list-item/-/draft-js-checkable-list-item-3.0.4.tgz#b3049a56499757720cdcbf3775d0384464ad0030"
   integrity sha512-rHTErKYTYoBRtSCxKfSz+PivbtXp0KqmjC2Ms3u9QHlx9c40qsbajdSz+1TfPXaWP8FAB5EeynZ2qYPRgltPeQ==
@@ -2854,12 +2861,12 @@ draft-js-checkable-list-item@^3.0.1:
     draft-js-modifiers "~0.2.2"
     immutable "~3.7.4"
 
-draft-js-code-block-plugin@^0.0.26:
-  version "0.0.26"
-  resolved "https://registry.yarnpkg.com/draft-js-code-block-plugin/-/draft-js-code-block-plugin-0.0.26.tgz#5b5f9f516e5b57ca5968ff88aa3cd4d8e4bef2f6"
-  integrity sha512-kSiCWQKu+pE5QMW4+O/KcglrOQliswCKFhcuoP5bHUF2vgx9bGd837VL/Ck9zciD8xZAu7PtY4jrm0BuISLnAA==
+draft-js-code-block-plugin@^0.0.27:
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/draft-js-code-block-plugin/-/draft-js-code-block-plugin-0.0.27.tgz#ded0449c3a4a9664293f288b3f731cdf5808201c"
+  integrity sha512-s8Ff5A0xvx2H/jk8G7qeadv9uDVBVVsUcj3Agl39VXBVFEt3vR4gk0ws0qkOAG0PDHsO+jaQjApMVjA5MXiYgA==
   dependencies:
-    classnames "^2.2.5"
+    classnames "^2.2.6"
     decorate-component-with-props "^1.1.0"
     draft-js-blocks "^0.0.20"
     lodash.debounce "^4.0.8"
@@ -2872,20 +2879,20 @@ draft-js-compact@0.0.4:
   dependencies:
     is-plain-object "^2.0.4"
 
-draft-js-custom-buttons@^0.0.41:
-  version "0.0.41"
-  resolved "https://registry.yarnpkg.com/draft-js-custom-buttons/-/draft-js-custom-buttons-0.0.41.tgz#cc4798f0741bae92f2031dad701cac8775927939"
-  integrity sha512-tkp6rA1P2LxlkZOO7QSkX9uLdFPoS0pVgq2+X2XznzZ87SlI0ok2fEvkvQYnLKVIbh6uGI8i8gv+ITwE0BHXlg==
+draft-js-custom-buttons@^0.0.43:
+  version "0.0.43"
+  resolved "https://registry.yarnpkg.com/draft-js-custom-buttons/-/draft-js-custom-buttons-0.0.43.tgz#ccc0008e59e4c5ad5046bdaca6a7da43f8716bbb"
+  integrity sha512-6SolKkTh0OdLYyGDBjNi+WKrLa9P5+gtvJg4prMF43VZsaVQ3oGng6Ngk21pdrHcGW1CL/6MI7YeO8dDDIExbg==
   dependencies:
     "@babel/runtime" "^7.1.2"
-    draft-js-blocks "^0.0.20"
+    draft-js-blocks "^0.0.23"
     react-valid-attributes "^0.0.1"
     union-class-names "^1.0.0"
 
-draft-js-custom-toolbar-plugin@^0.0.41:
-  version "0.0.41"
-  resolved "https://registry.yarnpkg.com/draft-js-custom-toolbar-plugin/-/draft-js-custom-toolbar-plugin-0.0.41.tgz#1ba80944f796dcb83be8f3dee561542788db03b4"
-  integrity sha512-hZ/o8/DvKTiA0MhYt3vhAjhG+3s7vHnoyVHFwYx2oSxcjjjSFN7snDmUZYbs+n5SHlvGrmqx/TIvVGOf+FAL7A==
+draft-js-custom-toolbar-plugin@^0.0.43:
+  version "0.0.43"
+  resolved "https://registry.yarnpkg.com/draft-js-custom-toolbar-plugin/-/draft-js-custom-toolbar-plugin-0.0.43.tgz#47138d1e66a7c2692a2a946bff9bf7b21031be49"
+  integrity sha512-v3q14/enECIA3L01SBHLByyACZc8NRtSa5iEwDpowZS0er0c/CQtASC0C3EWFFHjDw/R9/f6kUJ6R8qF2VO7tA==
   dependencies:
     "@babel/runtime" "^7.1.2"
     decorate-component-with-props "^1.0.2"
@@ -2916,14 +2923,14 @@ draft-js-focus-plugin@^2.2.0:
     prop-types "^15.5.8"
     union-class-names "^1.0.0"
 
-draft-js-markdown@^0.0.17:
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/draft-js-markdown/-/draft-js-markdown-0.0.17.tgz#2577d30997c483b60fde2390da0cadd94f4a248d"
-  integrity sha512-VH/56mNHhC54XCWM9YoeC1DUghXRol/suJ0TkdeKJDZWBcT+IE8vMS/ZloWLALtT5z1V5xNWUxVHbpVEjlphZA==
+draft-js-markdown@^0.0.19:
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/draft-js-markdown/-/draft-js-markdown-0.0.19.tgz#405cc1bdd2805b40747f5036a0c0859cb3d1f684"
+  integrity sha512-voIMpF5G+tdwyR2IBQiqfxLrx2RwSfKBzuLc8BfND0/64dPgD03WD5nJU1k9HZ6n7quz33ORA4wOxKnSdXYsOQ==
   dependencies:
-    deepmerge "^2.1.0"
+    deepmerge "^2.2.1"
     draft-js-blocks "0.0.20"
-    draft-js-checkable-list-item "^3.0.1"
+    draft-js-checkable-list-item "^3.0.4"
 
 draft-js-modifiers@~0.2.2:
   version "0.2.2"
@@ -2933,14 +2940,14 @@ draft-js-modifiers@~0.2.2:
     draft-js "~0.10.5"
     immutable "~3.7.4"
 
-draft-js-new-line-plugin@^0.0.41:
-  version "0.0.41"
-  resolved "https://registry.yarnpkg.com/draft-js-new-line-plugin/-/draft-js-new-line-plugin-0.0.41.tgz#207c596838c3e56969f7245807b9fb466dd4da80"
-  integrity sha512-hXxdJMuzgYl901GxUI4/shL3aJQ/1p7yYpqU1EdieZeyBCWa+4KB5LFFZSxTRvjDA4QDJH+K8SMxGvLFyfYAaQ==
+draft-js-new-line-plugin@^0.0.42:
+  version "0.0.42"
+  resolved "https://registry.yarnpkg.com/draft-js-new-line-plugin/-/draft-js-new-line-plugin-0.0.42.tgz#f4f3b6866caf6e380a97a5d24e2f5aeeabbadf5a"
+  integrity sha512-AWG3asOGwV9rH04f0f17VUqzE9M7P7bCdX3DK4fu0SJYTudvQSb73fx9jzYraWqScOJMw71S68gKWscaKf7Cgg==
   dependencies:
     "@babel/runtime" "^7.1.2"
     deepmerge "^2.2.1"
-    draft-js-blocks "^0.0.20"
+    draft-js-blocks "^0.0.23"
 
 draft-js-plugins-utils@2.0.2:
   version "2.0.2"
@@ -2955,25 +2962,25 @@ draft-js-prism@^1.0.6:
     extend "^3.0.0"
     immutable "*"
 
-draft-js-scripts-plugin@^0.0.41:
-  version "0.0.41"
-  resolved "https://registry.yarnpkg.com/draft-js-scripts-plugin/-/draft-js-scripts-plugin-0.0.41.tgz#f1a038629640f38fa6d5057d243a495d7f245777"
-  integrity sha512-J3P/o4xrHBq0ECeqMGcLt/m1ADx9O8PdTWQoUkfpW/6tZXrOzRcFuKtkKr34wJF0F7siIUjTPy16c6wfq0iKhw==
+draft-js-scripts-plugin@^0.0.42:
+  version "0.0.42"
+  resolved "https://registry.yarnpkg.com/draft-js-scripts-plugin/-/draft-js-scripts-plugin-0.0.42.tgz#9afbf94bbb0b18c0864025005084768fbb4bcbd7"
+  integrity sha512-GiwwrlqvKGoSOnHQ+V9Ug5g0DPNa2/DsUwhL+VLxQ4suXrmJQKAilZ7r/15ou5PJ4Qjcej3JtbSTvR9F6oXY7A==
   dependencies:
     "@babel/runtime" "^7.1.2"
     append-stylesheet "^0.0.1"
-    draft-js-blocks "^0.0.20"
+    draft-js-blocks "^0.0.23"
     lodash.frompairs "^4.0.1"
     union-class-names "^1.0.0"
     url "^0.11.0"
 
-draft-js-tables-plugin@^0.0.41:
-  version "0.0.41"
-  resolved "https://registry.yarnpkg.com/draft-js-tables-plugin/-/draft-js-tables-plugin-0.0.41.tgz#ab64067ae9c2d9d9dcdc656401ab356fd4cd4f1d"
-  integrity sha512-pTxqop0LC9GLYqvo5KYgpQZMRcqfdM56SniOnBwWGBzAVOGflw7eLVhyvuCAoHW2evRmaUMfQl4teW7wLdMrzw==
+draft-js-tables-plugin@^0.0.42:
+  version "0.0.42"
+  resolved "https://registry.yarnpkg.com/draft-js-tables-plugin/-/draft-js-tables-plugin-0.0.42.tgz#d2b7c676cf96e018ca9a52e78123f833212b436f"
+  integrity sha512-sdooh/OCOHZXBIFiOK0dIzdp4iHo94EVjFrOoue+e6AyBzbHGMqCj0bym/Ap+k5UDNiXH9hkZftuQnbxd7OGOg==
   dependencies:
     "@babel/runtime" "^7.1.2"
-    draft-js-blocks "^0.0.20"
+    draft-js-blocks "^0.0.23"
 
 draft-js-utils@^1.2.0:
   version "1.2.0"
@@ -4330,7 +4337,7 @@ immutable-tuple@^0.4.9:
   resolved "https://registry.yarnpkg.com/immutable-tuple/-/immutable-tuple-0.4.9.tgz#473ebdd6c169c461913a454bf87ef8f601a20ff0"
   integrity sha512-LWbJPZnidF8eczu7XmcnLBsumuyRBkpwIRPCZxlojouhBo5jEBO4toj6n7hMy6IxHU/c+MqDSWkvaTpPlMQcyA==
 
-immutable@*, immutable@~3.8.2:
+immutable@*:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
   integrity sha1-wkOZUUVbs5kT2vKBN28VMOEErfM=
@@ -5916,25 +5923,25 @@ mixin-deep@^1.2.0:
   dependencies:
     minimist "0.0.8"
 
-monograph@^0.0.41:
-  version "0.0.41"
-  resolved "https://registry.yarnpkg.com/monograph/-/monograph-0.0.41.tgz#52290c4a3331a5a9c174b8738b58539617294252"
-  integrity sha512-fTv67z5v1fh5yFfwXnkLIkiGrhkCH5DEEn2vz7Hm24nsJ34N/ZIMOASt8lqKoUzO2FgBvSRwDqxaS3annWAA9g==
+monograph@^0.0.43:
+  version "0.0.43"
+  resolved "https://registry.yarnpkg.com/monograph/-/monograph-0.0.43.tgz#6820360c21ceee53e37740f2dc87065b898c6d4c"
+  integrity sha512-PAJGYME1v2AUTVIEPpdB/I/tdzH2reTPptFZXd5FI41yikeEan8WK6d9WH5LxWUshyAsuMZvZbC/z59FxeGs+g==
   dependencies:
     "@babel/runtime" "^7.1.2"
     decorate-component-with-props "^1.1.0"
     draft-js-anchor-plugin "^2.0.2"
-    draft-js-blocks "^0.0.20"
-    draft-js-code-block-plugin "^0.0.26"
-    draft-js-custom-buttons "^0.0.41"
-    draft-js-custom-toolbar-plugin "^0.0.41"
+    draft-js-blocks "^0.0.23"
+    draft-js-code-block-plugin "^0.0.27"
+    draft-js-custom-buttons "^0.0.43"
+    draft-js-custom-toolbar-plugin "^0.0.43"
     draft-js-export-html "^1.2.0"
     draft-js-focus-plugin "^2.2.0"
-    draft-js-markdown "^0.0.17"
-    draft-js-new-line-plugin "^0.0.41"
+    draft-js-markdown "^0.0.19"
+    draft-js-new-line-plugin "^0.0.42"
     draft-js-prism "^1.0.6"
-    draft-js-scripts-plugin "^0.0.41"
-    draft-js-tables-plugin "^0.0.41"
+    draft-js-scripts-plugin "^0.0.42"
+    draft-js-tables-plugin "^0.0.42"
     eslint-web "^0.0.24"
     html-element-attributes "^2.0.0"
     lodash.groupby "^4.6.0"
@@ -8123,6 +8130,22 @@ s3-dropzone@^0.0.44:
   version "0.0.44"
   resolved "https://registry.yarnpkg.com/s3-dropzone/-/s3-dropzone-0.0.44.tgz#a085df569075acf296194d8bdee41d06b8db3929"
   integrity sha512-7lHWa95Lx4Xhcd/o954EGCBEA5ZaQM1iDJ1VJFNXpjjPjMY4mbYCsbMgcV0PTaE7k/kXm/2IEsaUY/hXVjbH0Q==
+  dependencies:
+    classnames "^2.2.5"
+    file-type "^10.1.0"
+    lodash.debounce "^4.0.8"
+    lodash.uniqby "^4.7.0"
+    react-dropzone "^7.0.1"
+    react-redux "^5.1.0"
+    react-subscriptions "^0.0.10"
+    react-valid-attributes "^0.0.1"
+    redux "^4.0.1"
+    whatwg-fetch "^3.0.0"
+
+s3-dropzone@^0.0.45:
+  version "0.0.45"
+  resolved "https://registry.yarnpkg.com/s3-dropzone/-/s3-dropzone-0.0.45.tgz#89ead7104203e0e7efaf0d065997470b449ad47b"
+  integrity sha512-QaGhMRT1s02FQ14hk0V0t57YoH42IkMftsKvOxlvvg4u0OcegT8ZGmoEvv/UkB2L+t+Yxn2/vrdXuWs0zt9tAQ==
   dependencies:
     classnames "^2.2.5"
     file-type "^10.1.0"
