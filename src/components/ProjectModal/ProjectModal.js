@@ -33,10 +33,6 @@ type Props = {
 type State = {}
 
 class ProjectModal extends React.Component<Props, State> {
-  // state = {
-  //  project: this.props.project
-  // }
-
   static propTypes = {
     updateProject: PropTypes.object,
     handleDelete: PropTypes.func.isRequired,
@@ -56,14 +52,14 @@ class ProjectModal extends React.Component<Props, State> {
   })
 
   handleSave = () => {
-    this.props.updateProject.mutate(this.props.project.data.project)
     this.props.handleClose()
+    this.props.updateProject.mutate(this.props.project.data.project)
   }
 
   handleDelete = () => {
+    this.props.handleClose()
     const { id } = this.props.project.data.project
     this.props.handleDelete({ id })
-    this.props.handleClose()
   }
 
   render () {

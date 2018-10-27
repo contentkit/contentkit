@@ -11,6 +11,7 @@ import { POST_QUERY } from '../../graphql/queries'
 import gql from 'graphql-tag'
 import type { Post } from '../../types'
 import { createInitialState, convertToDate } from 'draft-js-dates'
+import { withStyles } from '@material-ui/core/styles'
 
 export const _POST_QUERY = gql`
   query ($id: ID!) {
@@ -36,12 +37,24 @@ type Props = {
   }
 }
 
+const styles = theme => ({
+  dialog: {
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: '100%',
+      width: '100%',
+      height: '100%',
+      maxHeight: '100%',
+      margin: 0
+    }
+  }
+})
+
 const getDate = ({ post: { data: { post } } }) => {
   let date = post && post.publishedAt
   return date ? new Date(date) : new Date()
 }
 
-export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
+class EditPostMetaModal extends React.PureComponent<Props, {}> {
   state = {
     dateInputState: createInitialState(getDate(this.props)),
     projectId: this.props.post.data.post.project.id
@@ -57,6 +70,8 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
   }
 
   handlePostMetaUpdate = async (evt: any) => {
+    this.props.onClose()
+
     let {
       document,
       id,
@@ -93,8 +108,6 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
         projectId: rest.project.id
       }
     })
-
-    this.props.onClose()
   }
 
   handleChange = (evt: any, key: string) => {
@@ -142,6 +155,11 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
         <Dialog
           open={open}
           maxWidth={'md'}
+          PaperProps={{
+            classes: {
+              root: this.props.classes.dialog
+            }
+          }}
         >
           <DialogTitle disableTypography>
             <h2>Update Postmeta</h2>
@@ -174,3 +192,5 @@ export default class EditPostMetaModal extends React.PureComponent<Props, {}> {
     )
   }
 }
+
+export default withStyles(styles)(EditPostMetaModal)

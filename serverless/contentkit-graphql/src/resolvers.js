@@ -328,7 +328,6 @@ const resolvers = {
         ) posts,
         (SELECT count(*) FROM posts) count
       `, { head: true })
-      console.log(data)
       return data
     }
   },

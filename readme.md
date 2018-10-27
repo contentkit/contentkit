@@ -14,7 +14,7 @@
 Authors create content which is accessible via a REST API. 
 
 ```js
-const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjE4NTk4NTEsImlhdCI6MTUzMDMyMzg1MSwicHJvamVjdElkIjoiY2plM3ZqNWZkMDU2YjAxNTdibDk4MDhxNyIsInVzZXJJZCI6ImNqajBuMHBqbGFlbWIwMTExYmRobDhyb3QiLCJtb2RlbE5hbWUiOiJVc2VyIn0.wwQcILPSlNMFvlmVXuG9-pNs5QqBQKkPBBwp5KtLk60'
+const token = '39f6dd0053d6fb3ea86f283ef'
 
 fetch('https://contentkit.co/api/v1/cjj0n1be8akko01031wadmjmz', {
   headers: {

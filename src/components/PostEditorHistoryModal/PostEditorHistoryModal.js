@@ -64,9 +64,12 @@ class PostEditorHistoryModal extends React.Component {
   render () {
     const { post, classes } = this.props
     const versions = post?.data?.post?.document?.versions || []
-    console.log(this.props)
     return (
-      <Dialog open={this.props.open} onClose={this.props.onClose}>
+      <Dialog
+        open={this.props.open}
+        onClose={this.props.onClose}
+        maxWidth={'md'}
+      >
         <DialogTitle disableTypography>History</DialogTitle>
         <DialogContent>
           <div className={classes.row}>

@@ -1,11 +1,8 @@
 {
   "name": "contentkit",
   "regions": [
-    "us-west-2"
+    "us-east-1"
   ],
-  "lambda": {
-    "memory": 1536
-  },
   "type": "static",
   "static": {
     "dir": "dist",

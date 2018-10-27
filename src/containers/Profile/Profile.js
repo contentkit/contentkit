@@ -15,7 +15,7 @@ class Profile extends React.Component {
   }
 
   handleChange = (e, key) => {
-    let q = {
+    this.props.client.writeQuery({
       query: USER_QUERY,
       data: {
         user: {
@@ -23,9 +23,7 @@ class Profile extends React.Component {
           [key]: e.target.value
         }
       }
-    }
-    console.log(q)
-    this.props.client.writeQuery(q)
+    })
   }
 
   onCopy = () => {

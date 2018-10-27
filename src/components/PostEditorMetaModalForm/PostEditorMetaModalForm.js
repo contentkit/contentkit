@@ -4,13 +4,12 @@ import PropTypes from 'prop-types'
 import EnhancedInput from '../../components/EnhancedInput'
 import PostStatusSelect from '../PostEditorMetaModalSelect'
 import ProjectSelect from '../../components/ProjectSelect'
-import { Query, Mutation } from 'react-apollo'
+import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
 import FormControl from '@material-ui/core/FormControl'
 
 const PostEditorMetaModalForm = (props) => {
-  console.log('meta', props)
   const { handleChange, post, projects, selectProject } = props
   const title = (post.data.post && post.data.post.title) || ''
   const slug = (post.data.post && post.data.post.slug) || ''
@@ -72,7 +71,6 @@ export default props => (
     query={PROJECTS_QUERY}
   >
     {projects => {
-      console.log(projects)
       return (
         <PostEditorMetaModalForm
           {...props}

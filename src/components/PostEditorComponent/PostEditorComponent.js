@@ -1,10 +1,17 @@
 // @flow
 import React from 'react'
 import * as config from '../../lib/config'
-import Monograph from 'monograph/lib/Monograph'
+import { Editor } from 'monograph'
 import plugins from 'monograph/lib/plugins'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import { withStyles } from '@material-ui/core/styles'
+
+import 'monograph/lib/css/normalize.css'
+import 'monograph/lib/css/Draft.css'
+import 'monograph/lib/css/prism.css'
+import 'monograph/lib/css/CheckableListItem.css'
+import 's3-dropzone/lib/styles.css'
+import 'draft-js-code-block-plugin/lib/style.css'
 
 const Toolbar = plugins.customToolbarPlugin.CustomToolbar
 
@@ -22,7 +29,7 @@ const styles = theme => ({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 45,
+    // height: 45,
     zIndex: 500,
     backgroundColor: '#4c6072',
     display: 'flex',
@@ -75,7 +82,7 @@ const PostEditorComponent = props => {
   const variant = loading ? 'indeterminate' : 'determinate'
   return (
     <React.Fragment>
-      <Monograph
+      <Editor
         editorState={editorState}
         onChange={onChange}
         save={save}
