@@ -84,19 +84,21 @@ const theme = createMuiTheme({
       }
     },
     MuiTableRow: {
-      selected: {
-        backgroundColor: '#f4f9fd'
-      },
-      hover: {
-        backgroundColor: '#f4f9fd'
-      },
       root: {
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        '&$selected': {
+          backgroundColor: '#f4f9fd'
+        },
+        '&$hover': {
+          backgroundColor: '#f4f9fd'
+        }
       }
     },
     MuiCheckbox: {
-      checked: {
-        color: '#4ba8ff'
+      root: {
+        '&$checked': {
+          color: '#4ba8ff'
+        }
       }
       // checkedSecondary: {
       //  color: '#4ba8ff'
@@ -145,14 +147,14 @@ const theme = createMuiTheme({
     },
     MuiInput: {
       root: {
-        padding: 0,
+        // padding: 0,
         border: '1px solid #d8e0ea',
         borderRadius: '5px',
         color: '#4c6072',
-        fontSize: '17px'
-      },
-      focused: {
-        border: '1px solid #3391e9'
+        fontSize: '17px',
+        '&$focused': {
+          border: '1px solid #3391e9'
+        }
       }
     },
     MuiMenu: {
@@ -167,15 +169,15 @@ const theme = createMuiTheme({
         '&:hover': {
           color: '#4ba8ff',
           backgroundColor: '#fff'
+        },
+        '&$selected': {
+          backgroundColor: '#f4f9fd'
         }
-      },
-      selected: {
-        backgroundColor: '#f4f9fd'
       }
     },
     MuiSelect: {
       root: {
-        paddingLeft: '12px'
+        // paddingLeft: '12px'
       },
       select: {
         '&:focus': {
@@ -197,10 +199,10 @@ const theme = createMuiTheme({
         color: '#fff',
         '&:hover': {
           color: '#FFD209'
+        },
+        '&$disabled': {
+          color: '#6cb8ff'
         }
-      },
-      disabled: {
-        color: '#6cb8ff'
       }
     }
   }

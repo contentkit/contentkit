@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import { default as MuiSelect } from '@material-ui/core/Select'
 import Fade from '@material-ui/core/Fade'
+import FilledInput from '@material-ui/core/FilledInput';
 
 const styles = theme => ({
   root: {
@@ -17,7 +18,8 @@ const styles = theme => ({
   formControl: {
     // minWidth: 120,
     width: '100%',
-    margin: 'dense'
+    height: 48
+    // margin: 'dense'
   },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2
@@ -73,11 +75,12 @@ class Select extends React.Component<Props> {
     } = this.props
     const id = label.replace(' ', '-').toLowerCase()
     return (
-      <Input
+      <FilledInput
         value={value}
         disableUnderline
         name={id}
         id={id}
+        style={{ height: 48 }}
       />
     )
   }
@@ -93,7 +96,7 @@ class Select extends React.Component<Props> {
     const id = label.replace(' ', '-').toLowerCase()
     return (
       <form className={classes.root} autoComplete='off'>
-        <FormControl className={classes.formControl}>
+        <FormControl className={classes.formControl} variant='filled'>
           <InputLabel htmlFor={id} className={classes.label}>{label}</InputLabel>
           <MuiSelect
             className={classes.select}

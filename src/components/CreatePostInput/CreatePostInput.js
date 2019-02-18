@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import Input from '@material-ui/core/Input'
+import FilledInput from '@material-ui/core/FilledInput'
 import InputLabel from '@material-ui/core/InputLabel'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import ButtonWithSpinner from '../ButtonWithSpinner'
@@ -8,21 +8,24 @@ import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
   input: {
-    padding: '0 0 0 5px',
-    boxSizing: 'border-box'
+    // padding: '0 0 0 5px',
+    boxSizing: 'border-box',
+    height: 48
   },
   button: {
     border: 'none',
     boxShadow: 'none',
     borderBottomLeftRadius: 0,
-    borderTopLeftRadius: 0
+    borderTopLeftRadius: 0,
+    height: 48,
+    marginRight: '-12px'
   },
   adornment: {
-    maxHeight: 'max-content'
+    // maxHeight: 'max-content'
   },
   label: {
-    left: 5,
-    lineHeight: '1.4'
+    // left: 5,
+    // lineHeight: '1.4'
   }
 }
 
@@ -100,7 +103,7 @@ class CreatePostInput extends React.Component<Props, State> {
         >
             Post Title
         </InputLabel>
-        <Input
+        <FilledInput
           inputRef={ref => {
             this.ref = ref
           }}

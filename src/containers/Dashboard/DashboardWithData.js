@@ -92,15 +92,9 @@ class DashboardWithData extends React.Component<Props, State> {
     return (
       <Query query={FEED_QUERY} variables={variables}>
         {(feed) => {
-          //if (!(feed.data && feed.data.feed)) {
-          //  return null
-          //}
           return (
             <Query query={PROJECTS_QUERY}>
               {(projects) => {
-                //if (!(projects.data && projects.data.allProjects)) {
-                // return null
-                //}
                 return this.props.render({
                   editorState: this.props.editorState,
                   setEditorState: this.props.setEditorState,
@@ -125,7 +119,7 @@ class DashboardWithData extends React.Component<Props, State> {
 export default connect(
   state => state,
   dispatch => ({
-    setEditorState: (editorState: EditorState) => dispatch(setEditorState(editorState): any),
-    selectProject: (project: Project) => dispatch(selectProject(project): any)
+    setEditorState: (editorState: EditorState) => dispatch(setEditorState(editorState)),
+    selectProject: (project: Project) => dispatch(selectProject(project))
   })
 )(DashboardWithData)
