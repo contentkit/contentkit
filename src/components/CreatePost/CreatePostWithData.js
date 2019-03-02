@@ -13,20 +13,6 @@ import {
 
 import CreatePost from './CreatePost'
 import { genKey, genDate } from '../../lib/util'
-import type { Document, PostMeta, ProjectsQuery, PostsQuery } from '../../types'
-
-type Props = {
-  projects: ProjectsQuery,
-  posts: PostsQuery,
-  client: any,
-}
-
-type createPostVariables = {
-  projectId: string,
-  userId: string,
-  postMeta: PostMeta,
-  document: Document
-}
 
 const createPost = ({ mutate, ownProps }) => ({ title, projectId }) => {
   return mutate({
@@ -67,7 +53,7 @@ const createPost = ({ mutate, ownProps }) => ({ title, projectId }) => {
   })
 }
 
-class CreatePostWithData extends React.Component<Props> {
+class CreatePostWithData extends React.Component {
   createProject = ({ mutate }) => (variables: { name: string }) => {
     return mutate({
       variables: variables,
@@ -92,7 +78,7 @@ class CreatePostWithData extends React.Component<Props> {
   }
 
   updatePost = ({ mutate }) =>
-    (variables: { id: string }) => mutate({ variables })
+    (variables) => mutate({ variables })
 
   render () {
     return (

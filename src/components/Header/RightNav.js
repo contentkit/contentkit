@@ -28,6 +28,9 @@ const styles = {
     root: {
       margin: '12px 0 0 0'
     }
+  },
+  iconButton: {
+    color: '#fff'
   }
 }
 
@@ -43,6 +46,7 @@ function RightNav (props) {
         aria-owns={anchorEl ? 'right-nav' : null}
         aria-haspopup='true'
         onClick={props.setAnchorEl}
+        className={classes.iconButton}
       >
         <MoreVertIcon />
       </IconButton>

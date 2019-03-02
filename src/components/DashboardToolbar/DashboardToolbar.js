@@ -18,6 +18,9 @@ const styles = {
     backgroundColor: '#6cb8ff',
     border: 'none',
     color: '#fff'
+  },
+  iconButton: {
+    color: '#fff'
   }
 }
 
@@ -38,7 +41,7 @@ const fetchRaw = async ({ client, selected }) => {
 }
 
 class DashboardToolbar extends React.Component<{}> {
-  state = { 
+  state = {
     raw: undefined
   }
   static propTypes = {
@@ -100,12 +103,14 @@ class DashboardToolbar extends React.Component<{}> {
           onClick={this.handleEdit}
           onMouseEnter={this.onMouseEnter}
           disabled={!open}
+          className={classes.iconButton}
         >
           <EditIcon />
         </IconButton>
         <IconButton
           onClick={this.handleDelete}
           disabled={!open}
+          className={classes.iconButton}
         >
           <DeleteIcon />
         </IconButton>

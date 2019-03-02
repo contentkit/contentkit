@@ -5,6 +5,9 @@ import InputLabel from '@material-ui/core/InputLabel'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import ButtonWithSpinner from '../ButtonWithSpinner'
 import { withStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+
+import OutlinedInput from '@material-ui/core/OutlinedInput'
 
 const styles = {
   input: {
@@ -18,7 +21,7 @@ const styles = {
     borderBottomLeftRadius: 0,
     borderTopLeftRadius: 0,
     height: 48,
-    marginRight: '-12px'
+    marginRight: '-14px'
   },
   adornment: {
     // maxHeight: 'max-content'
@@ -96,25 +99,26 @@ class CreatePostInput extends React.Component<Props, State> {
     } = this.props
     return (
       <React.Fragment>
-        <InputLabel
+        {/*<InputLabel
           htmlFor='create-post'
           className={classes.label}
           disableAnimation
         >
             Post Title
-        </InputLabel>
-        <FilledInput
+        </InputLabel>*/}
+        <OutlinedInput
           inputRef={ref => {
             this.ref = ref
           }}
           className={classes.input}
           inputProps={inputProps}
-          disableUnderline
           endAdornment={this.renderAdornment()}
           value={value}
           onChange={handleChange}
           name={'create-post'}
           id={'create-post'}
+          variant={'outlined'}
+          labelWidth={0}
         />
       </React.Fragment>
     )

@@ -16,29 +16,8 @@ import {
 } from './util'
 import { connect } from 'react-redux'
 import { setEditorState } from '../../lib/redux'
-import { EditorState } from 'draft-js'
-import type { User, SetEditorState } from '../../types'
 
-type Props = {
-  history: any,
-  editorState: EditorState,
-  setEditorState: SetEditorState,
-  hydrated: boolean,
-  logged: boolean,
-  updateDocument: ({
-    mutate: (document: any) => void
-  }) => void,
-  updatePost: () => void,
-  client: any
-}
-
-type State = {
-  open: boolean,
-  html: string,
-  loading: boolean
-}
-
-class BaseEditor extends React.Component<Props, State> {
+class BaseEditor extends React.Component {
   _hasUnmounted: boolean
   decorators: any
 
@@ -69,13 +48,6 @@ class BaseEditor extends React.Component<Props, State> {
     this._hasUnmounted = true
   }
 
-  // shouldComponentUpdate (nextProps, nextState) {
-  //  return nextProps.editorState !== this.props.editorState ||
-  //    nextState.open !== this.state.open ||
-  //    nextProps.logged !== this.props.logged ||
-  //    nextState.loading !== this.state.loading
-  // }
-
   saveDocument = ({ editorState }) => {
     const {
       post: {
@@ -96,7 +68,6 @@ class BaseEditor extends React.Component<Props, State> {
   }
 
   manualSave = async () => {
-    // this.sync.cancel()
     await new Promise((resolve, reject) => this.setState({
       loading: true
     }, resolve))
@@ -106,13 +77,6 @@ class BaseEditor extends React.Component<Props, State> {
     await new Promise((resolve, reject) => this.setState({
       loading: false
     }, resolve))
-  }
-
-  componentDidUpdate (prevProps, prevState) {
-    const { post, hydrated } = this.props
-    if (!post.data.post) return
-    if (!hydrated) return
-    // this.sync()
   }
 
   getHtml = (editorState = this.props.editorState) =>
@@ -178,7 +142,7 @@ class BaseEditor extends React.Component<Props, State> {
 export default connect(
   state => state,
   dispatch => ({
-    setEditorState: (editorState: EditorState) => dispatch(
+    setEditorState: (editorState) => dispatch(
       setEditorState(editorState)
     )
   })

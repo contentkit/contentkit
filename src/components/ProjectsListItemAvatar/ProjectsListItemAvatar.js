@@ -6,7 +6,7 @@ const ProjectsListItemAvatar = ({ id }: { id: string }) => {
   return (
     <Avatar
       src={'https://avatar.tobi.sh/' + id}
-      style={{width: '35px', height: '35px'}}
+      style={{ width: '35px', height: '35px' }}
     />
   )
 }

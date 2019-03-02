@@ -9,28 +9,6 @@ import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
 import { selectProject, setEditorState } from '../../lib/redux'
 import PropTypes from 'prop-types'
-import type { SetEditorState, Project, Client } from '../../types'
-import type { EditorState } from 'draft-js'
-
-type Props = {
-  setEditorState: SetEditorState,
-  selectedProject: Project,
-  client: Client,
-  selectProject: (project: Project) => void,
-  render: (args: any) => void
-}
-
-type State = {
-  variables: {
-    before: string,
-    after: string,
-    first: number,
-    query: string,
-    id: string,
-    projectId: string,
-    skip: number
-  }
-}
 
 const deletePost = feed => ({ id }) => {
   feed.client.mutate({
@@ -49,7 +27,7 @@ const deletePost = feed => ({ id }) => {
   })
 }
 
-class DashboardWithData extends React.Component<Props, State> {
+class DashboardWithData extends React.Component {
   static propTypes = {
     user: PropTypes.object,
     selectedProject: PropTypes.string,
@@ -119,7 +97,7 @@ class DashboardWithData extends React.Component<Props, State> {
 export default connect(
   state => state,
   dispatch => ({
-    setEditorState: (editorState: EditorState) => dispatch(setEditorState(editorState)),
-    selectProject: (project: Project) => dispatch(selectProject(project))
+    setEditorState: (editorState) => dispatch(setEditorState(editorState)),
+    selectProject: (project) => dispatch(selectProject(project))
   })
 )(DashboardWithData)

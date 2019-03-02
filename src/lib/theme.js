@@ -145,16 +145,32 @@ const theme = createMuiTheme({
         backgroundColor: 'rgba(76, 96, 114, 0.8)'
       }
     },
+    // MuiInput: {
+    //   root: {
+    //     border: '1px solid #d8e0ea',
+    //     borderRadius: '5px',
+    //     color: '#4c6072',
+    //     fontSize: '17px',
+    //     '&$focused': {
+    //       border: '1px solid #3391e9'
+    //     }
+    //   },
+    // },
     MuiInput: {
       root: {
-        // padding: 0,
-        border: '1px solid #d8e0ea',
-        borderRadius: '5px',
-        color: '#4c6072',
-        fontSize: '17px',
+        borderRadius: '3px',
+        padding: '5px 5px 5px 13px',
+        boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+        fontSize: '16px',
+        boxSizing: 'border-box',
         '&$focused': {
-          border: '1px solid #3391e9'
+          // boxShadow: '0 0 0 1px #34d058'
         }
+      },
+      formControl: {},
+      error: {
+        color: '#d73a49',
+        boxShadow: '0 0 0 1px #d73a49'
       }
     },
     MuiMenu: {
@@ -194,14 +210,25 @@ const theme = createMuiTheme({
         color: '#bdc9d6'
       }
     },
+    // MuiIconButton: {
+    //   root: {
+    //     color: '#fff',
+    //     '&:hover': {
+    //       color: '#FFD209'
+    //     },
+    //     '&$disabled': {
+    //       color: '#6cb8ff'
+    //     }
+    //   }
+    // },
     MuiIconButton: {
       root: {
-        color: '#fff',
+        color: '#9e9e9e',
+        boxShadow: 'none',
+        backgroundColor: 'transparent',
         '&:hover': {
-          color: '#FFD209'
-        },
-        '&$disabled': {
-          color: '#6cb8ff'
+          color: '#757575',
+          backgroundColor: 'transparent'
         }
       }
     }

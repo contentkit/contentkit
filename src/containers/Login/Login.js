@@ -2,11 +2,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PasswordField from '../../components/LoginPasswordField'
-import EnhancedInput from '../../components/EnhancedInput'
 import ButtonWithSpinner from '../../components/ButtonWithSpinner'
 import ErrorSnackBar from '../../components/LoginErrorSnackBar'
 import { withStyles } from '@material-ui/core/styles'
 import { styles } from './styles'
+import TextField from '@material-ui/core/TextField'
 
 const getErrors = ({ error }) => {
   return (error && error.graphQLErrors || []).map(err => err.message).join(', ') /* eslint-disable-line */
@@ -69,13 +69,21 @@ class LoginPage extends React.Component {
           errorMessage={error}
         />
         <form className={classes.login}>
+          <h4 className={classes.title}>ContentKit</h4>
           <div className={classes.gutter}>
-            <EnhancedInput
+            <TextField
               id='email'
-              label='Email'
+              placeholder='Email'
+              margin='normal'
+              InputProps={{
+                disableUnderline: true
+              }}
               value={this.state.email}
               onChange={this.handleEmailChange}
-              autoComplete='current-email'
+              type={'email'}
+              autoComplete={'username'}
+              fullWidth
+              className={classes.input}
             />
             <PasswordField
               id='password'

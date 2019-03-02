@@ -2,7 +2,6 @@
 import React from 'react'
 import {
   CREATE_IMAGE,
-  UPDATE_POST,
   DELETE_IMAGE,
   UPDATE_DOCUMENT
 } from '../../graphql/mutations'

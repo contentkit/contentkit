@@ -19,7 +19,7 @@ const ProjectModalToolbar = (props: Props) => {
     handleClose
   } = props
   return (
-    <Toolbar disableGutters style={{justifyContent: 'space-between'}}>
+    <Toolbar disableGutters style={{ justifyContent: 'space-between' }}>
       <Button
         className={classes.button}
         variant='text'

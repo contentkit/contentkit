@@ -3,19 +3,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 import Header from '../../components/Header'
 
-type Props = {
-  history: any,
-  logged: bool,
-  loading: bool,
-  render: () => React.Node,
-  children: React.Node
-}
-
-type State = {
-  anchorEl: HTMLElement
-}
-
-class Layout extends React.Component<Props, State> {
+class Layout extends React.Component {
   static propTypes = {
     history: PropTypes.object,
     logged: PropTypes.bool,

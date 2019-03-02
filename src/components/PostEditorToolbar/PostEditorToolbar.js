@@ -30,14 +30,8 @@ const PostEditorToolbar = props => (
       <ToolbarButton onClick={evt => props.onClick('history')}>
         History
       </ToolbarButton>
-      <ToolbarButton onClick={evt => props.onClick('preview')}>
-        Preview
-      </ToolbarButton>
       <ToolbarButton onClick={evt => props.onClick('postmeta')}>
         Postmeta
-      </ToolbarButton>
-      <ToolbarButton onClick={evt => props.onClick('inspector')}>
-        Inspect
       </ToolbarButton>
     </div>
   </React.Fragment>

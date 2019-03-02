@@ -5,15 +5,18 @@ export const styles = theme => ({
   container: {
     ...background,
     position: 'absolute',
-    width: '100vw'
+    width: '100vw',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   login: {
     boxShadow: '0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07)',
     borderRadius: '4px',
     padding: '5vh',
     backgroundColor: '#fff',
-    maxWidth: '340px',
-    margin: '25vh auto',
+    width: '340px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between'
@@ -23,7 +26,6 @@ export const styles = theme => ({
       width: '90%',
       maxWidth: '90%',
       overflow: 'hidden',
-      // height: '100vh',
       margin: 0
     }
   },
@@ -37,6 +39,13 @@ export const styles = theme => ({
     margin: theme.spacing.unit
   },
   gutter: {
-    marginBottom: '1em'
+    marginBottom: '4em'
+  },
+  input: {
+    marginBottom: '2em'
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: '20px'
   }
 })

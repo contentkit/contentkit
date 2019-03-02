@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import IconButton from '@material-ui/core/IconButton'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
-import EnhancedInput from '../EnhancedInput'
+import Input from '@material-ui/core/Input'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import FormControl from '@material-ui/core/FormControl'
 
 class PasswordField extends React.Component {
   state = {
@@ -19,25 +21,38 @@ class PasswordField extends React.Component {
     this.setState(prevState => ({ reveal: !prevState.reveal }))
   }
 
-  renderAdornment = () => (
-    <IconButton
-      color='primary'
-      onClick={this.handleReveal}
-      onMouseDown={this.reveal}
-    >
-      {this.state.reveal ? <VisibilityOff /> : <Visibility />}
-    </IconButton>
-  )
-
   render () {
+    const { classes, value, onChange } = this.props
+    const { reveal } = this.state
     return (
       <div>
-        <EnhancedInput
-          label='password'
-          type={this.state.reveal ? 'text' : 'password'}
-          adornment={this.renderAdornment()}
-          {...this.props}
-        />
+        <FormControl fullWidth>
+          <Input
+            id='password'
+            type={reveal ? 'text' : 'password'}
+            value={value}
+            onChange={onChange}
+            disableUnderline
+            placeholder='Password'
+            autoComplete={'current-password'}
+            endAdornment={
+              <InputAdornment
+                position='end'
+                style={{ margin: 0 }}
+              >
+                <IconButton
+                  onClick={this.reaveal}
+                  onMouseDown={this.handleReveal}
+                >
+                  {reveal
+                    ? <VisibilityOff />
+                    : <Visibility />
+                  }
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
       </div>
     )
   }
