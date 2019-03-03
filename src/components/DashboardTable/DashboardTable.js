@@ -12,15 +12,24 @@ import DashboardTableRow from '../DashboardTableRow'
 import EmptyTableRow from '../DashboardTableEmptyRow'
 import LazyLoad from '../LazyLoad'
 import EmptyTable from './EmptyTable'
-import type { PostsQuery, ProjectsQuery } from '../../types'
+import Toolbar from '@material-ui/core/Toolbar'
+import DashboardToolbar from '../DashboardToolbar'
 
 const stylesheet = {
   wrapper: {
     margin: '1em 0',
     borderRadius: '5px',
-    boxShadow: 'rgba(8, 35, 51, 0.03) 0px 0px 2px, rgba(8, 35, 51, 0.05) 0px 3px 6px'
+    boxShadow: 'rgba(8, 35, 51, 0.03) 0px 0px 2px, rgba(8, 35, 51, 0.05) 0px 3px 6px',
+    padding: '30px'
   },
-  grid: {}
+  grid: {},
+  toolbar: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: -24,
+    marginRight: -24
+  }
 }
 
 const TableWrapper = props => (
@@ -75,7 +84,8 @@ class DashboardTable extends React.Component<Props, {}> {
 
   render () {
     const {
-      feed
+      feed,
+      classes
     } = this.props
     let allPosts = feed?.data?.feed?.posts
     if (!feed?.loading && !allPosts.length) {
@@ -85,7 +95,10 @@ class DashboardTable extends React.Component<Props, {}> {
     }
     return (
       <LazyLoad {...this.props} render={({ loading }) => (
-        <TableWrapper classes={this.props.classes}>
+        <TableWrapper classes={classes}>
+          <Toolbar className={classes.toolbar}>
+            {this.props.renderToolbar(this.props)}
+          </Toolbar>
           <Table>
             <TableHead>
               <TableRow>

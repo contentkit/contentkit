@@ -6,6 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { withStyles } from '@material-ui/core/styles'
 import Fade from '@material-ui/core/Fade'
+import Avatar from '@material-ui/core/Avatar'
 
 const styles = {
   root: {
@@ -30,6 +31,9 @@ const styles = {
     }
   },
   iconButton: {
+  },
+  avatar: {
+    backgroundImage: 'linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)'
   }
 }
 
@@ -47,7 +51,7 @@ function RightNav (props) {
         onClick={props.setAnchorEl}
         className={classes.iconButton}
       >
-        <MoreVertIcon />
+        <Avatar alt="" className={classes.avatar} />
       </IconButton>
       <Menu
         id='right-nav'

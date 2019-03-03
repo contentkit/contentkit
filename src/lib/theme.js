@@ -87,6 +87,11 @@ const theme = createMuiTheme({
       outlinedPrimary: {
       }
     },
+    MuiTable: {
+      root: {
+        border: '1px solid #f5f5f5'
+      }
+    },
     MuiTableCell: {
       root: {
         borderBottom: '1px solid #f5f5f5'
@@ -197,9 +202,6 @@ const theme = createMuiTheme({
     },
     MuiSelect: {
       root: {
-        '&$focus': {
-          background: 'transparent'
-        }
       },
       select: {
         '&$focused': {
@@ -210,7 +212,6 @@ const theme = createMuiTheme({
     MuiChip: {
       root: {
         backgroundImage: 'linear-gradient(160deg, #f0f5ff 12.5%, #d6e4ff 85%)',
-        // border: '1px solid #D6B996',
         color: '#030852'
       },
       deleteIcon: {
@@ -218,14 +219,14 @@ const theme = createMuiTheme({
       }
     },
     MuiIconButton: {
-      disabled: {
-        color: '#bcc1d9'
-      },
       root: {
         borderRadius: '0px',
         color: '#061178',
         boxShadow: 'none',
         backgroundColor: 'transparent',
+        '&$disabled': {
+          color: '#bcc1d9'
+        },
         '&:hover': {
           color: '#364ba3',
         }

@@ -17,7 +17,8 @@ article, .content {
   min-height: calc(100vh - 150px);
   background-color: #f0f5ff;
   background-image: linear-gradient(160deg, #f0f5ff 12.5%, #d6e4ff 85%);
-  padding: 41px 0 40px 0;
+  padding: 40px;
+  // padding: 41px 0 40px 0;
 }
 
 .draft-js-dates {

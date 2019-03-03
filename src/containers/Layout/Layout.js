@@ -27,9 +27,7 @@ class Layout extends React.Component {
           {...this.state}
           setAnchorEl={this.setAnchorEl}
         />
-        <article>
-          {children}
-        </article>
+        {children}
         <footer />
       </div>
     )

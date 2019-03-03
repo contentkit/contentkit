@@ -103,28 +103,29 @@ class Dashboard extends React.Component<Props, State> {
     return (
       <Layout
         history={this.props.history}
-        render={this.renderToolbar}
+        render={() => null}
         logged={this.props.logged}
         client={this.props.client}
         selectedPost={this.state.selectedPost}
         query={this.state.query}
       >
-        <div style={{ margin: '0 40px' }}>
-          <CreatePost
-            feed={this.props.feed}
-            selectedProject={this.props.selectedProject}
-            projects={this.props.projects}
-            selectProject={this.props.selectProject}
-            client={this.props.client}
-          />
-          <DashboardTable
-            feed={this.props.feed}
-            projects={this.props.projects}
-            selectedPost={this.state.selectedPost}
-            handlePostSelect={this.handlePostSelect}
-            client={this.props.client}
-          />
-        </div>
+        <article>
+            <CreatePost
+              feed={this.props.feed}
+              selectedProject={this.props.selectedProject}
+              projects={this.props.projects}
+              selectProject={this.props.selectProject}
+              client={this.props.client}
+            />
+            <DashboardTable
+              feed={this.props.feed}
+              projects={this.props.projects}
+              selectedPost={this.state.selectedPost}
+              handlePostSelect={this.handlePostSelect}
+              client={this.props.client}
+              renderToolbar={this.renderToolbar}
+            />
+        </article>
       </Layout>
     )
   }

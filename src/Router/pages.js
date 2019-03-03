@@ -1,5 +1,4 @@
 import React from 'react'
-import { withAsync } from 'with-async-component'
 import Spinner from '../components/Spinner'
 import { Redirect } from 'react-router-dom'
 
@@ -32,24 +31,6 @@ const withRedirect = Component => props =>
   shouldRedirect(props)
     ? <Redirect to='/login' />
     : <Component {...props} />
-
-const withAsyncComponent = withAsync(LoadingOverlay)
-
-// export const Dashboard = withRedirect(withAsyncComponent(
-//   () => import('../containers/Dashboard'))
-// )
-
-// export const SignIn = withRedirect(withAsyncComponent(
-//   () => import('../containers/Login')
-// ))
-// export const PostEditor = withRedirect(withAsyncComponent(
-//   () => import('../containers/PostEditor')
-// ))
-// export const Projects = withRedirect(withAsyncComponent(() => import('../containers/Projects')))
-
-// export const Profile = withRedirect(withAsyncComponent(
-//   () => import('../containers/Profile')
-// ))
 
 export const Dashboard = withRedirect(
   React.lazy(() => import('../containers/Dashboard'))

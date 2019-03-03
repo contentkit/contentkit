@@ -79,10 +79,6 @@ class CreatePostInput extends React.Component<Props, State> {
     )
   }
 
-  componentDidMount () {
-    // this.ref.focus()
-  }
-
   handleChange = (evt) => {
     this.setState({ value: evt.target.value })
   }
@@ -95,13 +91,6 @@ class CreatePostInput extends React.Component<Props, State> {
     } = this.props
     return (
       <React.Fragment>
-        {/*<InputLabel
-          htmlFor='create-post'
-          className={classes.label}
-          disableAnimation
-        >
-            Post Title
-        </InputLabel>*/}
         <OutlinedInput
           inputRef={ref => {
             this.ref = ref

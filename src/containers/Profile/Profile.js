@@ -37,21 +37,23 @@ class Profile extends React.Component {
       <Layout
         {...this.props}
         loading={this.props.updateUser.loading}>
-        <UserForm
-          handleChange={this.handleChange}
-          updateUser={this.props.updateUser.mutate}
-          generateToken={this.props.generateToken.mutate}
-          onCopy={this.onCopy}
-          setRef={ref => { this.ref = ref }}
-          user={user}
-        />
-        <Paper styles={{
-          maxWidth: '500px',
-          padding: '2em',
-          margin: '1em auto'
-        }}>
-          <CodeSnippet {...this.props} />
-        </Paper>
+        <article>
+          <UserForm
+            handleChange={this.handleChange}
+            updateUser={this.props.updateUser.mutate}
+            generateToken={this.props.generateToken.mutate}
+            onCopy={this.onCopy}
+            setRef={ref => { this.ref = ref }}
+            user={user}
+          />
+          <Paper styles={{
+            maxWidth: '500px',
+            padding: '2em',
+            margin: '1em auto'
+          }}>
+            <CodeSnippet {...this.props} />
+          </Paper>
+        </article>
       </Layout>
     )
   }

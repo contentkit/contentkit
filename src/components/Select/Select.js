@@ -96,7 +96,7 @@ class Select extends React.Component<Props> {
     const id = label.replace(' ', '-').toLowerCase()
     return (
       <form className={classes.root} autoComplete='off'>
-        <FormControl className={classes.formControl} variant='outline'>
+        <FormControl className={classes.formControl}>
           {/*<InputLabel htmlFor={id} className={classes.label}>{label}</InputLabel>*/}
           <MuiSelect
             className={classes.select}

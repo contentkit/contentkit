@@ -2,18 +2,7 @@
 import * as redux from 'redux'
 import { EditorState } from 'draft-js'
 
-type State = {
-  editorState: EditorState,
-  hydrated: bool,
-  selectedProject: any
-}
-
-type Action = {
-  type: string,
-  payload: any
-}
-
-const initialState : State = {
+const initialState = {
   editorState: EditorState.createEmpty(),
   hydrated: false,
   selectedProject: undefined
@@ -23,7 +12,7 @@ export const SET_EDITOR_STATE = 'SET_EDITOR_STATE'
 export const SELECT_PROJECT = 'SELECT_PROJECT'
 export const SELECT_POST = 'SELECT_POST'
 
-export const reducer = (state: State, action: Action) => {
+export const reducer = (state, action) => {
   switch (action.type) {
     case SET_EDITOR_STATE:
       return { ...state, ...action.payload }
@@ -36,7 +25,7 @@ export const reducer = (state: State, action: Action) => {
   }
 }
 
-export const setEditorState = (editorState: EditorState) => ({
+export const setEditorState = (editorState) => ({
   payload: {
     editorState,
     hydrated: true
@@ -44,11 +33,21 @@ export const setEditorState = (editorState: EditorState) => ({
   type: SET_EDITOR_STATE
 })
 
-export const selectProject = (selectedProject: string) => ({
+export const selectProject = (selectedProject) => ({
   payload: {
     selectedProject
   },
   type: SELECT_PROJECT
 })
 
-export const store = redux.createStore(reducer, initialState)
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+  : redux.compose
+
+const middleware = []
+
+const enhancer = composeEnhancers(
+  redux.applyMiddleware(...middleware)
+)
+
+export const store = redux.createStore(reducer, initialState, enhancer)

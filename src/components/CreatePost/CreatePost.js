@@ -116,7 +116,7 @@ export const CreatePostBare = CreatePost
 
 export const styles = () => ({
   paper: {
-    padding: '20px',
+    padding: '30px',
     marginBottom: '40px',
     boxShadow: 'rgba(8, 35, 51, 0.03) 0px 0px 2px, rgba(8, 35, 51, 0.05) 0px 3px 6px'
   },

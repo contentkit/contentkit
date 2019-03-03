@@ -18,7 +18,6 @@ import { connect } from 'react-redux'
 import { setEditorState } from '../../lib/redux'
 
 class BaseEditor extends React.Component {
-  _hasUnmounted: boolean
   decorators: any
 
   static propTypes = {
@@ -36,16 +35,11 @@ class BaseEditor extends React.Component {
     html: '',
     loading: false
   }
-  _hasUnmounted = false
 
   componentDidMount () {
     if (this.props.hydrated) return
     const editorState = hydrate(this.props)
     this.props.setEditorState(editorState)
-  }
-
-  componentWillUnmount () {
-    this._hasUnmounted = true
   }
 
   saveDocument = ({ editorState }) => {

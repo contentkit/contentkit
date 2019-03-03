@@ -49,9 +49,6 @@ class PostEditorHistoryModal extends React.Component {
 
   handleRestore = () => {
     this.props.onClose()
-    // this.props.saveDocument({
-    //  editorState: this.state.editorState
-    // })
     this.props.setEditorState(
       EditorState.push(
         this.props.editorState,
