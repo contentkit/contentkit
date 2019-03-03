@@ -18,9 +18,9 @@ const styles = {
     boxShadow: '0 1px 1px 0 rgba(216,224,234,0.5)'
   },
   menuItem: {
-    color: '#6d859e',
+    color: '#8c8c8c',
     '&:hover': {
-      color: '#4ba8ff',
+      color: '#2f54eb',
       backgroundColor: '#fff'
     }
   },
@@ -30,7 +30,6 @@ const styles = {
     }
   },
   iconButton: {
-    color: '#fff'
   }
 }
 

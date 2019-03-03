@@ -16,7 +16,9 @@ import type { PostsQuery, ProjectsQuery } from '../../types'
 
 const stylesheet = {
   wrapper: {
-    margin: '1em 0'
+    margin: '1em 0',
+    borderRadius: '5px',
+    boxShadow: 'rgba(8, 35, 51, 0.03) 0px 0px 2px, rgba(8, 35, 51, 0.05) 0px 3px 6px'
   },
   grid: {}
 }

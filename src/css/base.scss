@@ -8,13 +8,15 @@ html, body, #root {
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
-  color: #4c6072;
+  color: #595959;
+  -webkit-font-smoothing: antialiased;
+  font-family: -apple-system,BlinkMacSystemFont,segoe ui,roboto,oxygen,ubuntu,cantarell,fira sans,droid sans,helvetica neue,sans-serif;
 }
 
 article, .content {
   min-height: calc(100vh - 150px);
-  background-color: #f4f9fd;
+  background-color: #f0f5ff;
+  background-image: linear-gradient(160deg, #f0f5ff 12.5%, #d6e4ff 85%);
   padding: 41px 0 40px 0;
 }
 
@@ -31,7 +33,7 @@ article, .content {
   padding: 5px;
   border: 1px solid #d8e0ea;
   border-radius: 3px;
-  color: #6d859e;
+  color: #595959;
 }
 
 .draft-js-dates-error {
@@ -39,7 +41,7 @@ article, .content {
 }
 
 .draft-js-dates .public-DraftStyleDefault-block span > span::selection {
-  color: #4ba8ff;
+  color: #2f54eb;
   background-color: #ecf3f8;
 }
 

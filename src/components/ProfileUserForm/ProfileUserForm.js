@@ -30,7 +30,7 @@ const UserForm = props => {
       <div className={props.classes.flex}>
         <Button
           className={props.classes.button}
-          variant='contained'
+          variant='outlined'
           color='secondary'
           onClick={() => props.generateToken()}
         >
@@ -78,11 +78,11 @@ export default withStyles(
       width: '100%'
     },
     iconButton: {
-      color: '#4c6072'
+
     },
     input: {
       padding: '2px 8px',
-      color: '#4c6072',
+      // color: '#e6fffb',
       height: '100%'
     },
     flex: {

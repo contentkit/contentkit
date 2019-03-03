@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles'
 const styles = {
   footer: {
     height: 300,
-    backgroundColor: '#4ba8ff',
+    backgroundColor: '#2f54eb',
     width: '100%',
     left: 0,
     right: 0

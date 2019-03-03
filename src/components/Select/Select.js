@@ -19,14 +19,14 @@ const styles = theme => ({
   formControl: {
     // minWidth: 120,
     width: '100%',
-    height: 48
+    // height: 48
     // margin: 'dense'
   },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2
   },
   menuItem: {
-    backgroundColor: '#f4f9fd !important'
+    // backgroundColor: '#f4f9fd !important'
   },
   select: {
     '&:focus': {
@@ -80,7 +80,7 @@ class Select extends React.Component<Props> {
         value={value}
         name={id}
         id={id}
-        style={{ height: 48 }}
+        style={{ height: '35.8px' }}
       />
     )
   }
@@ -96,7 +96,7 @@ class Select extends React.Component<Props> {
     const id = label.replace(' ', '-').toLowerCase()
     return (
       <form className={classes.root} autoComplete='off'>
-        <FormControl className={classes.formControl} variant='filled'>
+        <FormControl className={classes.formControl} variant='outline'>
           {/*<InputLabel htmlFor={id} className={classes.label}>{label}</InputLabel>*/}
           <MuiSelect
             className={classes.select}

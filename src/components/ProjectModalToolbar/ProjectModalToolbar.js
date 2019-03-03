@@ -4,14 +4,7 @@ import PropTypes from 'prop-types'
 import Button from '@material-ui/core/Button'
 import Toolbar from '@material-ui/core/Toolbar'
 
-type Props = {
-  classes: any,
-  handleSave: () => void,
-  handleDelete: () => void,
-  handleClose: () => void
-}
-
-const ProjectModalToolbar = (props: Props) => {
+const ProjectModalToolbar = (props) => {
   const {
     classes,
     handleSave,
@@ -30,8 +23,8 @@ const ProjectModalToolbar = (props: Props) => {
       <div>
         <Button
           className={classes.button}
-          variant='contained'
-          color='secondary'
+          variant='outlined'
+          color='primary'
           onClick={() => handleClose()}>
             Close
         </Button>

@@ -11,24 +11,20 @@ import OutlinedInput from '@material-ui/core/OutlinedInput'
 
 const styles = {
   input: {
-    // padding: '0 0 0 5px',
     boxSizing: 'border-box',
-    height: 48
   },
   button: {
     border: 'none',
     boxShadow: 'none',
     borderBottomLeftRadius: 0,
     borderTopLeftRadius: 0,
-    height: 48,
+    borderTopRightRadius: 4,
+    borderBottomRightRadius: 4,
     marginRight: '-14px'
   },
   adornment: {
-    // maxHeight: 'max-content'
   },
   label: {
-    // left: 5,
-    // lineHeight: '1.4'
   }
 }
 

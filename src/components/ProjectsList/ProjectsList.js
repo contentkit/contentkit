@@ -7,25 +7,20 @@ import { withStyles } from '@material-ui/core/styles'
 import ProjectsListItem from '../ProjectsListItem'
 
 const styles = theme => ({
-  menuItem: {
-    '&:focus': {
-      backgroundColor: theme.palette.primary.main,
-      '& $primary, & $icon': {
-        color: theme.palette.common.white
-      }
-    }
-  },
-  primary: {},
-  icon: {}
+  paper: {
+    borderRadius: '5px',
+    boxShadow: 'rgba(8, 35, 51, 0.03) 0px 0px 2px, rgba(8, 35, 51, 0.05) 0px 3px 6px'
+  }
 })
 
 const ProjectsList = ({
   allProjects,
   handleClick,
   onMouseEnter,
-  onMouseLeave
+  onMouseLeave,
+  classes
 }) => (
-  <Paper elevation={0}>
+  <Paper elevation={0} className={classes.paper}>
     <MenuList>
       {allProjects.map(project =>
         <ProjectsListItem

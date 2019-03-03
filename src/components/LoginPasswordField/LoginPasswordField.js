@@ -6,6 +6,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import FormControl from '@material-ui/core/FormControl'
+import { withStyles } from '@material-ui/core/styles'
 
 class PasswordField extends React.Component {
   state = {
@@ -35,6 +36,7 @@ class PasswordField extends React.Component {
             disableUnderline
             placeholder='Password'
             autoComplete={'current-password'}
+            className={classes.root}
             endAdornment={
               <InputAdornment
                 position='end'
@@ -63,4 +65,10 @@ PasswordField.propTypes = {
   value: PropTypes.string
 }
 
-export default PasswordField
+export default withStyles(
+  theme => ({
+    root: {
+      padding: '5px 5px 5px 13px',
+    }
+  })
+)(PasswordField)

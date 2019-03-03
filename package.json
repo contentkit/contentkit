@@ -40,7 +40,6 @@
     "react": "^16.8.3",
     "react-apollo": "^2.5.1",
     "react-dom": "^16.8.3",
-    "react-inspector": "^2.3.0",
     "react-redux": "^6.0.1",
     "react-router-dom": "^4.1.2",
     "redux": "^4.0.1",

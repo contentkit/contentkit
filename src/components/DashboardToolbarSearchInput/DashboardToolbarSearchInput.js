@@ -1,7 +1,7 @@
 import React from 'react'
 import EnhancedInput from '../EnhancedInput'
 import SearchIcon from '@material-ui/icons/Search'
-
+import TextField from '@material-ui/core/TextField'
 import PropTypes from 'prop-types'
 
 class SearchInput extends React.Component {
@@ -39,12 +39,15 @@ class SearchInput extends React.Component {
           display: 'block'
         }}
       >
-        <EnhancedInput
+        <TextField
           margin='none'
           onChange={handleChange}
           value={query}
-          adornment={<SearchIcon />}
           className={classes.input}
+          variant={'outlined'}
+          InputProps={{
+            endAdornment: <SearchIcon />
+          }}
         />
       </div>
     )

@@ -6,18 +6,7 @@ import TableCell from '@material-ui/core/TableCell'
 import Checkbox from '@material-ui/core/Checkbox'
 import EmptyTableRow from '../DashboardTableEmptyRow'
 import { withStyles } from '@material-ui/core/styles'
-import type { Post } from '../../types'
-
-type Props = {
-  post: Post,
-  handleClick: () => void,
-  handlePostSelect: (Post) => void,
-  selected: boolean,
-  loading: boolean,
-  id: string
-}
-
-class DashboardTableRow extends React.Component<Props, {}> {
+class DashboardTableRow extends React.Component {
   static propTypes = {
     post: PropTypes.object,
     handleClick: PropTypes.func,
@@ -68,6 +57,7 @@ class DashboardTableRow extends React.Component<Props, {}> {
         >
           <Checkbox
             checked={selected}
+            color={'secondary'}
           />
         </TableCell>
         <TableCell

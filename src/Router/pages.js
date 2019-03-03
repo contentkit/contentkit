@@ -35,18 +35,38 @@ const withRedirect = Component => props =>
 
 const withAsyncComponent = withAsync(LoadingOverlay)
 
-export const Dashboard = withRedirect(withAsyncComponent(
-  () => import('../containers/Dashboard'))
+// export const Dashboard = withRedirect(withAsyncComponent(
+//   () => import('../containers/Dashboard'))
+// )
+
+// export const SignIn = withRedirect(withAsyncComponent(
+//   () => import('../containers/Login')
+// ))
+// export const PostEditor = withRedirect(withAsyncComponent(
+//   () => import('../containers/PostEditor')
+// ))
+// export const Projects = withRedirect(withAsyncComponent(() => import('../containers/Projects')))
+
+// export const Profile = withRedirect(withAsyncComponent(
+//   () => import('../containers/Profile')
+// ))
+
+export const Dashboard = withRedirect(
+  React.lazy(() => import('../containers/Dashboard'))
 )
 
-export const SignIn = withRedirect(withAsyncComponent(
-  () => import('../containers/Login')
-))
-export const PostEditor = withRedirect(withAsyncComponent(
-  () => import('../containers/PostEditor')
-))
-export const Projects = withRedirect(withAsyncComponent(() => import('../containers/Projects')))
+export const SignIn = withRedirect(
+  React.lazy(() => import('../containers/Login'))
+)
 
-export const Profile = withRedirect(withAsyncComponent(
-  () => import('../containers/Profile')
-))
+export const PostEditor = withRedirect(
+  React.lazy(() => import('../containers/PostEditor'))
+)
+
+export const Projects = withRedirect(
+  React.lazy(() => import('../containers/Projects'))
+)
+
+export const Profile = withRedirect(
+  React.lazy(() => import('../containers/Profile'))
+)

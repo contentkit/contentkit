@@ -68,57 +68,63 @@ class LoginPage extends React.Component {
         <ErrorSnackBar open={Boolean(error)}
           errorMessage={error}
         />
-        <form className={classes.login}>
-          <h4 className={classes.title}>ContentKit</h4>
-          <div className={classes.gutter}>
-            <TextField
-              id='email'
-              placeholder='Email'
-              margin='normal'
-              InputProps={{
-                disableUnderline: true
-              }}
-              value={this.state.email}
-              onChange={this.handleEmailChange}
-              type={'email'}
-              autoComplete={'username'}
-              fullWidth
-              className={classes.input}
-            />
-            <PasswordField
-              id='password'
-              fullWidth
-              value={this.state.password}
-              onChange={this.handlePasswordChange}
-              placeholder='Password'
-              margin='normal'
-              autoComplete='current-password'
-            />
+        <div className={classes.inset}>
+          <div className={classes.left}>
+            <form className={classes.login}>
+              <h4 className={classes.title}>ContentKit</h4>
+              <div className={classes.gutter}>
+                <TextField
+                  id='email'
+                  placeholder='Email'
+                  margin='normal'
+                  InputProps={{
+                    disableUnderline: true,
+                    className: classes.input
+                  }}
+                  value={this.state.email}
+                  onChange={this.handleEmailChange}
+                  type={'email'}
+                  autoComplete={'username'}
+                  fullWidth
+                  className={classes.textField}
+                />
+                <PasswordField
+                  id='password'
+                  fullWidth
+                  value={this.state.password}
+                  onChange={this.handlePasswordChange}
+                  placeholder='Password'
+                  margin='normal'
+                  autoComplete='current-password'
+                />
+              </div>
+              <div className={classes.row}>
+                <ButtonWithSpinner
+                  className={classes.button}
+                  fullWidth
+                  loading={signin.loading}
+                  variant='outlined'
+                  color='secondary'
+                  id='submit-login'
+                  onClick={this.signin}
+                >
+                  Sign in
+                </ButtonWithSpinner>
+                <ButtonWithSpinner
+                  className={classes.button}
+                  fullWidth
+                  loading={create.loading}
+                  variant='contained'
+                  color='primary'
+                  onClick={this.createAccount}
+                >
+                    Create account
+                </ButtonWithSpinner>
+              </div>
+            </form>
           </div>
-          <div className={classes.row}>
-            <ButtonWithSpinner
-              className={classes.button}
-              fullWidth
-              loading={signin.loading}
-              variant='text'
-              color='secondary'
-              id='submit-login'
-              onClick={this.signin}
-            >
-              Sign in
-            </ButtonWithSpinner>
-            <ButtonWithSpinner
-              className={classes.button}
-              fullWidth
-              loading={create.loading}
-              variant='contained'
-              color='primary'
-              onClick={this.createAccount}
-            >
-                Create account
-            </ButtonWithSpinner>
-          </div>
-        </form>
+          <div className={classes.right}></div>
+        </div>
       </div>
     )
   }

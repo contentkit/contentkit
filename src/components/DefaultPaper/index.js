@@ -14,6 +14,7 @@ const styles = props => theme => ({
   paper: {
     marginBottom: '1em',
     padding: '20px',
+    boxShadow: 'rgba(8, 35, 51, 0.03) 0px 0px 2px, rgba(8, 35, 51, 0.05) 0px 3px 6px',
     ...(props.styles || {})
   }
 })

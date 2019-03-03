@@ -109,7 +109,7 @@ class Dashboard extends React.Component<Props, State> {
         selectedPost={this.state.selectedPost}
         query={this.state.query}
       >
-        <div style={{ margin: '0 1em' }}>
+        <div style={{ margin: '0 40px' }}>
           <CreatePost
             feed={this.props.feed}
             selectedProject={this.props.selectedProject}

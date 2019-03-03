@@ -31,11 +31,12 @@ const styles = theme => ({
     right: 0,
     // height: 45,
     zIndex: 500,
-    backgroundColor: '#4c6072',
+    // backgroundColor: '#fff',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flexStart',
-    alignItems: 'center'
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    boxShadow: 'rgba(8, 35, 51, 0.03) 0px 0px 2px, rgba(8, 35, 51, 0.05) 0px 3px 6px'
   },
   toolbar: {
     width: '100%',
@@ -44,16 +45,16 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   root: {
     width: '100%'
   },
   colorPrimary: {
-    backgroundColor: '#9bacbf'
+    //backgroundColor: '#10239e'
   },
   barColorPrimary: {
-    backgroundColor: '#4c6072'
+    //backgroundColor: '#030852'
   }
 })
 
@@ -89,15 +90,6 @@ const PostEditorComponent = props => {
         plugins={plugins.plugins}
       />
       <div className={classes.footer}>
-        <LinearProgress
-          value={100}
-          variant={variant}
-          classes={{
-            root: classes.root,
-            colorPrimary: classes.colorPrimary,
-            barColorPrimary: classes.barColorPrimary
-          }}
-        />
         <Toolbar {...toolbarProps} />
       </div>
     </React.Fragment>

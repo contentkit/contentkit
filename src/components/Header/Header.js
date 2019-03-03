@@ -13,7 +13,9 @@ const styles = {
   root: {
     flexGrow: 1
   },
-  appBar: {},
+  appBar: {
+    backgroundColor: '#fff'
+  },
   flex: {
     textDecoration: 'none',
     color: '#333'
@@ -80,7 +82,7 @@ class DefaultAppBar extends React.Component {
           {this.props.loading ? <LinearProgress /> : <div className={classes.spacer} />}
           <Toolbar className={classes.toolbar}>
             <Link to='/' className={classes.flex}>
-              <div style={{ color: '#fff' }}>
+              <div>
                 ContentKit
               </div>
             </Link>

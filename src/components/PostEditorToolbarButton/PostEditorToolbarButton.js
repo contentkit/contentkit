@@ -6,14 +6,19 @@ import { withStyles } from '@material-ui/core/styles'
 const PostEditorToolbarButton = withStyles(
   theme => ({
     button: {
-      margin: theme.spacing.unit
+      margin: theme.spacing.unit,
+      // backgroundColor: '#fff',
+      // borderColor: '#006d75',
+      '&:hover': {
+        // backgroundColor: '#fafafa'
+      }
     }
   })
 )(({ classes, ...rest }) => (
   <Button
     className={classes.button}
     color='primary'
-    variant='contained'
+    variant='outlined'
     {...rest}
   >
     {rest.children}
