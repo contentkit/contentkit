@@ -7,10 +7,7 @@ async function createUser (_, args, ctx) {
   let { email, password } = args
   let user = await pg.query(`
     INSERT INTO users(email, password)
-    VALUES(
-      '${email}',
-      '${password}'
-    )
+    SELECT '${email}', '${password}'
     WHERE NOT EXISTS(
       SELECT * FROM users WHERE email = '${email}'
     )
