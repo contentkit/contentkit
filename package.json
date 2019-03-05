@@ -35,7 +35,7 @@
     "lodash.debounce": "^4.0.8",
     "lodash.escape": "^4.0.1",
     "lodash.unescape": "^4.0.1",
-    "monograph": "^0.0.49",
+    "monograph": "0.0.50",
     "prop-types": "^15.5.10",
     "react": "^16.8.3",
     "react-apollo": "^2.5.1",

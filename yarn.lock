@@ -1192,7 +1192,7 @@ ajv-keywords@^3.0.0:
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.2.0.tgz#e86b819c602cf8821ad637413698f1dec021847a"
   integrity sha1-6GuBnGAs+IIa1jdBNpjx3sAhhHo=
 
-ajv@^6.0.1, ajv@^6.4.0, ajv@^6.5.0:
+ajv@^6.0.1, ajv@^6.5.0:
   version "6.5.4"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.5.4.tgz#247d5274110db653706b550fcc2b797ca28cfc59"
   integrity sha512-4Wyjt8+t6YszqaXnLDfMmG/8AlO5Zbcsy3ATHncCzjW/NoPzAId8AK6749Ybjmdt+kUY1gP60fCu46oDxPv/mg==
@@ -1363,10 +1363,10 @@ apollo-utilities@^1.0.22, apollo-utilities@^1.0.8:
   dependencies:
     fast-json-stable-stringify "^2.0.0"
 
-append-stylesheet@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/append-stylesheet/-/append-stylesheet-0.0.1.tgz#4890b032dcff7d3ba551e6a7086903d6d78bb0f4"
-  integrity sha512-poQ/aEkaLtZVSFg28voVXEdEJYXMG5qoKbYLkhUG88tnBcLK4/5anLA1jMd/nHB1IxRLJAwhlaBzVZrBYfPRmA==
+append-stylesheet@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/append-stylesheet/-/append-stylesheet-0.0.2.tgz#49694ff40e2f0ea9745fffb990365ee125da85a6"
+  integrity sha512-7NYCg/UbyNBCcLC7yvEF6dpP32UrNYPFszK56A8BRgvLxopgVT5gy925csud5fYEQNuqDfbI6YRSxH2yxuNFjg==
 
 append-transform@^1.0.0:
   version "1.0.0"
@@ -1550,13 +1550,6 @@ atob@^2.1.1:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
-
-attr-accept@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-1.1.3.tgz#48230c79f93790ef2775fcec4f0db0f5db41ca52"
-  integrity sha512-iT40nudw8zmCweivz6j58g+RT33I4KbaIvRUhjNmDwO2WmsQUxFEZZYZ5w3vXe5x5MX9D7mfvA/XaLOZYFR9EQ==
-  dependencies:
-    core-js "^2.5.0"
 
 autoprefixer@^6.3.1:
   version "6.7.7"
@@ -2416,11 +2409,6 @@ core-js@^2.4.0, core-js@^2.4.1:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.5.tgz#44bc8d249e7fb2ff5d00e0341a7ffb94fbf67895"
   integrity sha512-klh/kDpwX8hryYL14M9w/xei6vrv6sE8gTHDG7/T/+SEovB/G4ejwcfE/CBzO6Edsu+OETZMZ3wcX/EjUkrl5A==
 
-core-js@^2.5.0:
-  version "2.5.7"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
-  integrity sha512-RszJCAxg/PP6uzXVXL6BsxSXx/B05oJAQ2vkJRjyjrEcNVycaqOmNb5OTxZPE3xa5gwZduqza6L9JOCenh/Ecw==
-
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
@@ -2825,7 +2813,7 @@ deepmerge@^2.1.0, deepmerge@^2.2.1:
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.2.1.tgz#5d3ff22a01c00f645405a2fbc17d0778a1801170"
   integrity sha512-R9hc1Xa/NOBi9WRVUWg19rl1UB7Tt4kuPd+thNJgFZoxXsTz7ncaPaeIm+40oSGuP33DfMb4sZt1QIGiJzC4EA==
 
-deepmerge@^3.0.0:
+deepmerge@^3.0.0, deepmerge@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-3.2.0.tgz#58ef463a57c08d376547f8869fdc5bcee957f44e"
   integrity sha512-6+LuZGU7QCNUnAJyX8cIrlzoEgggTM6B7mm+znKOX4t5ltluT9KLjN6g61ECMS0LTsLW7yDpNoxhix5FZcrIow==
@@ -3102,6 +3090,15 @@ draft-js-code-block-plugin@^0.0.27:
     lodash.debounce "^4.0.8"
     react-subscriptions "^0.0.10"
 
+draft-js-code-block-plugin@^0.0.29:
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/draft-js-code-block-plugin/-/draft-js-code-block-plugin-0.0.29.tgz#69829125739590cc4c7817555e36bc08004b7554"
+  integrity sha512-+TXj5fkvDlRdPnE0sIup7b/ywmbBBnUxu9H+H9pkQhhqvF6uZuSfqsL2ylKfOkCty7O6iwMVjRztZkkvbsUYtw==
+  dependencies:
+    classnames "^2.2.6"
+    decorate-component-with-props "^1.1.0"
+    draft-js-blocks "^0.0.20"
+
 draft-js-compact@0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/draft-js-compact/-/draft-js-compact-0.0.6.tgz#b3ef4454ef1baa5323c8b727b91d2ba3da0523e8"
@@ -3109,26 +3106,26 @@ draft-js-compact@0.0.6:
   dependencies:
     is-plain-object "^2.0.4"
 
-draft-js-custom-buttons@0.0.49:
-  version "0.0.49"
-  resolved "https://registry.yarnpkg.com/draft-js-custom-buttons/-/draft-js-custom-buttons-0.0.49.tgz#ab4839b16c55a4a5dca0d23387210fcbc390133e"
-  integrity sha512-e7SBWVbWBizzVR/1rbGf5fl41ApB/sWbNIhO0viKwyTTzUg2BjCYRPynohKlo8q6v+q/O/fdl74y5oUQq0ytIQ==
+draft-js-custom-buttons@0.0.50:
+  version "0.0.50"
+  resolved "https://registry.yarnpkg.com/draft-js-custom-buttons/-/draft-js-custom-buttons-0.0.50.tgz#1e6b12fb9417d26d881a8d823e8c33216ab4557b"
+  integrity sha512-Oe3bZeSTp6HGiuAZpsudQvGUzE6HQgA+rCFYaueXJC32L5MiNPiTBpHBVIoG9130JSe/vgGCjwsS0D27LcakbA==
   dependencies:
     "@babel/runtime" "^7.1.2"
     draft-js-blocks "^0.0.23"
-    react-valid-attributes "^0.0.1"
+    react-valid-attributes "^0.0.2"
     union-class-names "^1.0.0"
 
-draft-js-custom-toolbar-plugin@0.0.49:
-  version "0.0.49"
-  resolved "https://registry.yarnpkg.com/draft-js-custom-toolbar-plugin/-/draft-js-custom-toolbar-plugin-0.0.49.tgz#1b8898d287c04aec8c931ba8e964a96f68ae847f"
-  integrity sha512-tHR2Ng/BcPbOj+rkj41CNwGi/gIUU4pRKWExfssl09S3r/UvbCILrPViG6squCVmFb0UvmdBBTasAJRpF5DMTA==
+draft-js-custom-toolbar-plugin@0.0.50:
+  version "0.0.50"
+  resolved "https://registry.yarnpkg.com/draft-js-custom-toolbar-plugin/-/draft-js-custom-toolbar-plugin-0.0.50.tgz#ef64fa1155c79408c823239fee0d6625c8770cdd"
+  integrity sha512-M2c89Rg5VhAlgEzCUmD2lFIkCvW4KqqN5yYZw/o6xDM6OvTcLg1CIbwRnKRAMUkm8hPgAc5SbvbBXneDFd66NA==
   dependencies:
     "@babel/runtime" "^7.1.2"
+    classnames "^2.2.6"
     decorate-component-with-props "^1.0.2"
     lodash.debounce "^4.0.8"
     prop-types "^15.5.8"
-    scope "^0.10.1"
 
 draft-js-dates@^0.0.5:
   version "0.0.5"
@@ -3170,13 +3167,13 @@ draft-js-modifiers@~0.2.2:
     draft-js "~0.10.5"
     immutable "~3.7.4"
 
-draft-js-new-line-plugin@0.0.49:
-  version "0.0.49"
-  resolved "https://registry.yarnpkg.com/draft-js-new-line-plugin/-/draft-js-new-line-plugin-0.0.49.tgz#959d04d5ba02e162fb5094fd66ce4f6c24632d5d"
-  integrity sha512-SD6N5cRe+NCyrePJ+03YqxPQ/Y6+yWhPBcR+lPaFGg6L+BzdqluEnC4JIgLPTdvn+ijsT3KlvH/hooapGB4U1g==
+draft-js-new-line-plugin@0.0.50:
+  version "0.0.50"
+  resolved "https://registry.yarnpkg.com/draft-js-new-line-plugin/-/draft-js-new-line-plugin-0.0.50.tgz#20e4da9ad431d51a773f542aa67067a7f948e6c8"
+  integrity sha512-rfCfWvu8qRGyrZc5pxboy7qytBIkr15HM23MIAyBAsdJEweanx9rY4XC8699U+Gl3wb6K709WY6ZcTiJwOgsyg==
   dependencies:
     "@babel/runtime" "^7.1.2"
-    deepmerge "^2.2.1"
+    deepmerge "^3.2.0"
     draft-js-blocks "^0.0.23"
 
 draft-js-plugins-utils@2.0.2:
@@ -3192,13 +3189,13 @@ draft-js-prism@^1.0.6:
     extend "^3.0.0"
     immutable "*"
 
-draft-js-scripts-plugin@0.0.49:
-  version "0.0.49"
-  resolved "https://registry.yarnpkg.com/draft-js-scripts-plugin/-/draft-js-scripts-plugin-0.0.49.tgz#cae2d9d9504a6df9294fe4ae057e65eaf54e950c"
-  integrity sha512-YipfnbhcSaVF0XfUwo73yYFdD2cyQXu7CzTcvFGIgilG36EcY2eq9QPXy1sV3GDewU0U9fYJv37jBwkdonrcgA==
+draft-js-scripts-plugin@0.0.50:
+  version "0.0.50"
+  resolved "https://registry.yarnpkg.com/draft-js-scripts-plugin/-/draft-js-scripts-plugin-0.0.50.tgz#f0b71c5acf9ef55242d52dc6a2437865e0621b1b"
+  integrity sha512-k3AkPbclBAl3k620dptiu2wI/L0wPHhh6eCh6mfwi0dMwQDMc+0P5m4jTdr8tDtv9+XHKl5kfVVWnq4SY40V4A==
   dependencies:
     "@babel/runtime" "^7.1.2"
-    append-stylesheet "^0.0.1"
+    append-stylesheet "^0.0.2"
     draft-js-blocks "^0.0.23"
     lodash.frompairs "^4.0.1"
     union-class-names "^1.0.0"
@@ -3522,18 +3519,18 @@ eslint-scope@3.7.1:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint-scope@^3.7.1:
-  version "3.7.3"
-  resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-3.7.3.tgz#bb507200d3d17f60247636160b4826284b108535"
-  integrity sha512-W+B0SvF4gamyCTmUc+uITPY0989iXVfKvhwtmJocTaYoc/3khEHmEmvfY/Gn9HA9VV75jrQECsHizkNw1b68FA==
-  dependencies:
-    esrecurse "^4.1.0"
-    estraverse "^4.1.1"
-
 eslint-scope@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-4.0.0.tgz#50bf3071e9338bcdc43331794a0cb533f0136172"
   integrity sha512-1G6UTDi7Jc1ELFwnR58HV4fK9OQK4S6N985f166xqXxpjU6plxFISJa2Ba9KCQuFa8RCnj/lSFJbHo7UFDBnUA==
+  dependencies:
+    esrecurse "^4.1.0"
+    estraverse "^4.1.1"
+
+eslint-scope@^4.0.0-alpha.0:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-4.0.2.tgz#5f10cd6cabb1965bf479fa65745673439e21cb0e"
+  integrity sha512-5q1+B/ogmHl8+paxtOKx38Z8LtWkVGuNt3+GQNErqwLl6ViNp/gdJGMCjZNxZ8j/VYjDNZ2Fo+eQc1TAVPIzbg==
   dependencies:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
@@ -3548,26 +3545,24 @@ eslint-visitor-keys@^1.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
   integrity sha512-qzm/XxIbxm/FHyH341ZrbnMUpe+5Bocte9xkmFMzPMjRaZMcXww+MpBptFvtU+79L362nqiLhekCxCxDPaUMBQ==
 
-eslint-web@^0.0.24:
-  version "0.0.24"
-  resolved "https://registry.yarnpkg.com/eslint-web/-/eslint-web-0.0.24.tgz#30982ea4fd363827a1a6b0098beb3240c7845ff8"
-  integrity sha512-J6VrraXQtBG205//Hnbaz3SQpKN4uSsO309ULDn8+Hkvle8lHkzucZHus2n2AMK/uStCauaBU6DQCCCKyA9rBg==
+eslint-web@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-web/-/eslint-web-5.0.1.tgz#9cabc0f0503ca468cfd40927ad0312bde92d408d"
+  integrity sha512-cDlZc4pmpOI5g6OhEG6///3ExBhvDk7bE7IEC0qmdi9qGuBGpDbjx15R/wf2yt2aN+BKwm6X0UJ1JZsXCKjjHw==
   dependencies:
-    ajv "^6.4.0"
-    debug "^3.1.0"
-    doctrine "^2.1.0"
-    eslint-scope "^3.7.1"
+    ajv "^6.5.0"
+    eslint-scope "^4.0.0-alpha.0"
     eslint-visitor-keys "^1.0.0"
     espree "^3.5.4"
     esquery "^1.0.1"
-    functional-red-black-tree "^1.0.1"
-    globals "^11.4.0"
-    ignore "^3.3.7"
+    file-entry-cache "^2.0.0"
+    ignore "^3.3.8"
+    imurmurhash "^0.1.4"
+    is-resolvable "^1.1.0"
+    json-stable-stringify-without-jsonify "^1.0.1"
     levn "^0.3.0"
-    lodash "^4.17.5"
-    minimatch "^3.0.4"
-    natural-compare "^1.4.0"
-    regexpp "^1.1.0"
+    path-is-inside "^1.0.2"
+    require-uncached "^1.0.3"
 
 eslint@~5.4.0:
   version "5.4.0"
@@ -3885,11 +3880,6 @@ file-entry-cache@^2.0.0:
     flat-cache "^1.2.1"
     object-assign "^4.0.1"
 
-file-type@^10.1.0:
-  version "10.1.0"
-  resolved "https://registry.yarnpkg.com/file-type/-/file-type-10.1.0.tgz#f692a28722e1ac8e206e68fcc2fb032a759d16d0"
-  integrity sha512-fkjfXnqBRrdUFTS6opakWyMXb+uzDv8zOCqjSOWPbzMLnYnmnUEv/RNY9igkk4nc8TVL44Xd1OCC2fJXH3eb7Q==
-
 file-type@^10.7.0:
   version "10.8.0"
   resolved "https://registry.yarnpkg.com/file-type/-/file-type-10.8.0.tgz#676dfd43fdb75d8ccdba1cff53351b71190c25ff"
@@ -4161,7 +4151,7 @@ globals@^11.1.0:
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.11.0.tgz#dcf93757fa2de5486fbeed7118538adf789e9c2e"
   integrity sha512-WHq43gS+6ufNOEqlrDBxVEbb8ntfXrfAUU2ZOpCxrBdGKW3gyv8mCxAfIBD0DroPKGrJ2eSsXsLtY9MPntsyTw==
 
-globals@^11.4.0, globals@^11.7.0:
+globals@^11.7.0:
   version "11.8.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.8.0.tgz#c1ef45ee9bed6badf0663c5cb90e8d1adec1321d"
   integrity sha512-io6LkyPVuzCHBSQV9fmOwxZkUk6nIaGmxheLDgmuFv89j0fm2aqDbIXKAGfzCMHqz3HLF2Zf8WSG6VqMh2qFmA==
@@ -4502,7 +4492,7 @@ ignore-walk@^3.0.1:
   dependencies:
     minimatch "^3.0.4"
 
-ignore@^3.0.9, ignore@^3.3.7:
+ignore@^3.0.9, ignore@^3.3.8:
   version "3.3.10"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.10.tgz#0a97fb876986e8081c631160f8f9f389157f0043"
   integrity sha512-Pgs951kaMm5GXP7MOvxERINe3gsaVjUWFm+UZPSq9xYriQAksyhg0csnS0KXSNRD5NmNdapXEpjxG49+AKh/ug==
@@ -6074,31 +6064,31 @@ mixin-deep@^1.2.0:
   dependencies:
     minimist "0.0.8"
 
-monograph@^0.0.49:
-  version "0.0.49"
-  resolved "https://registry.yarnpkg.com/monograph/-/monograph-0.0.49.tgz#c4a39ca113f8545886fecbb446e64fa72db8d17c"
-  integrity sha512-/b//Ed6xdMdyoDuPYNCsOueA39CzhFJf6nnGWO8DSFNYEn6XxY0/d85jLGxp0wVb5wkf/plsSsBoXC9PFP0T7Q==
+monograph@0.0.50:
+  version "0.0.50"
+  resolved "https://registry.yarnpkg.com/monograph/-/monograph-0.0.50.tgz#c223e4ff10510a9d8a07b03842e5cbd1f3966cdf"
+  integrity sha512-mC0gN7goDWdBEjhWi5PO1g9OWLDqorAW3ZUfpW+iOz8nOOS1BTKBxWawsHVqGSJvDWUZRII3HFUGU6j3D+rhCQ==
   dependencies:
     "@babel/runtime" "^7.1.2"
     decorate-component-with-props "^1.1.0"
     draft-js-anchor-plugin "^2.0.2"
     draft-js-blocks "^0.0.23"
-    draft-js-code-block-plugin "^0.0.27"
-    draft-js-custom-buttons "0.0.49"
-    draft-js-custom-toolbar-plugin "0.0.49"
+    draft-js-code-block-plugin "^0.0.29"
+    draft-js-custom-buttons "0.0.50"
+    draft-js-custom-toolbar-plugin "0.0.50"
     draft-js-export-html "^1.2.0"
     draft-js-focus-plugin "^2.2.0"
     draft-js-markdown "0.0.20"
-    draft-js-new-line-plugin "0.0.49"
+    draft-js-new-line-plugin "0.0.50"
     draft-js-prism "^1.0.6"
-    draft-js-scripts-plugin "0.0.49"
-    eslint-web "^0.0.24"
+    draft-js-scripts-plugin "0.0.50"
+    eslint-web "^5.0.1"
     html-element-attributes "^2.0.0"
     lodash.groupby "^4.6.0"
     lodash.pick "^4.4.0"
     prismjs "^1.15.0"
     prop-types "^15.6.1"
-    s3-dropzone "^0.0.44"
+    s3-dropzone "^0.0.48"
     union-class-names "^1.0.0"
 
 moo@^0.4.3:
@@ -7793,14 +7783,6 @@ react-dom@^16.8.3:
     prop-types "^15.6.2"
     scheduler "^0.13.3"
 
-react-dropzone@^7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-7.0.1.tgz#bc76bc1686fb47ed0c8301f968fffa6aecdff47b"
-  integrity sha512-J4rbzhFZPVW7k7K9CVb0OcwSOJGLWa0y+0rvtB4rBLVkvq0agH/o3kPJ0DCkd6ZVzL2K1NFqIOvtQkwQKpmJBA==
-  dependencies:
-    attr-accept "^1.1.3"
-    prop-types "^15.6.2"
-
 react-event-listener@^0.6.2:
   version "0.6.6"
   resolved "https://registry.yarnpkg.com/react-event-listener/-/react-event-listener-0.6.6.tgz#758f7b991cad9086dd39fd29fad72127e1d8962a"
@@ -7817,7 +7799,7 @@ react-html-attributes@^1.4.1:
   dependencies:
     html-element-attributes "^1.0.0"
 
-react-is@^16.6.0, react-is@^16.6.3, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.2:
+react-is@^16.6.3, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.2:
   version "16.8.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.2.tgz#09891d324cad1cb0c1f2d91f70a71a4bee34df0f"
   integrity sha512-D+NxhSR2HUCjYky1q1DwpNUD44cDpUXzSmmFyC3ug1bClcU/iDNy0YNn1iwme28fn+NFhpA13IndOd42CrFb+Q==
@@ -7827,23 +7809,10 @@ react-is@^16.8.3:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.3.tgz#4ad8b029c2a718fc0cfc746c8d4e1b7221e5387d"
   integrity sha512-Y4rC1ZJmsxxkkPuMLwvKvlL1Zfpbcu+Bf4ZigkHup3v9EfdYhAlWAaVyA19olXq2o2mGn0w+dFKvk3pVVlYcIA==
 
-react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
+react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
-
-react-redux@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.1.0.tgz#948b1e2686473d1999092bcfb32d0dc43d33f667"
-  integrity sha512-CRMpEx8+ccpoVxQrQDkG1obExNYpj6dZ1Ni7lUNFB9wcxOhy02tIqpFo4IUXc0kYvCGMu6ABj9A4imEX2VGZJQ==
-  dependencies:
-    "@babel/runtime" "^7.1.2"
-    hoist-non-react-statics "^3.0.0"
-    invariant "^2.2.4"
-    loose-envify "^1.1.0"
-    prop-types "^15.6.1"
-    react-is "^16.6.0"
-    react-lifecycles-compat "^3.0.0"
 
 react-redux@^6.0.0, react-redux@^6.0.1:
   version "6.0.1"
@@ -7918,15 +7887,6 @@ react-transition-group@^2.2.1:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
-
-react-valid-attributes@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/react-valid-attributes/-/react-valid-attributes-0.0.1.tgz#5969b8ea8c1628c634b7a11c5182674bead64e53"
-  integrity sha512-v7i5UIjhy3VcfXvsmj7U4qcu54Aq8C2lAizycu+9XtTsSnXSdqHNCciE2U+6h2uDQeC6KZU8PaLsAkX7Z4uQAg==
-  dependencies:
-    lodash.omit "^4.5.0"
-    lodash.pick "^4.4.0"
-    react-html-attributes "^1.4.1"
 
 react-valid-attributes@^0.0.2:
   version "0.0.2"
@@ -8148,11 +8108,6 @@ regexp-tree@^0.1.0:
     cli-table3 "^0.5.0"
     colors "^1.1.2"
     yargs "^12.0.5"
-
-regexpp@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/regexpp/-/regexpp-1.1.0.tgz#0e3516dd0b7904f413d2d4193dce4618c3a689ab"
-  integrity sha512-LOPw8FpgdQF9etWMaAfG/WRthIdXJGYp4mJ2Jgn/2lpkbod9jPn0t9UqN7AxBOKNfzRbYyVfgc7Vk4t/MpnXgw==
 
 regexpp@^2.0.0:
   version "2.0.1"
@@ -8388,22 +8343,6 @@ rxjs@^5.5.2:
   dependencies:
     symbol-observable "1.0.1"
 
-s3-dropzone@^0.0.44:
-  version "0.0.44"
-  resolved "https://registry.yarnpkg.com/s3-dropzone/-/s3-dropzone-0.0.44.tgz#a085df569075acf296194d8bdee41d06b8db3929"
-  integrity sha512-7lHWa95Lx4Xhcd/o954EGCBEA5ZaQM1iDJ1VJFNXpjjPjMY4mbYCsbMgcV0PTaE7k/kXm/2IEsaUY/hXVjbH0Q==
-  dependencies:
-    classnames "^2.2.5"
-    file-type "^10.1.0"
-    lodash.debounce "^4.0.8"
-    lodash.uniqby "^4.7.0"
-    react-dropzone "^7.0.1"
-    react-redux "^5.1.0"
-    react-subscriptions "^0.0.10"
-    react-valid-attributes "^0.0.1"
-    redux "^4.0.1"
-    whatwg-fetch "^3.0.0"
-
 s3-dropzone@^0.0.48:
   version "0.0.48"
   resolved "https://registry.yarnpkg.com/s3-dropzone/-/s3-dropzone-0.0.48.tgz#fc1073d555885f2987900ce417c484cbb72de69d"
@@ -8495,11 +8434,6 @@ scheduler@^0.13.3:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-
-scope@^0.10.1:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/scope/-/scope-0.10.1.tgz#0840e81cbaa429a3da0b055ef9a6586e552e0e1d"
-  integrity sha1-CEDoHLqkKaPaCwVe+aZYblUuDh0=
 
 scss-tokenizer@^0.2.3:
   version "0.2.3"
