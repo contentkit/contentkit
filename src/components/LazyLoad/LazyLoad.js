@@ -4,14 +4,8 @@ import PropTypes from 'prop-types'
 import Spinner from '../Spinner'
 import debounce from 'lodash.debounce'
 import { wrapWithLoadingState } from '../../lib/util'
-import type { Posts, Projects } from '../../types'
 
-type Props = {
-  projects: Projects,
-  render: ({ loading: boolean }) => React.Node
-}
-
-class LazyLoad extends React.Component<Props, { loading: boolean }> {
+class LazyLoad extends React.Component {
   timerId: TimeoutID
 
   static propTypes = {

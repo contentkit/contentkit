@@ -2,13 +2,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-import Input from '@material-ui/core/Input'
-import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
-import { default as MuiSelect } from '@material-ui/core/Select'
+import MuiSelect from '@material-ui/core/Select'
 import Fade from '@material-ui/core/Fade'
-import FilledInput from '@material-ui/core/FilledInput'
 import { OutlinedInput } from '@material-ui/core';
 
 const styles = theme => ({
@@ -17,17 +14,12 @@ const styles = theme => ({
     flexWrap: 'wrap'
   },
   formControl: {
-    // minWidth: 120,
-    width: '100%',
-    // height: 48
-    // margin: 'dense'
+    width: '100%'
   },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2
   },
-  menuItem: {
-    // backgroundColor: '#f4f9fd !important'
-  },
+  menuItem: {},
   select: {
     '&:focus': {
       background: 'transparent'
@@ -38,20 +30,7 @@ const styles = theme => ({
   }
 })
 
-type Option = {
-  value: string,
-  label: string
-}
-
-type Props = {
-  label: string,
-  value: string,
-  onChange: () => void,
-  classes: any,
-  options: Array<Option>
-}
-
-class Select extends React.Component<Props> {
+class Select extends React.Component {
   static propTypes = {
     label: PropTypes.string,
     value: PropTypes.string,
@@ -80,7 +59,7 @@ class Select extends React.Component<Props> {
         value={value}
         name={id}
         id={id}
-        style={{ height: '35.8px' }}
+        style={{ height: '34px' }}
       />
     )
   }
@@ -97,7 +76,6 @@ class Select extends React.Component<Props> {
     return (
       <form className={classes.root} autoComplete='off'>
         <FormControl className={classes.formControl}>
-          {/*<InputLabel htmlFor={id} className={classes.label}>{label}</InputLabel>*/}
           <MuiSelect
             className={classes.select}
             value={value}

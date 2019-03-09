@@ -18,8 +18,6 @@ import { connect } from 'react-redux'
 import { setEditorState } from '../../lib/redux'
 
 class BaseEditor extends React.Component {
-  decorators: any
-
   static propTypes = {
     history: PropTypes.object.isRequired,
     editorState: PropTypes.object,

@@ -1,11 +1,8 @@
 // @flow
 import React from 'react'
-import FilledInput from '@material-ui/core/FilledInput'
-import InputLabel from '@material-ui/core/InputLabel'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import ButtonWithSpinner from '../ButtonWithSpinner'
 import { withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
 
 import OutlinedInput from '@material-ui/core/OutlinedInput'
 
@@ -34,19 +31,7 @@ const inputProps = {
   }
 }
 
-type Props = {
-  classes: any,
-  createPost: () => void,
-  createPostMutation: () => void,
-  value: string,
-  handleChange: () => void
-}
-
-type State = {
-  autoFocus: boolean
-}
-
-class CreatePostInput extends React.Component<Props, State> {
+class CreatePostInput extends React.Component {
   state = {
     autoFocus: true,
     value: ''

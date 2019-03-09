@@ -124,7 +124,8 @@ export const styles = () => ({
     border: 'none',
     boxShadow: 'none',
     borderBottomLeftRadius: 0,
-    borderTopLeftRadius: 0
+    borderTopLeftRadius: 0,
+    height: 34
   },
   formControl: {
     flexGrow: 1
