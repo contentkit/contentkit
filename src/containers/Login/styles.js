@@ -7,7 +7,7 @@ export const styles = theme => ({
     height: '100vh',
     backgroundColor: '#fafafa',
     position: 'absolute',
-    padding: '120px 80px 120px 80px',
+    padding: '10% 80px 10% 80px',
     boxSizing: 'border-box'
   },
   inset: {
@@ -21,14 +21,11 @@ export const styles = theme => ({
     boxShadow: 'rgba(23, 28, 33, 0.06) 0px 4px 9px 0px',
   },
   left: {
-    padding: '60px',
+    padding: '5%',
     width: '400px',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-  },
-  title: {
-    fontSize: '24px'
   },
   right: {
     backgroundClip: 'border-box',
@@ -39,13 +36,6 @@ export const styles = theme => ({
     backgroundColor: '#f0f5ff',
   },
   login: {
-    // boxShadow: '0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07)',
-    // borderRadius: '4px',
-    // padding: '5vh',
-    // backgroundColor: '#fff',
-    // width: '100%',
-    // height: '100%',
-    // display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between'
   },
@@ -55,6 +45,9 @@ export const styles = theme => ({
       maxWidth: '90%',
       overflow: 'hidden',
       margin: 0
+    },
+    container: {
+
     }
   },
   row: {
@@ -63,8 +56,7 @@ export const styles = theme => ({
     justifyContent: 'space-between'
   },
   button: {
-    maxWidth: '160px',
-    // margin: theme.spacing.unit
+    maxWidth: '160px'
   },
   gutter: {
     marginBottom: '4em'
