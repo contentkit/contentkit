@@ -1,19 +1,20 @@
 // @flow
 import React from 'react'
 import * as config from '../../lib/config'
-import { Editor } from 'monograph'
-import plugins from 'monograph/lib/plugins'
+import { Editor } from '@contentkit/editor'
+import plugins from '@contentkit/editor/lib/plugins'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import { withStyles } from '@material-ui/core/styles'
+import { CSSTransition } from 'react-transition-group'
 
-import 'monograph/lib/css/normalize.css'
-import 'monograph/lib/css/Draft.css'
-import 'monograph/lib/css/prism.css'
-import 'monograph/lib/css/CheckableListItem.css'
+import '@contentkit/editor/lib/css/normalize.css'
+import '@contentkit/editor/lib/css/Draft.css'
+import '@contentkit/editor/lib/css/prism.css'
+import '@contentkit/editor/lib/css/CheckableListItem.css'
 import 's3-dropzone/lib/styles.css'
 import 'draft-js-code-block-plugin/lib/style.css'
 
-const { CustomToolbar } = plugins.customToolbarPlugin
+const Toolbar= plugins.toolbar
 
 const awsConfig = {
   identityPoolId: config.IDENTITY_POOL_ID,
@@ -49,7 +50,13 @@ const styles = theme => ({
     backgroundColor: '#f0f5ff',
     backgroundImage: 'linear-gradient(160deg, #f0f5ff 12.5%, #d6e4ff 85%)',
     padding: 40,
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    position: 'relative'
+  },
+  loadingIndicator: {
+    position: 'absolute',
+    zIndex: 9999999,
+    width: '100%'
   }
 })
 
@@ -76,12 +83,20 @@ class PostEditorComponent extends React.Component {
       createImage,
       insertImage
     }
-    const variant = loading ? 'indeterminate' : 'determinate'
-    console.log(this.props)
     return (
       <React.Fragment>
         <div className={classes.flex}>
           <div className={classes.editorContainer}>
+            <CSSTransition
+              classNames={'transition'}
+              unmountOnExit
+              timeout={1000}
+              in={loading}
+            >
+              {state => (
+                <LinearProgress className={classes.loadingIndicator} />
+              )}
+            </CSSTransition>
             <Editor
               editorState={editorState}
               onChange={onChange}
@@ -90,7 +105,7 @@ class PostEditorComponent extends React.Component {
             />
           </div>
           <div className={classes.toolbar}>
-            <CustomToolbar {...toolbarProps} />
+            <Toolbar.Component {...toolbarProps} />
           </div>
         </div>
       </React.Fragment>

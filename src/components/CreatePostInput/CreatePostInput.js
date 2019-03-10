@@ -87,7 +87,6 @@ class CreatePostInput extends React.Component {
           onChange={handleChange}
           name={'create-post'}
           id={'create-post'}
-          variant={'outlined'}
           labelWidth={0}
         />
       </React.Fragment>

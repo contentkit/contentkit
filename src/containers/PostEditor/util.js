@@ -1,6 +1,6 @@
 // @flow
 import { EditorState, convertFromRaw } from 'draft-js'
-import { exportHtml, convertToRaw } from 'monograph'
+import { exportHtml, convertToRaw } from '@contentkit/editor'
 import escapeHtml from 'lodash.escape'
 import { expand, compress } from 'draft-js-compact'
 

@@ -6,8 +6,6 @@ import debounce from 'lodash.debounce'
 import { wrapWithLoadingState } from '../../lib/util'
 
 class LazyLoad extends React.Component {
-  timerId: TimeoutID
-
   static propTypes = {
     feed: PropTypes.object,
     projects: PropTypes.object,
