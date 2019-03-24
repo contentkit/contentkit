@@ -75,12 +75,12 @@ const createPost = (_, { title, projectId }, ctx) => {
 }
 
 const updateDocument = async (_, { id, raw, html }, ctx) => {
-  // let document = await client.query(`
-  //  SELECT * FROM documents WHERE id = '${id}'
-  // `, { head: true })
-
-  // let delta = diffpatch.diff(document.raw, raw)
-  // console.log(delta)
+  raw.blocks = raw.blocks
+    .filter(block => block.text)
+    .map(block => ({
+      ...block,
+      text: block.text.replace(/'/g, `''`)
+    }))
   return pg.query(`
     UPDATE documents set raw = '${JSON.stringify(raw)}'::jsonb, html = '${html}'
     WHERE id = '${id}' returning *
@@ -257,6 +257,13 @@ const resolvers = {
         head: true
       })
     },
+    tag: async (parent, args, context) => {
+      return pg.query(`
+        SELECT * FROM tags WHERE id = '${args.id}'
+      `, {
+        head: true
+      })
+    },
     version: async (parent, args, context) => {
       return pg.query(`
         SELECT * FROM versions WHERE id = '${args.id}'
@@ -281,6 +288,11 @@ const resolvers = {
     allProjects: async (parent, args, context) => {
       return pg.query(`
         SELECT * FROM projects WHERE user_id = '${context.user}'
+      `)
+    },
+    allTags: async (parent, args, context) => {
+      return pg.query(`
+        SELECT * FROM tags WHERE project_id = '${args.projectId}'
       `)
     },
     project: async (parent, args, context) => {
@@ -361,6 +373,22 @@ const resolvers = {
         SELECT * FROM images WHERE post_id = '${parent.id}'
       `)
     },
+    project: (parent, args, context) => {
+      return pg.query(`
+        SELECT * FROM projects WHERE id = '${parent.projectId}'
+      `, { head: true })
+    },
+    tag: (parent, args, context) => {
+      return pg.query(`
+        SELECT
+          *
+        FROM
+          tags
+        INNER JOIN posts_tags ON (posts_tags.post_id = '${args.id}')
+      `)
+    }
+  },
+  Tag: {
     project: (parent, args, context) => {
       return pg.query(`
         SELECT * FROM projects WHERE id = '${parent.projectId}'

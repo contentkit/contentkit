@@ -57,9 +57,10 @@
   display: flex;
   flex-direction: column;
   align-content: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   z-index: 500;
   pointer-events: all;
+  position: fixed;
 }
 
 .custom-toolbar:hover {

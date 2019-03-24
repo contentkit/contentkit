@@ -34,6 +34,16 @@ type User {
   projects: [Project]
 }
 
+type Tag {
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  project: Project
+  name: String
+  slug: String
+  description: String
+}
+
 type Post {
   id: ID!
   createdAt: String!
@@ -46,6 +56,7 @@ type Post {
   excerpt: String
   publishedAt: String
   status: PostStatus
+  tags: [Tag]
 }
 
 type Document {
@@ -77,6 +88,8 @@ type Query {
   document(id: ID!): Document
   version(id: ID!): Version
   project(id: ID!): Project
+  tag(id: ID!): Tag
+  allTags(projectId: ID!): [Tag]
   allProjects: [Project]
 }
 
