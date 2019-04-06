@@ -76,11 +76,10 @@ const createPost = (_, { title, projectId }, ctx) => {
 
 const updateDocument = async (_, { id, raw, html }, ctx) => {
   raw.blocks = raw.blocks
-    .filter(block => block.text)
-    .map(block => ({
-      ...block,
-      text: block.text.replace(/'/g, `''`)
-    }))
+    .map(block => {
+      if (block.text) block.text = block.text.replace(/'/g, `''`)
+      return block
+    })
   return pg.query(`
     UPDATE documents set raw = '${JSON.stringify(raw)}'::jsonb, html = '${html}'
     WHERE id = '${id}' returning *
@@ -378,7 +377,7 @@ const resolvers = {
         SELECT * FROM projects WHERE id = '${parent.projectId}'
       `, { head: true })
     },
-    tag: (parent, args, context) => {
+    tags: (parent, args, context) => {
       return pg.query(`
         SELECT
           *

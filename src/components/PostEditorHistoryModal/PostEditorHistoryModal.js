@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import List from '@material-ui/core/List'
+import MuiList from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import { withStyles } from '@material-ui/core/styles'
 import { Editor, EditorState, convertFromRaw } from 'draft-js'
@@ -11,6 +11,7 @@ import { expand } from 'draft-js-compact'
 import format from 'date-fns/format'
 import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
+import { List } from 'immutable'
 
 const formatDate = (timestamp) =>
   format(new Date(timestamp), 'MM/DD HH:mm:ss')
@@ -37,7 +38,7 @@ class PostEditorHistoryModal extends React.Component {
 
   handleClick = version => {
     let { raw } = version
-    let contentState = convertFromRaw(expand(raw))
+    let contentState = convertFromRaw(expand(raw, { parent: null, children: List(), prevSibling: null, nextSibling: null }))
     this.setState({
       editorState: EditorState.push(
         this.state.editorState,
@@ -71,13 +72,13 @@ class PostEditorHistoryModal extends React.Component {
         <DialogContent>
           <div className={classes.row}>
             <div className={classes.column}>
-              <List>
+              <MuiList>
                 {versions.map(version => (
                   <ListItem onClick={evt => this.handleClick(version)} button key={version.id}>
                     {formatDate(version.createdAt)}
                   </ListItem>
                 ))}
-              </List>
+              </MuiList>
             </div>
             <div>
               <Editor

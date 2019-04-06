@@ -9,8 +9,11 @@
     "lint": "standard \"src/**/*.js\" --verbose --fix | snazzy"
   },
   "resolutions": {
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3"
+    "**/react": "^16.8.3",
+    "**/react-dom": "^16.8.3",
+    "**/draft-js": "^0.11.0-beta",
+    "**/immutable": "3.7.4",
+    "**/draft-js-blocks": "0.0.24"
   },
   "dependencies": {
     "@babel/runtime": "^7.3.4",
@@ -26,15 +29,17 @@
     "aws-sdk": "^2.413.0",
     "date-fns": "^1.29.0",
     "draft-js": "^0.11.0-beta",
-    "draft-js-code-block-plugin": "^0.0.27",
-    "draft-js-compact": "0.0.6",
+    "draft-js-compact": "^0.0.7",
     "draft-js-dates": "^0.0.5",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",
     "haikunator": "^2.0.0",
-    "immutable": "~4.0.0-rc.12",
+    "immutable": "~3.7.4",
+    "lodash.chunk": "^4.2.0",
     "lodash.debounce": "^4.0.8",
     "lodash.escape": "^4.0.1",
+    "lodash.get": "^4.4.2",
+    "lodash.keyby": "^4.6.0",
     "lodash.unescape": "^4.0.1",
     "prop-types": "^15.5.10",
     "react": "^16.8.3",
@@ -45,6 +50,7 @@
     "react-transition-group": "^2.6.0",
     "redux": "^4.0.1",
     "s3-dropzone": "^0.0.48",
+    "split.js": "^1.5.10",
     "with-async-component": "^0.0.8"
   },
   "standard": {

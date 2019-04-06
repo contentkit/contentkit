@@ -8,6 +8,7 @@ import gql from 'graphql-tag'
 import { EditorState, convertFromRaw } from 'draft-js'
 import { expand } from 'draft-js-compact'
 import classnames from 'classnames'
+import { List } from 'immutable'
 
 const EditIcon = props => (
   <svg
@@ -109,7 +110,7 @@ class DashboardToolbar extends React.Component {
       EditorState.push(
         this.props.editorState,
         convertFromRaw(
-          expand(raw)
+          expand(raw, { parent: null, children: List(), prevSibling: null, nextSibling: null })
         ),
         'insert-fragment'
       )

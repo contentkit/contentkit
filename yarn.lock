@@ -3133,17 +3133,10 @@ draft-js-anchor-plugin@^2.0.2:
     tlds "^1.197.0"
     union-class-names "^1.0.0"
 
-draft-js-blocks@0.0.20, draft-js-blocks@^0.0.20:
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/draft-js-blocks/-/draft-js-blocks-0.0.20.tgz#9efdddeb99a92e172c86b36dcc68e5075bead0d0"
-  integrity sha512-4AOUshN+ID6qdr/ksw+ZJFHqLDZ/G2zP7eZzLqhEszjUXD2Jz9vBkGPDhwsH63lzTJKfdpInzeRv3qM0hmd90Q==
-  dependencies:
-    left-indent "0.0.6"
-
-draft-js-blocks@^0.0.23:
-  version "0.0.23"
-  resolved "https://registry.yarnpkg.com/draft-js-blocks/-/draft-js-blocks-0.0.23.tgz#8104663563586b73a8eb5f4d4a213bfc473b6ff2"
-  integrity sha512-itHB8nfFr2Vh3PGghbb6mYK4iM79yTztXE+RkuKR3sMaCjORGQ4NJxJSlg45WV6wn5RHpwTRHt9xmxsTsbcqYw==
+draft-js-blocks@0.0.20, draft-js-blocks@0.0.24, draft-js-blocks@^0.0.20, draft-js-blocks@^0.0.23:
+  version "0.0.24"
+  resolved "https://registry.yarnpkg.com/draft-js-blocks/-/draft-js-blocks-0.0.24.tgz#66ef0a4ecae606d6bf0eb6914ac6d173dc9d2a26"
+  integrity sha512-tyS6Ga2F9KV/svWu+1ok7oWFqNNyXw2cuMpKfRo6tRcS18PrIvVNEDahQIsY4doHyrS6wLWOovWwCwd1QI4BaQ==
   dependencies:
     left-indent "0.0.6"
 
@@ -3155,17 +3148,6 @@ draft-js-checkable-list-item@^3.0.4:
     draft-js-modifiers "~0.2.2"
     immutable "~3.7.4"
 
-draft-js-code-block-plugin@^0.0.27:
-  version "0.0.27"
-  resolved "https://registry.yarnpkg.com/draft-js-code-block-plugin/-/draft-js-code-block-plugin-0.0.27.tgz#ded0449c3a4a9664293f288b3f731cdf5808201c"
-  integrity sha512-s8Ff5A0xvx2H/jk8G7qeadv9uDVBVVsUcj3Agl39VXBVFEt3vR4gk0ws0qkOAG0PDHsO+jaQjApMVjA5MXiYgA==
-  dependencies:
-    classnames "^2.2.6"
-    decorate-component-with-props "^1.1.0"
-    draft-js-blocks "^0.0.20"
-    lodash.debounce "^4.0.8"
-    react-subscriptions "^0.0.10"
-
 draft-js-code-block-plugin@^0.0.31:
   version "0.0.31"
   resolved "https://registry.yarnpkg.com/draft-js-code-block-plugin/-/draft-js-code-block-plugin-0.0.31.tgz#107071a98269957db76a5dfc0d4b417f1910ce93"
@@ -3175,10 +3157,10 @@ draft-js-code-block-plugin@^0.0.31:
     decorate-component-with-props "^1.1.0"
     draft-js-blocks "^0.0.20"
 
-draft-js-compact@0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/draft-js-compact/-/draft-js-compact-0.0.6.tgz#b3ef4454ef1baa5323c8b727b91d2ba3da0523e8"
-  integrity sha512-BVzDA3MwvgIaAQCcXjkEd1viF0eoVABQkqQGCzkytKLwoMtGZJ3Ej5jYgZNOC4HgH3HNoKfWdpWskJ4kDbcv/A==
+draft-js-compact@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/draft-js-compact/-/draft-js-compact-0.0.7.tgz#c36898a016c2c55cbf6f580d6d02d5d4173ae567"
+  integrity sha512-wP8vKnVvtwcqV4LD2vjkUcpGgjHgGqSJxr138RUHJRnib6dtV9Zdc5UPLeBvffBdRH1dokORS+3e0XF7IcDYvw==
   dependencies:
     is-plain-object "^2.0.4"
 
@@ -3229,21 +3211,12 @@ draft-js-utils@^1.2.0:
   resolved "https://registry.yarnpkg.com/draft-js-utils/-/draft-js-utils-1.2.0.tgz#f5cb23eb167325ffed3d79882fdc317721d2fd12"
   integrity sha1-9csj6xZzJf/tPXmIL9wxdyHS/RI=
 
-draft-js@^0.11.0-beta:
+draft-js@^0.11.0-beta, draft-js@~0.10.5:
   version "0.11.0-beta"
   resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.11.0-beta.tgz#c67874505f55120adb5927224fe854bab4baf885"
   integrity sha512-mamN/O5GCB1nUyOwDBlaQs3yopV/81O+a7bcVVwWqyuzjA3Q2rXODo5KQxBKhstDcggC14u7oigHVQUkwLaXgw==
   dependencies:
     fbjs "^1.0.0"
-    immutable "~3.7.4"
-    object-assign "^4.1.0"
-
-draft-js@~0.10.5:
-  version "0.10.5"
-  resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.10.5.tgz#bfa9beb018fe0533dbb08d6675c371a6b08fa742"
-  integrity sha512-LE6jSCV9nkPhfVX2ggcRLA4FKs6zWq9ceuO/88BpXdNCS7mjRTgs0NsV6piUCJX9YxMsB9An33wnkMmU2sD2Zg==
-  dependencies:
-    fbjs "^0.8.15"
     immutable "~3.7.4"
     object-assign "^4.1.0"
 
@@ -3826,7 +3799,7 @@ fbjs-css-vars@^1.0.0:
   resolved "https://registry.yarnpkg.com/fbjs-css-vars/-/fbjs-css-vars-1.0.2.tgz#216551136ae02fe255932c3ec8775f18e2c078b8"
   integrity sha512-b2XGFAFdWZWg0phtAWLHCk836A1Xann+I+Dgd3Gk64MHKZO44FfoD1KxyvbSh0qZsIoXQGGlVztIY+oitJPpRQ==
 
-fbjs@^0.8.1, fbjs@^0.8.15, fbjs@^0.8.4:
+fbjs@^0.8.1, fbjs@^0.8.4:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
@@ -4495,20 +4468,10 @@ immutable-tuple@^0.4.9:
   resolved "https://registry.yarnpkg.com/immutable-tuple/-/immutable-tuple-0.4.9.tgz#473ebdd6c169c461913a454bf87ef8f601a20ff0"
   integrity sha512-LWbJPZnidF8eczu7XmcnLBsumuyRBkpwIRPCZxlojouhBo5jEBO4toj6n7hMy6IxHU/c+MqDSWkvaTpPlMQcyA==
 
-immutable@*:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
-  integrity sha1-wkOZUUVbs5kT2vKBN28VMOEErfM=
-
-immutable@~3.7.4:
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.7.6.tgz#13b4d3cb12befa15482a26fe1b2ebae640071e4b"
-  integrity sha1-E7TTyxK++hVIKib+Gy665kAHHks=
-
-immutable@~4.0.0-rc.12:
-  version "4.0.0-rc.12"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0-rc.12.tgz#ca59a7e4c19ae8d9bf74a97bdf0f6e2f2a5d0217"
-  integrity sha512-0M2XxkZLx/mi3t8NVwIm1g8nHoEmM9p9UBl/G9k4+hm0kBgOVdMV/B3CY5dQ8qG8qc80NN4gDV4HQv6FTJ5q7A==
+immutable@*, immutable@3.7.4, immutable@~3.7.4:
+  version "3.7.4"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.7.4.tgz#40ab3ec87b4ac95e0331a6d359a4b1fa73b2ddf3"
+  integrity sha1-QKs+yHtKyV4DMabTWaSx+nOy3fM=
 
 import-fresh@^2.0.0:
   version "2.0.0"
@@ -5693,6 +5656,11 @@ lodash.assign@^4.2.0:
   resolved "https://registry.yarnpkg.com/lodash.assign/-/lodash.assign-4.2.0.tgz#0d99f3ccd7a6d261d19bdaeb9245005d285808e7"
   integrity sha1-DZnzzNem0mHRm9rrkkUAXShYCOc=
 
+lodash.chunk@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/lodash.chunk/-/lodash.chunk-4.2.0.tgz#66e5ce1f76ed27b4303d8c6512e8d1216e8106bc"
+  integrity sha1-ZuXOH3btJ7QwPYxlEujRIW6BBrw=
+
 lodash.clone@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.clone/-/lodash.clone-4.5.0.tgz#195870450f5a13192478df4bc3d23d2dea1907b6"
@@ -5742,6 +5710,11 @@ lodash.isequal@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
   integrity sha1-QVxEePK8wwEgwizhDtMib30+GOA=
+
+lodash.keyby@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.keyby/-/lodash.keyby-4.6.0.tgz#7f6a1abda93fd24e22728a4d361ed8bcba5a4354"
+  integrity sha1-f2oavak/0k4icopNNh7YvLpaQ1Q=
 
 lodash.memoize@^4.1.2:
   version "4.1.2"
@@ -8709,6 +8682,11 @@ split-string@^3.0.1, split-string@^3.0.2:
   integrity sha512-NzNVhJDYpwceVVii8/Hu6DKfD2G+NrQHlS/V/qgv763EYudVwEcMQNxd2lh+0VrUByXN/oJkl5grOhYWvQUYiw==
   dependencies:
     extend-shallow "^3.0.0"
+
+split.js@^1.5.10:
+  version "1.5.10"
+  resolved "https://registry.yarnpkg.com/split.js/-/split.js-1.5.10.tgz#11f63a7ea21780a6022e6dffe8f8eaa18c9c819e"
+  integrity sha512-/J52X5c4ZypVwu4WAhD8E1T9uXQtNokvG6mIBHauzyA1aKH6bmETVSv3RPjBXEz6Gcc4mIThgmjGQL39LD16jQ==
 
 sprintf-js@~1.0.2:
   version "1.0.3"
