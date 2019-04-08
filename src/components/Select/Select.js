@@ -60,6 +60,7 @@ class Select extends React.Component {
         name={id}
         id={id}
         style={{ height: '34px' }}
+        labelWidth={0}
       />
     )
   }

@@ -100,6 +100,7 @@ class BaseEditor extends React.Component {
   )
 
   render = () => {
+    // wreturn false
     return (
       <Layout
         history={this.props.history}

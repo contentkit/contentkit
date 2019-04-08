@@ -913,35 +913,44 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@contentkit/buttons@0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@contentkit/buttons/-/buttons-0.0.16.tgz#1d99db10d846bf6a8b16355b24a7f14a924a27b2"
-  integrity sha512-9kyFWZB5wGkbrQmBEcH1IinJlTt9c83ZZ6ZCKRYBlGVkB606Fkv6dFrRC9CBAJQxRvR6Vy+PWFAZB8Z6RG3wWw==
+"@contentkit/buttons@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@contentkit/buttons/-/buttons-0.0.20.tgz#e2a961826ddcc938ed2c252eb8c05e4e5aeb73c5"
+  integrity sha512-VE6niQXz0Szdrk4+YdjVXzmRtEHbY1xE8PmO4roC3/wuWOqkZ0aTbgzLyEwToWUF0KpxIN7jJ6OJiFinkTe0hg==
   dependencies:
     "@babel/runtime" "^7.1.2"
+    "@contentkit/util" "0.0.20"
     classnames "^2.2.6"
-    draft-js-blocks "^0.0.23"
     react-valid-attributes "^0.0.2"
 
-"@contentkit/editor@^0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@contentkit/editor/-/editor-0.0.16.tgz#2881e5a630a5aeb7c2273e5f53ac3f49309a4d29"
-  integrity sha512-HgaZNlIyVbY4q3+EgJJYUW0itePey7PlXHxXoBAWQOB9ZARUNvtEUIyopYlViSPOdkobMOp9jah1I+WVuqqg6A==
+"@contentkit/code@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@contentkit/code/-/code-0.0.20.tgz#f0af9e41cacfcf7c6393ab9377f8d9148a2d7ef7"
+  integrity sha512-P+xVQ/iBa2Y/9zyZ5S8hM8JnXrjjVvZC0fwuRBYHOmeISuSBx3UTPwrbXtv/JYxfQGzRoOHF6NMhVKmXNB2gqQ==
+  dependencies:
+    "@contentkit/util" "0.0.20"
+    classnames "^2.2.6"
+    decorate-component-with-props "^1.1.0"
+
+"@contentkit/editor@^0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@contentkit/editor/-/editor-0.0.20.tgz#65c767da17471698b4caafb41d1fddc52fc9ae2d"
+  integrity sha512-EKoIoYq2OiZkoHNbUtdyXEHrg8DkZSBnbIyIJ8xzozGSNXegB9CtRbh05dN5RW2AAmLkbThk6eJSAfgRk/8ibQ==
   dependencies:
     "@babel/runtime" "^7.1.2"
-    "@contentkit/buttons" "0.0.16"
-    "@contentkit/embed" "0.0.16"
-    "@contentkit/focus" "0.0.16"
-    "@contentkit/new-line" "0.0.16"
-    "@contentkit/tables" "0.0.16"
-    "@contentkit/toolbar" "0.0.16"
+    "@contentkit/buttons" "0.0.20"
+    "@contentkit/code" "0.0.20"
+    "@contentkit/embed" "0.0.20"
+    "@contentkit/focus" "0.0.20"
+    "@contentkit/markdown" "0.0.20"
+    "@contentkit/new-line" "0.0.20"
+    "@contentkit/toolbar" "0.0.20"
+    "@contentkit/util" "0.0.20"
     classnames "^2.2.6"
     decorate-component-with-props "^1.1.0"
     draft-js-anchor-plugin "^2.0.2"
-    draft-js-blocks "^0.0.23"
     draft-js-code-block-plugin "^0.0.31"
     draft-js-export-html "^1.2.0"
-    draft-js-markdown "0.0.20"
     draft-js-prism "^1.0.6"
     html-element-attributes "^2.0.0"
     lodash.groupby "^4.6.0"
@@ -950,22 +959,21 @@
     prop-types "^15.6.1"
     s3-dropzone "^0.0.48"
 
-"@contentkit/embed@0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@contentkit/embed/-/embed-0.0.16.tgz#69564922e032323e3c985b799283955913865fc0"
-  integrity sha512-wTNe5FLmFsafozIzNYCNTLxWENgd8UbY7CU6mDv90CwB0avjOxVkOIPG6A7H/lLhquw2ChC7lWlq1uiGceCw4g==
+"@contentkit/embed@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@contentkit/embed/-/embed-0.0.20.tgz#c5e36bfd90a4ae2f2d163574a05843b69c4abfd0"
+  integrity sha512-DFy+petSkLBDQs717chZ3ExBUHWh9WokCkfbyTOCQZvootmLPIb4GuTxDb4PSR0ylSCNWEDcE1hG4TA/nSLFkA==
   dependencies:
     "@babel/runtime" "^7.1.2"
     append-stylesheet "^0.0.2"
     classnames "^2.2.6"
-    draft-js-blocks "^0.0.23"
     lodash.frompairs "^4.0.1"
     url "^0.11.0"
 
-"@contentkit/focus@0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@contentkit/focus/-/focus-0.0.16.tgz#c219d4f68d3962654b72c952a2a9b73717cd2731"
-  integrity sha512-6uDI/yK/Imuxkw7uzecj5cZIuiayX4bBYLU93qCioaDlm1ZNFJqF33NKsP0H6fEIT6G1KnXqR/qk2ctpocR5wg==
+"@contentkit/focus@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@contentkit/focus/-/focus-0.0.20.tgz#6993b38c0708aba41e6ecb35db11860483f1b5c3"
+  integrity sha512-YUEeyw4+f1jG2sawAgc8K6o+dVT0tJm0tD4xSznvGQqcIL+0Me7QRMsrPCokHdU6WgqvM9Q5sWuCkbr8KLt4Vg==
   dependencies:
     classnames "^2.2.6"
     decorate-component-with-props "^1.0.2"
@@ -973,33 +981,37 @@
     immutable "~3.7.4"
     prop-types "^15.5.8"
 
-"@contentkit/new-line@0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@contentkit/new-line/-/new-line-0.0.16.tgz#ea45c0b8697d4ead0aa475dde0b1c9786e87ba0b"
-  integrity sha512-SWm10gbyr5OXMIfKdnCfWGTztdfPB0AVygdJWG2ehdVpIx1B1YgDfJwqY/BTE11gcau+3WvpPr3nod0oSDCVRg==
-  dependencies:
-    "@babel/runtime" "^7.1.2"
-    deepmerge "^3.2.0"
-    draft-js-blocks "^0.0.23"
+"@contentkit/markdown@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@contentkit/markdown/-/markdown-0.0.20.tgz#f3c0f6f10e8e3c3a440fac00e09fdc616f5b56d7"
+  integrity sha512-I52E5xDZ3USeIl0vP/qVQ/juod30DNkRAhcQdJ0/qT/bDuGe1pNJM5gUgEQpwvhzNszrtEsgBzA3z//TvX8VQg==
 
-"@contentkit/tables@0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@contentkit/tables/-/tables-0.0.16.tgz#8bc6839ca48c8b6169191609822337640a1b1b9f"
-  integrity sha512-qZNjcu0T+mbHGFBoUeOil1noNUurSVpeKGq/z84wF2c9u4fhXxv+Wb0ny537WYQPzzkM5iEu1uubWk0eugYRTQ==
+"@contentkit/new-line@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@contentkit/new-line/-/new-line-0.0.20.tgz#c55c536940dabab5f3b210471badad2ebadf431d"
+  integrity sha512-S7hamzRL1hPWZT/Yg1J9zsAF8bFYvptoTHKq8a3+xP34xdxaNL3EFm+q22TMOrZTJjzRcA9eudY7WiLshGll1Q==
   dependencies:
     "@babel/runtime" "^7.1.2"
-    draft-js-blocks "^0.0.23"
+    "@contentkit/util" "0.0.20"
 
-"@contentkit/toolbar@0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@contentkit/toolbar/-/toolbar-0.0.16.tgz#1b0a796b597d3c44bdbfed9ef41b6e24e708176f"
-  integrity sha512-WlI/LAAEleJlwS3fR9s0l4evYu4ReKYNffa8z8vFtYVZbcgw+IWo0muaEICuwW1pXy8mzexCQE4f0zbLk8BxfQ==
+"@contentkit/toolbar@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@contentkit/toolbar/-/toolbar-0.0.20.tgz#0825dbd68e19f906b827201ede06654553197840"
+  integrity sha512-DhFeESJ+36xRsUTYhBAEVsGpBT66pq0nz4kVEUG48nlcqQbepOdJtF+8nrUe/5HgEHZzEsXD65D11kHM5Pf/jA==
   dependencies:
     "@babel/runtime" "^7.1.2"
+    "@contentkit/util" "0.0.20"
     classnames "^2.2.6"
     decorate-component-with-props "^1.0.2"
     lodash.debounce "^4.0.8"
     prop-types "^15.5.8"
+
+"@contentkit/util@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@contentkit/util/-/util-0.0.20.tgz#e08d92b0fdc3839162504170873fab656da6cee2"
+  integrity sha512-u1E1eGEJAdXukGj/HNFwe9ThVNvYXQW5b068KdgcYDy0grScxSZzVNMNhvUZwTtNbRnLwDhkTcmTIxNDOUg5rg==
+  dependencies:
+    left-indent "^0.0.6"
 
 "@iarna/toml@^2.2.0":
   version "2.2.1"
@@ -2884,12 +2896,12 @@ deep-is@~0.1.3:
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
   integrity sha1-s2nW+128E+7PUk+RsHD+7cNXzzQ=
 
-deepmerge@^2.1.0, deepmerge@^2.2.1:
+deepmerge@^2.1.0:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.2.1.tgz#5d3ff22a01c00f645405a2fbc17d0778a1801170"
   integrity sha512-R9hc1Xa/NOBi9WRVUWg19rl1UB7Tt4kuPd+thNJgFZoxXsTz7ncaPaeIm+40oSGuP33DfMb4sZt1QIGiJzC4EA==
 
-deepmerge@^3.0.0, deepmerge@^3.2.0:
+deepmerge@^3.0.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-3.2.0.tgz#58ef463a57c08d376547f8869fdc5bcee957f44e"
   integrity sha512-6+LuZGU7QCNUnAJyX8cIrlzoEgggTM6B7mm+znKOX4t5ltluT9KLjN6g61ECMS0LTsLW7yDpNoxhix5FZcrIow==
@@ -3133,38 +3145,12 @@ draft-js-anchor-plugin@^2.0.2:
     tlds "^1.197.0"
     union-class-names "^1.0.0"
 
-draft-js-blocks@0.0.20, draft-js-blocks@^0.0.20:
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/draft-js-blocks/-/draft-js-blocks-0.0.20.tgz#9efdddeb99a92e172c86b36dcc68e5075bead0d0"
-  integrity sha512-4AOUshN+ID6qdr/ksw+ZJFHqLDZ/G2zP7eZzLqhEszjUXD2Jz9vBkGPDhwsH63lzTJKfdpInzeRv3qM0hmd90Q==
+draft-js-blocks@0.0.24, draft-js-blocks@^0.0.20:
+  version "0.0.24"
+  resolved "https://registry.yarnpkg.com/draft-js-blocks/-/draft-js-blocks-0.0.24.tgz#66ef0a4ecae606d6bf0eb6914ac6d173dc9d2a26"
+  integrity sha512-tyS6Ga2F9KV/svWu+1ok7oWFqNNyXw2cuMpKfRo6tRcS18PrIvVNEDahQIsY4doHyrS6wLWOovWwCwd1QI4BaQ==
   dependencies:
     left-indent "0.0.6"
-
-draft-js-blocks@^0.0.23:
-  version "0.0.23"
-  resolved "https://registry.yarnpkg.com/draft-js-blocks/-/draft-js-blocks-0.0.23.tgz#8104663563586b73a8eb5f4d4a213bfc473b6ff2"
-  integrity sha512-itHB8nfFr2Vh3PGghbb6mYK4iM79yTztXE+RkuKR3sMaCjORGQ4NJxJSlg45WV6wn5RHpwTRHt9xmxsTsbcqYw==
-  dependencies:
-    left-indent "0.0.6"
-
-draft-js-checkable-list-item@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/draft-js-checkable-list-item/-/draft-js-checkable-list-item-3.0.4.tgz#b3049a56499757720cdcbf3775d0384464ad0030"
-  integrity sha512-rHTErKYTYoBRtSCxKfSz+PivbtXp0KqmjC2Ms3u9QHlx9c40qsbajdSz+1TfPXaWP8FAB5EeynZ2qYPRgltPeQ==
-  dependencies:
-    draft-js-modifiers "~0.2.2"
-    immutable "~3.7.4"
-
-draft-js-code-block-plugin@^0.0.27:
-  version "0.0.27"
-  resolved "https://registry.yarnpkg.com/draft-js-code-block-plugin/-/draft-js-code-block-plugin-0.0.27.tgz#ded0449c3a4a9664293f288b3f731cdf5808201c"
-  integrity sha512-s8Ff5A0xvx2H/jk8G7qeadv9uDVBVVsUcj3Agl39VXBVFEt3vR4gk0ws0qkOAG0PDHsO+jaQjApMVjA5MXiYgA==
-  dependencies:
-    classnames "^2.2.6"
-    decorate-component-with-props "^1.1.0"
-    draft-js-blocks "^0.0.20"
-    lodash.debounce "^4.0.8"
-    react-subscriptions "^0.0.10"
 
 draft-js-code-block-plugin@^0.0.31:
   version "0.0.31"
@@ -3175,10 +3161,10 @@ draft-js-code-block-plugin@^0.0.31:
     decorate-component-with-props "^1.1.0"
     draft-js-blocks "^0.0.20"
 
-draft-js-compact@0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/draft-js-compact/-/draft-js-compact-0.0.6.tgz#b3ef4454ef1baa5323c8b727b91d2ba3da0523e8"
-  integrity sha512-BVzDA3MwvgIaAQCcXjkEd1viF0eoVABQkqQGCzkytKLwoMtGZJ3Ej5jYgZNOC4HgH3HNoKfWdpWskJ4kDbcv/A==
+draft-js-compact@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/draft-js-compact/-/draft-js-compact-0.0.7.tgz#c36898a016c2c55cbf6f580d6d02d5d4173ae567"
+  integrity sha512-wP8vKnVvtwcqV4LD2vjkUcpGgjHgGqSJxr138RUHJRnib6dtV9Zdc5UPLeBvffBdRH1dokORS+3e0XF7IcDYvw==
   dependencies:
     is-plain-object "^2.0.4"
 
@@ -3193,23 +3179,6 @@ draft-js-export-html@^1.2.0:
   integrity sha1-HL4reOH+10/CnHzcv9dUBGjsogk=
   dependencies:
     draft-js-utils "^1.2.0"
-
-draft-js-markdown@0.0.20:
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/draft-js-markdown/-/draft-js-markdown-0.0.20.tgz#d60e2bf72f8e4661eb04daf528e433a3c30f2eee"
-  integrity sha512-zZotrBNCuA9PYZGwzmevDqEnxy7nZ4g5O0yE9aW5Lik5WyIWu9udxpSf69oBRx4rtbU0vO/E2MTaTzmbsya37A==
-  dependencies:
-    deepmerge "^2.2.1"
-    draft-js-blocks "0.0.20"
-    draft-js-checkable-list-item "^3.0.4"
-
-draft-js-modifiers@~0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/draft-js-modifiers/-/draft-js-modifiers-0.2.2.tgz#ff715450a04aea86b84993b0e51eea7c25a2591d"
-  integrity sha512-64zeY74S4um+NO5HI66scZAX6fufdpZlr6htI3ttvNkTw5Jx/3r7+ETKJ/PTnGWtzUTC7TVkeF6mP7oqtUBUQw==
-  dependencies:
-    draft-js "~0.10.5"
-    immutable "~3.7.4"
 
 draft-js-plugins-utils@2.0.2:
   version "2.0.2"
@@ -3235,15 +3204,6 @@ draft-js@^0.11.0-beta:
   integrity sha512-mamN/O5GCB1nUyOwDBlaQs3yopV/81O+a7bcVVwWqyuzjA3Q2rXODo5KQxBKhstDcggC14u7oigHVQUkwLaXgw==
   dependencies:
     fbjs "^1.0.0"
-    immutable "~3.7.4"
-    object-assign "^4.1.0"
-
-draft-js@~0.10.5:
-  version "0.10.5"
-  resolved "https://registry.yarnpkg.com/draft-js/-/draft-js-0.10.5.tgz#bfa9beb018fe0533dbb08d6675c371a6b08fa742"
-  integrity sha512-LE6jSCV9nkPhfVX2ggcRLA4FKs6zWq9ceuO/88BpXdNCS7mjRTgs0NsV6piUCJX9YxMsB9An33wnkMmU2sD2Zg==
-  dependencies:
-    fbjs "^0.8.15"
     immutable "~3.7.4"
     object-assign "^4.1.0"
 
@@ -3826,7 +3786,7 @@ fbjs-css-vars@^1.0.0:
   resolved "https://registry.yarnpkg.com/fbjs-css-vars/-/fbjs-css-vars-1.0.2.tgz#216551136ae02fe255932c3ec8775f18e2c078b8"
   integrity sha512-b2XGFAFdWZWg0phtAWLHCk836A1Xann+I+Dgd3Gk64MHKZO44FfoD1KxyvbSh0qZsIoXQGGlVztIY+oitJPpRQ==
 
-fbjs@^0.8.1, fbjs@^0.8.15, fbjs@^0.8.4:
+fbjs@^0.8.1, fbjs@^0.8.4:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
@@ -4495,20 +4455,10 @@ immutable-tuple@^0.4.9:
   resolved "https://registry.yarnpkg.com/immutable-tuple/-/immutable-tuple-0.4.9.tgz#473ebdd6c169c461913a454bf87ef8f601a20ff0"
   integrity sha512-LWbJPZnidF8eczu7XmcnLBsumuyRBkpwIRPCZxlojouhBo5jEBO4toj6n7hMy6IxHU/c+MqDSWkvaTpPlMQcyA==
 
-immutable@*:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
-  integrity sha1-wkOZUUVbs5kT2vKBN28VMOEErfM=
-
-immutable@~3.7.4:
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.7.6.tgz#13b4d3cb12befa15482a26fe1b2ebae640071e4b"
-  integrity sha1-E7TTyxK++hVIKib+Gy665kAHHks=
-
-immutable@~4.0.0-rc.12:
-  version "4.0.0-rc.12"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0-rc.12.tgz#ca59a7e4c19ae8d9bf74a97bdf0f6e2f2a5d0217"
-  integrity sha512-0M2XxkZLx/mi3t8NVwIm1g8nHoEmM9p9UBl/G9k4+hm0kBgOVdMV/B3CY5dQ8qG8qc80NN4gDV4HQv6FTJ5q7A==
+immutable@*, immutable@3.7.4, immutable@~3.7.4:
+  version "3.7.4"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.7.4.tgz#40ab3ec87b4ac95e0331a6d359a4b1fa73b2ddf3"
+  integrity sha1-QKs+yHtKyV4DMabTWaSx+nOy3fM=
 
 import-fresh@^2.0.0:
   version "2.0.0"
@@ -5618,7 +5568,7 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
-left-indent@0.0.6:
+left-indent@0.0.6, left-indent@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/left-indent/-/left-indent-0.0.6.tgz#cc946d91220a9693b66a1d1b0a389758f6819e63"
   integrity sha512-8bBsq7pO3A1n5lYeTSKF9KdaAZ4nx/FWqGEwwlBNTepZYpLYZCrYHBPHaeWAh8HjQHg+2/nRikYeLFEMzS3iKA==
@@ -5742,6 +5692,11 @@ lodash.isequal@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
   integrity sha1-QVxEePK8wwEgwizhDtMib30+GOA=
+
+lodash.keyby@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.keyby/-/lodash.keyby-4.6.0.tgz#7f6a1abda93fd24e22728a4d361ed8bcba5a4354"
+  integrity sha1-f2oavak/0k4icopNNh7YvLpaQ1Q=
 
 lodash.memoize@^4.1.2:
   version "4.1.2"
@@ -9574,11 +9529,6 @@ wide-align@^1.1.0:
   integrity sha512-QGkOQc8XL6Bt5PwnsExKBPuMKBxnGxWWW3fU55Xt4feHozMUhdUMaBCk290qpm/wG5u/RSKzwdAC4i51YigihA==
   dependencies:
     string-width "^1.0.2 || 2"
-
-with-async-component@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/with-async-component/-/with-async-component-0.0.8.tgz#7075846ec4c4b468dbdff7742ed12eb6d0e627fc"
-  integrity sha512-QYhAxAmXrkO0JUUqnZVlavQ3Lh/RvHkp1EIei2qHmrckC/59Os5YV/IHa7V9VRSblKP1FUYZFnJ8Fk/PheuSYA==
 
 wordwrap@~0.0.2:
   version "0.0.3"

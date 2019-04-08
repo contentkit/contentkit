@@ -8,7 +8,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput'
 
 const styles = {
   input: {
-    boxSizing: 'border-box',
+    boxSizing: 'border-box'
   },
   button: {
     border: 'none',
@@ -19,10 +19,8 @@ const styles = {
     borderBottomRightRadius: 4,
     marginRight: '-14px'
   },
-  adornment: {
-  },
-  label: {
-  }
+  adornment: {},
+  label: {}
 }
 
 const inputProps = {
