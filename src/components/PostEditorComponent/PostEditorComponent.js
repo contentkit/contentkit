@@ -2,7 +2,7 @@
 import React from 'react'
 import * as config from '../../lib/config'
 import { Editor } from '@contentkit/editor'
-import { setEditorStateBlockMap, Block } from '@contentkit/util'
+import { setEditorStateBlockMap, Block, Command, HANDLED, NOT_HANDLED } from '@contentkit/util'
 import plugins from '@contentkit/editor/lib/plugins'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import { withStyles } from '@material-ui/core/styles'
@@ -17,7 +17,7 @@ import '@contentkit/editor/lib/css/Draft.css'
 import '@contentkit/editor/lib/css/prism.css'
 import '@contentkit/editor/lib/css/CheckableListItem.css'
 import 's3-dropzone/lib/styles.css'
-import 'draft-js-code-block-plugin/lib/style.css'
+import '@contentkit/code/src/style.scss'
 
 const Toolbar = plugins.toolbar
 
@@ -97,11 +97,11 @@ class PostEditorComponent extends React.Component {
   }
 
   handleKeyCommand = (command) => {
-    if (command === 'editor-save') {
+    if (command === Command.EDITOR_SAVE) {
       this.props.save()
-      return 'handled'
+      return HANDLED
     }
-    return 'not-handled'
+    return NOT_HANDLED
   }
 
   handleOpen = tableBlockKey => {

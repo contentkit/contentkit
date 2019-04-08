@@ -12,23 +12,8 @@ import debounce from 'lodash.debounce'
 import { feedQueryShape } from '../../shapes'
 import { EditorState, convertFromRaw } from 'draft-js'
 import { expand } from 'draft-js-compact'
-import type { Raw, Client, PostsQuery, Post, SetEditorState } from '../../types'
 
-type Props = {
-  history: any,
-  posts: PostsQuery,
-  client: Client,
-  setEditorState: SetEditorState,
-  editorState: EditorState
-}
-
-type State = {
-  query: string,
-  raw: Raw,
-  selectedPost: Post,
-}
-
-class Dashboard extends React.Component<Props, State> {
+class Dashboard extends React.Component {
   static defaultProps = {
     project: {},
     selected: undefined
@@ -110,21 +95,21 @@ class Dashboard extends React.Component<Props, State> {
         query={this.state.query}
       >
         <article>
-            <CreatePost
-              feed={this.props.feed}
-              selectedProject={this.props.selectedProject}
-              projects={this.props.projects}
-              selectProject={this.props.selectProject}
-              client={this.props.client}
-            />
-            <DashboardTable
-              feed={this.props.feed}
-              projects={this.props.projects}
-              selectedPost={this.state.selectedPost}
-              handlePostSelect={this.handlePostSelect}
-              client={this.props.client}
-              renderToolbar={this.renderToolbar}
-            />
+          <CreatePost
+            feed={this.props.feed}
+            selectedProject={this.props.selectedProject}
+            projects={this.props.projects}
+            selectProject={this.props.selectProject}
+            client={this.props.client}
+          />
+          <DashboardTable
+            feed={this.props.feed}
+            projects={this.props.projects}
+            selectedPost={this.state.selectedPost}
+            handlePostSelect={this.handlePostSelect}
+            client={this.props.client}
+            renderToolbar={this.renderToolbar}
+          />
         </article>
       </Layout>
     )

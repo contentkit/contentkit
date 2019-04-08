@@ -202,9 +202,7 @@ const theme = createMuiTheme({
     },
     MuiSelect: {
       root: {
-      },
-      select: {
-        '&$focused': {
+        '&:focused': {
           background: 'transparent'
         }
       }

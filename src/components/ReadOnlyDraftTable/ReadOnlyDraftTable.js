@@ -6,13 +6,11 @@ class ReadOnlyDraftTable extends React.Component {
     this.props.blockProps.handleClick(this.props.block.getKey())
   }
 
-  getRows = () => {
-    const rows = this.props.block.getData().get('table')
-    return groupBy(rows, 'row')
-  }
-
   render () {
-    const rows = this.getRows()
+    const data = this.props.block.getData().get('table')
+    const table = groupBy(data, v => v.row)
+    const isEmpty = data.every(v => !v.text)
+
     return (
       <div
         className={'draft-table'}
@@ -20,22 +18,24 @@ class ReadOnlyDraftTable extends React.Component {
         onClick={this.handleMouseDown}
         contentEditable={false}
         readOnly
-      >
-        {Object.values(rows).map((row, i) => (
-          <div className={'draft-row'} key={i}>
-            {row.map(cell => (
-              <div
-                className={'draft-cell'}
-                data-key={cell.key}
-                data-colspan={cell.colSpan}
-                data-rowspan={cell.rowSpan}
-                key={cell.key}
-              >
-                {cell.value}
-              </div>
-            ))}
-          </div>
-        ))}
+      >{isEmpty
+          ? <div className={'draft-table-placeholder'}>Click to add data</div>
+          : Object.values(table).map((row, i) => (
+            <div className={'draft-row'} key={i}>
+              {row.map(cell => (
+                <div
+                  className={'draft-cell'}
+                  data-key={cell.key}
+                  data-colspan={cell.colSpan}
+                  data-rowspan={cell.rowSpan}
+                  key={cell.key}
+                >
+                  {cell.value}
+                </div>
+              ))}
+            </div>
+          ))
+        }
       </div>
     )
   }

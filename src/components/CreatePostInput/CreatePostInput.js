@@ -8,7 +8,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput'
 
 const styles = {
   input: {
-    boxSizing: 'border-box',
+    boxSizing: 'border-box'
   },
   button: {
     border: 'none',
@@ -19,10 +19,8 @@ const styles = {
     borderBottomRightRadius: 4,
     marginRight: '-14px'
   },
-  adornment: {
-  },
-  label: {
-  }
+  adornment: {},
+  label: {}
 }
 
 const inputProps = {
@@ -87,7 +85,7 @@ class CreatePostInput extends React.Component {
           onChange={handleChange}
           name={'create-post'}
           id={'create-post'}
-          labelWidth={10}
+          labelWidth={0}
         />
       </React.Fragment>
     )

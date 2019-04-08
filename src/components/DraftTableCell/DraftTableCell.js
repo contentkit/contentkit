@@ -18,10 +18,6 @@ class DraftTableCell extends React.Component {
   inputRef = React.createRef()
   containerRef = React.createRef()
 
-  componentDidMount () {
-    this.props.setSize(this.props.cell.key, this.containerRef.current.getBoundingClientRect())
-  }
-
   componentDidUpdate = (prevProps, prevState) => {
     const { cell: { key } } = this.props
     if (prevProps.editing.key !== this.props.editing.key) {
@@ -31,14 +27,6 @@ class DraftTableCell extends React.Component {
 
       this.inputRef.current.blur()
     }
-
-    if (prevProps.dragging !== this.props.dragging) {
-      this.props.setSize(key, this.containerRef.current.getBoundingClientRect())
-    }
-  }
-
-  onBlur = evt => {
-    // this.props.onBlur(evt, this.props.cell.key)
   }
 
   onFocus = evt => {

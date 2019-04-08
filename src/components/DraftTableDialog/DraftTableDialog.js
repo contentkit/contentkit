@@ -27,13 +27,22 @@ const EDITING_INITIAL_STATE = {
   row: undefined
 }
 
+const getCells = (editorState, tableBlockKey) => {
+  const block = editorState.getCurrentContent().getBlockForKey(tableBlockKey)
+  if (!block || block.getType() !== Block.TABLE) return {}
+  const tableRows = tableBlockKey
+    ? [...block.getData().get('table')]
+    : []
+  return tableRows
+}
+
 class DraftTableDialog extends React.Component {
 
   static propTypes = {
     editorState: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
-    tableBlockKey: PropTypes.string.isRequired,
+    tableBlockKey: PropTypes.string,
     handleClose: PropTypes.func.isRequired
   }
 
@@ -41,20 +50,22 @@ class DraftTableDialog extends React.Component {
 
   state = {
     selected: [],
-    editing: EDITING_INITIAL_STATE
+    editing: EDITING_INITIAL_STATE,
+    dragging: false
   }
 
   getRows = () => {
     const { editorState, tableBlockKey } = this.props
     const block = editorState.getCurrentContent().getBlockForKey(tableBlockKey)
-    if (!block || block.getType() !== Block.TABLE) return {}
+    if (!block || block.getType() !== Block.TABLE) return []
     const tableRows = tableBlockKey
-      ? block.getData().get('table')
+      ? [...block.getData().get('table')]
       : []
-    return groupBy(tableRows, 'row')
+    return groupBy(tableRows, v => v.row)
   }
 
   onClickCell = (evt, key) => {
+    if (this.state.dragging) return
     const { tableBlockKey, editorState } = this.props
     const block = editorState.getCurrentContent().getBlockForKey(tableBlockKey)
     const rows = block.getData().get('table') ? [...block.getData().get('table')] : []
@@ -101,19 +112,9 @@ class DraftTableDialog extends React.Component {
     const block = editorState.getCurrentContent().getBlockForKey(tableBlockKey)
     let rows = block.getData().get('table') ? [...block.getData().get('table')] : []
 
-    // if (index > 0) {
-    //   prevCell = rows[index - 1]
-    //   if (prevCell.row === rows[index].row) {
-    //     rows[index - 1] = {
-    //       ...prevCell,
-    //       colSpan: prevCell.colSpan + 1
-    //     }
-    //   }
-    // }
-
-    rows = rows.filter(v => !this.state.selected.includes(v.key))
+    const table = rows.filter(v => !this.state.selected.includes(v.key))
     this.props.onChange(
-      updateDataOfBlock(editorState, block, Map({ table: rows }))
+      updateDataOfBlock(editorState, block, Map({ table: table }))
     )
     this.setState({
       editing: EDITING_INITIAL_STATE,
@@ -214,6 +215,7 @@ class DraftTableDialog extends React.Component {
   }
 
   onFocus = (evt, key) => {
+    if (this.state.dragging) return
     const { tableBlockKey, editorState } = this.props
     const block = editorState.getCurrentContent().getBlockForKey(tableBlockKey)
     const rows = block.getData().get('table')
@@ -225,8 +227,9 @@ class DraftTableDialog extends React.Component {
   }
 
   render () {
-    const tableRows = this.getRows()
     const { classes } = this.props
+    const tableData = getCells(this.props.editorState, this.props.tableBlockKey)
+    const tableRows = groupBy(tableData, 'row')
     return (
       <Dialog
         open={this.props.open}
@@ -265,6 +268,14 @@ class DraftTableDialog extends React.Component {
             editing={this.state.editing}
             onFocus={this.onFocus}
             selected={this.state.selected}
+            tableData={tableData}
+            dragging={this.state.dragging}
+            onDragStart={evt => {
+              this.setState({ dragging: true })
+            }}
+            onDragEnd={evt => {
+              this.setState({ dragging: false })
+            }}
           />
         </DialogContent>
       </Dialog>
