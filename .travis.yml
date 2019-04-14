@@ -8,6 +8,7 @@ install:
   - yarn install
 before_script:
 script: 
+  - sudo apt-get install jq
   - yarn add travis-up
   - yarn run build
   - sh bin/vault.sh
