@@ -10,6 +10,7 @@ before_script:
 script: 
   - yarn add travis-up
   - yarn run build
+  - sh bin/vault.sh
 before_deploy:
   - ls -lat
   - ./bin/up version
