@@ -913,41 +913,41 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@contentkit/buttons@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@contentkit/buttons/-/buttons-0.0.21.tgz#b377b11ac401822b7f20008dbd8aab6fd0b7d34a"
-  integrity sha512-fPPfyBNMe742sLNCH95/K1hP/Wpe+NrRbmAT7XYTAiWZRrq/PAobKhCbTz6p/OLBTGy09T7LvDORQ1L7NZdLNQ==
+"@contentkit/buttons@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@contentkit/buttons/-/buttons-0.0.22.tgz#19f9b0a64e73b17cd6fa2732af50a571dfde663d"
+  integrity sha512-/vpweL7wXhvj+NEAFKQvqQf219eZ2HXZeXCvYlx8XIjBlCBgzsyGy7d/BLHnN1FhH/dwh5R5f1NiUSq1O7UZQA==
   dependencies:
     "@babel/runtime" "^7.1.2"
-    "@contentkit/util" "0.0.21"
+    "@contentkit/util" "0.0.22"
     clsx "^1.0.4"
     draft-js-blocks "^0.0.23"
     react-valid-attributes "^0.0.2"
 
-"@contentkit/code@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@contentkit/code/-/code-0.0.21.tgz#37f9dfd46ccb529a3fd0c72c9175d07779b8a9d7"
-  integrity sha512-8jhdKab1PyHqvvpUlgEsQBptz21WzueNQRWtemBA+j/isoVOqlLC1ZtlBfKhhy1rbhPdT35LHsqwqJUTJxuhcQ==
+"@contentkit/code@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@contentkit/code/-/code-0.0.22.tgz#2b658950ccc5542cb952ceb086c7d5b9050ea5cb"
+  integrity sha512-1ytT4TLqzXXDrSlXMSi6Cl/Y8jDydD/ZEwdn8ZzhDeFx2glGcobQgFlQmn8DqOphpfBflSCFyzBs0NMq8u4mwg==
   dependencies:
-    "@contentkit/util" "0.0.21"
+    "@contentkit/util" "0.0.22"
     clsx "^1.0.4"
     decorate-component-with-props "^1.1.0"
     draft-js-blocks "^0.0.20"
 
-"@contentkit/editor@^0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@contentkit/editor/-/editor-0.0.21.tgz#645f8ab548c17ae9d6ce0a4fe43d253fcd77789e"
-  integrity sha512-ZqTYkQIA0BuXFyWOLY9bz7vC7iyz6W3nTKESo7IGrq1O8JFmSIoE+AyojQLSs/BiM27HbY8pqvw8LUa0r/J1Qg==
+"@contentkit/editor@^0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@contentkit/editor/-/editor-0.0.22.tgz#497b7936cf9f12af9c746f82c82a1fce621fbb8c"
+  integrity sha512-Oc7AJG0onaM02MQwMJgYM5lcWd/ymj4bU2stJquxeqtw5vDAlvR8u+B9TDH1vl1OL/c6ITX9Is1BfIs+YftD4g==
   dependencies:
     "@babel/runtime" "^7.1.2"
-    "@contentkit/buttons" "0.0.21"
-    "@contentkit/code" "0.0.21"
-    "@contentkit/embed" "0.0.21"
-    "@contentkit/focus" "0.0.21"
-    "@contentkit/markdown" "0.0.21"
-    "@contentkit/new-line" "0.0.21"
-    "@contentkit/toolbar" "0.0.21"
-    "@contentkit/util" "0.0.21"
+    "@contentkit/buttons" "0.0.22"
+    "@contentkit/code" "0.0.22"
+    "@contentkit/embed" "0.0.22"
+    "@contentkit/focus" "0.0.22"
+    "@contentkit/markdown" "0.0.22"
+    "@contentkit/new-line" "0.0.22"
+    "@contentkit/toolbar" "0.0.22"
+    "@contentkit/util" "0.0.22"
     clsx "^1.0.4"
     decorate-component-with-props "^1.1.0"
     draft-js-anchor-plugin "^2.0.2"
@@ -957,14 +957,15 @@
     html-element-attributes "^2.0.0"
     lodash.groupby "^4.6.0"
     lodash.pick "^4.4.0"
+    pretty "^2.0.0"
     prismjs "^1.15.0"
     prop-types "^15.6.1"
     s3-dropzone "^0.0.48"
 
-"@contentkit/embed@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@contentkit/embed/-/embed-0.0.21.tgz#dc8ade75d2bc0be079de1fdb1d5595267f2c9c39"
-  integrity sha512-3ter1fdbms9ERDdHe9+BbnTdUwrfvL+H8mvRInjjZRocJ8FFtKP9iF94DZ2gTpaLmSAyZgtcTkMpIkcQb9ND+w==
+"@contentkit/embed@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@contentkit/embed/-/embed-0.0.22.tgz#ad902ecbbc3721e56b678884caa7a1afef287bdf"
+  integrity sha512-XGLd3I0ShTpqnC3ESNGA55UuWz9+NyuGqvWbETgTq8xsd8TsbcLbv0yDrMPZC11q736DciPDeeW7Jydx5lPXIg==
   dependencies:
     "@babel/runtime" "^7.1.2"
     append-stylesheet "^0.0.2"
@@ -972,10 +973,10 @@
     lodash.frompairs "^4.0.1"
     url "^0.11.0"
 
-"@contentkit/focus@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@contentkit/focus/-/focus-0.0.21.tgz#76317cbd3c25fe276bd630e67c3acc699cd49bb2"
-  integrity sha512-Q/mHMxAVtm3zx6BS0Ztlw2fGxEIOD0rFa5ofTk4DNmNPP7ntyeadwupl/U7N+MdHvxjc1C7JSwpiK7ZmEaYBZA==
+"@contentkit/focus@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@contentkit/focus/-/focus-0.0.22.tgz#000068884dac5d47ab105acdb7f7a27721d02446"
+  integrity sha512-zMyO8uBJDnSuoTPqTBdvuSFxeyjndIifesoOuXJl7zHazgGkZIpj1aEta0CNhVKXuFAh0k80v/7eb26ehpKjjQ==
   dependencies:
     clsx "^1.0.4"
     decorate-component-with-props "^1.0.2"
@@ -983,35 +984,35 @@
     immutable "~3.7.4"
     prop-types "^15.5.8"
 
-"@contentkit/markdown@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@contentkit/markdown/-/markdown-0.0.21.tgz#ccfacaeab63217500f3890feb81dad955c9bf27d"
-  integrity sha512-7sJNw6tEvOtcbCIqcrhFgzl0C5H424d2mX5Cnb6FLf7nULi+Bt5TrHiG+Enscj+onKrTtXlAmDpn/gmODFhpyQ==
+"@contentkit/markdown@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@contentkit/markdown/-/markdown-0.0.22.tgz#a880157ea55ad211998bf384ba40f0e8ba9c7ef0"
+  integrity sha512-fD18yZOuiVM03/R9CD+0LW+aJtfoX33C6zOvjfg5ZDjIcSnhxdTFkv7uwuGbw0avl7pdreejdHptR53c6f0kwQ==
 
-"@contentkit/new-line@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@contentkit/new-line/-/new-line-0.0.21.tgz#c32881ce5dac935e7429c28d6128090bd588fd52"
-  integrity sha512-nSxzlp7KTxn9IUkfhgHpdZtavUPC3t4qwlF9t03SuTBJsPucP8JSmijTYRaMDvOhTv0/D425xPRH39y/ssRDPA==
+"@contentkit/new-line@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@contentkit/new-line/-/new-line-0.0.22.tgz#a26e7e122f4b26f1874ebfcc2131c8c072029982"
+  integrity sha512-z9Q7oU5A9cGeZqswYY1Lg5H/44jJrmxKpe1yFzK54iclxgBODNUdYrWUOMaXhuWRiKD3Lc/ejderacnTZUN8yQ==
   dependencies:
     "@babel/runtime" "^7.1.2"
-    "@contentkit/util" "0.0.21"
+    "@contentkit/util" "0.0.22"
 
-"@contentkit/toolbar@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@contentkit/toolbar/-/toolbar-0.0.21.tgz#de4be1c24fbbaea4c258ba3d7ccf87b90ffeed3d"
-  integrity sha512-em6NFAlwoK5SI0gsUlbZ0GiSpBZsYZwvfL2mOjUt0c2+MpcBBZT6pYnNyl8ZU8Q852xDuEryA+iCmzuwTPFmQw==
+"@contentkit/toolbar@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@contentkit/toolbar/-/toolbar-0.0.22.tgz#e96cdfebf5e31e5736f9dcaecbe3e7d8b93ad2cc"
+  integrity sha512-g0+gXoWOAAHHvgzzx+tAmIp7w8ewbi6/zsv0ntCrB5843goxAIR2+y7ymAxrV+0ZRaM7wF5UEwx8ETawdHA+Og==
   dependencies:
     "@babel/runtime" "^7.1.2"
-    "@contentkit/util" "0.0.21"
+    "@contentkit/util" "0.0.22"
     clsx "^1.0.4"
     decorate-component-with-props "^1.0.2"
     lodash.debounce "^4.0.8"
     prop-types "^15.5.8"
 
-"@contentkit/util@0.0.21":
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/@contentkit/util/-/util-0.0.21.tgz#85be67f64dbcec2a2ef4b195cd7e5bf62d7d9b7e"
-  integrity sha512-9MISsGOv+PvxjtxVpTwthtEfDfwFnKe7VifeEuqOhIjFNj5kOSPPMTF5wHE+jGUs0nasYti46JvN2PDw5itKwg==
+"@contentkit/util@0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@contentkit/util/-/util-0.0.22.tgz#afc07fb26177c10026dcf5d98c14da9ce20d3b0c"
+  integrity sha512-4OHNkZIynjYtG1suXVWlsoLRwlqQvNYvn0jhexece9f1IfD3gncsv65LdT1q/vuxynHAxMNiAa7RD8N1Px9CDw==
   dependencies:
     left-indent "^0.0.6"
 
@@ -2451,6 +2452,15 @@ concat-stream@^1.5.0, concat-stream@~1.6.0:
     inherits "^2.0.3"
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
+
+condense-newlines@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/condense-newlines/-/condense-newlines-0.2.1.tgz#3de985553139475d32502c83b02f60684d24c55f"
+  integrity sha1-PemFVTE5R10yUCyDsC9gaE0kxV8=
+  dependencies:
+    extend-shallow "^2.0.1"
+    is-whitespace "^0.3.0"
+    kind-of "^3.0.2"
 
 config-chain@^1.1.12:
   version "1.1.12"
@@ -4871,6 +4881,11 @@ is-utf8@^0.2.0:
   resolved "https://registry.yarnpkg.com/is-utf8/-/is-utf8-0.2.1.tgz#4b0da1442104d1b336340e80797e865cf39f7d72"
   integrity sha1-Sw2hRCEE0bM2NA6AeX6GXPOffXI=
 
+is-whitespace@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/is-whitespace/-/is-whitespace-0.3.0.tgz#1639ecb1be036aec69a54cbb401cfbed7114ab7f"
+  integrity sha1-Fjnssb4DauxppUy7QBz77XEUq38=
+
 is-windows@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/is-windows/-/is-windows-1.0.2.tgz#d1850eb9791ecd18e6182ce12a30f396634bb19d"
@@ -5335,6 +5350,17 @@ js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.1.tgz#1efa39ef2c5f7980bb1784ade4a8af2de3291121"
   integrity sha512-M7kLczedRMYX4L8Mdh4MzyAMM9O5osx+4FcOQuTvr3A9F2D9S5JXheN0ewNbrvK2UatkTRhL5ejGmGSjNMiZuw==
+
+js-beautify@^1.6.12:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/js-beautify/-/js-beautify-1.9.1.tgz#6f9ef915f5d8d92b9f907606fce63795884c8040"
+  integrity sha512-oxxvVZdOdUfzk8IOLBF2XUZvl2GoBEfA+b0of4u2EBY/46NlXasi8JdFvazA5lCrf9/lQhTjyVy2QCUW7iq0MQ==
+  dependencies:
+    config-chain "^1.1.12"
+    editorconfig "^0.15.2"
+    glob "^7.1.3"
+    mkdirp "~0.5.0"
+    nopt "~4.0.1"
 
 js-beautify@^1.8.9:
   version "1.8.9"
@@ -7479,6 +7505,15 @@ pretty-format@^24.0.0:
   dependencies:
     ansi-regex "^4.0.0"
     ansi-styles "^3.2.0"
+
+pretty@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/pretty/-/pretty-2.0.0.tgz#adbc7960b7bbfe289a557dc5f737619a220d06a5"
+  integrity sha1-rbx5YLe7/iiaVX3F9zdhmiINBqU=
+  dependencies:
+    condense-newlines "^0.2.1"
+    extend-shallow "^2.0.1"
+    js-beautify "^1.6.12"
 
 prismjs@^1.15.0:
   version "1.15.0"
