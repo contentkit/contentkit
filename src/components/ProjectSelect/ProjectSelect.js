@@ -1,13 +1,8 @@
-// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
 import Select from '../Select'
 
-class SelectProject extends React.Component<{
-  allProjects: Array<{id: string, name: string}>,
-  selectedProject: string,
-  selectProject: () => void
-}> {
+class SelectProject extends React.Component {
   static propTypes = {
     allProjects: PropTypes.array,
     selectedProject: PropTypes.string,
@@ -16,6 +11,13 @@ class SelectProject extends React.Component<{
 
   static defaultProps = {
     allProjects: []
+  }
+
+  componentDidUpdate (prevProps) {
+    const { allProjects } = this.props
+    if (!prevProps.allProjects.length && allProjects.length) {
+      this.props.selectProject(allProjects[0].id)
+    }
   }
 
   onChange = ({ target }) => {

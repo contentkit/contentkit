@@ -142,7 +142,7 @@ class PostEditorComponent extends React.Component {
     return (
       <React.Fragment>
         <div className={classes.flex}>
-          <div className={classes.editorContainer} onClick={() => {}}>
+          <div className={classes.editorContainer} onClick={this.handleClick}>
             <CSSTransition
               classNames={'transition'}
               unmountOnExit

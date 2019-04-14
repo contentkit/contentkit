@@ -17,7 +17,8 @@ const styles = {
     borderTopLeftRadius: 0,
     borderTopRightRadius: 4,
     borderBottomRightRadius: 4,
-    marginRight: '-14px'
+    marginRight: '-14px',
+    lineHeight: '1.60'
   },
   adornment: {},
   label: {}
