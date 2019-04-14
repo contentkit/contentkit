@@ -97,6 +97,7 @@ class PostEditorComponent extends React.Component {
   }
 
   handleKeyCommand = (command) => {
+    console.log(command)
     if (command === Command.EDITOR_SAVE) {
       this.props.save()
       return HANDLED
@@ -137,7 +138,7 @@ class PostEditorComponent extends React.Component {
       loading,
       ...rest /* eslint-disable-line */
     } = this.props
-  
+
     return (
       <React.Fragment>
         <div className={classes.flex}>
@@ -158,6 +159,7 @@ class PostEditorComponent extends React.Component {
               plugins={plugins.plugins}
               keyBindingFn={keyBindingFn}
               blockRendererFn={this.blockRendererFn}
+              handleKeyCommand={this.handleKeyCommand}
             />
           </div>
           <div className={classes.toolbar}>
