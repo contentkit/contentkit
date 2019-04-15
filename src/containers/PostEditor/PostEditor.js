@@ -55,7 +55,7 @@ class BaseEditor extends React.Component {
     return this.props.updateDocument.mutate({
       id: document.id,
       raw: raw,
-      html: html
+      encodedHtml: html
     })
   }
 
@@ -72,7 +72,7 @@ class BaseEditor extends React.Component {
   }
 
   getHtml = (editorState = this.props.editorState) =>
-    escapeHtml(exportHtml(editorState))
+    window.btoa(exportHtml(editorState))
 
   onChange = editorState => {
     this.props.setEditorState(editorState)

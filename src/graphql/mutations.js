@@ -49,16 +49,17 @@ export const UPDATE_DOCUMENT = gql`
   mutation (
     $id: ID!
     $raw: JSON!
-    $html: String!
+    $encodedHtml: String!
   ) {
     updateDocument(
       id: $id
       raw: $raw
-      html: $html
+      encodedHtml: $encodedHtml
     ) {
       id
       raw
       html
+      encodedHtml
       versions {
         id
         raw
@@ -99,6 +100,7 @@ export const UPDATE_POST = gql`
         id
         raw
         html
+        encodedHtml
         versions {
           id
           raw
@@ -217,6 +219,16 @@ export const DELETE_ORIGIN = gql`
   }
 `
 
+export const DELETE_TAG = gql`
+  mutation ($id: ID!) {
+    deleteTag (
+      id: $id
+    ) {
+      id
+    }
+  }
+`
+
 export const CREATE_ORIGIN = gql`
   mutation ($projectId: ID!, $name: String!) {
     createOrigin (
@@ -229,6 +241,18 @@ export const CREATE_ORIGIN = gql`
       project {
         id
       }
+    }
+  }
+`
+
+export const CREATE_TAG = gql`
+  mutation ($name: String, $projectId: ID!, $postId: ID!) {
+    createTag(name: $name, projectId: $projectId, postId: $postId) {
+      name
+      id
+      createdAt
+      description
+      slug
     }
   }
 `

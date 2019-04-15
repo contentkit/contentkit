@@ -58,6 +58,7 @@ export const POST_QUERY = gql`
         id
         raw
         html
+        encodedHtml
         versions {
           id
           raw
@@ -99,6 +100,17 @@ export const USER_QUERY = gql`
         id
         name
       }
+    }
+  }
+`
+
+export const TAG_QUERY = gql`
+  query($postId: ID!) {
+    tagsByPost(postId: $postId) {
+      id
+      name
+      description
+      slug
     }
   }
 `

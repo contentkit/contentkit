@@ -19,7 +19,7 @@ export const findIndex = (arr, id) => {
   return index >= arr.length ? -1 : index
 }
 
-class ProjectsMutations extends React.Component<{}, {}> {
+class ProjectsMutations extends React.Component {
   createProject = ({ mutate, projects }) => variables => mutate({
     variables,
     optimisticResponse: {

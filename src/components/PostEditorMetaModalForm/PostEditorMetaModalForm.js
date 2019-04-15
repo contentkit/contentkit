@@ -1,58 +1,71 @@
-// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import EnhancedInput from '../../components/EnhancedInput'
 import PostStatusSelect from '../PostEditorMetaModalSelect'
 import ProjectSelect from '../../components/ProjectSelect'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
 import FormControl from '@material-ui/core/FormControl'
+import { TextField, withStyles } from '@material-ui/core'
+import PostTagChips from '../PostTagChips'
 
 const PostEditorMetaModalForm = (props) => {
-  const { handleChange, post, projects, selectProject } = props
-  const title = (post.data.post && post.data.post.title) || ''
-  const slug = (post.data.post && post.data.post.slug) || ''
-  const excerpt = (post.data.post && post.data.post.excerpt) || ''
-  const selectedProject = (post.data.post && post.data.post.project.id) || ''
-  const allProjects = (projects && projects.data.allProjects) || []
+  const { handleChange, post, projects, selectProject, classes } = props
+  const title = (post?.data?.post?.title) || ''
+  const slug = (post?.data?.post?.slug) || ''
+  const excerpt = (post?.data?.post?.excerpt) || ''
+  const selectedProject = (post?.data?.post?.project?.id) || ''
+  const allProjects = (projects?.data?.allProjects) || []
   return (
-    <div className='modal-content'>
-      <EnhancedInput
-        label={'title'}
-        value={title}
-        onChange={e => handleChange(e, 'title')}
-      />
-      <PostStatusSelect
-        handleChange={handleChange}
-        post={post}
-      />
-      <EnhancedInput
-        label={'slug'}
-        value={slug}
-        onChange={e => handleChange(e, 'slug')}
-      />
-      <EnhancedInput
-        multiline
-        label={'excerpt'}
-        value={excerpt}
-        onChange={e => handleChange(e, 'excerpt')}
-      />
-      <ProjectSelect
-        allProjects={allProjects}
-        selectedProject={selectedProject}
-        selectProject={selectProject}
-      />
-      <FormControl fullWidth margin={'normal'}>
-        <PostMetaDatePicker
-          {...props}
+    <div className={classes.wrapper}>
+      <div className={classes.left}>
+        <TextField
+          label={'title'}
+          value={title}
+          onChange={e => handleChange(e, 'title')}
+          variant={'outlined'}
+          margin="normal"
         />
-      </FormControl>
+        <PostStatusSelect
+          handleChange={handleChange}
+          post={post}
+        />
+        <TextField
+          label={'slug'}
+          value={slug}
+          onChange={e => handleChange(e, 'slug')}
+          variant={'outlined'}
+          margin="normal"
+        />
+        <TextField
+          multiline
+          label={'excerpt'}
+          value={excerpt}
+          onChange={e => handleChange(e, 'excerpt')}
+          variant={'outlined'}
+          margin="normal"
+        />
+      </div>
+      <div className={classes.right}>
+        <div className={classes.select}>
+          <ProjectSelect
+            allProjects={allProjects}
+            selectedProject={selectedProject}
+            selectProject={selectProject}
+          />
+        </div>
+        <FormControl fullWidth margin={'normal'}>
+          <PostMetaDatePicker {...props} />
+        </FormControl>
+
+        <PostTagChips post={post} />
+      </div>
     </div>
   )
 }
 
 PostEditorMetaModalForm.propTypes = {
+  projects: PropTypes.object.isRequired,
   post: PropTypes.object,
   handleChange: PropTypes.func
 }
@@ -66,11 +79,12 @@ export const PROJECTS_QUERY = gql`
   }
 `
 
-export default props => (
+const ModalWithData = props => (
   <Query
     query={PROJECTS_QUERY}
   >
     {projects => {
+      if (projects.loading) return false
       return (
         <PostEditorMetaModalForm
           {...props}
@@ -80,3 +94,32 @@ export default props => (
     }}
   </Query>
 )
+
+const styles = {
+  wrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%'
+  },
+  left: {
+    flexBasis: '50%',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    padding: '15px',
+    boxSizing: 'border-box'
+  },
+  right: {
+    flexBasis: '50%',
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    padding: '15px',
+    boxSizing: 'border-box'
+  },
+  select: {
+    marginTop: '16px',
+    marginBottom: '8px'
+  }
+}
+export default withStyles(styles)(ModalWithData)

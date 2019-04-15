@@ -97,7 +97,6 @@ class PostEditorComponent extends React.Component {
   }
 
   handleKeyCommand = (command) => {
-    console.log(command)
     if (command === Command.EDITOR_SAVE) {
       this.props.save()
       return HANDLED

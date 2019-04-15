@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -7,7 +6,7 @@ import ClipboardIcon from '@material-ui/icons/FileCopy'
 import IconButton from '@material-ui/core/IconButton'
 import FormControl from '@material-ui/core/FormControl'
 
-function ProjectModalIdInput (props: any) {
+function ProjectModalIdInput (props) {
   const {
     onCopy,
     setRef,

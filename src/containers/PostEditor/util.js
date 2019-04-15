@@ -2,12 +2,11 @@
 
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js'
 import { exportHtml } from '@contentkit/editor'
-import escapeHtml from 'lodash.escape'
 import { expand, compress } from 'draft-js-compact'
 
 export const convertToHtml = editorState => {
   const html = exportHtml(editorState)
-  return escapeHtml(html)
+  return window.btoa(html)
 }
 
 export const isLoaded = ({ post }) => Boolean(post && post.Post)

@@ -65,6 +65,7 @@ type Document {
   updatedAt: String!
   raw: JSON
   html: String
+  encodedHtml: String
   versions: [Version]
 }
 
@@ -89,6 +90,7 @@ type Query {
   version(id: ID!): Version
   project(id: ID!): Project
   tag(id: ID!): Tag
+  tagsByPost(postId: ID!): [Tag]
   allTags(projectId: ID!): [Tag]
   allProjects: [Project]
 }
@@ -120,7 +122,7 @@ type Mutation {
   updateDocument(
     id: ID!
     raw: JSON!
-    html: String!
+    encodedHtml: String!
   ): Document
   deleteVersion(id: ID!): Version
   updatePost(
@@ -143,4 +145,6 @@ type Mutation {
   createOrigin(name: String!, projectId: ID!, originType: OriginType): Origin
   deleteOrigin(id: ID!): Origin
   updateProject(id: ID!, name: String!): Project
+  deleteTag(id: ID!): Tag
+  createTag(name: String, projectId: ID!, postId: ID!): Tag
 }

@@ -9,4 +9,5 @@ const schema = makeExecutableSchema({
   resolvers
 })
 
+console.log(JSON.stringify(schema))
 module.exports = schema

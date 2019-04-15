@@ -42,13 +42,7 @@ WhitelistChips.propTypes = {
 
 const WhitelistChipsWithStyles = withStyles(styles)(WhitelistChips)
 
-class WhitelistDomains extends React.Component<{
-  createOrigin: (data: any) => void,
-  deleteOrigin: (data: any) => void,
-  project: ProjectQuery
-}, {
-  value: string
-}> {
+class WhitelistDomains extends React.Component {
   state = {
     value: ''
   }

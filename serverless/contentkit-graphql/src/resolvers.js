@@ -74,14 +74,14 @@ const createPost = (_, { title, projectId }, ctx) => {
   `, { head: true })
 }
 
-const updateDocument = async (_, { id, raw, html }, ctx) => {
+const updateDocument = async (_, { id, raw, encodedHtml }, ctx) => {
   raw.blocks = raw.blocks
     .map(block => {
       if (block.text) block.text = block.text.replace(/'/g, `''`)
       return block
     })
   return pg.query(`
-    UPDATE documents set raw = '${JSON.stringify(raw)}'::jsonb, html = '${html}'
+    UPDATE documents set raw = '${JSON.stringify(raw)}'::jsonb, encoded_html = '${encodedHtml}'
     WHERE id = '${id}' returning *
   `, { head: true })
 }
@@ -239,6 +239,33 @@ const updateProject = (_, args, context) => {
   `, { head: true })
 }
 
+const createTag = (_, args, context) => {
+  const query = `
+    WITH old_tag AS (
+      SELECT * FROM tags WHERE name = '${args.name}'
+    ),
+    new_tag AS (
+      INSERT into tags (name, project_id) SELECT '${args.name}', '${args.projectId}' WHERE (SELECT id FROM old_tag) IS NULL RETURNING *
+    ),
+    merged AS (
+      SELECT x.* FROM old_tag x UNION SELECT y.* FROM new_tag y
+    ),
+    connection AS (
+      INSERT INTO posts_tags(tag_id, post_id) SELECT (SELECT id FROM merged), '${args.postId}'
+    )
+    SELECT * FROM merged
+  `
+  console.log(query)
+  return pg.query(query, { head: true })
+}
+
+const deleteTag = (_, args, context) => {
+  const query = `
+    DELETE FROM posts_tags WHERE tag_id = '${args.id}'
+  `
+  return pg.query(query, { head: true })
+}
+
 const resolvers = {
   Query: {
     user: async (parent, args, context) => {
@@ -299,6 +326,15 @@ const resolvers = {
         SELECT * FROM projects WHERE id = '${args.id}'
       `, { head: true })
     },
+    tagsByPost: async (parent, args, context) => {
+      const query = `
+      SELECT * from posts_tags
+      JOIN tags ON (posts_tags.tag_id = tags.id)
+      WHERE posts_tags.post_id = '${args.postId}'
+      `
+      return pg.query(query)
+        .then(data => data || [])
+    },
     feed: async (parent, args, context) => {
       let limit = args.limit || 10
       let offset = args.offset || 0
@@ -358,7 +394,9 @@ const resolvers = {
     deleteOrigin: deleteOrigin,
     updateProject: updateProject,
     updatePost: updatePost,
-    deleteProject: deleteProject
+    deleteProject: deleteProject,
+    createTag: createTag,
+    deleteTag: deleteTag
   },
   Feed: {},
   Post: {

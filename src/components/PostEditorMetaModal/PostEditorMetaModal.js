@@ -26,17 +26,6 @@ export const _POST_QUERY = gql`
   }
 `
 
-type Props = {
-  updatePost: () => void,
-  onClose: () => void,
-  open: boolean,
-  client: any,
-  post: {
-    Post: Post,
-    variables: { id: string }
-  }
-}
-
 const styles = theme => ({
   dialog: {
     [theme.breakpoints.down('sm')]: {
@@ -54,7 +43,7 @@ const getDate = ({ post: { data: { post } } }) => {
   return date ? new Date(date) : new Date()
 }
 
-class EditPostMetaModal extends React.PureComponent<Props, {}> {
+class EditPostMetaModal extends React.PureComponent {
   state = {
     dateInputState: createInitialState(getDate(this.props)),
     projectId: this.props.post.data.post.project.id
@@ -153,8 +142,9 @@ class EditPostMetaModal extends React.PureComponent<Props, {}> {
     return (
       <div>
         <Dialog
+          fullWidth
           open={open}
-          maxWidth={'md'}
+          maxWidth={'lg'}
           PaperProps={{
             classes: {
               root: this.props.classes.dialog

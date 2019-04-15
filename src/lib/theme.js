@@ -53,8 +53,8 @@ const theme = createMuiTheme({
         }
       },
       input: {
-        boxSizing: 'border-box',
-        padding: '8px 14px'
+        // boxSizing: 'border-box',
+        // padding: '8px 14px'
       }
     },
     MuiButton: {
@@ -167,7 +167,7 @@ const theme = createMuiTheme({
         // padding: '5px 5px 5px 13px',
         boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
         fontSize: '16px',
-        boxSizing: 'border-box',
+        // boxSizing: 'border-box',
         '&$focused': {
         }
       },
