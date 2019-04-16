@@ -59,7 +59,7 @@ class Select extends React.Component {
         value={value}
         name={id}
         id={id}
-        style={{ height: '34px' }}
+        style={{ height: '40px' }}
         labelWidth={0}
       />
     )

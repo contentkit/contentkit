@@ -54,7 +54,7 @@ const theme = createMuiTheme({
       },
       input: {
         // boxSizing: 'border-box',
-        // padding: '8px 14px'
+        padding: '8px 14px'
       }
     },
     MuiButton: {

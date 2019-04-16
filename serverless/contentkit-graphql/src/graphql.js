@@ -12,7 +12,7 @@ const context = async (ctx) => {
   let isToken = JWS_REGEX.test(token)
   if (isToken) {
     let sub = (token && JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString('utf8')).sub) || ''
-    let result = await pg.query(`
+    let result = await pg.head(`
       SELECT
         x.*,
         to_timestamp((select x.payload::json->>'exp')::int) AS exp
@@ -20,12 +20,10 @@ const context = async (ctx) => {
         '${token}',
         (SELECT password FROM users WHERE id = '${sub}')
       ) x
-    `, { head: true })
+    `)
     ctx.user = result.valid ? sub : null
   } else {
-    let user = await pg.query(`
-      SELECT * FROM users WHERE secret = '${token}'
-    `, { head: true })
+    let user = await pg.head('SELECT * FROM users WHERE secret = $1', [token])
     if (user) {
       ctx.user = user.id
     }

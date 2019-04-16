@@ -40,7 +40,7 @@ class CreateTagInput extends React.Component {
       <div className={classes.inputWrapper}>
         <TextField
           value={this.state.value}
-          label={'Create tag'}
+          placeholder={'Create tag'}
           onChange={this.handleChange}
           onKeyDown={this.onKeyDown}
           variant={'outlined'}
@@ -114,7 +114,6 @@ class PostTagChips extends React.Component {
             {deleteTag => (
               <Mutation mutation={CREATE_TAG}>
                 {createTag => {
-                  console.log(tagQuery)
                   if (tagQuery.loading) return false
                   return (
                     <div>

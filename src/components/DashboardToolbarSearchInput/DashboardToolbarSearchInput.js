@@ -46,7 +46,7 @@ class SearchInput extends React.Component {
           className={classes.input}
           variant={'outlined'}
           InputProps={{
-            endAdornment: <SearchIcon />
+            endAdornment: <SearchIcon />,
           }}
         />
       </div>

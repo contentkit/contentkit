@@ -31,7 +31,7 @@ const PostEditorMetaModalForm = (props) => {
           post={post}
         />
         <TextField
-          label={'slug'}
+          placeholder={'slug'}
           value={slug}
           onChange={e => handleChange(e, 'slug')}
           variant={'outlined'}
@@ -39,7 +39,7 @@ const PostEditorMetaModalForm = (props) => {
         />
         <TextField
           multiline
-          label={'excerpt'}
+          placeholder={'excerpt'}
           value={excerpt}
           onChange={e => handleChange(e, 'excerpt')}
           variant={'outlined'}
