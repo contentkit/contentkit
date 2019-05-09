@@ -12,6 +12,7 @@ custom:
     stage: ${self:provider.stage}
     certificateName: '*.contentkit.co'
     createRoute53Record: true
+    certificateArn: 'arn:aws:acm:us-east-1:761245233224:certificate/7a2b47a6-22c6-4d1a-898d-53615bf9ff61'
 
 provider:
   name: aws
