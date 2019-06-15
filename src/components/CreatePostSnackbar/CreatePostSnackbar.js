@@ -1,37 +1,20 @@
 // @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import Snackbar from '@material-ui/core/Snackbar'
+import message from 'antd/lib/message'
 
-const styles = theme => ({
-  close: {
-    width: theme.spacing.unit * 4,
-    height: theme.spacing.unit * 4
+class CreatePostSnackbar extends React.Component {
+  render () {
+    return null
   }
-})
 
-function CreatePostSnackbar (props) {
-  const { classes, open, newProjectName } = props /* eslint-disable-line */
-  return (
-    <div>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left'
-        }}
-        open={open}
-        autoHideDuration={2000}
-        message={
-          <span id='message-id'>Creating a new project {newProjectName}</span>
-        }
-      />
-    </div>
-  )
+  componentDidUpdate(prevProps) {
+    if (this.props.open) {
+      if (!prevProps.open) {
+        message.info(`Creating a new project ${this.props.newProjectName}`)
+      }
+    }
+  }
 }
 
-CreatePostSnackbar.propTypes = {
-  classes: PropTypes.object.isRequired
-}
-
-export default withStyles(styles)(CreatePostSnackbar)
+export default CreatePostSnackbar

@@ -63,6 +63,7 @@ class LoginPage extends React.Component {
       create
     } = this.props
     const { error } = this.state
+    console.log(this.props)
     return (
       <div className={classes.container}>
         <ErrorSnackBar open={Boolean(error)}

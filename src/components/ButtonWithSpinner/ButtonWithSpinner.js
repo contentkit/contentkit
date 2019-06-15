@@ -1,26 +1,10 @@
-// @flow
+
 import React from 'react'
-import Button from '@material-ui/core/Button'
-import SpinnerAdornment from '../SpinnerAdornment'
+import Button from 'antd/lib/button'
 
-type Props = {
-  children: React.ChildrenArray<any>,
-  loading: boolean
-}
-
-const ButtonWithSpinner = (props: Props) => {
-  const {
-    children,
-    loading,
-    ...rest
-  } = props
-  return (
-    <Button {...rest}>
-      {children}
-      {loading && <SpinnerAdornment {...rest} />}
-    </Button>
-  )
-}
+const ButtonWithSpinner = props => (
+  <Button type={'primary'} {...props} />
+)
 
 ButtonWithSpinner.defaultProps = {
   loading: false

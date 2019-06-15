@@ -8,9 +8,8 @@
   ],
   "plugins": [
     ["@babel/plugin-transform-flow-strip-types", {}, "strip-types"],
-    ["@babel/plugin-transform-runtime", {}, "transform-runtime"],
-    ["@babel/plugin-proposal-object-rest-spread", {}, "rest-spread"],
-    ["@babel/plugin-proposal-class-properties", {}, "class-properties"],
-    ["@babel/plugin-proposal-optional-chaining", {}, "optional-chaining"]
+    ["@babel/plugin-transform-runtime"],
+    ["@babel/plugin-proposal-class-properties"],
+    ["@babel/plugin-proposal-optional-chaining"]
   ]
 }

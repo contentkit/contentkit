@@ -1,14 +1,14 @@
 // @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import IconButton from '@material-ui/core/IconButton'
-import { withStyles } from '@material-ui/core/styles'
 import SearchInput from '../DashboardToolbarSearchInput'
 import gql from 'graphql-tag'
 import { EditorState, convertFromRaw } from 'draft-js'
 import { expand } from 'draft-js-compact'
 import classnames from 'classnames'
 import { List } from 'immutable'
+import Button from 'antd/lib/button'
+import styles from './styles.scss'
 
 const EditIcon = props => (
   <svg
@@ -41,19 +41,19 @@ const DeleteIcon = props => (
   </svg>
 )
 
-const styles = {
-  toolbar: {
-    justifyContent: 'space-between'
-  },
-  input: {
-  },
-  editIcon: {
-    color: '#2f54eb'
-  },
-  deleteIcon: {
-    color: '#eb2f96'
-  }
-}
+// const styles = {
+//   toolbar: {
+//     justifyContent: 'space-between'
+//   },
+//   input: {
+//   },
+//   editIcon: {
+//     color: '#2f54eb'
+//   },
+//   deleteIcon: {
+//     color: '#eb2f96'
+//   }
+// }
 
 const fetchRaw = async ({ client, selected }) => {
   const { data: { post } } = await client.query({
@@ -125,38 +125,44 @@ class DashboardToolbar extends React.Component {
       query,
       width,
       selected,
-      classes
     } = this.props
     const open = !!selected
     return (
       <React.Fragment>
-        <div>
-          <IconButton
+        <div className={styles.toolbar}>
+          <button
             onClick={this.handleEdit}
             onMouseEnter={this.onMouseEnter}
             disabled={!open}
-            className={classnames(classes.iconButton, classes.editIcon)}
+            className={styles.button}
+            className={classnames(
+              styles.button,
+              { [styles.active]: selected }
+            )}
           >
             <EditIcon />
-          </IconButton>
-          <IconButton
+          </button>
+          <button
             onClick={this.handleDelete}
             disabled={!open}
-            className={classnames(classes.iconButton, classes.deleteIcon)}
+            className={classnames(
+              styles.button,
+              { [styles.active]: selected }
+            )}
           >
             <DeleteIcon />
-          </IconButton>
+          </button>
         </div>
         <SearchInput
           width={width}
           handleSearch={handleSearch}
           handleChange={handleChange}
           query={query}
-          classes={classes}
+          classes={{}}
         />
       </React.Fragment>
     )
   }
 }
 
-export default withStyles(styles)(DashboardToolbar)
+export default DashboardToolbar

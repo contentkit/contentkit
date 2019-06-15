@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Select from '../Select'
+// import Select from '../Select'
+import Select from 'antd/lib/select'
 
 class SelectProject extends React.Component {
   static propTypes = {
@@ -20,8 +21,8 @@ class SelectProject extends React.Component {
     }
   }
 
-  onChange = ({ target }) => {
-    this.props.selectProject(target.value)
+  onChange = value => {
+    this.props.selectProject(value)
   }
 
   render () {
@@ -29,17 +30,17 @@ class SelectProject extends React.Component {
       selectedProject,
       allProjects
     } = this.props
-    const options = allProjects.map(project => ({
-      value: project.id,
-      label: project.name
-    }))
+ 
     return (
       <Select
-        options={options}
         label={'Project'}
         value={selectedProject || ''}
         onChange={this.onChange}
-      />
+      >
+        {
+          allProjects.map(project => <Select.Option key={project.id}>{project.name}</Select.Option>)
+        }
+      </Select>
     )
   }
 }

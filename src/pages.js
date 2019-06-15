@@ -1,5 +1,5 @@
 import React from 'react'
-import Spinner from '../components/Spinner'
+import Spinner from './components/Spinner'
 import { Redirect } from 'react-router-dom'
 
 const styles = {
@@ -25,7 +25,7 @@ export const LoadingOverlay = ({ loading, children }) => (
   </React.Fragment>
 )
 
-const shouldRedirect = props => !(props.user?.loading || props.user?.data?.user || /login/.test(window.location.pathname))
+const shouldRedirect = props => !(props.user?.loading || props?.user?.data?.user || /login/.test(window.location.pathname))
 
 const withRedirect = Component => props =>
   shouldRedirect(props)
@@ -33,21 +33,43 @@ const withRedirect = Component => props =>
     : <Component {...props} />
 
 export const Dashboard = withRedirect(
-  React.lazy(() => import('../containers/Dashboard'))
+  React.lazy(() => import('./containers/Dashboard'))
 )
 
 export const SignIn = withRedirect(
-  React.lazy(() => import('../containers/Login'))
+  React.lazy(() => import('./containers/Login'))
 )
 
 export const PostEditor = withRedirect(
-  React.lazy(() => import('../containers/PostEditor'))
+  React.lazy(() => import('./containers/PostEditor'))
 )
 
 export const Projects = withRedirect(
-  React.lazy(() => import('../containers/Projects'))
+  React.lazy(() => import('./containers/Projects'))
 )
 
 export const Profile = withRedirect(
-  React.lazy(() => import('../containers/Profile'))
+  React.lazy(() => import('./containers/Profile'))
 )
+
+export default [{
+  component: Dashboard,
+  path: '/',
+  exact: true
+}, {
+  component: Profile,
+  path: '/profile',
+  exact: true
+}, {
+  component: SignIn,
+  path: '/login',
+  exact: true
+}, {
+  component: PostEditor,
+  path: '/posts/:id',
+  exact: true
+}, {
+  component: Projects,
+  path: '/projects',
+  exact: true
+}]

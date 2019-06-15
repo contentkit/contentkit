@@ -144,7 +144,7 @@ class EditPostMetaModal extends React.PureComponent {
         <Dialog
           fullWidth
           open={open}
-          maxWidth={'lg'}
+          maxWidth={'md'}
           PaperProps={{
             classes: {
               root: this.props.classes.dialog

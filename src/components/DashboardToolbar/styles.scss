@@ -1,0 +1,19 @@
+
+.toolbar {
+  display: flex;
+
+  .button {
+    color: #bcc1d9;
+    all: unset;
+    margin-right: 20px;
+
+    &.active {
+      color: #2f54eb;
+  
+      &:hover {
+        color: #364ba3;
+        cursor: pointer;
+      }
+    }
+  }
+}

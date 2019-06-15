@@ -3,12 +3,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ProjectSelect from '../ProjectSelect'
 import NewProjectSnackbar from '../CreatePostSnackbar'
-import FormControl from '@material-ui/core/FormControl'
-import { withStyles } from '@material-ui/core/styles'
 import CreatePostInput from '../CreatePostInput'
 import { genProjectName } from '../../lib/util'
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
+import classes from './styles.scss'
+import Row from 'antd/lib/row'
+import Col from 'antd/lib/col'
 
 class CreatePost extends React.Component {
   static propTypes = {
@@ -75,7 +74,6 @@ class CreatePost extends React.Component {
 
   render () {
     const {
-      classes,
       projects,
       selectProject,
       selectedProject,
@@ -83,53 +81,34 @@ class CreatePost extends React.Component {
       createProject
     } = this.props
     return (
-      <Paper className={classes.paper} elevation={0}>
-        <Grid container spacing={24} alignContent={'space-between'}>
-          <Grid item xs={8}>
-            <FormControl margin={'none'} fullWidth className={classes.formControl}>
-              <CreatePostInput
-                createPost={this.createNewPost}
-                value={this.state.title}
-                handleChange={this.handleChange}
-                loading={createPost.loading}
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={4}>
+      <div className={classes.paper} elevation={0}>
+        <Row>
+          <Col span={12}>
+            <CreatePostInput
+              createPost={this.createNewPost}
+              value={this.state.title}
+              handleChange={this.handleChange}
+              loading={createPost.loading}
+            />
+          </Col>
+          <Col span={12} className={classes.right}>
             <ProjectSelect
               selectedProject={selectedProject}
               allProjects={projects?.data?.allProjects}
               selectProject={selectProject}
             />
-          </Grid>
-        </Grid>
+          </Col>
+        </Row>
         <NewProjectSnackbar
           open={createProject.loading}
           newProjectName={createProject?.data?.createProject?.name}
         />
-      </Paper>
+      </div>
     )
   }
 }
 
 export const CreatePostBare = CreatePost
 
-export const styles = () => ({
-  paper: {
-    padding: '30px',
-    marginBottom: '40px',
-    boxShadow: 'rgba(8, 35, 51, 0.03) 0px 0px 2px, rgba(8, 35, 51, 0.05) 0px 3px 6px'
-  },
-  button: {
-    border: 'none',
-    boxShadow: 'none',
-    borderBottomLeftRadius: 0,
-    borderTopLeftRadius: 0,
-    height: 34
-  },
-  formControl: {
-    flexGrow: 1
-  }
-})
+export default CreatePost
 
-export default withStyles(styles)(CreatePost)
