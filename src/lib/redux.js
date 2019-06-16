@@ -1,7 +1,10 @@
 // @flow
 import * as redux from 'redux'
 import { EditorState } from 'draft-js'
+import { connectRouter } from 'connected-react-router'
+import { createBrowserHistory } from 'history'
 
+const history = createBrowserHistory()
 const initialState = {
   editorState: EditorState.createEmpty(),
   hydrated: false,
@@ -12,7 +15,7 @@ export const SET_EDITOR_STATE = 'SET_EDITOR_STATE'
 export const SELECT_PROJECT = 'SELECT_PROJECT'
 export const SELECT_POST = 'SELECT_POST'
 
-export const reducer = (state, action) => {
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_EDITOR_STATE:
       return { ...state, ...action.payload }
@@ -46,8 +49,13 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 
 const middleware = []
 
+const combinedReducer = redux.combineReducers({
+  app: reducer,
+  router: connectRouter(history)
+})
+
 const enhancer = composeEnhancers(
   redux.applyMiddleware(...middleware)
 )
 
-export const store = redux.createStore(reducer, initialState, enhancer)
+export const store = redux.createStore(combinedReducer, { app: initialState }, enhancer)

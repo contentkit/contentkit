@@ -18,6 +18,7 @@ import '@contentkit/editor/lib/css/prism.css'
 import '@contentkit/editor/lib/css/CheckableListItem.css'
 import 's3-dropzone/lib/styles.css'
 import '@contentkit/code/src/style.scss'
+import '../../css/editor/toolbar.scss'
 
 const Toolbar = plugins.toolbar
 
@@ -47,12 +48,13 @@ const styles = theme => ({
   flex: {
     display: 'flex',
     // todo fix react sibling bug
-    flexDirection: 'row-reverse'
+    flexDirection: 'row-reverse',
+    marginTop: 30
   },
   editorContainer: {
     width: '100%',
     borderTopLeftRadius: 30,
-    // backgroundColor: '#f0f5ff',
+    backgroundColor: '#fff',
     // backgroundImage: 'linear-gradient(160deg, #f0f5ff 12.5%, #d6e4ff 85%)',
     padding: 40,
     boxSizing: 'border-box',

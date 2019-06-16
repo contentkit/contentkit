@@ -6,14 +6,15 @@ import {
 } from '../../graphql/mutations'
 
 import { Mutation } from 'react-apollo'
-import Login from './Login'
+import Login from '@menubar/login'
+import '@menubar/login/dist/style.css'
 import { withRouter } from 'react-router-dom'
 
 class LoginWithData extends React.Component {
-  signin = ({ ownProps, mutate }) => async variables => {
+  signin = ({ ownProps, mutate }) => async ({ emailAddress, password }) => {
     const client = this.props.client
     try {
-      const resp = await mutate({ variables })
+      const resp = await mutate({ variables: { emailAddress, password } })
       const { data: { signinUser: { token } } } = resp
       if (resp.errors && resp.errors.length) {
         throw resp.errors
@@ -28,9 +29,9 @@ class LoginWithData extends React.Component {
     }
   }
 
-  create = ({ mutate, ownProps }) => async variables => {
+  create = ({ mutate, ownProps }) => async ({ emailAddress, password }) => {
     const client = this.props.client
-    const resp = await mutate({ variables })
+    const resp = await mutate({ variables: { emailAddress, password } })
     if (resp.errors && resp.errors.length) {
       throw resp.errors
     }
@@ -43,6 +44,7 @@ class LoginWithData extends React.Component {
   }
 
   render () {
+    const { user } = this.props
     return (
       <Mutation mutation={SIGNUP_USER}>
         {(signupUser, signupUserData) => {
@@ -52,20 +54,17 @@ class LoginWithData extends React.Component {
                 return (
                   <Login
                     {...this.props}
-                    signin={{
-                      mutate: this.signin({
-                        mutate: authenticateUser,
-                        ...this.props
-                      }),
-                      ...authenticateUserData
-                    }}
-                    create={{
-                      mutate: this.create({
-                        mutate: signupUser,
-                        ...this.props
-                      }),
-                      ...signupUserData
-                    }}
+                    createAccount={this.create({
+                      mutate: signupUser,
+                      ...this.props
+                    })}
+                    login={this.signin({
+                      mutate: authenticateUser,
+                      ...this.props
+                    })}
+                    resetPassword={() => {}}
+                    redirect={() => this.props.history.push('/')}
+                    user={user?.data?.user}
                   />
                 )
               }}

@@ -1,5 +1,5 @@
 
-.draft-table {
+:global(.draft-table) {
   display: flex;
   flex-direction: column;
   border-top: 1px solid #e8e8e8;
@@ -47,13 +47,13 @@
   }
 }
 
-.monograph-editor {
-  min-height: calc(100vh - 200px);
-  box-sizing: border-box;
-  background-color: #fff;
-  padding: 20px 20px 60px 20px;
-  box-shadow: rgba(8, 35, 51, 0.03) 0px 0px 2px, rgba(8, 35, 51, 0.05) 0px 3px 6px;
-  width: 100%;
+:global(.monograph-editor) {
+  // min-height: calc(100vh - 200px);
+  // box-sizing: border-box;
+  // background-color: #fff;
+  // padding: 20px 20px 60px 20px;
+  // box-shadow: rgba(8, 35, 51, 0.03) 0px 0px 2px, rgba(8, 35, 51, 0.05) 0px 3px 6px;
+  // width: 100%;
   
   ul li.public-DraftStyleDefault-depth0 {
     margin-left: 18px;
@@ -186,7 +186,7 @@
 }
 
 @media only screen and (max-width: 767px) {
-  .monograph-editor {
+  :global(.monograph-editor) {
     margin: 0 3%;
   }
 }

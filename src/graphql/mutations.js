@@ -180,11 +180,11 @@ export const DELETE_PROJECT = gql`
 
 export const AUTHENTICATE_USER = gql`
   mutation(
-    $email: String!
+    $emailAddress: String!
     $password: String!
   ) {
     signinUser(
-      email: $email,
+      email: $emailAddress,
       password: $password
     ) {
       token
@@ -194,14 +194,14 @@ export const AUTHENTICATE_USER = gql`
 
 export const SIGNUP_USER = gql`
   mutation(
-    $email: String!,
+    $emailAddress: String!,
     $password: String!,
   ) {
-    createUser(email: $email, password: $password) {
+    createUser(email: $emailAddress, password: $password) {
       id
     }
     signinUser(
-      email: $email,
+      email: $emailAddress,
       password: $password
     ) {
       token

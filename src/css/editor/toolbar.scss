@@ -1,13 +1,13 @@
 
-.code-block-tooltip {
+:global(.code-block-tooltip) {
   z-index: 2 !important;
 }
 
-.code-language-wrapper {
+:global(.code-language-wrapper) {
   width: 100%;
 }
 
-.code-language-input {
+:global(.code-language-input) {
   height: 34px;
   width: 220px;
   padding: 0 12px;
@@ -18,19 +18,19 @@
   color: #444;
 }
 
-.code-language-input:focus {
+:global(.code-language-input:focus) {
   outline: none;
 }
 
-.code-languageinput::placeholder {
+:global(.code-languageinput::placeholder) {
   color: #888;
 }
 
-.code-language-input-invalid {
+:global(.code-language-input-invalid) {
   color: #e65757;
 }
 
-.monograph-editor-footer {
+:global(.monograph-editor-footer) {
   position: fixed;
   width: 60px;
   bottom: 0;
@@ -43,7 +43,7 @@
   align-items: center;
 }
 
-.monograph-editor-toolbar {
+:global(.monograph-editor-toolbar) {
   width: 100%;
   z-index: 500;
   display: flex;
@@ -52,7 +52,7 @@
   align-items: center;
 }
 
-.custom-toolbar {
+:global(.custom-toolbar) {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -63,25 +63,26 @@
   position: fixed;
 }
 
-.custom-toolbar:hover {
+:global(.custom-toolbar:hover) {
   opacity: 1;
 }
 
-.override-content.override-input {
+:global(.override-content.override-input) {
   position: absolute;
   left: 115px;
   bottom: 20px;
   background-color: #fafafa;
 }
 
-.button-wrapper, .buttonWrapper {
+:global(.button-wrapper),
+:global(.buttonWrapper) {
   width: 40px;
   height: 40px;
   display: block;
 }
 
-.button,
-.button-text {
+:global(.button),
+:global(.button-text) {
   color: #8c8c8c;
   font-size: 18px;
   border: 0;
@@ -89,38 +90,40 @@
   height: 100%;
   display: inline-flex;
   justify-content: center;
+  background-color: transparent;
 }
 
-.button svg {
+:global(.button svg) {
   fill: #8c8c8c;
   display: block;
   width: 20px;
   height: 20px;
 }
 
-.button:hover, .button:focus {
+:global(.button:hover),
+:global(.button:focus) {
   color: #595959;
   background-color: #f5f5f5;
   outline: 0;
 }
 
-.active {
+:global(.active) {
   background:#f0f5ff;
 }
 
-.button svg:hover {
+:global(.button svg:hover) {
   fill: #595959;
 }
 
-.button:disabled {
+:global(.button:disabled) {
   background: #fbfbfb;
 }
 
-.button:disabled svg {
+:global(.button:disabled svg) {
   fill: #bdc9d6;
 }
 
-.input {
+:global(.input) {
   height: 34px;
   width: 220px;
   padding: 0 12px;
@@ -131,34 +134,34 @@
   color: #8c8c8c;
 }
 
-.input:focus {
+:global(.input:focus) {
   outline: none;
 }
 
-.input::placeholder {
+:global(.input::placeholder) {
   color: #bdc9d6;
 }
 
-.input-invalid {
+:global(.input-invalid) {
   color: #e65757;
 }
 
-.link {
+:global(.link) {
   color: #2996da;
   text-decoration: underline;
 }
 
-.unfocused iframe {
+:global(.unfocused iframe) {
   pointer-events: none;
 }
 
-.unfocused:hover {
+:global(.unfocused:hover) {
   cursor: default;
   border-radius: 2px;
   box-shadow: 0 0 0 3px #D2E3F7;
 }
 
-.focused {
+:global(.focused) {
   cursor: default;
   border-radius: 2px;
   box-shadow: 0 0 0 3px #ACCEF7;

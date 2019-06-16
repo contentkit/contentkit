@@ -36,9 +36,7 @@ export const Dashboard = withRedirect(
   React.lazy(() => import('./containers/Dashboard'))
 )
 
-export const SignIn = withRedirect(
-  React.lazy(() => import('./containers/Login'))
-)
+export const SignIn = React.lazy(() => import('./containers/Login'))
 
 export const PostEditor = withRedirect(
   React.lazy(() => import('./containers/PostEditor'))
