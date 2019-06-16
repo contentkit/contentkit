@@ -430,7 +430,7 @@ const resolvers = {
   },
   Origin: {
     project: (parent, args, context) => {
-      return pg.query(`
+      return pg.head(`
         SELECT * FROM projects WHERE id = $1
       `, [parent.projectId])
     }

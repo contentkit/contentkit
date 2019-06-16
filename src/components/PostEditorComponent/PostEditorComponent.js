@@ -52,8 +52,8 @@ const styles = theme => ({
   editorContainer: {
     width: '100%',
     borderTopLeftRadius: 30,
-    backgroundColor: '#f0f5ff',
-    backgroundImage: 'linear-gradient(160deg, #f0f5ff 12.5%, #d6e4ff 85%)',
+    // backgroundColor: '#f0f5ff',
+    // backgroundImage: 'linear-gradient(160deg, #f0f5ff 12.5%, #d6e4ff 85%)',
     padding: 40,
     boxSizing: 'border-box',
     position: 'relative'

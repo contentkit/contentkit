@@ -1,37 +1,28 @@
-// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import Chip from '@material-ui/core/Chip'
-import Paper from '@material-ui/core/Paper'
-import EnhancedInput from '../EnhancedInput'
+import Tag from 'antd/lib/tag'
 import { projectQueryShape } from '../../shapes'
-import type { ProjectQuery } from '../../types'
-
-const styles = theme => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    padding: theme.spacing.unit / 2
-  },
-  chip: {
-    margin: theme.spacing.unit / 2
-  }
-})
+import classes from './styles.scss'
+import Input from 'antd/lib/input'
 
 function WhitelistChips (props) {
-  const { classes, domains } = props
+  const { domains } = props
   return (
-    <Paper className={classes.root} elevation={0}>{
-      domains.map(domain => <Chip
-        key={domain.id}
-        label={domain.name}
-        onDelete={() => props.onDelete(domain.id)}
-        className={classes.chip}
-      />)
-    }
-    </Paper>
+    <div className={classes.root}>
+      {
+        domains.map(domain =>
+          <Tag
+            key={domain.id}
+            onClose={() => props.onDelete(domain.id)}
+            className={classes.chip}
+            color={'magenta'}
+            closable
+          >
+            {domain.name}
+          </Tag>
+        )
+      }
+    </div>
   )
 }
 
@@ -39,8 +30,6 @@ WhitelistChips.propTypes = {
   classes: PropTypes.object.isRequired,
   domains: PropTypes.array
 }
-
-const WhitelistChipsWithStyles = withStyles(styles)(WhitelistChips)
 
 class WhitelistDomains extends React.Component {
   state = {
@@ -80,11 +69,11 @@ class WhitelistDomains extends React.Component {
     const domains = project?.data?.project?.origins || []
     return (
       <div>
-        <WhitelistChipsWithStyles
+        <WhitelistChips
           domains={domains}
           onDelete={this.onDelete}
         />
-        <EnhancedInput
+        <Input
           value={this.state.value}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}

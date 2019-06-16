@@ -2,6 +2,7 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import Header from '../../components/Header'
+import AntdLayout from 'antd/lib/layout'
 
 class Layout extends React.Component {
   static propTypes = {
@@ -11,25 +12,16 @@ class Layout extends React.Component {
     render: PropTypes.func
   }
 
-  state = {
-    anchorEl: null
-  }
-
-  setAnchorEl = ({ currentTarget }: { currentTarget: any }) =>
-    this.setState({ anchorEl: currentTarget })
-
   render () {
     const { children, ...rest } = this.props
     return (
-      <div>
-        <Header
-          {...rest}
-          {...this.state}
-          setAnchorEl={this.setAnchorEl}
-        />
-        {children}
+      <AntdLayout>
+        <Header {...rest} />
+        <AntdLayout.Content>
+          {children}
+        </AntdLayout.Content>
         <footer />
-      </div>
+      </AntdLayout>
     )
   }
 }

@@ -27,7 +27,7 @@ const App = props => (
             pages.map(({ component: Component, ...rest }) =>
               <Route
                 key={rest.path}
-                render={routeProps => <Component {...routeProps} {...props} />}
+                render={routeProps => <Component {...routeProps} {...props} logged={Boolean(props.user?.data?.user)} />}
                 {...rest}
               />
             )

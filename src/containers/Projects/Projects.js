@@ -5,7 +5,7 @@ import ProjectModal from '../../components/ProjectModal'
 import Button from '@material-ui/core/Button'
 import Haikunator from 'haikunator'
 import ProjectsList from '../../components/ProjectsList'
-import { withStyles } from '@material-ui/core/styles'
+import classes from './styles.scss'
 
 const haikunator = new Haikunator()
 
@@ -67,7 +67,7 @@ class Projects extends React.Component {
   }
 
   render () {
-    const { classes, ...rest } = this.props
+    const { ...rest } = this.props
     const {
       createProject,
       projects
@@ -112,14 +112,5 @@ class Projects extends React.Component {
   }
 }
 
-const styles = theme => ({
-  container: {
-    width: '660px',
-    margin: '2em auto'
-  },
-  inner: {
-    margin: '2em 0'
-  }
-})
+export default Projects
 
-export default withStyles(styles)(Projects)

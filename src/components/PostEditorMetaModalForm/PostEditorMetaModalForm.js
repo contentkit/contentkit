@@ -6,8 +6,9 @@ import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
 import FormControl from '@material-ui/core/FormControl'
-import { TextField, withStyles } from '@material-ui/core'
+import { withStyles } from '@material-ui/core'
 import PostTagChips from '../PostTagChips'
+import Input from 'antd/lib/input'
 
 const PostEditorMetaModalForm = (props) => {
   const { handleChange, post, projects, selectProject, classes } = props
@@ -19,31 +20,24 @@ const PostEditorMetaModalForm = (props) => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.left}>
-        <TextField
+        <Input
           label={'title'}
           value={title}
           onChange={e => handleChange(e, 'title')}
-          variant={'outlined'}
-          margin="normal"
         />
         <PostStatusSelect
           handleChange={handleChange}
           post={post}
         />
-        <TextField
+        <Input
           placeholder={'slug'}
           value={slug}
           onChange={e => handleChange(e, 'slug')}
-          variant={'outlined'}
-          margin="normal"
         />
-        <TextField
-          multiline
+        <Input
           placeholder={'excerpt'}
           value={excerpt}
           onChange={e => handleChange(e, 'excerpt')}
-          variant={'outlined'}
-          margin="normal"
         />
       </div>
       <div className={classes.right}>

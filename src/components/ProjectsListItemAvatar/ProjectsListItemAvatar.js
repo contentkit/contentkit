@@ -1,6 +1,5 @@
-// @flow
 import React from 'react'
-import Avatar from '@material-ui/core/Avatar'
+import Avatar from 'antd/lib/avatar'
 
 const ProjectsListItemAvatar = ({ id }: { id: string }) => {
   return (

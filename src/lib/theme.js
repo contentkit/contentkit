@@ -209,7 +209,7 @@ const theme = createMuiTheme({
     },
     MuiChip: {
       root: {
-        backgroundImage: 'linear-gradient(160deg, #f0f5ff 12.5%, #d6e4ff 85%)',
+        // backgroundImage: 'linear-gradient(160deg, #f0f5ff 12.5%, #d6e4ff 85%)',
         color: '#030852'
       },
       deleteIcon: {

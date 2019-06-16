@@ -1,49 +1,35 @@
-// @flow
 import React from 'react'
-import Input from '@material-ui/core/Input'
-import InputAdornment from '@material-ui/core/InputAdornment'
+import Input from 'antd/lib/input'
 import ClipboardIcon from '@material-ui/icons/FileCopy'
-import IconButton from '@material-ui/core/IconButton'
-import FormControl from '@material-ui/core/FormControl'
 import RefreshIcon from '@material-ui/icons/Autorenew'
+import styles from './styles.scss'
 
-const ApiKeyInput = (props: any) => {
+const ApiKeyInput = (props) => {
   const {
     onCopy,
     setRef,
     generateToken,
     user,
-    classes,
     id
   } = props
   let secret = user?.data?.user?.secret || ''
   return (
-    <FormControl fullWidth margin='normal'>
+    <div>
       <Input
-        className={classes.input}
-        disableUnderline
-        id='api-key'
+        className={styles.input}
         value={secret}
-        inputRef={setRef}
+        ref={setRef}
         placeholder={'API key'}
-        endAdornment={
-          <InputAdornment position='end'>
-            <IconButton
-              className={classes.iconButton}
-              onClick={onCopy}
-              onMouseDown={onCopy}
-            >
-              <ClipboardIcon />
-            </IconButton>
-            <IconButton
-              className={classes.iconButton}
-              onClick={() => generateToken()}>
-              <RefreshIcon />
-            </IconButton>
-          </InputAdornment>
+        addonAfter={
+          <button
+            className={styles.button}
+            onClick={() => generateToken()}>
+            <RefreshIcon />
+          </button>
         }
+        onFocus={onCopy}
       />
-    </FormControl>
+    </div>
   )
 }
 

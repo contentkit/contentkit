@@ -1,17 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Chip } from '@material-ui/core'
 import { DELETE_TAG, CREATE_TAG } from '../../graphql/mutations'
 import { TAG_QUERY } from '../../graphql/queries'
 import { Mutation, Query } from 'react-apollo'
-import TextField from '@material-ui/core/TextField'
 import { withStyles } from '@material-ui/core/styles'
 import { genKey, genDate } from '../../lib/util'
+import Tag from 'antd/lib/tag'
+import styles from './styles.scss'
+import Input from 'antd/lib/input'
 
 class CreateTagInput extends React.Component {
   static PropTypes = {
-    createTag: PropTypes.func.isRequired,
-    classes: PropTypes.object.isRequired
+    createTag: PropTypes.func.isRequired
   }
 
   state = {
@@ -37,15 +37,12 @@ class CreateTagInput extends React.Component {
   render () {
     const { classes } = this.props
     return (
-      <div className={classes.inputWrapper}>
-        <TextField
+      <div className={styles.inputWrapper}>
+        <Input
           value={this.state.value}
           placeholder={'Create tag'}
           onChange={this.handleChange}
           onKeyDown={this.onKeyDown}
-          variant={'outlined'}
-          margin={'normal'}
-          fullWidth
         />
       </div>
     )
@@ -117,18 +114,19 @@ class PostTagChips extends React.Component {
                   if (tagQuery.loading) return false
                   return (
                     <div>
-                      <div className={classes.tags}>
+                      <div className={styles.tags}>
                         {tagQuery.data.tagsByPost.map(tag => (
-                          <Chip
+                          <Tag
+                            closable
+                            visible
                             key={tag.id}
-                            label={tag.name}
-                            onDelete={() => this.deleteTag({
+                            onClose={() => this.deleteTag({
                               query: tagQuery,
                               mutate: deleteTag,
                               variables: { id: tag.id }
                             })}
-                            className={classes.chip}
-                          />
+                            className={styles.chip}
+                          >{tag.name}</Tag>
                         ))}
                       </div>
                       <CreateTagInput
@@ -148,22 +146,4 @@ class PostTagChips extends React.Component {
   }
 }
 
-const styles = {
-  tags: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    marginTop: 8,
-    marginBottom: 16
-  },
-  inputWrapper: {
-    width: '100%',
-    // display: 'flex',
-    // flexDirection: 'column',
-    // alignItems: 'center',
-    // justifyContent: 'center'
-  }
-}
-
-export default withStyles(styles)(PostTagChips)
+export default PostTagChips

@@ -1,44 +1,12 @@
 // @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
 import RightNav from './RightNav'
 import { Link } from 'react-router-dom'
-import LinearProgress from '@material-ui/core/LinearProgress'
 import { PROFILE_PATH, LOGIN_PATH, PROJECTS_PATH } from '../../lib/config'
+import Layout from 'antd/lib/layout'
 
-const styles = {
-  root: {
-    flexGrow: 1
-  },
-  appBar: {
-    backgroundColor: '#fff'
-  },
-  flex: {
-    textDecoration: 'none',
-    color: '#333'
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20
-  },
-  spacer: {
-    width: '100%',
-    height: '5px'
-  },
-  toolbar: {
-    flexWrap: 'wrap',
-    justifyContent: 'space-between'
-  },
-  '@media (max-width: 767px)': {
-    toolbar: {
-      flexDirection: 'column',
-      padding: '10px 0px'
-    }
-  }
-}
+import styles from './styles.scss'
 
 const createNavBarOptions = (props) => {
   const defaultOptions = [{
@@ -64,7 +32,7 @@ const createNavBarOptions = (props) => {
   return props.logged ? loggedOptions : defaultOptions
 }
 
-class DefaultAppBar extends React.Component {
+class Header extends React.Component {
   shouldComponentUpdate (nextProps, nextState) {
     return nextProps.logged !== this.props.logged ||
       nextProps.loading !== this.props.loading ||
@@ -74,34 +42,28 @@ class DefaultAppBar extends React.Component {
   }
 
   render () {
-    const { classes, ...rest } = this.props /* eslint-disable-line */
+    const { ...rest } = this.props /* eslint-disable-line */
     const options = createNavBarOptions(this.props)
     return (
-      <div className={classes.root}>
-        <AppBar position='static' elevation={0} className={classes.appBar}>
-          {this.props.loading ? <LinearProgress /> : <div className={classes.spacer} />}
-          <Toolbar className={classes.toolbar}>
-            <Link to='/' className={classes.flex}>
-              <div>
-                ContentKit
-              </div>
-            </Link>
-            <RightNav
-              anchorEl={this.props.anchorEl}
-              setAnchorEl={this.props.setAnchorEl}
-              render={this.props.render}
-              options={options}
-              query={this.props.query}
-            />
-          </Toolbar>
-        </AppBar>
-      </div>
+      <Layout.Header className={styles.root}>
+        <Link to='/' className={styles.flex}>
+          <div className={styles.brand}>
+            ContentKit
+          </div>
+        </Link>
+        <RightNav
+          anchorEl={this.props.anchorEl}
+          setAnchorEl={this.props.setAnchorEl}
+          render={this.props.render}
+          options={options}
+          query={this.props.query}
+        />
+      </Layout.Header>
     )
   }
 }
 
-DefaultAppBar.propTypes = {
-  classes: PropTypes.object.isRequired,
+Header.propTypes = {
   history: PropTypes.object,
   loading: PropTypes.bool,
   render: PropTypes.func,
@@ -109,4 +71,4 @@ DefaultAppBar.propTypes = {
   logged: PropTypes.bool
 }
 
-export default withStyles(styles)(DefaultAppBar)
+export default Header

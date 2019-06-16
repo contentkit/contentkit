@@ -1,26 +1,20 @@
 // @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import Input from '@material-ui/core/Input'
-import InputLabel from '@material-ui/core/InputLabel'
-import FormControl from '@material-ui/core/FormControl'
+import Input from 'antd/lib/input'
 
 const ProjectModalForm = ({ classes, Project, onChange }) => (
-  <FormControl
-    margin='normal'
+  <div
     className={classes.formControl}
   >
-    <InputLabel htmlFor='project-name'>Project Name</InputLabel>
     <Input
       className={classes.input}
-      disableUnderline
-      id='project-name'
       value={Project.name}
       onChange={evt =>
         onChange({ name: evt.target.value })
       }
     />
-  </FormControl>
+  </div>
 )
 
 export default ProjectModalForm
