@@ -1,16 +1,17 @@
 // @flow
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import * as config from '../../lib/config'
 import { Editor } from '@contentkit/editor'
 import { setEditorStateBlockMap, Block, Command, HANDLED, NOT_HANDLED } from '@contentkit/util'
 import plugins from '@contentkit/editor/lib/plugins'
-import LinearProgress from '@material-ui/core/LinearProgress'
-import { withStyles } from '@material-ui/core/styles'
 import { CSSTransition } from 'react-transition-group'
 import { genKey, ContentBlock } from 'draft-js'
 import keyBindingFn from './keyBindingFn'
 import DraftTableDialog from '../DraftTableDialog'
 import ReadOnlyDraftTable from '../ReadOnlyDraftTable'
+
+import classes from './styles.scss'
+import Progress from 'antd/lib/progress'
 
 import '@contentkit/editor/lib/css/normalize.css'
 import '@contentkit/editor/lib/css/Draft.css'
@@ -29,43 +30,29 @@ const awsConfig = {
   endpoint: config.AWS_BUCKET_URL + '/'
 }
 
-const styles = theme => ({
-  footer: {
-  },
-  toolbar: {
-    width: 80,
-    padding: '20px 15px',
-    boxSizing: 'border-box',
-    height: 'calc(100vh - 69px)'
-  },
-  root: {
-    width: '100%'
-  },
-  colorPrimary: {
-  },
-  barColorPrimary: {
-  },
-  flex: {
-    display: 'flex',
-    // todo fix react sibling bug
-    flexDirection: 'row-reverse',
-    marginTop: 30
-  },
-  editorContainer: {
-    width: '100%',
-    borderTopLeftRadius: 30,
-    backgroundColor: '#fff',
-    // backgroundImage: 'linear-gradient(160deg, #f0f5ff 12.5%, #d6e4ff 85%)',
-    padding: 40,
-    boxSizing: 'border-box',
-    position: 'relative'
-  },
-  loadingIndicator: {
-    position: 'absolute',
-    zIndex: 9999999,
-    width: '100%'
-  }
-})
+function LinearProgress () {
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    let timerID = setTimeout(() => {
+      setProgress(Math.min(100, progress + 10))
+    }, 20)
+
+    return () => {
+      clearTimeout(timerID)
+    }
+  })
+  return (
+    <div className={classes.progress}>
+      <div
+        className={classes.progressInner}
+        style={{
+          width: `${progress}%`
+        }}
+      />
+    </div>
+  )
+}
 
 class PostEditorComponent extends React.Component {
   state = {
@@ -127,7 +114,6 @@ class PostEditorComponent extends React.Component {
 
   render () {
     const {
-      classes,
       editorState,
       deleteImage,
       createImage,
@@ -141,19 +127,19 @@ class PostEditorComponent extends React.Component {
     } = this.props
 
     return (
-      <React.Fragment>
+      <div className={classes.root}>
+        <CSSTransition
+          classNames={'transition'}
+          unmountOnExit
+          timeout={1000}
+          in={loading}
+        >
+          {state => (
+            <LinearProgress />
+          )}
+        </CSSTransition>
         <div className={classes.flex}>
           <div className={classes.editorContainer} onClick={this.handleClick}>
-            <CSSTransition
-              classNames={'transition'}
-              unmountOnExit
-              timeout={1000}
-              in={loading}
-            >
-              {state => (
-                <LinearProgress className={classes.loadingIndicator} />
-              )}
-            </CSSTransition>
             <Editor
               editorState={editorState}
               onChange={onChange}
@@ -182,9 +168,9 @@ class PostEditorComponent extends React.Component {
           handleOpen={this.handleOpen}
           handleClose={this.handleClose}
         />
-      </React.Fragment>
+      </div>
     )
   }
 }
 
-export default withStyles(styles)(PostEditorComponent)
+export default PostEditorComponent

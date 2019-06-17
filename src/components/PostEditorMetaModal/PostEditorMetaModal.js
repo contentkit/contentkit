@@ -1,17 +1,12 @@
-// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Button from '@material-ui/core/Button'
 import PostMetaForm from '../PostEditorMetaModalForm'
 import { POST_QUERY } from '../../graphql/queries'
 import gql from 'graphql-tag'
-import type { Post } from '../../types'
 import { createInitialState, convertToDate } from 'draft-js-dates'
 import { withStyles } from '@material-ui/core/styles'
+
+import Modal from 'antd/lib/modal'
 
 export const _POST_QUERY = gql`
   query ($id: ID!) {
@@ -139,46 +134,25 @@ class EditPostMetaModal extends React.PureComponent {
   render () {
     const { post: { data: { post } }, open, onClose } = this.props
     if (!post) return false
+
+    const title = (<h2>Update Postmeta</h2>)
     return (
-      <div>
-        <Dialog
-          fullWidth
-          open={open}
-          maxWidth={'md'}
-          PaperProps={{
-            classes: {
-              root: this.props.classes.dialog
-            }
-          }}
-        >
-          <DialogTitle disableTypography>
-            <h2>Update Postmeta</h2>
-          </DialogTitle>
-          <DialogContent>
-            <PostMetaForm
-              post={this.props.post}
-              handleChange={this.handleChange}
-              user={this.props.user}
-              dateInputState={this.state.dateInputState}
-              handleDateInputChange={this.handleDateInputChange}
-              selectProject={this.selectProject}
-              data={this.props.post?.data?.post}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button
-              variant='text'
-              color='primary'
-              onClick={onClose}
-            >Cancel</Button>
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={this.handlePostMetaUpdate}
-            >Update</Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+      <Modal
+        visible={open}
+        title={title}
+        onCancel={onClose}
+        onOk={this.handlePostMetaUpdate}
+      >  
+        <PostMetaForm
+          post={this.props.post}
+          handleChange={this.handleChange}
+          user={this.props.user}
+          dateInputState={this.state.dateInputState}
+          handleDateInputChange={this.handleDateInputChange}
+          selectProject={this.selectProject}
+          data={this.props.post?.data?.post}
+        />
+      </Modal>
     )
   }
 }

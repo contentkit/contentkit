@@ -6,7 +6,6 @@ import Layout from '../Layout'
 import { exportHtml } from '@contentkit/editor/lib/util'
 import insertImage from '@contentkit/editor/lib/modifiers/insertImage'
 import PostEditorToolbar from '../../components/PostEditorToolbar'
-import escapeHtml from 'lodash.escape'
 import PostEditorComponent from '../../components/PostEditorComponent'
 import PostEditorModals from '../../components/PostEditorModals'
 import {

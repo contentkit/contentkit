@@ -1,14 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import TableRow from '@material-ui/core/TableRow'
-
-import DashboardTableRow from '../DashboardTableRow'
-import EmptyTableRow from '../DashboardTableEmptyRow'
 import LazyLoad from '../LazyLoad'
 import EmptyTable from './EmptyTable'
 import Toolbar from '@material-ui/core/Toolbar'
-import DashboardToolbar from '../DashboardToolbar'
 
 import classes from './styles.scss'
 import Table from 'antd/lib/table'
@@ -22,7 +17,7 @@ const TableWrapper = props => (
   </div>
 )
 
-class DashboardTable extends React.Component<Props, {}> {
+class DashboardTable extends React.Component {
   static propTypes = {
     posts: PropTypes.object,
     projects: PropTypes.object,
@@ -33,13 +28,13 @@ class DashboardTable extends React.Component<Props, {}> {
   onSelectChange = selectedRowKeys => {
     const { feed, handlePostSelect } = this.props
     const allPosts = feed?.data?.feed?.posts
-    handlePostSelect(allPosts[selectedRowKeys[0]])
+    const [index] = selectedRowKeys
+    handlePostSelect(allPosts.length >= index ? allPosts[index] : { id: null })
   }
 
   render () {
     const {
-      feed,
-      selectedPost
+      feed
     } = this.props
     let allPosts = feed?.data?.feed?.posts
     if (!feed?.loading && !allPosts.length) {
@@ -66,7 +61,7 @@ class DashboardTable extends React.Component<Props, {}> {
       key: 'createdAt',
       dataIndex: 'createdAt'
     }]
-  
+
     const dataSource = feed?.data?.feed?.posts || []
 
     return (

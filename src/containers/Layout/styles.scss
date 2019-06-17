@@ -1,0 +1,19 @@
+.footer:global(.ant-layout-footer) {
+  background-image: linear-gradient(to bottom, #121212 0%, #323232 100%);
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.06);
+  z-index: 2;
+  min-height: 69px;
+}
+
+.root:global(.ant-layout) {
+
+
+}
+
+
+.content:global(.ant-layout-content) {
+  background-color: #f0f5ff;
+  display: flex;
+  flex-direction: column;
+  // min-height: calc(100vh - 133px);
+}

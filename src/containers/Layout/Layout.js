@@ -1,8 +1,8 @@
-// @flow
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import Header from '../../components/Header'
 import AntdLayout from 'antd/lib/layout'
+import styles from './styles.scss'
 
 class Layout extends React.Component {
   static propTypes = {
@@ -15,12 +15,13 @@ class Layout extends React.Component {
   render () {
     const { children, ...rest } = this.props
     return (
-      <AntdLayout>
+      <AntdLayout className={styles.root}>
         <Header {...rest} />
-        <AntdLayout.Content>
+        <AntdLayout.Content className={styles.content}>
           {children}
         </AntdLayout.Content>
-        <footer />
+        <AntdLayout.Footer className={styles.footer}>
+        </AntdLayout.Footer>
       </AntdLayout>
     )
   }

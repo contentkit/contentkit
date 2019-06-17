@@ -1,9 +1,8 @@
-// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import DefaultSelect from '../../components/Select'
+import Select from 'antd/lib/select'
 
-const PostEditorMetaModalSelect = (props: any) => {
+const PostEditorMetaModalSelect = (props) => {
   const { post, handleChange } = props
 
   const onChange = evt => handleChange(evt, 'status')
@@ -17,12 +16,16 @@ const PostEditorMetaModalSelect = (props: any) => {
   const value = (post.data.post && post.data.post.status)
 
   return (
-    <DefaultSelect
+    <Select
       onChange={onChange}
       options={options}
       label={'Status'}
       value={value}
-    />
+    >
+      {
+        options.map(option => <Select.Option key={option.value}>{option.label}</Select.Option>)
+      }
+    </Select>
   )
 }
 

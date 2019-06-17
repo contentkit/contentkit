@@ -5,7 +5,6 @@ import Layout from '../Layout'
 import UserForm from '../../components/ProfileUserForm'
 import { USER_QUERY } from '../../graphql/queries'
 import CodeSnippet from '../../components/CodeSnippet'
-import Paper from '../../components/DefaultPaper'
 
 class Profile extends React.Component {
   static propTypes = {
@@ -46,13 +45,13 @@ class Profile extends React.Component {
             setRef={ref => { this.ref = ref }}
             user={user}
           />
-          <Paper styles={{
+          <div style={{
             maxWidth: '500px',
             padding: '2em',
             margin: '1em auto'
           }}>
             <CodeSnippet {...this.props} />
-          </Paper>
+          </div>
         </article>
       </Layout>
     )

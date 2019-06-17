@@ -31,7 +31,7 @@ class LoginWithData extends React.Component {
 
   create = ({ mutate, ownProps }) => async ({ emailAddress, password }) => {
     const client = this.props.client
-    const resp = await mutate({ variables: { emailAddress, password } })
+    const resp = await mutate({ variables: { email: emailAddress, password } })
     if (resp.errors && resp.errors.length) {
       throw resp.errors
     }

@@ -48,9 +48,7 @@ const PostEditorMetaModalForm = (props) => {
             selectProject={selectProject}
           />
         </div>
-        <FormControl fullWidth margin={'normal'}>
-          <PostMetaDatePicker {...props} />
-        </FormControl>
+        <PostMetaDatePicker {...props} />
 
         <PostTagChips post={post} />
       </div>
