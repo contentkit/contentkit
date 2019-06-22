@@ -1,21 +1,11 @@
 
+@import '../../css/theme.scss';
+
 .paper {
   padding: 30px;
-  box-shadow: rgba(8, 35, 51, 0.03) 0px 0px 2px, rgba(8, 35, 51, 0.05) 0px 3px 6px;
+  box-shadow: $shadow-1;
   margin-bottom: 40px;
   background-color: #fff;
-}
-
-.button {
-  border: none;
-  height: 34px;
-  box-shadow: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.formControl {
-  flex-grow: 1;
 }
 
 .right {

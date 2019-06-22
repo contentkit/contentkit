@@ -1,30 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Dialog from '@material-ui/core/Dialog'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import MuiList from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import { withStyles } from '@material-ui/core/styles'
 import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import { expand } from 'draft-js-compact'
 import format from 'date-fns/format'
-import DialogActions from '@material-ui/core/DialogActions'
-import Button from '@material-ui/core/Button'
-import { List } from 'immutable'
+import Button from 'antd/lib/button'
+import List from 'antd/lib/list'
+import Modal from 'antd/lib/modal'
+import classes from './styles.scss'
 
 const formatDate = (timestamp) =>
   format(new Date(timestamp), 'MM/DD HH:mm:ss')
-
-const styles = theme => ({
-  row: {
-    display: 'flex'
-  },
-  column: {
-    display: 'flex',
-    flexDirection: 'column'
-  }
-})
 
 class PostEditorHistoryModal extends React.Component {
   state = {
@@ -60,40 +45,20 @@ class PostEditorHistoryModal extends React.Component {
   }
 
   render () {
-    const { post, classes } = this.props
+    const { post } = this.props
     const versions = post?.data?.post?.document?.versions || []
     return (
-      <Dialog
-        open={this.props.open}
-        onClose={this.props.onClose}
-        maxWidth={'md'}
-      >
-        <DialogTitle disableTypography>History</DialogTitle>
-        <DialogContent>
-          <div className={classes.row}>
-            <div className={classes.column}>
-              <MuiList>
-                {versions.map(version => (
-                  <ListItem onClick={evt => this.handleClick(version)} button key={version.id}>
-                    {formatDate(version.createdAt)}
-                  </ListItem>
-                ))}
-              </MuiList>
-            </div>
-            <div>
-              <Editor
-                editorState={this.state.editorState}
-                readOnly
-              />
-            </div>
-          </div>
-        </DialogContent>
-        <DialogActions>
+      <Modal
+        visible={this.props.open}
+        onCancel={this.props.onClose}
+        onOK={() => {}}
+        title={'History'}
+        actions={[
           <Button
             variant='text'
             onClick={this.props.onClose}
             color={'secondary'}
-          >Close</Button>
+          >Close</Button>,
           <Button
             variant='text'
             onClick={this.handleRestore}
@@ -101,10 +66,29 @@ class PostEditorHistoryModal extends React.Component {
           >
             Restore
           </Button>
-        </DialogActions>
-      </Dialog>
+        ]}
+      >
+        <div className={classes.row}>
+          <div className={classes.column}>
+            <List
+              dataSource={versions}
+              renderItem={(version) => (
+                <List.Item onClick={evt => this.handleClick(version)} key={version.id}>
+                  {formatDate(version.createdAt)}
+                </List.Item>
+              )}
+            />
+          </div>
+          <div>
+            <Editor
+              editorState={this.state.editorState}
+              readOnly
+            />
+          </div>
+        </div>
+      </Modal>
     )
   }
 }
 
-export default withStyles(styles)(PostEditorHistoryModal)
+export default PostEditorHistoryModal

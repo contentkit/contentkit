@@ -1,28 +1,20 @@
-// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import MenuList from '@material-ui/core/MenuList'
-import Paper from '@material-ui/core/Paper'
-import { withStyles } from '@material-ui/core/styles'
+import List from 'antd/lib/list'
 import ProjectsListItem from '../ProjectsListItem'
-
-const styles = theme => ({
-  paper: {
-    borderRadius: '5px',
-    boxShadow: 'rgba(8, 35, 51, 0.03) 0px 0px 2px, rgba(8, 35, 51, 0.05) 0px 3px 6px'
-  }
-})
+import classes from './styles.scss'
 
 const ProjectsList = ({
   allProjects,
   handleClick,
   onMouseEnter,
-  onMouseLeave,
-  classes
+  onMouseLeave
 }) => (
-  <Paper elevation={0} className={classes.paper}>
-    <MenuList>
-      {allProjects.map(project =>
+  <div className={classes.paper}>
+    <List
+      dataSource={allProjects}
+      itemLayout="horizontal"
+      renderItem={project => (
         <ProjectsListItem
           project={project}
           key={project.id}
@@ -31,8 +23,8 @@ const ProjectsList = ({
           onMouseLeave={onMouseLeave}
         />
       )}
-    </MenuList>
-  </Paper>
+    />
+  </div>
 )
 
 ProjectsList.defaultProps = {
@@ -43,7 +35,6 @@ ProjectsList.defaultProps = {
 }
 
 ProjectsList.propTypes = {
-  classes: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(ProjectsList)
+export default ProjectsList

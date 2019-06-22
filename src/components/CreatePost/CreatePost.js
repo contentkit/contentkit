@@ -11,7 +11,6 @@ import Col from 'antd/lib/col'
 
 class CreatePost extends React.Component {
   static propTypes = {
-    classes: PropTypes.object,
     selectedProject: PropTypes.string,
     selectProject: PropTypes.func.isRequired,
     projects: PropTypes.object

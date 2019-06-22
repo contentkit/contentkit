@@ -2,7 +2,7 @@
 import React from 'react'
 import Layout from '../Layout'
 import ProjectModal from '../../components/ProjectModal'
-import Button from '@material-ui/core/Button'
+import Button from 'antd/lib/button'
 import Haikunator from 'haikunator'
 import ProjectsList from '../../components/ProjectsList'
 import classes from './styles.scss'
@@ -99,8 +99,6 @@ class Projects extends React.Component {
               />
             </div>
             <Button
-              variant='contained'
-              color='primary'
               onClick={this.createProject}
             >
               New Project

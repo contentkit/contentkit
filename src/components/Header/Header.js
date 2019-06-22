@@ -36,7 +36,6 @@ class Header extends React.Component {
   shouldComponentUpdate (nextProps, nextState) {
     return nextProps.logged !== this.props.logged ||
       nextProps.loading !== this.props.loading ||
-      nextProps.anchorEl !== this.props.anchorEl ||
       nextProps.selectedPost !== this.props.selectedPost ||
       nextProps.query !== this.props.query
   }
@@ -52,8 +51,6 @@ class Header extends React.Component {
           </div>
         </Link>
         <RightNav
-          anchorEl={this.props.anchorEl}
-          setAnchorEl={this.props.setAnchorEl}
           render={this.props.render}
           options={options}
           query={this.props.query}

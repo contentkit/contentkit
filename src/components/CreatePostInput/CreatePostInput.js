@@ -60,7 +60,6 @@ class CreatePostInput extends React.Component {
         addonAfter={this.renderAdornment()}
         value={value}
         onChange={handleChange}
-        classes={classes}
         type={'text'}
       />
     )

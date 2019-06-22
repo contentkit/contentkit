@@ -1,16 +1,17 @@
+@import './theme.scss';
+
 *:focus {
   outline:none;
 }
 
 html, body, #root {
-  // min-height: 100%;
   margin: 0;
 }
 
 body {
-  color: #595959;
+  color: $text-color;
   -webkit-font-smoothing: antialiased;
-  font-family: -apple-system,BlinkMacSystemFont,segoe ui,roboto,oxygen,ubuntu,cantarell,fira sans,droid sans,helvetica neue,sans-serif;
+  font-family: $font-family;
 }
 
 article, .content {
@@ -48,6 +49,7 @@ article, .content {
 .draft-js-dates .public-DraftStyleDefault-block {
   padding-bottom: 0;
 }
+
 @keyframes fadeOut {
   from {
     opacity: 0.5;

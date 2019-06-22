@@ -4,7 +4,6 @@ import PostMetaForm from '../PostEditorMetaModalForm'
 import { POST_QUERY } from '../../graphql/queries'
 import gql from 'graphql-tag'
 import { createInitialState, convertToDate } from 'draft-js-dates'
-import { withStyles } from '@material-ui/core/styles'
 
 import Modal from 'antd/lib/modal'
 
@@ -142,7 +141,7 @@ class EditPostMetaModal extends React.PureComponent {
         title={title}
         onCancel={onClose}
         onOk={this.handlePostMetaUpdate}
-      >  
+      >
         <PostMetaForm
           post={this.props.post}
           handleChange={this.handleChange}
@@ -157,4 +156,4 @@ class EditPostMetaModal extends React.PureComponent {
   }
 }
 
-export default withStyles(styles)(EditPostMetaModal)
+export default EditPostMetaModal

@@ -1,17 +1,17 @@
+@import '../../css/theme.scss';
 
-.toolbar {
+.root {
   display: flex;
-
   .button {
-    color: #bcc1d9;
+    color: $icon-color;
     all: unset;
     margin-right: 20px;
 
     &.active {
-      color: #2f54eb;
+      color: $icon-color-active;
   
       &:hover {
-        color: #364ba3;
+        color: $icon-color-hover;
         cursor: pointer;
       }
     }

@@ -1,6 +1,5 @@
 import React from 'react'
-import ClipboardIcon from '@material-ui/icons/FileCopy'
-
+import Icon from 'antd/lib/icon'
 import Input from 'antd/lib/input'
 import styles from './styles.scss'
 
@@ -21,7 +20,7 @@ function ProjectModalIdInput (props) {
           onMouseDown={onCopy}
           className={styles.button}
         >
-          <ClipboardIcon />
+          <Icon type={'copy'} />
         </button>
       }
     />

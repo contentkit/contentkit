@@ -11,7 +11,6 @@ class ProjectModalContent extends React.Component {
     handleDelete: PropTypes.func.isRequired,
     handleSave: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
-    classes: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired
   }

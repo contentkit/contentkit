@@ -1,9 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Dialog from '@material-ui/core/Dialog'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import MuiToolbar from '@material-ui/core/Toolbar'
 import VerticalSplit from '@material-ui/icons/VerticalSplit'
 import HorizontalSplit from '@material-ui/icons/HorizontalSplit'
 import IconButton from '@material-ui/core/IconButton'
@@ -13,7 +9,9 @@ import { Map } from 'immutable'
 import { genKey } from 'draft-js'
 import keyBy from 'lodash.keyby'
 import groupBy from 'lodash.groupby'
-import { withStyles } from '@material-ui/core'
+import classes from './styles.scss'
+
+import Modal from 'antd/lib/modal'
 
 const Key = {
   BACKSPACE: 8,
@@ -227,37 +225,28 @@ class DraftTableDialog extends React.Component {
   }
 
   render () {
-    const { classes } = this.props
     const tableData = getCells(this.props.editorState, this.props.tableBlockKey)
     const tableRows = groupBy(tableData, 'row')
     return (
-      <Dialog
-        open={this.props.open}
-        onClose={this.props.handleClose}
-        maxWidth={'md'}
-        fullWidth
+      <Modal
+        visible={this.props.open}
+        onCancel={this.props.handleClose}
         style={{ minHeight: '600px' }}
-        classes={{
-          paper: this.props.classes.paper
-        }}
-        PaperProps={{
-          root: this.props.classes.paper
-        }}
-      >
-        <DialogTitle>
+        title={
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          Title
-            <MuiToolbar>
+            Title
+            <div>
               <IconButton onClick={this.insertColumn}>
                 <VerticalSplit />
               </IconButton>
               <IconButton onClick={this.insertRow}>
                 <HorizontalSplit />
               </IconButton>
-            </MuiToolbar>
+            </div>
           </div>
-        </DialogTitle>
-        <DialogContent className={classes.dialogContentRoot}>
+        }
+      >
+        <div className={classes.dialogContentRoot}>
           <DraftTable
             classes={classes}
             onTableKeyDown={this.onTableKeyDown}
@@ -277,54 +266,10 @@ class DraftTableDialog extends React.Component {
               this.setState({ dragging: false })
             }}
           />
-        </DialogContent>
-      </Dialog>
+        </div>
+      </Modal>
     )
   }
 }
 
-const styles = {
-  dialogContentRoot: {
-    padding: '20px'
-  },
-  paper: {
-    minHeight: 600,
-    backgroundColor: '#f5f5f5'
-  },
-  table: {
-    backgroundColor: '#fafafa',
-    width: '100%'
-  },
-  tableBody: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    width: '100%',
-    borderLeft: '1px solid #ddd',
-    borderTop: '1px solid #ddd'
-  },
-  tableRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    width: '100%'
-  },
-  tableCell: {
-    height: '50px',
-    backgroundColor: '#fff',
-    borderRight: '1px solid #ddd',
-    borderBottom: '1px solid #ddd',
-    position: 'relative',
-    display: 'inline-flex'
-  },
-  draggingLine: {
-    cursor: 'col-resize',
-    height: '50px',
-    width: '16px',
-    position: 'absolute',
-    right: '-8px',
-    zIndex: 10
-  }
-}
-
-export default withStyles(styles)(DraftTableDialog)
+export default DraftTableDialog

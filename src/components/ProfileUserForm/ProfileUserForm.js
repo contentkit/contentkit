@@ -3,25 +3,21 @@ import React from 'react'
 import propTypes from 'prop-types'
 import Button from 'antd/lib/button'
 import ProfileUserFormKeyInput from '../ProfileUserFormKeyInput'
-import EnhancedInput from '../EnhancedInput'
 import classes from './styles.scss'
+import Input from 'antd/lib/input'
 
 const UserForm = props => {
-  let email = props?.user?.data?.user?.email || ''
-  let name = props?.user?.data?.user?.name || ''
+  const email = props?.user?.data?.user?.email || ''
+  const name = props?.user?.data?.user?.name || ''
 
   return (
     <div className={classes.container}>
-      <EnhancedInput
-        fullWidth
-        id='name'
+      <Input
         placeholder='Name'
         value={name}
         onChange={(e) => props.handleChange(e, 'name')}
       />
-      <EnhancedInput
-        fullWidth
-        id='email'
+      <Input
         placeholder='Email'
         value={email}
         onChange={(e) => props.handleChange(e, 'email')}
@@ -30,16 +26,12 @@ const UserForm = props => {
       <div className={classes.flex}>
         <Button
           className={classes.button}
-          variant='outlined'
-          color='secondary'
           onClick={() => props.generateToken()}
         >
           Generate Token
         </Button>
         <Button
           className={classes.button}
-          variant='contained'
-          color='primary'
           onClick={() => {
             props.updateUser({
               name: name,
@@ -54,16 +46,13 @@ const UserForm = props => {
   )
 }
 
-UserForm.defaultProps = {
-  name: '',
-  id: '',
-  email: ''
-}
+UserForm.defaultProps = {}
 
 UserForm.propTypes = {
   user: propTypes.object,
   updateUser: propTypes.func.isRequired,
-  handleChange: propTypes.func.isRequired
+  handleChange: propTypes.func.isRequired,
+  generateToken: propTypes.func.isRequired
 }
 
 export default UserForm

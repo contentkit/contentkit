@@ -1,8 +1,7 @@
 import React from 'react'
 import Input from 'antd/lib/input'
-import ClipboardIcon from '@material-ui/icons/FileCopy'
-import RefreshIcon from '@material-ui/icons/Autorenew'
 import styles from './styles.scss'
+import Icon from 'antd/lib/icon'
 
 const ApiKeyInput = (props) => {
   const {
@@ -24,7 +23,7 @@ const ApiKeyInput = (props) => {
           <button
             className={styles.button}
             onClick={() => generateToken()}>
-            <RefreshIcon />
+            <Icon type='sync' />
           </button>
         }
         onFocus={onCopy}

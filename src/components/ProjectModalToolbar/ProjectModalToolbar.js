@@ -6,7 +6,6 @@ import classes from './styles.scss'
 
 const ProjectModalToolbar = (props) => {
   const {
-    classes,
     handleSave,
     handleDelete,
     handleClose
@@ -36,7 +35,6 @@ const ProjectModalToolbar = (props) => {
 }
 
 ProjectModalToolbar.propTypes = {
-  classes: PropTypes.object,
   handleSave: PropTypes.func,
   handleDelete: PropTypes.func,
   handleClose: PropTypes.func

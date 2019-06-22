@@ -1,7 +1,7 @@
 import React from 'react'
 import Avatar from 'antd/lib/avatar'
 
-const ProjectsListItemAvatar = ({ id }: { id: string }) => {
+const ProjectsListItemAvatar = ({ id }) => {
   return (
     <Avatar
       src={'https://avatar.tobi.sh/' + id}

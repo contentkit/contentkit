@@ -10,7 +10,15 @@ function RightNav (props) {
 
   const overlay = (
     <Menu>
-      {options.map(option => <Menu.Item key={option.label} onClick={option.onClick}>{option.label}</Menu.Item>)}
+      {options.map(option => (
+        <Menu.Item
+          key={option.label}
+          onClick={option.onClick}
+          className={styles.menuItem}
+        >
+          {option.label}
+        </Menu.Item>
+      ))}
     </Menu>
   )
 
@@ -18,8 +26,7 @@ function RightNav (props) {
     <div
       className={styles.root}
     >
-      {/*render()*/}
-      <Dropdown overlay={overlay}>
+      <Dropdown overlay={overlay} className={styles.menu}>
         <Avatar className={styles.avatar} src={`https://avatar.tobi.sh/1234`} />
       </Dropdown>
     </div>

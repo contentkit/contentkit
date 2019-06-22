@@ -2,8 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import LazyLoad from '../LazyLoad'
-import EmptyTable from './EmptyTable'
-import Toolbar from '@material-ui/core/Toolbar'
 
 import classes from './styles.scss'
 import Table from 'antd/lib/table'
@@ -21,7 +19,6 @@ class DashboardTable extends React.Component {
   static propTypes = {
     posts: PropTypes.object,
     projects: PropTypes.object,
-    classes: PropTypes.object,
     selectedPost: PropTypes.object
   }
 
@@ -38,9 +35,7 @@ class DashboardTable extends React.Component {
     } = this.props
     let allPosts = feed?.data?.feed?.posts
     if (!feed?.loading && !allPosts.length) {
-      return (
-        <EmptyTable />
-      )
+      return false
     }
 
     const columns = [{
@@ -67,9 +62,9 @@ class DashboardTable extends React.Component {
     return (
       <LazyLoad {...this.props} render={({ loading }) => (
         <TableWrapper classes={classes}>
-          <Toolbar className={classes.toolbar}>
+          <div className={classes.toolbar}>
             {this.props.renderToolbar(this.props)}
-          </Toolbar>
+          </div>
           <Table
             dataSource={dataSource}
             columns={columns}

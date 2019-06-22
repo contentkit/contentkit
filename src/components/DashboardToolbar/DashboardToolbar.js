@@ -78,7 +78,6 @@ class DashboardToolbar extends React.Component {
   static propTypes = {
     handleChange: PropTypes.func,
     handleSearch: PropTypes.func,
-    classes: PropTypes.object
   }
 
   onMouseEnter = async () => {
@@ -123,21 +122,18 @@ class DashboardToolbar extends React.Component {
       handleChange,
       handleSearch,
       query,
-      width,
       selected,
     } = this.props
     const open = !!selected
     return (
       <React.Fragment>
-        <div className={styles.toolbar}>
+        <div className={styles.root}>
           <button
             onClick={this.handleEdit}
             onMouseEnter={this.onMouseEnter}
             disabled={!open}
-            className={styles.button}
             className={classnames(
-              styles.button,
-              { [styles.active]: selected }
+              styles.button, { [styles.active]: selected }
             )}
           >
             <EditIcon />
@@ -154,7 +150,6 @@ class DashboardToolbar extends React.Component {
           </button>
         </div>
         <SearchInput
-          width={width}
           handleSearch={handleSearch}
           handleChange={handleChange}
           query={query}

@@ -1,17 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import ToolbarButton from '../PostEditorToolbarButton'
+import Button from 'antd/lib/button'
 import classes from './styles.scss'
 
 const PostEditorToolbar = props => (
   <React.Fragment>
     <div className={classes.toolbar}>
-      <ToolbarButton onClick={evt => props.onClick('history')}>
+      <Button onClick={evt => props.onClick('history')}>
         History
-      </ToolbarButton>
-      <ToolbarButton onClick={evt => props.onClick('postmeta')}>
+      </Button>
+      <Button onClick={evt => props.onClick('postmeta')}>
         Postmeta
-      </ToolbarButton>
+      </Button>
     </div>
   </React.Fragment>
 )

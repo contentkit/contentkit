@@ -5,13 +5,12 @@ import ProjectSelect from '../../components/ProjectSelect'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
-import FormControl from '@material-ui/core/FormControl'
-import { withStyles } from '@material-ui/core'
 import PostTagChips from '../PostTagChips'
 import Input from 'antd/lib/input'
+import classes from './styles.scss'
 
 const PostEditorMetaModalForm = (props) => {
-  const { handleChange, post, projects, selectProject, classes } = props
+  const { handleChange, post, projects, selectProject } = props
   const title = (post?.data?.post?.title) || ''
   const slug = (post?.data?.post?.slug) || ''
   const excerpt = (post?.data?.post?.excerpt) || ''
@@ -87,31 +86,4 @@ const ModalWithData = props => (
   </Query>
 )
 
-const styles = {
-  wrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%'
-  },
-  left: {
-    flexBasis: '50%',
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    padding: '15px',
-    boxSizing: 'border-box'
-  },
-  right: {
-    flexBasis: '50%',
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    padding: '15px',
-    boxSizing: 'border-box'
-  },
-  select: {
-    marginTop: '16px',
-    marginBottom: '8px'
-  }
-}
-export default withStyles(styles)(ModalWithData)
+export default ModalWithData

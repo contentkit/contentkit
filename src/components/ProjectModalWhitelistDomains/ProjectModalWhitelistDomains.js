@@ -27,7 +27,6 @@ function WhitelistChips (props) {
 }
 
 WhitelistChips.propTypes = {
-  classes: PropTypes.object.isRequired,
   domains: PropTypes.array
 }
 
