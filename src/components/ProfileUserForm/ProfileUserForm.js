@@ -37,8 +37,9 @@ const UserForm = props => {
         <Button
           className={classes.button}
           type={'primary'}
+          loading={props.updateUser.loading}
           onClick={() => {
-            props.updateUser({
+            props.updateUser.mutate({
               name: name,
               email: email
             })
@@ -55,7 +56,7 @@ UserForm.defaultProps = {}
 
 UserForm.propTypes = {
   user: propTypes.object,
-  updateUser: propTypes.func.isRequired,
+  updateUser: propTypes.object.isRequired,
   handleChange: propTypes.func.isRequired,
   generateToken: propTypes.func.isRequired
 }

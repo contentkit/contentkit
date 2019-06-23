@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import Select from '../Select'
 import Select from 'antd/lib/select'
 
 class SelectProject extends React.Component {

@@ -7,6 +7,45 @@ import classes from './styles.scss'
 import Table from 'antd/lib/table'
 import Form from 'antd/lib/form'
 import Input from 'antd/lib/input'
+import classnames from 'classnames'
+import Tag from 'antd/lib/tag'
+import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
+import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
+
+export const UPDATE_POST = gql`
+  mutation (
+    $id: ID!
+    $title: String!
+    $status: PostStatus
+    $publishedAt: String
+  ) {
+    updatePost(
+      id: $id
+      title: $title
+      status: $status
+      publishedAt: $publishedAt
+    ) {
+      id
+      createdAt
+      publishedAt
+      title
+      slug
+      status
+      excerpt
+      project {
+        id
+        name
+      }
+      tags {
+        id
+        name
+      }
+    }
+  }
+`
+
+const formatDate = (str) => distanceInWordsToNow(new Date(str))
 
 const EditableContext = React.createContext()
 
@@ -23,7 +62,8 @@ class EditableCell extends React.Component {
     editing: false,
   }
 
-  toggleEdit = () => {
+  toggleEdit = (evt) => {
+    // evt.stopPropagation()
     const editing = !this.state.editing
     this.setState({ editing }, () => {
       if (editing) {
@@ -47,30 +87,32 @@ class EditableCell extends React.Component {
     this.form = form
     const { children, dataIndex, record, title } = this.props
     const { editing } = this.state
-    return editing ? (
-      <Form.Item style={{ margin: 0 }}>
+    return (
+      <Form.Item className={classes.editable}>
         {form.getFieldDecorator(dataIndex, {
           rules: [
             {
               required: true,
               message: `${title} is required.`
-            },
+            }
           ],
-          initialValue: record[dataIndex],
-        })(<Input ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save} />)}
+          initialValue: record[dataIndex]
+        })(
+          <Input
+            ref={node => (this.input = node)}
+            onPressEnter={this.save}
+            onBlur={this.save}
+            className={classnames(
+              classes.editableInput,
+              { [classes.editing]: editing }
+            )}
+          />
+        )}
       </Form.Item>
-    ) : (
-      <div
-        className='editable-cell-value-wrap'
-        style={{ paddingRight: 24 }}
-        onClick={this.toggleEdit}
-      >
-        {children}
-      </div>
     )
   }
 
-  render() {
+  render () {
     const {
       editable,
       dataIndex,
@@ -82,7 +124,7 @@ class EditableCell extends React.Component {
       ...restProps
     } = this.props
     return (
-      <td {...restProps}>
+      <td {...restProps} className={classes.cell}>
         {editable ? (
           <EditableContext.Consumer>{this.renderCell}</EditableContext.Consumer>
         ) : (
@@ -92,15 +134,6 @@ class EditableCell extends React.Component {
     )
   }
 }
-
-const TableWrapper = props => (
-  <div
-    elevation={0}
-    className={classes.wrapper}
-  >
-    {props.children}
-  </div>
-)
 
 class DashboardTable extends React.Component {
   static propTypes = {
@@ -117,15 +150,7 @@ class DashboardTable extends React.Component {
 
   }
 
-  render () {
-    const {
-      feed
-    } = this.props
-    let allPosts = feed?.data?.feed?.posts
-    if (!feed?.loading && !allPosts.length) {
-      return false
-    }
-
+  getColumns = (handleSave) => {
     const columns = [{
       title: 'Title',
       key: 'title',
@@ -146,7 +171,18 @@ class DashboardTable extends React.Component {
       title: 'Date',
       key: 'createdAt',
       dataIndex: 'createdAt',
-      editable: false
+      editable: false,
+      render: (date) => formatDate(date)
+    }, {
+      title: 'Tags',
+      key: 'tags',
+      dataIndex: 'tags',
+      editable: false,
+      render: (tags) => {
+        return tags.map(tag => (
+          <Tag>{tag.name}</Tag>
+        ))
+      }
     }].map(col => {
       if (!col.editable) {
         return col
@@ -158,13 +194,24 @@ class DashboardTable extends React.Component {
           editable: col.editable,
           dataIndex: col.dataIndex,
           title: col.title,
-          handleSave: this.handleSave
+          handleSave: handleSave,
+          className: classes.cell
         })
       }
     })
+    return columns
+  }
+
+  render () {
+    const {
+      feed
+    } = this.props
+    let allPosts = feed?.data?.feed?.posts
+    if (!feed?.loading && !allPosts.length) {
+      return false
+    }
 
     const dataSource = (feed?.data?.feed?.posts || []).map(row => ({ ...row, key: row.id }))
-    console.log(this.props)
     const components = {
       body: {
         row: EditableFormRow,
@@ -172,37 +219,55 @@ class DashboardTable extends React.Component {
       }
     }
     return (
-      <LazyLoad {...this.props} render={({ loading }) => (
-        <TableWrapper classes={classes}>
-          <div className={classes.toolbar}>
-            {this.props.renderToolbar(this.props)}
-          </div>
-          <Table
-            dataSource={dataSource}
-            columns={columns}
-            className={classes.table}
-            rowSelection={{
-              selectedRowKeys: this.props.selectedPosts,
-              onChange: this.onSelectChange
-            }}
-            loading={feed.loading}
-            pagination={false}
-            components={components}
-            onRow={(record, rowIndex) => {
-              return {
-                onClick: evt => {
-                  const rowKey = evt.target.parentElement.dataset.rowKey
-                  const { selectedPosts } = this.props
-                  const selection = selectedPosts.includes(rowKey)
-                    ? selectedPosts.filter(key => key !== rowKey)
-                    : selectedPosts.concat([rowKey])
-                  this.onSelectChange(selection)
-                }
-              }
-            }}
-          />
-        </TableWrapper>
-      )} />
+      <Mutation mutation={UPDATE_POST}>
+        {mutate => (
+          <LazyLoad {...this.props} render={({ loading }) => (
+            <div className={classes.wrapper}>
+              <div className={classes.toolbar}>
+                {this.props.renderToolbar(this.props)}
+              </div>
+              <Table
+                dataSource={dataSource}
+                columns={this.getColumns((post) => {
+                  mutate({
+                    variables: {
+                      id: post.id,
+                      title: post.title
+                    },
+                    optimisticResponse: {
+                      __typename: 'Mutation',
+                      updatePost: {
+                        __typename: 'Post',
+                        ...post
+                      }
+                    }
+                  })
+                })}
+                className={classes.table}
+                loading={feed.loading}
+                pagination={false}
+                components={components}
+                onRow={(record, rowIndex) => {
+                  return {
+                    onClick: evt => {
+                      const rowKey = evt.target.parentElement.dataset.rowKey
+                      const { selectedPosts } = this.props
+                      const selection = selectedPosts.includes(rowKey)
+                        ? selectedPosts.filter(key => key !== rowKey)
+                        : selectedPosts.concat([rowKey])
+                      this.onSelectChange(selection)
+                    },
+                    className: classnames({
+                      [classes.row]: true,
+                      [classes.selected]: this.props.selectedPosts.includes(record.id)
+                    })
+                  }
+                }}
+              />
+            </div>
+          )} />
+        )}
+      </Mutation>
     )
   }
 }

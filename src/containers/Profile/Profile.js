@@ -46,7 +46,7 @@ class Profile extends React.Component {
         <article>
           <UserForm
             handleChange={this.handleChange}
-            updateUser={this.props.updateUser.mutate}
+            updateUser={this.props.updateUser}
             generateToken={this.props.generateToken.mutate}
             onCopy={this.onCopy}
             setRef={ref => { this.ref = ref }}

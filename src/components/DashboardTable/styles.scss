@@ -1,32 +1,72 @@
 @import '../../css/theme.scss';
 
+$selected-row-color: #f6ffed;
+$seleced-row-hover-color: #d9f7be;
+$default-row-hover-color: #fafafa;
+
 .wrapper {
   margin: 1em 0;
   padding: 30px;
   box-shadow: $shadow-1;
   border-radius: 5px;
   background-color: $card-background;
-}
 
-.table {
-  border: 1px solid $border-color;
-  font-family: $font-family;
-}
+  .table {
+    border: 1px solid $border-color;
+    font-family: $font-family;
+  }
+  
+  .toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  :global(.ant-table-thead > tr > th) {
+    background: $card-background;
+    border-bottom: 1px solid $border-color;
+  }
+  
+  :global(.ant-table-tbody > tr > td) {
+    border-bottom: 1px solid $border-color;
+  }  
+  
+   
+  .row:hover {
+    &.selected {
+      .cell {
+        // background-color: $seleced-row-hover-color; 
+        color: rgba(0, 0, 0, 0.95);
+      } 
+    }
 
-.toolbar {
-  display: flex;
-  // margin-left: -24px;
-  // margin-right: -24px;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
+    &:not(.selected) {
+      .cell {
+        background-color: $default-row-hover-color; 
+      }
+    }
+  }
 
-:global(.ant-table-thead > tr > th) {
-  background: $card-background;
-  border-bottom: 1px solid $border-color;
-}
+  .row {
+    &.selected {
+      .cell {
+        background-color: $selected-row-color;
+      }
+    }
+  }
 
-:global(.ant-table-tbody > tr > td) {
-  border-bottom: 1px solid $border-color;
+  .editable {
+    margin: 0;
+    .editableInput {
+      background-color: transparent;
+  
+      &:not(.editing) {
+        border: none;
+      }
+      &.editing {
+        background-color: #fff;
+      }
+    }
+  }
 }

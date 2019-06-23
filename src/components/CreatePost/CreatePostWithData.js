@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import { Mutation } from 'react-apollo'
 import {
@@ -32,7 +31,8 @@ const createPost = ({ mutate, ownProps }) => ({ title, projectId }) => {
           __typename: 'Project',
           id: projectId,
           name: ''
-        }
+        },
+        tags: []
       }
     },
     update: (store, { data: { createPost } }) => {
@@ -54,7 +54,7 @@ const createPost = ({ mutate, ownProps }) => ({ title, projectId }) => {
 }
 
 class CreatePostWithData extends React.Component {
-  createProject = ({ mutate }) => (variables: { name: string }) => {
+  createProject = ({ mutate }) => (variables) => {
     return mutate({
       variables: variables,
       optimisticResponse: {

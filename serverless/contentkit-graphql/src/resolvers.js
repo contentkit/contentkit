@@ -284,7 +284,6 @@ const resolvers = {
         return pg.head(`SELECT * FROM posts WHERE id = $1::text`, [args.id])
       }
 
-      // qyd2gofioypnmun62jwqnitaq
       if (args.projectId) {
         return pg.query(`
           SELECT
@@ -337,8 +336,11 @@ const resolvers = {
         .then(data => data || [])
     },
     feed: async (parent, args, context) => {
-      const limit = args.limit || 10
-      const offset = args.offset || 0
+      const {
+        limit = 10,
+        offset = 0
+      } = args
+
       const query = args.query
         ? `AND posts.title ILIKE '%${args.query}%'`
         : ''
@@ -371,8 +373,8 @@ const resolvers = {
           ${query}
           ORDER BY
             posts.created_at DESC
-          LIMIT ${limit}
-          OFFSET ${offset}
+          LIMIT $2
+          OFFSET $3
         ) posts,
         (
           SELECT count(*) FROM posts
@@ -381,7 +383,7 @@ const resolvers = {
         ) count
       `
       console.log(str)
-      const data = await pg.head(str, [context.user])
+      const data = await pg.head(str, [context.user, limit, offset])
       return data
     }
   },
@@ -427,13 +429,13 @@ const resolvers = {
       `, [parent.projectId])
     },
     tags: (parent, args, context) => {
-      return pg.query(`
-        SELECT
-          *
-        FROM
-          tags
-        INNER JOIN posts_tags ON (posts_tags.post_id = $1)
-      `, [args.id])
+      const query = `
+        SELECT * from posts_tags
+        JOIN tags ON (posts_tags.tag_id = tags.id)
+        WHERE posts_tags.post_id = $1
+      `
+      console.log(query)
+      return pg.query(query, [parent.id])
     }
   },
   Tag: {

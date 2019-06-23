@@ -35,6 +35,10 @@ export const FEED_QUERY = gql`
         slug
         status
         excerpt
+        tags {
+          id
+          name
+        }
         project {
           id
           name

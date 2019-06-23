@@ -1,31 +1,9 @@
 
-.wrapper {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-
-  :global(.ant-col) {
-    margin-bottom: 20px;
+.root {
+  :global(.ant-form-item-label > label::after) {
+    content: ''
+  }
+  :global(.ant-form-item-control) {
+    line-height: unset;
   }
 }
-.left {
-  width: 100%;
-  display: flex;
-  padding: 15px;
-  flex-basis: 50%;
-  box-sizing: border-box;
-  flex-direction: column;
-}
-.right {
-  width: 100%;
-  display: flex;
-  padding: 15px;
-  flex-basis: 50%;
-  box-sizing: border-box;
-  flex-direction: column;
-}
-.select {
-  margin-top: 16px;
-  margin-bottom: 8px;
-}
-

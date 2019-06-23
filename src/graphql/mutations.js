@@ -28,6 +28,10 @@ export const CREATE_POST = gql`
         id
         name
       }
+      tags {
+        id
+        name
+      }
     }
   }
 `

@@ -7,11 +7,8 @@ import DashboardTable from '../../components/DashboardTable'
 import { withRouter } from 'react-router-dom'
 import DashboardToolbar from '../../components/DashboardToolbar'
 import DashboardWithData from './DashboardWithData'
-import gql from 'graphql-tag'
 import debounce from 'lodash.debounce'
 import { feedQueryShape } from '../../shapes'
-import { EditorState, convertFromRaw } from 'draft-js'
-import { expand } from 'draft-js-compact'
 
 class Dashboard extends React.Component {
   static defaultProps = {
