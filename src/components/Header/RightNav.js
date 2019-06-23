@@ -26,6 +26,7 @@ function RightNav (props) {
     <div
       className={styles.root}
     >
+      {render()}
       <Dropdown overlay={overlay} className={styles.menu}>
         <Avatar className={styles.avatar} src={`https://avatar.tobi.sh/1234`} />
       </Dropdown>

@@ -33,6 +33,17 @@ const createNavBarOptions = (props) => {
 }
 
 class Header extends React.Component {
+  static propTypes = {
+    history: PropTypes.object,
+    loading: PropTypes.bool,
+    render: PropTypes.func,
+    navbar: PropTypes.object,
+    logged: PropTypes.bool
+  }
+
+  static defaultProps = {
+    render: () => null
+  }
   shouldComponentUpdate (nextProps, nextState) {
     return nextProps.logged !== this.props.logged ||
       nextProps.loading !== this.props.loading ||
@@ -58,14 +69,6 @@ class Header extends React.Component {
       </Layout.Header>
     )
   }
-}
-
-Header.propTypes = {
-  history: PropTypes.object,
-  loading: PropTypes.bool,
-  render: PropTypes.func,
-  navbar: PropTypes.object,
-  logged: PropTypes.bool
 }
 
 export default Header

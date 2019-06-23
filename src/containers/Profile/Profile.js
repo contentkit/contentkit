@@ -60,9 +60,9 @@ class Profile extends React.Component {
               </Button>
             </Popconfirm>
           </div>
-          {/*<div className={classes.container}>
+          <div className={classes.code}>
             <CodeSnippet {...this.props} />
-          </div>*/}
+          </div>
         </article>
       </Layout>
     )

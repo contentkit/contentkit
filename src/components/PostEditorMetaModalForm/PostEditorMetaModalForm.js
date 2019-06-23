@@ -8,6 +8,8 @@ import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
 import PostTagChips from '../PostTagChips'
 import Input from 'antd/lib/input'
 import classes from './styles.scss'
+import Row from 'antd/lib/row'
+import Col from 'antd/lib/col'
 
 const PostEditorMetaModalForm = (props) => {
   const { handleChange, post, projects, selectProject } = props
@@ -19,25 +21,41 @@ const PostEditorMetaModalForm = (props) => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.left}>
-        <Input
-          label={'title'}
-          value={title}
-          onChange={e => handleChange(e, 'title')}
-        />
-        <PostStatusSelect
-          handleChange={handleChange}
-          post={post}
-        />
-        <Input
-          placeholder={'slug'}
-          value={slug}
-          onChange={e => handleChange(e, 'slug')}
-        />
-        <Input
-          placeholder={'excerpt'}
-          value={excerpt}
-          onChange={e => handleChange(e, 'excerpt')}
-        />
+        <Row gutter={16}>
+          <Col span={24}>
+            <Input
+              label={'title'}
+              value={title}
+              onChange={e => handleChange(e, 'title')}
+            />
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={24}>
+            <PostStatusSelect
+              handleChange={handleChange}
+              post={post}
+            />
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={24}>
+          <Input
+            placeholder={'slug'}
+            value={slug}
+            onChange={e => handleChange(e, 'slug')}
+          />
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={24}>
+          <Input
+            placeholder={'excerpt'}
+            value={excerpt}
+            onChange={e => handleChange(e, 'excerpt')}
+          />
+          </Col>
+        </Row>
       </div>
       <div className={classes.right}>
         <div className={classes.select}>
@@ -48,7 +66,6 @@ const PostEditorMetaModalForm = (props) => {
           />
         </div>
         <PostMetaDatePicker {...props} />
-
         <PostTagChips post={post} />
       </div>
     </div>

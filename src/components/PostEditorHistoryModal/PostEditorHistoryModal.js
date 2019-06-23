@@ -23,7 +23,10 @@ class PostEditorHistoryModal extends React.Component {
 
   handleClick = version => {
     let { raw } = version
-    let contentState = convertFromRaw(expand(raw, { parent: null, children: List(), prevSibling: null, nextSibling: null }))
+    let contentState = convertFromRaw(
+      expand(raw)
+    )
+    console.log(contentState)
     this.setState({
       editorState: EditorState.push(
         this.state.editorState,
@@ -74,7 +77,10 @@ class PostEditorHistoryModal extends React.Component {
               dataSource={versions}
               renderItem={(version) => (
                 <List.Item onClick={evt => this.handleClick(version)} key={version.id}>
-                  {formatDate(version.createdAt)}
+                  <List.Item.Meta
+                    title={formatDate(version.createdAt)}
+                    description={version?.raw?.blocks[0]?.text || ''}
+                  />
                 </List.Item>
               )}
             />

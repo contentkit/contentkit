@@ -3,6 +3,10 @@
   width: 100%;
   display: flex;
   flex-direction: row;
+
+  :global(.ant-col) {
+    margin-bottom: 20px;
+  }
 }
 .left {
   width: 100%;
@@ -24,3 +28,4 @@
   margin-top: 16px;
   margin-bottom: 8px;
 }
+

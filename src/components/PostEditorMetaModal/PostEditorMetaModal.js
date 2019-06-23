@@ -141,6 +141,7 @@ class EditPostMetaModal extends React.PureComponent {
         title={title}
         onCancel={onClose}
         onOk={this.handlePostMetaUpdate}
+        width={700}
       >
         <PostMetaForm
           post={this.props.post}

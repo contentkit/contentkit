@@ -133,9 +133,5 @@ class BaseEditor extends React.Component {
 
 export default connect(
   state => state.app,
-  dispatch => ({
-    setEditorState: (editorState) => dispatch(
-      setEditorState(editorState)
-    )
-  })
+  { setEditorState }
 )(BaseEditor)

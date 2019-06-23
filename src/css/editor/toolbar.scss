@@ -53,14 +53,13 @@
 }
 
 :global(.custom-toolbar) {
-  // height: 100%;
   display: flex;
   flex-direction: column;
   align-content: center;
   justify-content: flex-start;
   z-index: 500;
   pointer-events: all;
-  // position: fixed;
+  position: fixed;
 }
 
 :global(.custom-toolbar:hover) {

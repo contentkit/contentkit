@@ -188,6 +188,18 @@ class DashboardTable extends React.Component {
             loading={feed.loading}
             pagination={false}
             components={components}
+            onRow={(record, rowIndex) => {
+              return {
+                onClick: evt => {
+                  const rowKey = evt.target.parentElement.dataset.rowKey
+                  const { selectedPosts } = this.props
+                  const selection = selectedPosts.includes(rowKey)
+                    ? selectedPosts.filter(key => key !== rowKey)
+                    : selectedPosts.concat([rowKey])
+                  this.onSelectChange(selection)
+                }
+              }
+            }}
           />
         </TableWrapper>
       )} />

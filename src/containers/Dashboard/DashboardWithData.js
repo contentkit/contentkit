@@ -9,7 +9,6 @@ import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
 import { selectProject, selectPosts, setEditorState } from '../../lib/redux'
 import PropTypes from 'prop-types'
-import { bindActionCreators } from 'redux'
 
 const deletePost = feed => ({ id }) => {
   feed.client.mutate({

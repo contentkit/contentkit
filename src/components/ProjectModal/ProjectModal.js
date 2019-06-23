@@ -31,15 +31,17 @@ class ProjectModal extends React.Component {
   }
 
   handleSave = () => {
-    this.props.handleClose()
+    this.handleClose()
     this.props.updateProject.mutate(this.props.project.data.project)
   }
 
   handleDelete = () => {
-    this.props.handleClose()
+    this.handleClose()
     const { id } = this.props.project.data.project
     this.props.handleDelete({ id })
   }
+
+  handleClose = () => this.props.handleClose()
 
   render () {
     const {
@@ -53,9 +55,9 @@ class ProjectModal extends React.Component {
         className={styles.modal}
         closable={false}
         footer={[
-          <Button>Delete</Button>,
-          <Button>Cancel</Button>,
-          <Button>Update</Button>
+          <Button onClick={this.handleDelete} type={'danger'}>Delete</Button>,
+          <Button onClick={handleClose}>Cancel</Button>,
+          <Button onClick={this.handleSave} type={'primary'}>Update</Button>
         ]}
       >
         <ProjectModalContent

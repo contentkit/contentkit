@@ -4,16 +4,14 @@ import Button from 'antd/lib/button'
 import classes from './styles.scss'
 
 const PostEditorToolbar = props => (
-  <React.Fragment>
-    <div className={classes.toolbar}>
-      <Button onClick={evt => props.onClick('history')}>
-        History
-      </Button>
-      <Button onClick={evt => props.onClick('postmeta')}>
-        Postmeta
-      </Button>
-    </div>
-  </React.Fragment>
+  <div className={classes.toolbar}>
+    <Button onClick={evt => props.onClick('history')}>
+      History
+    </Button>
+    <Button onClick={evt => props.onClick('postmeta')}>
+      Postmeta
+    </Button>
+  </div>
 )
 
 PostEditorToolbar.propTypes = {
