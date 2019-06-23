@@ -9,6 +9,8 @@ import classnames from 'classnames'
 import { List } from 'immutable'
 import Button from 'antd/lib/button'
 import styles from './styles.scss'
+import { DELETE_POST } from '../../graphql/mutations'
+import { FEED_QUERY } from '../../graphql/queries'
 
 const EditIcon = props => (
   <svg
@@ -56,7 +58,6 @@ const DeleteIcon = props => (
 // }
 
 const fetchRaw = async ({ client, selected }) => {
-  console.log({ selected })
   const { data: { post } } = await client.query({
     query: gql`
       query($id: ID!) {
@@ -96,12 +97,26 @@ class DashboardToolbar extends React.Component {
     this.setState({ raw })
   }
 
-  handleDelete = () => {
-    return Promise.all(
-      this.props.selected.map(id => 
-        this.props.deletePost({ id })  
-      )
-    )
+  handleDelete = async () => {
+    const { feed, selected } = this.props
+    feed.client.cache.writeQuery({
+      query: FEED_QUERY,
+      data: {
+        feed: {
+          ...feed.data.feed,
+          posts: feed.data.feed.posts.filter((post) => !selected.includes(post.id))
+        }
+      },
+      variables: feed.variables
+    })
+    await Promise.all(
+      selected.map(id => {
+        return feed.client.mutate({
+          mutation: DELETE_POST,
+          variables: { id }
+        })
+      })
+    ) 
   }
 
   handleEdit = async () => {

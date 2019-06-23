@@ -7,6 +7,8 @@ import PropTypes from 'prop-types'
 import Modal from 'antd/lib/modal'
 import styles from './styles.scss'
 import Button from 'antd/lib/button'
+import Row from 'antd/lib/row'
+import Col from 'antd/lib/col'
 
 class ProjectModal extends React.Component {
   static propTypes = {
@@ -54,11 +56,19 @@ class ProjectModal extends React.Component {
         onOk={this.handleSave}
         className={styles.modal}
         closable={false}
-        footer={[
-          <Button onClick={this.handleDelete} type={'danger'}>Delete</Button>,
-          <Button onClick={handleClose}>Cancel</Button>,
-          <Button onClick={this.handleSave} type={'primary'}>Update</Button>
-        ]}
+        footer={
+          <Row className={styles.actions}>
+            <Col span={12}>
+              <Button key={'delete'} onClick={this.handleDelete} type={'danger'}>Delete</Button>
+            </Col>
+            <Col span={12}>
+              <Row justify={'end'} type={'flex'}>
+                <Button key={'cancel'} onClick={handleClose}>Cancel</Button>
+                <Button key={'update'} onClick={this.handleSave} type={'primary'}>Update</Button>
+              </Row>
+            </Col>
+          </Row>
+        }
       >
         <ProjectModalContent
           onChange={this.onChange}

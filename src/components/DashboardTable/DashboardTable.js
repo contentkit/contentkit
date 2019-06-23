@@ -12,6 +12,9 @@ import Tag from 'antd/lib/tag'
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
+import debounce from 'lodash.debounce'
+import Icon from 'antd/lib/icon'
+import Button from 'antd/lib/button'
 
 export const UPDATE_POST = gql`
   mutation (
@@ -63,24 +66,42 @@ class EditableCell extends React.Component {
   }
 
   toggleEdit = (evt) => {
-    // evt.stopPropagation()
-    const editing = !this.state.editing
-    this.setState({ editing }, () => {
-      if (editing) {
+    this.setState(prevState => ({
+      editing: !prevState.editing
+    }), () => {
+      if (this.state.editing) {
         this.input.focus()
+      } else {
+        this.input.blur()
       }
     })
   }
 
   save = e => {
-    const { record, handleSave } = this.props
+    const { record } = this.props
     this.form.validateFields((error, values) => {
       if (error && error[e.currentTarget.id]) {
         return
       }
       this.toggleEdit()
-      handleSave({ ...record, ...values })
+      this.handleSave({ ...record, ...values })
     })
+  }
+
+  handleSave = debounce((data) => {
+    this.props.handleSave(data)
+  }, 500)
+
+  renderSuffix = () => {
+    return this.state.editing
+      ? (<Button icon='save' className={classes.iconButton} onClick={this.save} />)
+      : (<Button icon='edit' className={classes.iconButton} onClick={this.toggleEdit} />)
+  }
+
+  onFocus = evt => {
+    if (!this.state.editing) {
+      this.input.blur()
+    }
   }
 
   renderCell = form => {
@@ -101,11 +122,12 @@ class EditableCell extends React.Component {
           <Input
             ref={node => (this.input = node)}
             onPressEnter={this.save}
-            onBlur={this.save}
+            onFocus={this.onFocus}
             className={classnames(
               classes.editableInput,
               { [classes.editing]: editing }
             )}
+            suffix={this.renderSuffix()}
           />
         )}
       </Form.Item>
@@ -121,6 +143,7 @@ class EditableCell extends React.Component {
       index,
       handleSave,
       children,
+      onSelectChange,
       ...restProps
     } = this.props
     return (
@@ -142,8 +165,12 @@ class DashboardTable extends React.Component {
     selectedPost: PropTypes.object
   }
 
-  onSelectChange = (selectedRowKeys, selectedRows) => {
-    this.props.selectPosts(selectedRowKeys)
+  onSelectChange = (rowKey) => {
+    const { selectedPosts } = this.props
+    const selection = selectedPosts.includes(rowKey)
+      ? selectedPosts.filter(key => key !== rowKey)
+      : selectedPosts.concat([rowKey])
+    this.props.selectPosts(selection)
   }
 
   handleSave = () => {
@@ -180,7 +207,7 @@ class DashboardTable extends React.Component {
       editable: false,
       render: (tags) => {
         return tags.map(tag => (
-          <Tag>{tag.name}</Tag>
+          <Tag key={tag.id}>{tag.name}</Tag>
         ))
       }
     }].map(col => {
@@ -250,12 +277,7 @@ class DashboardTable extends React.Component {
                 onRow={(record, rowIndex) => {
                   return {
                     onClick: evt => {
-                      const rowKey = evt.target.parentElement.dataset.rowKey
-                      const { selectedPosts } = this.props
-                      const selection = selectedPosts.includes(rowKey)
-                        ? selectedPosts.filter(key => key !== rowKey)
-                        : selectedPosts.concat([rowKey])
-                      this.onSelectChange(selection)
+                      this.onSelectChange(record.key)
                     },
                     className: classnames({
                       [classes.row]: true,

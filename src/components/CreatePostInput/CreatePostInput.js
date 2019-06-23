@@ -30,7 +30,7 @@ class CreatePostInput extends React.Component {
         onClick={createPost}
         loading={loading}
       >
-        Create
+        New Post
       </ButtonWithSpinner>
     )
   }
@@ -42,7 +42,8 @@ class CreatePostInput extends React.Component {
   render () {
     const {
       value,
-      handleChange
+      handleChange,
+      createPost
     } = this.props
     return (
       <Input
@@ -61,6 +62,7 @@ class CreatePostInput extends React.Component {
         value={value}
         onChange={handleChange}
         type={'text'}
+        onPressEnter={createPost}
       />
     )
   }

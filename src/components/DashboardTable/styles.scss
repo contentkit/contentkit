@@ -62,11 +62,26 @@ $default-row-hover-color: #fafafa;
       background-color: transparent;
   
       &:not(.editing) {
-        border: none;
+        :global(.ant-input) {
+          border: none;
+          box-shadow: none;
+          background-color: transparent;
+          cursor: default;
+        }
       }
       &.editing {
-        background-color: #fff;
+        :global(.ant-input) {
+          border-color: #40a9ff;
+          box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+          background-color: #fff;
+        }
       }
     }
   }
+}
+
+
+.iconButton:global(.ant-btn) {
+  border: none;
+  background-color: transparent;
 }

@@ -10,23 +10,6 @@ import { connect } from 'react-redux'
 import { selectProject, selectPosts, setEditorState } from '../../lib/redux'
 import PropTypes from 'prop-types'
 
-const deletePost = feed => ({ id }) => {
-  feed.client.mutate({
-    mutation: DELETE_POST,
-    variables: { id }
-  })
-  return feed.client.cache.writeQuery({
-    query: FEED_QUERY,
-    data: {
-      feed: {
-        ...feed.data.feed,
-        posts: feed.data.feed.posts.filter((post) => post.id !== id)
-      }
-    },
-    variables: feed.variables
-  })
-}
-
 class DashboardWithData extends React.Component {
   static propTypes = {
     user: PropTypes.object,
@@ -84,8 +67,7 @@ class DashboardWithData extends React.Component {
                   variables: variables,
                   handleSearch: this.handleSearch,
                   feed: feed,
-                  projects: projects,
-                  deletePost: deletePost(feed)
+                  projects: projects
                 })
               }}
             </Query>

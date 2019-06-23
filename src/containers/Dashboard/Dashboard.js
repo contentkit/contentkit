@@ -68,7 +68,6 @@ class Dashboard extends React.Component {
   renderToolbar = () => {
     return (
       <DashboardToolbar
-        deletePost={this.props.deletePost}
         handleChange={this.handleChange}
         handleSearch={this.handleSearch}
         selected={this.props.selectedPosts}
@@ -77,6 +76,7 @@ class Dashboard extends React.Component {
         history={this.props.history}
         editorState={this.props.editorState}
         setEditorState={this.props.setEditorState}
+        feed={this.props.feed}
       />
     )
   }

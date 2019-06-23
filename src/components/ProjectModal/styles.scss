@@ -1,18 +1,16 @@
-.wrapper {
-  // position: absolute;
-  // top: 50%;
-  // left: 50%;
-  // transform: translate(-50%, -50%);
-  // height: 400px;
-  // width: 500px;
-
-  &:focus {
-    outline: none;
-  }
-}
-
 .modal {
   &:focus {
     outline: none
   }
+  
+  :global(.ant-modal-content .ant-modal-footer) {
+    text-align: left;
+  }
+}
+
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }

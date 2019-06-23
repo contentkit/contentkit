@@ -9,8 +9,8 @@ import createClient from './lib/client'
 import { store } from './lib/redux'
 import pages from './pages'
 import { USER_QUERY } from './graphql/queries'
+import 'antd/dist/antd.less'
 import './css/style.scss'
-import 'antd/dist/antd.css'
 
 const client = createClient()
 
