@@ -110,7 +110,7 @@ type Feed {
 }
 
 type Mutation {
-   signinUser(
+  signinUser(
     email: String!
     password: String!
   ): User
@@ -147,4 +147,5 @@ type Mutation {
   updateProject(id: ID!, name: String!): Project
   deleteTag(id: ID!): Tag
   createTag(name: String, projectId: ID!, postId: ID!): Tag
+  deleteUser: User
 }

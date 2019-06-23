@@ -8,7 +8,8 @@ const history = createBrowserHistory()
 const initialState = {
   editorState: EditorState.createEmpty(),
   hydrated: false,
-  selectedProject: undefined
+  selectedProject: undefined,
+  selectedPosts: []
 }
 
 export const SET_EDITOR_STATE = 'SET_EDITOR_STATE'
@@ -41,6 +42,13 @@ export const selectProject = (selectedProject) => ({
     selectedProject
   },
   type: SELECT_PROJECT
+})
+
+export const selectPosts = (selectedPosts) => ({
+  type: SELECT_POST,
+  payload: {
+    selectedPosts
+  }
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

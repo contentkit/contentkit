@@ -256,3 +256,11 @@ export const CREATE_TAG = gql`
     }
   }
 `
+
+export const DELETE_USER = gql`
+  mutation {
+    deleteUser {
+      id
+    }
+  }
+`

@@ -2,7 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { USER_QUERY } from '../../graphql/queries'
-import { GENERATE_TOKEN, UPDATE_USER } from '../../graphql/mutations'
+import { GENERATE_TOKEN, UPDATE_USER, DELETE_USER } from '../../graphql/mutations'
 
 import { Mutation } from 'react-apollo'
 import { withRouter } from 'react-router-dom'
@@ -40,21 +40,32 @@ class ProfileWithData extends React.Component {
         {(updateUser, updateUserData) => {
           return (
             <Mutation mutation={GENERATE_TOKEN}>
-              {(generateToken, generateTokenData) => {
-                return (
-                  <Profile
-                    {...this.props}
-                    updateUser={{
-                      mutate: variables => updateUser({ variables }),
-                      ...updateUserData
-                    }}
-                    generateToken={{
-                      mutate: this.generateToken({ mutate: generateToken }),
-                      ...generateTokenData
-                    }}
-                  />
-                )
-              }}
+              {(generateToken, generateTokenData) => (
+                <Mutation mutation={DELETE_USER}>
+                  {deleteUser => (
+                    <Profile
+                      {...this.props}
+                      updateUser={{
+                        mutate: variables => updateUser({ variables }),
+                        ...updateUserData
+                      }}
+                      generateToken={{
+                        mutate: this.generateToken({ mutate: generateToken }),
+                        ...generateTokenData
+                      }}
+                      deleteUser={{
+                        mutate: variables => {
+                          return deleteUser().then(() => {
+                            window.localStorage.removeItem('token')
+                            this.props.client.resetStore()
+                            this.props.history.replace('/login')
+                          })
+                        }
+                      }}
+                    />
+                  )}
+                </Mutation>
+              )}
             </Mutation>
           )
         }}

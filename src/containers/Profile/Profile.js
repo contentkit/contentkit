@@ -5,6 +5,9 @@ import Layout from '../Layout'
 import UserForm from '../../components/ProfileUserForm'
 import { USER_QUERY } from '../../graphql/queries'
 import CodeSnippet from '../../components/CodeSnippet'
+import classes from './styles.scss'
+import Button from 'antd/lib/button'
+import Popconfirm from 'antd/lib/popconfirm'
 
 class Profile extends React.Component {
   static propTypes = {
@@ -30,6 +33,10 @@ class Profile extends React.Component {
     document.execCommand('copy')
   }
 
+  onConfirm = () => {
+    this.props.deleteUser.mutate()
+  }
+
   render () {
     let { user } = this.props
     return (
@@ -44,14 +51,18 @@ class Profile extends React.Component {
             onCopy={this.onCopy}
             setRef={ref => { this.ref = ref }}
             user={user}
+            className={classes.container}
           />
-          <div style={{
-            maxWidth: '500px',
-            padding: '2em',
-            margin: '1em auto'
-          }}>
-            <CodeSnippet {...this.props} />
+          <div className={classes.container}>
+            <Popconfirm title={'Are you sure?'} onConfirm={this.onConfirm} okText='Delete' cancelText='Cancel'>
+              <Button type={'danger'}>
+                Delete Account
+              </Button>
+            </Popconfirm>
           </div>
+          {/*<div className={classes.container}>
+            <CodeSnippet {...this.props} />
+          </div>*/}
         </article>
       </Layout>
     )

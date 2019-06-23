@@ -74,7 +74,7 @@ class Dashboard extends React.Component {
         deletePost={this.props.deletePost}
         handleChange={this.handleChange}
         handleSearch={this.handleSearch}
-        selected={this.state.selectedPost}
+        selected={this.props.selectedPosts}
         query={this.state.query}
         client={this.props.client}
         history={this.props.history}
@@ -91,7 +91,7 @@ class Dashboard extends React.Component {
         render={() => null}
         logged={this.props.logged}
         client={this.props.client}
-        selectedPost={this.state.selectedPost}
+        selectedPosts={this.props.selectedPosts}
         query={this.state.query}
       >
         <article>
@@ -105,8 +105,8 @@ class Dashboard extends React.Component {
           <DashboardTable
             feed={this.props.feed}
             projects={this.props.projects}
-            selectedPost={this.state.selectedPost}
-            handlePostSelect={this.handlePostSelect}
+            selectPosts={this.props.selectPosts}
+            selectedPosts={this.props.selectedPosts}
             client={this.props.client}
             renderToolbar={this.renderToolbar}
           />

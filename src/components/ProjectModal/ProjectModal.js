@@ -6,6 +6,7 @@ import ProjectModalContent from '../ProjectModalContent'
 import PropTypes from 'prop-types'
 import Modal from 'antd/lib/modal'
 import styles from './styles.scss'
+import Button from 'antd/lib/button'
 
 class ProjectModal extends React.Component {
   static propTypes = {
@@ -15,16 +16,19 @@ class ProjectModal extends React.Component {
     client: PropTypes.object.isRequired
   }
 
-  onChange = data => this.props.client.writeQuery({
-    query: PROJECT_QUERY,
-    data: {
-      Project: {
-        ...this.props.project.data.project,
-        ...data
-      }
-    },
-    variables: { id: this.props.project.variables }
-  })
+  onChange = data => {
+    console.log({ data })
+    return this.props.client.writeQuery({
+      query: PROJECT_QUERY,
+      data: {
+        project: {
+          ...this.props.project.data.project,
+          ...data
+        }
+      },
+      variables: { id: this.props.project.variables }
+    })
+  }
 
   handleSave = () => {
     this.props.handleClose()
@@ -48,6 +52,11 @@ class ProjectModal extends React.Component {
         onOk={this.handleSave}
         className={styles.modal}
         closable={false}
+        footer={[
+          <Button>Delete</Button>,
+          <Button>Cancel</Button>,
+          <Button>Update</Button>
+        ]}
       >
         <ProjectModalContent
           onChange={this.onChange}

@@ -53,7 +53,7 @@ class PostEditorHistoryModal extends React.Component {
         onCancel={this.props.onClose}
         onOK={() => {}}
         title={'History'}
-        actions={[
+        footer={[
           <Button
             variant='text'
             onClick={this.props.onClose}

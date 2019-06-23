@@ -1,8 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import VerticalSplit from '@material-ui/icons/VerticalSplit'
-import HorizontalSplit from '@material-ui/icons/HorizontalSplit'
-import IconButton from '@material-ui/core/IconButton'
 import { updateDataOfBlock, Block } from '@contentkit/util'
 import DraftTable from '../DraftTable'
 import { Map } from 'immutable'
@@ -10,6 +7,8 @@ import { genKey } from 'draft-js'
 import keyBy from 'lodash.keyby'
 import groupBy from 'lodash.groupby'
 import classes from './styles.scss'
+import VerticalSplitIcon from '../VerticalSplitIcon'
+import HorizontalSplitIcon from '../HorizontalSplitIcon'
 
 import Modal from 'antd/lib/modal'
 
@@ -236,12 +235,12 @@ class DraftTableDialog extends React.Component {
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             Title
             <div>
-              <IconButton onClick={this.insertColumn}>
-                <VerticalSplit />
-              </IconButton>
-              <IconButton onClick={this.insertRow}>
-                <HorizontalSplit />
-              </IconButton>
+              <button onClick={this.insertColumn}>
+                <VerticalSplitIcon />
+              </button>
+              <button onClick={this.insertRow}>
+                <HorizontalSplitIcon />
+              </button>
             </div>
           </div>
         }

@@ -52,22 +52,27 @@ const updateUser = (_, args, ctx) => {
     UPDATE
       users
     SET
-      email = $1
-      name = $2
+      email = $1::text,
+      name = $2::text
     WHERE id = $3
     RETURNING *
-  `, [args.email, args.name, args.user])
+  `, [args.email, args.name, ctx.user])
+}
+
+const deleteUser = (_, args, ctx) => {
+  return pg.head(`
+    DELETE FROM users WHERE id = $1::text RETURNING *
+  `, [ctx.user])
 }
 
 const createPost = (_, { title, projectId }, ctx) => {
   return pg.head(`
     insert into posts(
-      user_id,
       project_id,
       title
     )
-    values($1, $2, $3) RETURNING *
-  `, [ctx.user, projectId, title])
+    values($1, $2) RETURNING *
+  `, [projectId, title])
 }
 
 const updateDocument = async (_, { id, raw, encodedHtml }, ctx) => {
@@ -114,9 +119,8 @@ const updatePost = (parent, args, ctx) => {
 
 const createImage = (_, args, ctx) => {
   return pg.head(`
-    INSERT INTO images(user_id, post_id, url)
+    INSERT INTO images(post_id, url)
     VALUES(
-      '${ctx.user}',
       '${args.postId}',
       '${args.url}'
     )
@@ -128,17 +132,16 @@ const deleteImage = (_, args, ctx) => {
   return pg.head(`
     DELETE FROM images
     WHERE id = $1
-    AND user_id = $2
     RETURNING *
   `, [args.id, ctx.user])
 }
 
 const createVersion = (_, args, ctx) => {
   return pg.query(`
-    INSERT INTO versions(user_id, document_id, raw)
-    VALUES($1, $2, $3::jsonb)
+    INSERT INTO versions(document_id, raw)
+    VALUES($1, $2::jsonb)
     RETURNING *
-  `, [ctx.user, ctx.documentId, JSON.stringify(args.raw)])
+  `, [ctx.documentId, JSON.stringify(args.raw)])
 }
 
 const deletePost = (_, args, ctx) => {
@@ -149,14 +152,13 @@ const deletePost = (_, args, ctx) => {
 
 const createDocument = (_, args, context) => {
   return pg.head(`
-    INSERT INTO document(user_id, post_id, raw)
+    INSERT INTO document(post_id, raw)
     VALUES(
-      $1,
-      $2::text,
-      $3::jsonb
+      $1::text,
+      $2::jsonb
     )
     RETURNING *
-  `, [context.user, args.postId, JSON.stringify(args.raw)])
+  `, [args.postId, JSON.stringify(args.raw)])
 }
 
 const deleteDocument = (_, args, context) => {
@@ -165,10 +167,8 @@ const deleteDocument = (_, args, context) => {
       documents
     WHERE
       id = $1
-    AND
-      user_id = $2
     RETURNING *
-  `, [args.id, context.user])
+  `, [args.id])
 }
 
 const createProject = (_, args, context) => {
@@ -199,13 +199,11 @@ const createOrigin = (_, args, context) => {
   return pg.head(`
     INSERT INTO
       origins(
-        user_id,
         project_id,
         name,
         origin_type
       )
       VALUES(
-        '${context.user}',
         '${args.projectId}',
         '${args.name}',
         '${args.originType}'::origin_type
@@ -282,19 +280,38 @@ const resolvers = {
       `, [args.id])
     },
     post: async (parent, args, context) => {
-      let condition = args.id
-        ? `AND id = '${args.id}'`
-        : `AND slug ILIKE '%${args.slug}%'`
-      let filterByProject = args.projectId
-        ? `AND project_id = '${args.projectId}'`
+      if (args.id) {
+        return pg.head(`SELECT * FROM posts WHERE id = $1::text`, [args.id])
+      }
+
+      // qyd2gofioypnmun62jwqnitaq
+      if (args.projectId) {
+        return pg.query(`
+          SELECT
+            posts.*
+          FROM
+            posts
+          JOIN
+            projects ON (posts.project_id = projects.id)
+          WHERE
+            posts.project_id = $1::text
+          AND
+            projects.user_id = $2::text
+        `, [args.projectId, context.user])
+      }
+
+      const condition = args.slug
+        ? `AND slug ILIKE '%${args.slug}%'`
         : ''
+
       return pg.head(`
         SELECT
           posts.*
-        FROM posts
-        WHERE user_id = '${context.user}'
+        FROM 
+          posts
+        JOIN projects ON (projects.id = posts.project_id)
+        WHERE projects.user_id = '${context.user}'
         ${condition}
-        ${filterByProject}
       `)
     },
     allProjects: async (parent, args, context) => {
@@ -320,16 +337,16 @@ const resolvers = {
         .then(data => data || [])
     },
     feed: async (parent, args, context) => {
-      let limit = args.limit || 10
-      let offset = args.offset || 0
-      let query = args.query
+      const limit = args.limit || 10
+      const offset = args.offset || 0
+      const query = args.query
         ? `AND posts.title ILIKE '%${args.query}%'`
         : ''
-      let project = args.projectId
+      const project = args.projectId
         ? `AND project_id = '${args.projectId}'`
         : ''
 
-      let data = await pg.head(`
+      const str = `
         SELECT
         ARRAY(
           SELECT
@@ -338,7 +355,6 @@ const resolvers = {
               'createdAt', posts.created_at,
               'updatedAt', posts.updated_at,
               'projectId', posts.project_id,
-              'userId', posts.user_id,
               'title', posts.title,
               'slug', posts.slug,
               'status', posts.status,
@@ -347,15 +363,25 @@ const resolvers = {
             )
           FROM
             posts
+          JOIN
+            projects ON (projects.id = posts.project_id)
           WHERE
-            user_id = '${context.user}' ${project} ${query}
+            projects.user_id = $1::text
+          ${project}
+          ${query}
           ORDER BY
             posts.created_at DESC
           LIMIT ${limit}
           OFFSET ${offset}
         ) posts,
-        (SELECT count(*) FROM posts) count
-      `)
+        (
+          SELECT count(*) FROM posts
+          JOIN projects ON (projects.id = posts.project_id)
+          WHERE projects.user_id = $1::text
+        ) count
+      `
+      console.log(str)
+      const data = await pg.head(str, [context.user])
       return data
     }
   },
@@ -380,7 +406,8 @@ const resolvers = {
     updatePost: updatePost,
     deleteProject: deleteProject,
     createTag: createTag,
-    deleteTag: deleteTag
+    deleteTag: deleteTag,
+    deleteUser: deleteUser
   },
   Feed: {},
   Post: {

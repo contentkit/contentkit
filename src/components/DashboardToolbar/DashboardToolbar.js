@@ -56,6 +56,7 @@ const DeleteIcon = props => (
 // }
 
 const fetchRaw = async ({ client, selected }) => {
+  console.log({ selected })
   const { data: { post } } = await client.query({
     query: gql`
       query($id: ID!) {
@@ -66,7 +67,7 @@ const fetchRaw = async ({ client, selected }) => {
         }
       }
     `,
-    variables: { id: selected.id }
+    variables: { id: selected }
   })
   return post.document.raw
 }
@@ -77,24 +78,30 @@ class DashboardToolbar extends React.Component {
   }
   static propTypes = {
     handleChange: PropTypes.func,
-    handleSearch: PropTypes.func,
+    handleSearch: PropTypes.func
+  }
+
+  static defaultProps = {
+    selected: []
   }
 
   onMouseEnter = async () => {
     if (this.state.raw) return
-    if (!this.props.selected) return
+    if (!this.props.selected.length) return
 
     let raw = await fetchRaw({
       client: this.props.client,
-      selected: this.props.selected
+      selected: this.props.selected[0]
     })
     this.setState({ raw })
   }
 
   handleDelete = () => {
-    this.props.deletePost({
-      id: this.props.selected.id
-    })
+    return Promise.all(
+      this.props.selected.map(id => 
+        this.props.deletePost({ id })  
+      )
+    )
   }
 
   handleEdit = async () => {
@@ -114,7 +121,7 @@ class DashboardToolbar extends React.Component {
         'insert-fragment'
       )
     )
-    this.props.history.push('/posts/' + this.props.selected.id)
+    this.props.history.push('/posts/' + this.props.selected[0])
   }
 
   render () {
@@ -122,9 +129,9 @@ class DashboardToolbar extends React.Component {
       handleChange,
       handleSearch,
       query,
-      selected,
+      selected
     } = this.props
-    const open = !!selected
+    const open = selected.length > 0
     return (
       <React.Fragment>
         <div className={styles.root}>
@@ -133,7 +140,7 @@ class DashboardToolbar extends React.Component {
             onMouseEnter={this.onMouseEnter}
             disabled={!open}
             className={classnames(
-              styles.button, { [styles.active]: selected }
+              styles.button, { [styles.active]: open }
             )}
           >
             <EditIcon />
@@ -143,7 +150,7 @@ class DashboardToolbar extends React.Component {
             disabled={!open}
             className={classnames(
               styles.button,
-              { [styles.active]: selected }
+              { [styles.active]: open }
             )}
           >
             <DeleteIcon />

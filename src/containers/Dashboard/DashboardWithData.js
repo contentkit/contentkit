@@ -7,8 +7,9 @@ import { DELETE_POST } from '../../graphql/mutations'
 
 import debounce from 'lodash.debounce'
 import { connect } from 'react-redux'
-import { selectProject, setEditorState } from '../../lib/redux'
+import { selectProject, selectPosts, setEditorState } from '../../lib/redux'
 import PropTypes from 'prop-types'
+import { bindActionCreators } from 'redux'
 
 const deletePost = feed => ({ id }) => {
   feed.client.mutate({
@@ -78,7 +79,9 @@ class DashboardWithData extends React.Component {
                   setEditorState: this.props.setEditorState,
                   selectProject: this.props.selectProject,
                   selectedProject: this.props.selectedProject,
+                  selectPosts: this.props.selectPosts,
                   updateVariables: this.updateVariables,
+                  selectedPosts: this.props.selectedPosts,
                   variables: variables,
                   handleSearch: this.handleSearch,
                   feed: feed,
@@ -95,9 +98,9 @@ class DashboardWithData extends React.Component {
 }
 
 export default connect(
-  state => state.app,
-  dispatch => ({
-    setEditorState: (editorState) => dispatch(setEditorState(editorState)),
-    selectProject: (project) => dispatch(selectProject(project))
-  })
+  state => state.app, {
+    setEditorState,
+    selectProject,
+    selectPosts
+  }
 )(DashboardWithData)

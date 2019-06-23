@@ -17,8 +17,6 @@
   "dependencies": {
     "@babel/runtime": "^7.3.4",
     "@contentkit/editor": "^0.0.22",
-    "@material-ui/core": "^3.2.1",
-    "@material-ui/icons": "^3.0.1",
     "@menubar/login": "^0.0.1",
     "antd": "^3.19.3",
     "apollo-cache-inmemory": "1.5.1",
