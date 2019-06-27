@@ -6,13 +6,15 @@ import classnames from 'classnames'
 
 class CreatePostInput extends React.Component {
   state = {
-    value: ''
+    value: '',
+    focused: false
   }
 
   shouldComponentUpdate (nextProps, nextState) {
     return nextProps.value !== this.props.value ||
     nextProps.loading !== this.props.loading ||
-    nextState.value !== this.state.value
+    nextState.value !== this.state.value ||
+    nextState.focused !== this.state.focused
   }
 
   renderAdornment = () => {
@@ -25,6 +27,9 @@ class CreatePostInput extends React.Component {
         className={
           classnames(
             'ant-input-search-button',
+            classes.button, {
+              [classes.focused]: this.state.focused
+            }
           )
         }
         onClick={createPost}
@@ -63,6 +68,12 @@ class CreatePostInput extends React.Component {
         onChange={handleChange}
         type={'text'}
         onPressEnter={createPost}
+        onFocus={
+          evt => this.setState({ focused: true })
+        }
+        onBlur={
+          evt => this.state({ focused: false })
+        }
       />
     )
   }

@@ -5,6 +5,7 @@ import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemo
 import { GRAPHQL_ENDPOINT } from './config'
 import { withClientState } from 'apollo-link-state'
 import { ApolloLink } from 'apollo-link'
+import createClient from '@graphship/apollo-client'
 
 import introspectionQueryResultData from './fragmentTypes.json'
 
@@ -39,8 +40,15 @@ const stateLink = withClientState({
   }
 })
 
-export default () => new ApolloClient({
-  link: ApolloLink.from([stateLink, authLink, httpLink]),
-  cache: cache,
-  dataIdFromObject: object => object.id
+// export default () => new ApolloClient({
+//   link: ApolloLink.from([stateLink, authLink, httpLink]),
+//   cache: cache,
+//   dataIdFromObject: object => object.id
+// })
+
+export default () => createClient({
+  uri: GRAPHQL_ENDPOINT,
+  logout: () => {
+    console.log('logout')
+  }
 })
