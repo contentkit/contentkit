@@ -12,7 +12,7 @@ import { USER_QUERY } from './graphql/queries'
 import 'antd/dist/antd.less'
 import './css/style.scss'
 import Spinner from './components/Spinner'
-import styles from './app.scss'
+import styles from './css/fallback.scss'
 
 const client = createClient()
 
