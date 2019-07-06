@@ -7,29 +7,34 @@ import classes from './styles.scss'
 import Input from 'antd/lib/input'
 import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
+import Form from 'antd/lib/form'
 
-const UserForm = props => {
+function UserForm (props) {
   const email = props?.user?.data?.user?.email || ''
   const name = props?.user?.data?.user?.name || ''
-
+  const { form: { getFieldDecorator } } = props
   return (
     <div className={props.className}>
-      <Row gutter={8}>
+      <Row gutter={32}>
         <Col span={12}>
-          <Input
-            className={classes.input}
-            placeholder='Name'
-            value={name}
-            onChange={(e) => props.handleChange(e, 'name')}
-          />
+          <Form.Item label={'Name'}>
+            <Input
+              className={classes.input}
+              placeholder='Name'
+              value={name}
+              onChange={(e) => props.handleChange(e, 'name')}
+            />
+          </Form.Item>
         </Col>
         <Col span={12}>
-          <Input
-            className={classes.input}
-            placeholder='Email'
-            value={email}
-            onChange={(e) => props.handleChange(e, 'email')}
-          />
+          <Form.Item label={'Email'}>
+            <Input
+              className={classes.input}
+              placeholder='Email'
+              value={email}
+              onChange={(e) => props.handleChange(e, 'email')}
+            />
+          </Form.Item>
         </Col>
       </Row>
       <ProfileUserFormKeyInput {...props} />
@@ -61,4 +66,4 @@ UserForm.propTypes = {
   generateToken: propTypes.func.isRequired
 }
 
-export default UserForm
+export default Form.create('profile_user_form')(UserForm)

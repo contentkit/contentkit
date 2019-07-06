@@ -17,7 +17,13 @@ class CreatePost extends React.Component {
   }
 
   static getDerivedStateFromProps (nextProps, nextState) {
-    if (!nextProps.selectedProject) return null
+    if (
+      !nextProps.selectedProject || 
+        nextProps.projects.loading
+    ) {
+      return null
+    }
+ 
     if (nextProps.selectedProject !== (nextState.project && nextState.project.id)) {
       const { allProjects } = nextProps.projects.data
       const project = allProjects.find(({ id }) => id === nextProps.selectedProject)

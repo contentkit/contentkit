@@ -72,7 +72,7 @@ class CreatePostInput extends React.Component {
           evt => this.setState({ focused: true })
         }
         onBlur={
-          evt => this.state({ focused: false })
+          evt => this.setState({ focused: false })
         }
       />
     )

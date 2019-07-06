@@ -20,27 +20,15 @@ export const _POST_QUERY = gql`
   }
 `
 
-const styles = theme => ({
-  dialog: {
-    [theme.breakpoints.down('sm')]: {
-      maxWidth: '100%',
-      width: '100%',
-      height: '100%',
-      maxHeight: '100%',
-      margin: 0
-    }
-  }
-})
-
 const getDate = ({ post: { data: { post } } }) => {
   let date = post && post.publishedAt
   return date ? new Date(date) : new Date()
 }
 
-class EditPostMetaModal extends React.PureComponent {
+class EditPostMetaModal extends React.Component {
   state = {
     dateInputState: createInitialState(getDate(this.props)),
-    projectId: this.props.post.data.post.project.id
+    projectId: this.props.post?.data?.post?.project?.id
   }
 
   static propTypes = {

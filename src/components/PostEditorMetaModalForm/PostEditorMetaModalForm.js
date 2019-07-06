@@ -113,15 +113,16 @@ const ModalWithData = props => (
   <Query
     query={PROJECTS_QUERY}
   >
-    {projects => {
-      if (projects.loading) return false
-      return (
-        <PostMetaForm
-          {...props}
-          projects={projects}
-        />
-      )
-    }}
+    {projects =>
+      projects.loading
+        ? null
+        : (
+          <PostMetaForm
+            {...props}
+            projects={projects}
+          />
+        )
+    }
   </Query>
 )
 

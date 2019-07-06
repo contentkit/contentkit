@@ -2723,6 +2723,11 @@ connected-react-router@^6.4.0:
     prop-types "^15.7.2"
     seamless-immutable "^7.1.3"
 
+connectivity-provider@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/connectivity-provider/-/connectivity-provider-0.0.1.tgz#6994f4c22cf36930518fd203e92b8383b3c7b0db"
+  integrity sha512-fXfd1DnuP+y49qTqD+1WYoyMVi+j8edOfba853BhFSODnSMWFdRyWjOCbTcy9aEqpLekbp/CsdooiIq0I9d7+A==
+
 console-browserify@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/console-browserify/-/console-browserify-1.1.0.tgz#f0241c45730a9fc6323b206dbf38edc741d0bb10"

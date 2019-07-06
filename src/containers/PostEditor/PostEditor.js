@@ -2,6 +2,9 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { compose, withApollo } from 'react-apollo'
+
 import Layout from '../Layout'
 import { exportHtml } from '@contentkit/editor/lib/util'
 import insertImage from '@contentkit/editor/lib/modifiers/insertImage'
@@ -13,8 +16,8 @@ import {
   toRaw,
   convertToHtml
 } from './util'
-import { connect } from 'react-redux'
 import { setEditorState } from '../../lib/redux'
+import withData from './withData'
 
 class BaseEditor extends React.Component {
   static propTypes = {
@@ -131,7 +134,11 @@ class BaseEditor extends React.Component {
   }
 }
 
-export default connect(
-  state => state.app,
-  { setEditorState }
+export default compose(
+  withApollo,
+  connect(
+    state => state.app,
+    { setEditorState }
+  ),
+  withData
 )(BaseEditor)

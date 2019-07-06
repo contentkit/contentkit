@@ -30,6 +30,7 @@
     "apollo-link-state": "^0.4.2",
     "aws-sdk": "^2.413.0",
     "connected-react-router": "^6.4.0",
+    "connectivity-provider": "^0.0.1",
     "date-fns": "^1.29.0",
     "draft-js": "^0.11.0-beta",
     "draft-js-compact": "^0.0.7",

@@ -152,8 +152,8 @@ class PostEditorComponent extends React.Component {
           <div className={classes.toolbar}>
             <Toolbar.Component
               config={awsConfig}
-              refId={post.data.post.id}
-              images={post.data.post.images}
+              refId={post?.data?.post?.id}
+              images={post?.data?.post?.images}
               deleteImage={deleteImage}
               createImage={createImage}
               insertImage={insertImage}

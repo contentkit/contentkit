@@ -1,13 +1,17 @@
 // @flow
 import React from 'react'
 import propTypes from 'prop-types'
+import debounce from 'lodash.debounce'
+import { withRouter } from 'react-router-dom'
+import { compose, withApollo } from 'react-apollo'
+import { connect } from 'react-redux'
 import Layout from '../Layout'
 import CreatePost from '../../components/CreatePost'
 import DashboardTable from '../../components/DashboardTable'
-import { withRouter } from 'react-router-dom'
 import DashboardToolbar from '../../components/DashboardToolbar'
-import DashboardWithData from './DashboardWithData'
-import debounce from 'lodash.debounce'
+import withData from './withData'
+import { selectProject, selectPosts, setEditorState } from '../../lib/redux'
+
 import { feedQueryShape } from '../../shapes'
 
 class Dashboard extends React.Component {
@@ -81,7 +85,8 @@ class Dashboard extends React.Component {
     )
   }
 
-  render = () => {
+  render () {
+    console.log(this.props)
     return (
       <Layout
         history={this.props.history}
@@ -113,13 +118,16 @@ class Dashboard extends React.Component {
   }
 }
 
-export default withRouter(props => (
-  <DashboardWithData
-    {...props}
-    render={data => (
-      <Dashboard
-        {...props}
-        {...data}
-      />
-    )} />
-))
+export default compose(
+  withRouter,
+  withApollo,
+  connect(
+    state => state.app,
+    {
+      setEditorState,
+      selectProject,
+      selectPosts
+    }
+  ),
+  withData
+)(Dashboard)
