@@ -1,19 +1,36 @@
 import React from 'react'
-import DateInput from 'draft-js-dates'
+import styles from './styles.scss'
+import Input from 'antd/lib/input'
 
 class PostMetaDatePicker extends React.Component {
   state = {
-    focused: false
+    focused: false,
+    value: ''
   }
+
   onFocusChange = ({ focused }) => {
     this.setState({ focused })
   }
+
+  onChange = (evt) => {
+    const elements = evt.target.value.replace(/[^0-9]/g, '')
+    const format = [[0, 2], [2, 4], [4, 8]]
+    const value = format.map(c => elements.slice(...c))
+    const v = value.filter(c => c !== '' && !isNaN(c)).join('/')
+    this.props.handleChange(v)
+  }
+
   render () {
     return (
       <div>
-        <DateInput
-          editorState={this.props.dateInputState}
-          onChange={this.props.handleDateInputChange}
+        <Input
+          type='text'
+          ref={
+            ref => { this.ref = ref }
+          }
+          onChange={this.onChange}
+          className={styles.input}
+          value={this.props.value}
         />
       </div>
     )

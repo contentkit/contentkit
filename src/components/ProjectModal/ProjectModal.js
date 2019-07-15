@@ -1,7 +1,4 @@
 import React from 'react'
-import {
-  PROJECT_QUERY
-} from '../../graphql/queries'
 import ProjectModalContent from '../ProjectModalContent'
 import PropTypes from 'prop-types'
 import Modal from 'antd/lib/modal'
@@ -9,6 +6,10 @@ import styles from './styles.scss'
 import Button from 'antd/lib/button'
 import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
+
+import {
+  PROJECT_QUERY
+} from '../../graphql/queries'
 
 class ProjectModal extends React.Component {
   static propTypes = {
@@ -19,7 +20,6 @@ class ProjectModal extends React.Component {
   }
 
   onChange = data => {
-    console.log({ data })
     return this.props.client.writeQuery({
       query: PROJECT_QUERY,
       data: {

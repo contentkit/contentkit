@@ -26,7 +26,7 @@ class PostEditorHistoryModal extends React.Component {
     let contentState = convertFromRaw(
       expand(raw)
     )
-    console.log(contentState)
+
     this.setState({
       editorState: EditorState.push(
         this.state.editorState,
@@ -61,7 +61,9 @@ class PostEditorHistoryModal extends React.Component {
             variant='text'
             onClick={this.props.onClose}
             color={'secondary'}
-          >Close</Button>,
+          >
+            Close
+          </Button>,
           <Button
             variant='text'
             onClick={this.handleRestore}

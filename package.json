@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.3.4",
-    "@contentkit/editor": "^0.0.22",
+    "@contentkit/editor": "^0.0.24",
     "@graphship/apollo-client": "^0.0.4",
     "@menubar/login": "^0.0.1",
     "antd": "^3.19.3",

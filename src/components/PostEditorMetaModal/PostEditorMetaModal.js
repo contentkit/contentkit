@@ -81,9 +81,8 @@ class EditPostMetaModal extends React.Component {
     })
   }
 
-  handleChange = (evt: any, key: string) => {
+  handleChange = (value, key) => {
     let { post } = this.props.post.data
-    let value = evt.target.value
     this.props.client.writeQuery({
       query: POST_QUERY,
       variables: this.props.post.variables,

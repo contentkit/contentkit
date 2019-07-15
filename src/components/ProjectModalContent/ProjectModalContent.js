@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import WhitelistDomains from '../ProjectModalWhitelistDomains'
 import ProjectIdInput from '../ProjectModalIdInput'
 import ProjectModalForm from '../ProjectModalForm'
-import ProjectModalToolbar from '../ProjectModalToolbar'
 import classes from './styles.scss'
 
 class ProjectModalContent extends React.Component {

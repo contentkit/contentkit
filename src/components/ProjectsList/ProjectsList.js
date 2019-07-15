@@ -13,7 +13,7 @@ const ProjectsList = ({
   <div className={classes.paper}>
     <List
       dataSource={allProjects}
-      itemLayout="horizontal"
+      itemLayout='horizontal'
       renderItem={project => (
         <ProjectsListItem
           project={project}

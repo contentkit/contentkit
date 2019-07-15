@@ -18,8 +18,8 @@ const PostEditorMetaModalForm = (props) => {
   const slug = (post?.data?.post?.slug) || ''
   const excerpt = (post?.data?.post?.excerpt) || ''
   const selectedProject = (post?.data?.post?.project?.id) || ''
+  const updatedAt = (post?.data?.post.updatedAt) || ''
   const allProjects = (projects?.data?.allProjects) || []
-  const { getFieldDecorator } = props.form
   return (
     <Form className={classes.root}>
       <Row gutter={16}>
@@ -27,8 +27,8 @@ const PostEditorMetaModalForm = (props) => {
           <Form.Item label={'Title'}>
             <Input
               label={'title'}
-              onChange={e => handleChange(e, 'title')}
-              value={title}
+              onChange={e => handleChange(e.target.value, 'title')}
+              value={post?.title}
             />
           </Form.Item>
         </Col>
@@ -47,7 +47,7 @@ const PostEditorMetaModalForm = (props) => {
           <Form.Item label={'Slug'}>
             <Input
               placeholder={'slug'}
-              onChange={e => handleChange(e, 'slug')}
+              onChange={e => handleChange(e.target.value, 'slug')}
               value={slug}
             />
           </Form.Item>
@@ -69,21 +69,24 @@ const PostEditorMetaModalForm = (props) => {
           <Form.Item label={'Excerpt'}>
             <Input
               placeholder={'excerpt'}
-              onChange={e => handleChange(e, 'excerpt')}
+              onChange={e => handleChange(e.target.value, 'excerpt')}
               value={excerpt}
             />
           </Form.Item>
         </Col>
         <Col span={12}>
           <Form.Item label={'Date'}>
-            <PostMetaDatePicker {...props} />
+            <PostMetaDatePicker
+              onChange={value => handleChange(value, 'updatedAt')}
+              value={updatedAt}
+            />
           </Form.Item>
         </Col>
       </Row>
 
       <Row>
         <Col span={24}>
-          <Form.Item> 
+          <Form.Item>
             <PostTagChips post={post} />
           </Form.Item>
         </Col>

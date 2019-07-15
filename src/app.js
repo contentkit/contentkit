@@ -11,30 +11,11 @@ import pages from './pages'
 import { USER_QUERY } from './graphql/queries'
 import 'antd/dist/antd.less'
 import './css/style.scss'
-import Spinner from './components/Spinner'
-import styles from './css/fallback.scss'
+import Fallback from './components/Fallback'
 
 const client = createClient()
 
 const UP_STAGE = process.env.UP_STAGE || undefined
-
-function Fallback (props) {
-  React.useEffect(() => {
-    let start = Date.now()
-
-    return () => {
-      let end = Date.now()
-      console.log(`Spend ${(end - start) / 1000}s in fallback`)
-    }
-  })
-  return (
-    <div className={styles.root}>
-      <div>
-        <Spinner />
-      </div>
-    </div>
-  )
-}
 
 const App = props => (
   <Provider store={store}>

@@ -1,7 +1,9 @@
+@import '../../css/theme.scss';
+
 .root {
   width: 100vw;
   height: 100vh;
-  background-color: #f0f5ff;
+  background-color: $background-color;
   display: flex;
   flex-direction: column;
   justify-content: center;

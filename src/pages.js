@@ -1,6 +1,7 @@
 import React from 'react'
 import Spinner from './components/Spinner'
 import { Redirect } from 'react-router-dom'
+import Fallback from './components/Fallback'
 
 const styles = {
   width: '100%',
@@ -33,10 +34,14 @@ const withRedirect = Component => props =>
     : <Component {...props} />
 
 export const Dashboard = withRedirect(
-  React.lazy(() => import('./containers/Dashboard'))
+  React.lazy(
+    () => import('./containers/Dashboard')
+  )
 )
 
-export const SignIn = React.lazy(() => import('./containers/Login'))
+export const SignIn = React.lazy(
+  () => import('./containers/Login')
+)
 
 export const PostEditor = withRedirect(
   React.lazy(() => import('./containers/PostEditor'))
@@ -69,5 +74,9 @@ export default [{
 }, {
   component: Projects,
   path: '/projects',
+  exact: true
+}, {
+  component: Fallback,
+  path: '/fallback',
   exact: true
 }]

@@ -1,3 +1,5 @@
+@import '../../css/theme.scss';
+
 .toolbar {
   height: 100%;
   padding: 20px 15px;
@@ -28,7 +30,7 @@
   height: 5px;
 
   .progressInner {
-    background-image: linear-gradient(160deg, #2F54EB 12.5%, #061178 85%);
+    background-image: $progress-background-image;
     height: 100%;
     transition: all .2s linear;
   }

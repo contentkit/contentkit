@@ -1,3 +1,5 @@
+@import '../../css/theme.scss';
+
 .input {
   padding: 8px;
   width: 100%;
@@ -6,13 +8,10 @@
   box-sizing: border-box;
   position: relative;
   z-index: 1;
-  &:focus {
-    // border: 1px solid #2f54eb !important;
-  }
 }
 
 .editing {
-  border: 1px solid #2f54eb !important;
+  border: 1px solid $icon-color-active !important;
 }
 
 .selected {

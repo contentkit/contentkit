@@ -43,27 +43,25 @@ class Profile extends React.Component {
       <Layout
         {...this.props}
         loading={this.props.updateUser.loading}>
-        <article>
-          <UserForm
-            handleChange={this.handleChange}
-            updateUser={this.props.updateUser}
-            generateToken={this.props.generateToken.mutate}
-            onCopy={this.onCopy}
-            setRef={ref => { this.ref = ref }}
-            user={user}
-            className={classes.container}
-          />
-          <div className={classes.container}>
-            <Popconfirm title={'Are you sure?'} onConfirm={this.onConfirm} okText='Delete' cancelText='Cancel'>
-              <Button type={'danger'}>
-                Delete Account
-              </Button>
-            </Popconfirm>
-          </div>
-          <div className={classes.code}>
-            <CodeSnippet {...this.props} />
-          </div>
-        </article>
+        <UserForm
+          handleChange={this.handleChange}
+          updateUser={this.props.updateUser}
+          generateToken={this.props.generateToken.mutate}
+          onCopy={this.onCopy}
+          setRef={ref => { this.ref = ref }}
+          user={user}
+          className={classes.container}
+        />
+        <div className={classes.container}>
+          <Popconfirm title={'Are you sure?'} onConfirm={this.onConfirm} okText='Delete' cancelText='Cancel'>
+            <Button type={'danger'}>
+              Delete Account
+            </Button>
+          </Popconfirm>
+        </div>
+        <div className={classes.code}>
+          <CodeSnippet {...this.props} />
+        </div>
       </Layout>
     )
   }

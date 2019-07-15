@@ -43,20 +43,6 @@ const DeleteIcon = props => (
   </svg>
 )
 
-// const styles = {
-//   toolbar: {
-//     justifyContent: 'space-between'
-//   },
-//   input: {
-//   },
-//   editIcon: {
-//     color: '#2f54eb'
-//   },
-//   deleteIcon: {
-//     color: '#eb2f96'
-//   }
-// }
-
 const fetchRaw = async ({ client, selected }) => {
   const { data: { post } } = await client.query({
     query: gql`

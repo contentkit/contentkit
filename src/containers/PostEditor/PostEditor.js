@@ -18,6 +18,7 @@ import {
 } from './util'
 import { setEditorState } from '../../lib/redux'
 import withData from './withData'
+import styles from './styles.scss'
 
 class BaseEditor extends React.Component {
   static propTypes = {
@@ -109,6 +110,7 @@ class BaseEditor extends React.Component {
         render={this.renderToolbar}
         client={this.props.client}
         logged={this.props.logged}
+        className={styles.layout}
       >
         <PostEditorModals
           editorState={this.props.editorState}

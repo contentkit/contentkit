@@ -1,17 +1,17 @@
-// @flow
 import React, { useState, useEffect } from 'react'
-import * as config from '../../lib/config'
+import { CSSTransition } from 'react-transition-group'
+
 import { Editor } from '@contentkit/editor'
 import { setEditorStateBlockMap, Block, Command, HANDLED, NOT_HANDLED } from '@contentkit/util'
 import plugins from '@contentkit/editor/lib/plugins'
-import { CSSTransition } from 'react-transition-group'
 import { genKey, ContentBlock } from 'draft-js'
+
 import keyBindingFn from './keyBindingFn'
 import DraftTableDialog from '../DraftTableDialog'
 import ReadOnlyDraftTable from '../ReadOnlyDraftTable'
+import * as config from '../../lib/config'
 
 import classes from './styles.scss'
-import Progress from 'antd/lib/progress'
 
 import '@contentkit/editor/lib/css/normalize.css'
 import '@contentkit/editor/lib/css/Draft.css'

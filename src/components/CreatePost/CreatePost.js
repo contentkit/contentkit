@@ -86,9 +86,9 @@ class CreatePost extends React.Component {
       createProject
     } = this.props
     return (
-      <div className={classes.paper} elevation={0}>
+      <div className={classes.paper}>
         <Row>
-          <Col span={12}>
+          <Col sm={24} md={12}>
             <CreatePostInput
               createPost={this.createNewPost}
               value={this.state.title}
@@ -96,7 +96,7 @@ class CreatePost extends React.Component {
               loading={createPost.loading}
             />
           </Col>
-          <Col span={12} className={classes.right}>
+          <Col sm={24} md={12} className={classes.right}>
             <ProjectSelect
               selectedProject={selectedProject}
               allProjects={projects?.data?.allProjects}

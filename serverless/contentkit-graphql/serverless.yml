@@ -28,6 +28,7 @@ provider:
     PGPASSWORD: ${ssm:/contentkit/PGPASSWORD~true}
     PGPORT: 5432
     BUCKET_NAME: contentkit-dev-deploymentbucket-3hlcbqx9f9nl
+    REDIS_CONNECTION_STRING: ${ssm:/contentkit.redis_connection_string~true}
   iamRoleStatements:
     - Effect: "Allow"
       Resource: "*"

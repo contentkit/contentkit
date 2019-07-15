@@ -73,11 +73,15 @@
   background-color: #fafafa;
 }
 
+:global(.custom-toolbar) {
+  & > :global(.button-wrapper) {
+    margin-bottom: 8px;
+  }
+}
 :global(.button-wrapper),
 :global(.buttonWrapper) {
   width: 36px;
   height: 36px;
-  margin-bottom: 8px;
 }
 
 :global(.button),

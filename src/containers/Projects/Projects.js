@@ -79,32 +79,30 @@ class Projects extends React.Component {
         logged={this.props.logged}
         render={() => null}
       >
-        <article>
-          <ProjectModal
-            {...rest}
-            activeProject={this.state.activeProject}
-            open={this.state.open}
-            handleClose={this.handleClose}
-            handleDelete={this.handleDelete}
-          />
-          <div className={classes.container}>
-            <div className={classes.inner}>
-              <ProjectsList
-                allProjects={projects.data && projects.data.allProjects}
-                handleClick={this.handleClick}
-                onMouseEnter={this.onMouseEnter}
-                onMouseLeave={this.onMouseLeave}
-                handleDelete={this.handleDelete}
-                handleClose={this.handleClose}
-              />
-            </div>
-            <Button
-              onClick={this.createProject}
-            >
-              New Project
-            </Button>
+        <ProjectModal
+          {...rest}
+          activeProject={this.state.activeProject}
+          open={this.state.open}
+          handleClose={this.handleClose}
+          handleDelete={this.handleDelete}
+        />
+        <div className={classes.container}>
+          <div className={classes.inner}>
+            <ProjectsList
+              allProjects={projects.data && projects.data.allProjects}
+              handleClick={this.handleClick}
+              onMouseEnter={this.onMouseEnter}
+              onMouseLeave={this.onMouseLeave}
+              handleDelete={this.handleDelete}
+              handleClose={this.handleClose}
+            />
           </div>
-        </article>
+          <Button
+            onClick={this.createProject}
+          >
+            New Project
+          </Button>
+        </div>
       </Layout>
     )
   }

@@ -1,6 +1,9 @@
 const GraphQLJSON = require('graphql-type-json')
 const snakeCase = require('lodash.snakecase')
 const pg = require('postgres-tools')
+
+const randomBytes = require('crypto').randomBytes
+
 const { AuthenticationError, ValidationError } = require('apollo-server-lambda')
 
 async function createUser (_, args, ctx) {
@@ -81,6 +84,20 @@ const updateDocument = async (_, { id, raw, encodedHtml }, ctx) => {
       if (block.text) block.text = block.text.replace(/'/g, `''`)
       return block
     })
+
+  const versionId = randomBytes(8).toString('hex')
+  await ctx.context.redis.set(
+    `${id}/${versionId}`,
+    JSON.stringify({
+      user: ctx.user,
+      document_id: id,
+      id: versionId,
+      raw: raw,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    })
+  )
+
   return pg.head(`
     UPDATE documents set raw = '${JSON.stringify(raw)}'::jsonb, encoded_html = '${encodedHtml}'
     WHERE id = '${id}' returning *
@@ -88,9 +105,13 @@ const updateDocument = async (_, { id, raw, encodedHtml }, ctx) => {
 }
 
 const deleteVersion = (_, { id }, ctx) => {
-  return pg.query(`
-    DELETE FROM versions WHERE id = $1 RETURNING *
-  `, [id])
+  ctx.context.redis.del(id)
+  return {
+    id
+  }
+  // return pg.query(`
+  //   DELETE FROM versions WHERE id = $1 RETURNING *
+  // `, [id])
 }
 
 const updatePost = (parent, args, ctx) => {
@@ -137,11 +158,21 @@ const deleteImage = (_, args, ctx) => {
 }
 
 const createVersion = (_, args, ctx) => {
-  return pg.query(`
-    INSERT INTO versions(document_id, raw)
-    VALUES($1, $2::jsonb)
-    RETURNING *
-  `, [ctx.documentId, JSON.stringify(args.raw)])
+  const versionId = randomBytes(8).toString('hex')
+  return ctx.context.redis.set(
+    `${args.documentId}/${versionId}`,
+    JSON.stringify({
+      user: ctx.user,
+      document_id: args.documentId,
+      id: versionId,
+      raw: args.raw
+    })
+  )
+  // return pg.query(`
+  //   INSERT INTO versions(document_id, raw)
+  //   VALUES($1, $2::jsonb)
+  //   RETURNING *
+  // `, [ctx.documentId, JSON.stringify(args.raw)])
 }
 
 const deletePost = (_, args, ctx) => {
@@ -189,10 +220,7 @@ const generateToken = (_, args, context) => {
     SET secret = (SELECT gen_secret())
     WHERE id = '${context.user}'
     RETURNING *
-  `).catch(err => {
-    console.log(err)
-    return null
-  })
+  `)
 }
 
 const createOrigin = (_, args, context) => {
@@ -245,7 +273,6 @@ const createTag = (_, args, context) => {
     )
     SELECT * FROM merged
   `
-  console.log(query)
   return pg.head(query)
 }
 
@@ -274,10 +301,12 @@ const resolvers = {
         SELECT * FROM tags WHERE id = $1
       `, [args.id])
     },
-    version: async (parent, args, context) => {
-      return pg.query(`
-        SELECT * FROM versions WHERE id = $1
-      `, [args.id])
+    version: async (parent, args, { context }) => {
+      return context.redis.get(args.id)
+        .then(json => JSON.parse(json))
+      // return pg.query(`
+      //   SELECT * FROM versions WHERE id = $1
+      // `, [args.id])
     },
     post: async (parent, args, context) => {
       if (args.id) {
@@ -382,7 +411,6 @@ const resolvers = {
           WHERE projects.user_id = $1::text
         ) count
       `
-      console.log(str)
       const data = await pg.head(str, [context.user, limit, offset])
       return data
     }
@@ -472,10 +500,29 @@ const resolvers = {
     }
   },
   Document: {
-    versions: (parent, args, context) => {
-      return pg.query(`
-        SELECT * FROM versions WHERE document_id = $1
-      `, [parent.id])
+    versions: async (parent, args, { context }) => {
+      const values = await context.redis.keys(`${parent.id}/*`)
+      console.log({ values })
+      const result = await Promise.all(
+        values
+          .map(v => context.redis.get(v)
+            .then(json => JSON.parse(json))
+            .then(data => ({
+              id: data.id,
+              createdAt: data.created_at,
+              updatedAt: data.updated_at,
+              raw: data.raw,
+              document: {
+                id: data.document_id
+              }
+            }))
+          )
+      )
+      console.log(result)
+      return result
+      // return pg.query(`
+      //   SELECT * FROM versions WHERE document_id = $1
+      // `, [parent.id])
     }
   },
   Version: {

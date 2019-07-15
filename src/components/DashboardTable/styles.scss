@@ -1,9 +1,5 @@
 @import '../../css/theme.scss';
 
-$selected-row-color: #f6ffed;
-$seleced-row-hover-color: #d9f7be;
-$default-row-hover-color: #fafafa;
-
 .wrapper {
   margin: 1em 0;
   padding: 30px;
@@ -36,7 +32,6 @@ $default-row-hover-color: #fafafa;
   .row:hover {
     &.selected {
       .cell {
-        // background-color: $seleced-row-hover-color; 
         color: rgba(0, 0, 0, 0.95);
       } 
     }
