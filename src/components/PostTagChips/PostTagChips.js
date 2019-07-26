@@ -49,7 +49,7 @@ class CreateTagInput extends React.Component {
 }
 
 class PostTagChips extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     post: PropTypes.object.isRequired
   }
 

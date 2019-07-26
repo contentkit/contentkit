@@ -18,7 +18,7 @@ const PostEditorMetaModalForm = (props) => {
   const slug = (post?.data?.post?.slug) || ''
   const excerpt = (post?.data?.post?.excerpt) || ''
   const selectedProject = (post?.data?.post?.project?.id) || ''
-  const updatedAt = (post?.data?.post.updatedAt) || ''
+  const publishedAt = (post?.data?.post.publishedAt) || ''
   const allProjects = (projects?.data?.allProjects) || []
   return (
     <Form className={classes.root}>
@@ -28,7 +28,7 @@ const PostEditorMetaModalForm = (props) => {
             <Input
               label={'title'}
               onChange={e => handleChange(e.target.value, 'title')}
-              value={post?.title}
+              value={title}
             />
           </Form.Item>
         </Col>
@@ -77,8 +77,8 @@ const PostEditorMetaModalForm = (props) => {
         <Col span={12}>
           <Form.Item label={'Date'}>
             <PostMetaDatePicker
-              onChange={value => handleChange(value, 'updatedAt')}
-              value={updatedAt}
+              handleChange={value => handleChange(value, 'publishedAt')}
+              value={publishedAt}
             />
           </Form.Item>
         </Col>

@@ -13,11 +13,11 @@ class PostMetaDatePicker extends React.Component {
   }
 
   onChange = (evt) => {
-    const elements = evt.target.value.replace(/[^0-9]/g, '')
-    const format = [[0, 2], [2, 4], [4, 8]]
-    const value = format.map(c => elements.slice(...c))
-    const v = value.filter(c => c !== '' && !isNaN(c)).join('/')
-    this.props.handleChange(v)
+    // const elements = evt.target.value.replace(/[^0-9]/g, '')
+    // const format = [[0, 2], [2, 4], [4, 8]]
+    // const value = format.map(c => elements.slice(...c))
+    // const v = value.filter(c => c !== '' && !isNaN(c)).join('/')
+    this.props.handleChange(evt.target.value)
   }
 
   render () {

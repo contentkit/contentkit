@@ -313,21 +313,6 @@ const resolvers = {
         return pg.head(`SELECT * FROM posts WHERE id = $1::text`, [args.id])
       }
 
-      if (args.projectId) {
-        return pg.query(`
-          SELECT
-            posts.*
-          FROM
-            posts
-          JOIN
-            projects ON (posts.project_id = projects.id)
-          WHERE
-            posts.project_id = $1::text
-          AND
-            projects.user_id = $2::text
-        `, [args.projectId, context.user])
-      }
-
       const condition = args.slug
         ? `AND slug ILIKE '%${args.slug}%'`
         : ''
@@ -335,12 +320,16 @@ const resolvers = {
       return pg.head(`
         SELECT
           posts.*
-        FROM 
+        FROM
           posts
-        JOIN projects ON (projects.id = posts.project_id)
-        WHERE projects.user_id = '${context.user}'
+        JOIN
+          projects ON (projects.id = posts.project_id)
+        WHERE
+          posts.project_id = $1::text
+        AND
+          projects.user_id = $2::text
         ${condition}
-      `)
+      `, [args.projectId, context.user])
     },
     allProjects: async (parent, args, context) => {
       return pg.query(`
@@ -462,7 +451,6 @@ const resolvers = {
         JOIN tags ON (posts_tags.tag_id = tags.id)
         WHERE posts_tags.post_id = $1
       `
-      console.log(query)
       return pg.query(query, [parent.id])
     }
   },
@@ -502,7 +490,6 @@ const resolvers = {
   Document: {
     versions: async (parent, args, { context }) => {
       const values = await context.redis.keys(`${parent.id}/*`)
-      console.log({ values })
       const result = await Promise.all(
         values
           .map(v => context.redis.get(v)
