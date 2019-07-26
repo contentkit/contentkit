@@ -324,6 +324,10 @@ const resolvers = {
           posts
         JOIN
           projects ON (projects.id = posts.project_id)
+        JOIN
+          posts_tags ON (posts_tags.post_id = posts.id)
+        JOIN
+          tags ON (tags.id = posts_tags.tag_id)
         WHERE
           posts.project_id = $1::text
         AND
