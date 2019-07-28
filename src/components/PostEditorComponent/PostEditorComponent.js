@@ -6,11 +6,6 @@ import { setEditorStateBlockMap, Block, Command, HANDLED, NOT_HANDLED } from '@c
 import plugins from '@contentkit/editor/lib/plugins'
 import { genKey, ContentBlock } from 'draft-js'
 
-import keyBindingFn from './keyBindingFn'
-import DraftTableDialog from '../DraftTableDialog'
-import ReadOnlyDraftTable from '../ReadOnlyDraftTable'
-import * as config from '../../lib/config'
-
 import classes from './styles.scss'
 
 import '@contentkit/editor/lib/css/normalize.css'
@@ -21,6 +16,13 @@ import 's3-dropzone/lib/styles.css'
 import '@contentkit/code/src/style.scss'
 import '../../css/editor/toolbar.scss'
 
+import keyBindingFn from './keyBindingFn'
+import DraftTableDialog from '../DraftTableDialog'
+import ReadOnlyDraftTable from '../ReadOnlyDraftTable'
+import LinearProgress from '../LinearProgress'
+
+import * as config from '../../lib/config'
+
 const Toolbar = plugins.toolbar
 
 const awsConfig = {
@@ -28,30 +30,6 @@ const awsConfig = {
   region: config.AWS_REGION,
   bucketName: config.AWS_BUCKET_NAME,
   endpoint: config.AWS_BUCKET_URL + '/'
-}
-
-function LinearProgress () {
-  const [progress, setProgress] = useState(0)
-
-  useEffect(() => {
-    let timerID = setTimeout(() => {
-      setProgress(Math.min(100, progress + 10))
-    }, 20)
-
-    return () => {
-      clearTimeout(timerID)
-    }
-  })
-  return (
-    <div className={classes.progress}>
-      <div
-        className={classes.progressInner}
-        style={{
-          width: `${progress}%`
-        }}
-      />
-    </div>
-  )
 }
 
 class PostEditorComponent extends React.Component {

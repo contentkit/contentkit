@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import DraftTableCell from '../DraftTableCell'
-import debounce from 'lodash.debounce'
 
 class DraftTableRow extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     row: PropTypes.arrayOf(PropTypes.object).isRequired,
     onFocus: PropTypes.func.isRequired
   }

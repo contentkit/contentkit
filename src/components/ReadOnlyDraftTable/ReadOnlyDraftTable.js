@@ -9,8 +9,7 @@ class ReadOnlyDraftTable extends React.Component {
   render () {
     const data = this.props.block.getData().get('table')
     const table = groupBy(data, v => v.row)
-    const isEmpty = data.every(v => !v.text)
-
+    const isEmpty = data.every(v => !v.value)
     return (
       <div
         className={'draft-table'}

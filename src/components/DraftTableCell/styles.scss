@@ -8,6 +8,7 @@
   box-sizing: border-box;
   position: relative;
   z-index: 1;
+  border: none;
 }
 
 .editing {
@@ -16,4 +17,13 @@
 
 .selected {
   background-color: #f0f7ff !important;
+}
+
+.tableCell {
+  height: 50px;
+  display: inline-flex;
+  position: relative;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  background-color: #fff;
 }

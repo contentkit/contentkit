@@ -2,14 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import { expand } from 'draft-js-compact'
-import format from 'date-fns/format'
+import distanceInWords from 'date-fns/distance_in_words'
+
 import Button from 'antd/lib/button'
-import List from 'antd/lib/list'
 import Modal from 'antd/lib/modal'
 import classes from './styles.scss'
+import clsx from 'clsx'
+import Timeline from 'antd/lib/Timeline'
 
 const formatDate = (timestamp) =>
-  format(new Date(timestamp), 'MM/DD HH:mm:ss')
+  distanceInWords(new Date(timestamp), new Date())
 
 class PostEditorHistoryModal extends React.Component {
   state = {
@@ -49,9 +51,10 @@ class PostEditorHistoryModal extends React.Component {
 
   render () {
     const { post } = this.props
-    const versions = post?.data?.post?.document?.versions || []
+    const versions = post?.data?.post?.versions || []
     return (
       <Modal
+        width={700}
         visible={this.props.open}
         onCancel={this.props.onClose}
         onOK={() => {}}
@@ -74,20 +77,25 @@ class PostEditorHistoryModal extends React.Component {
         ]}
       >
         <div className={classes.row}>
-          <div className={classes.column}>
-            <List
-              dataSource={versions}
-              renderItem={(version) => (
-                <List.Item onClick={evt => this.handleClick(version)} key={version.id}>
-                  <List.Item.Meta
-                    title={formatDate(version.createdAt)}
-                    description={version?.raw?.blocks[0]?.text || ''}
-                  />
-                </List.Item>
-              )}
-            />
+          <div className={clsx(classes.column, classes.sidebar)}>
+            <Timeline>
+              {
+                versions.map(version => {
+                  return (
+                    <Timeline.Item onClick={evt => this.handleClick(version)} key={version.id}>
+                      <div>
+                        {formatDate(version.createdAt)}
+                      </div>
+                      <div>
+                        {version?.raw?.blocks[0]?.text || ''}
+                      </div>
+                    </Timeline.Item>
+                  )
+                })
+              }
+            </Timeline>
           </div>
-          <div>
+          <div className={classes.column}>
             <Editor
               editorState={this.state.editorState}
               readOnly

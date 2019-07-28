@@ -46,3 +46,19 @@
   z-index: 10;
   position: absolute;
 }
+
+.iconButton {
+  all: unset;
+  width: 40px; 
+}
+
+.modalTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttonGroup {
+  margin-right: 20px;
+}
