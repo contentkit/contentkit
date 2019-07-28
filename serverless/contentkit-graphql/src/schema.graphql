@@ -48,7 +48,6 @@ type Post {
   id: ID!
   createdAt: String!
   updatedAt: String!
-  document: Document!
   images: [Image]
   project: Project
   title: String
@@ -57,12 +56,6 @@ type Post {
   publishedAt: String
   status: PostStatus
   tags: [Tag]
-}
-
-type Document {
-  id: ID!
-  createdAt: String!
-  updatedAt: String!
   raw: JSON
   html: String
   encodedHtml: String
@@ -74,7 +67,7 @@ type Version {
   createdAt: String!
   updatedAt: String!
   raw: JSON!
-  document: Document!
+  postId: String!
 }
 
 type Image {
@@ -86,7 +79,6 @@ type Query {
   user: User
   post(id: ID, slug: String, projectId: ID): Post
   feed(limit: Int, offset: Int, query: String, projectId: ID): Feed
-  document(id: ID!): Document
   version(id: ID!): Version
   project(id: ID!): Project
   tag(id: ID!): Tag
@@ -123,7 +115,7 @@ type Mutation {
     id: ID!
     raw: JSON!
     encodedHtml: String!
-  ): Document
+  ): Post
   deleteVersion(id: ID!): Version
   updatePost(
     id: ID!
@@ -134,11 +126,9 @@ type Mutation {
   ): Post
   deletePost(id: ID!): Post
   deleteProject(id: ID!): Project
-  deleteDocument(id: ID!): Document
-  createDocument(raw: JSON!, postId: ID!): Document
   createImage(postId: ID!, url: String!): Image
   deleteImage(id: ID!): Image
-  createVersion(raw: JSON!, documentId: ID!): Version
+  createVersion(raw: JSON!, postId: ID!): Version
   createProject(name: String!): Project
   generateToken: User
   updateUser(email: String!, name: String!): User

@@ -47,16 +47,14 @@ class BaseEditor extends React.Component {
     const {
       post: {
         data: {
-          post: {
-            document
-          }
+          post
         }
       }
     } = this.props
     const raw = toRaw(editorState)
     const html = convertToHtml(editorState)
     return this.props.updateDocument.mutate({
-      id: document.id,
+      id: post.id,
       raw: raw,
       encodedHtml: html
     })

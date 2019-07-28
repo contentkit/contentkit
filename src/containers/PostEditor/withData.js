@@ -68,8 +68,8 @@ const withData = Component =>
         optimisticResponse: {
           __typename: 'Mutation',
           updateDocument: {
-            __typename: 'Document',
-            ...post.data.post.document,
+            __typename: 'Post',
+            ...post.data.post,
             ...variables
           }
         },
@@ -80,10 +80,7 @@ const withData = Component =>
             data: {
               post: {
                 ...post.data.post,
-                document: {
-                  ...post.data.post.document,
-                  ...updateDocument
-                }
+                ...updateDocument
               }
             }
           }

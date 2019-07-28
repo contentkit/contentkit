@@ -100,16 +100,13 @@ export const UPDATE_POST = gql`
         id
         url
       }
-      document {
+      raw
+      html
+      encodedHtml
+      versions {
         id
         raw
-        html
-        encodedHtml
-        versions {
-          id
-          raw
-          createdAt
-        }
+        createdAt
       }
       title
       slug

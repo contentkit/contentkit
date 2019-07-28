@@ -22,5 +22,5 @@ export const fromRaw = raw => {
 }
 
 export const hydrate = ({ editorState, post }) => (
-  fromRaw(post.data.post.document.raw)
+  fromRaw(post.data.post.raw)
 )

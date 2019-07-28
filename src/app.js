@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { render } from 'react-dom'
-import { ApolloProvider, Query, withApollo, compose } from 'react-apollo'
+import { ApolloProvider, withApollo, compose } from 'react-apollo'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
@@ -8,10 +8,10 @@ import withConnectivity from './lib/withConnectivity'
 import createClient from './lib/client'
 import { store } from './lib/redux'
 import pages from './pages'
-import { USER_QUERY } from './graphql/queries'
 import 'antd/dist/antd.less'
 import './css/style.scss'
 import Fallback from './components/Fallback'
+import AuthProvider from './components/AuthProvider'
 
 const client = createClient()
 
@@ -26,13 +26,11 @@ const App = props => (
             <Route
               key={rest.path}
               render={routeProps => (
-                <React.unstable_Profiler onRender={(...stats) => console.log(stats[2])}>
-                  <Component
-                    {...routeProps}
-                    {...props}
-                    logged={Boolean(props.user?.data?.user)}
-                  />
-                </React.unstable_Profiler>
+                <Component
+                  {...routeProps}
+                  {...props}
+                  logged={Boolean(props.user?.data?.user)}
+                />
               )}
               {...rest}
             />
@@ -43,23 +41,16 @@ const App = props => (
   </Provider>
 )
 
-const withRootQuery = Component => props => (
-  <Query query={USER_QUERY}>
-    {(user) => {
-      return (<Component {...props} user={user} />)
-    }}
-  </Query>
-)
-
 const ConnectedApp = compose(
   withApollo,
-  withRootQuery,
   withConnectivity
 )(App)
 
 render(
   <ApolloProvider client={client}>
-    <ConnectedApp />
+    <AuthProvider>
+      <ConnectedApp />
+    </AuthProvider>
   </ApolloProvider>,
   document.getElementById('root')
 )

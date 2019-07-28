@@ -58,16 +58,13 @@ export const POST_QUERY = gql`
       slug
       status
       excerpt
-      document {
+      raw
+      html
+      encodedHtml
+      versions {
         id
         raw
-        html
-        encodedHtml
-        versions {
-          id
-          raw
-          createdAt
-        }
+        createdAt
       }
       images {
         id

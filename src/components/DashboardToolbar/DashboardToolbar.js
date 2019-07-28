@@ -48,15 +48,13 @@ const fetchRaw = async ({ client, selected }) => {
     query: gql`
       query($id: ID!) {
         post(id: $id) {
-          document {
-            raw
-          }
+          raw
         }
       }
     `,
     variables: { id: selected }
   })
-  return post.document.raw
+  return post.raw
 }
 
 class DashboardToolbar extends React.Component {

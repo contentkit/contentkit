@@ -86,7 +86,6 @@ class Dashboard extends React.Component {
   }
 
   render () {
-    console.log(this.props)
     return (
       <Layout
         history={this.props.history}

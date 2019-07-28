@@ -5,6 +5,7 @@
 
 :global(.code-language-wrapper) {
   width: 100%;
+  box-shadow: rgba(8, 35, 51, 0.03) 0px 0px 2px, rgba(8, 35, 51, 0.05) 0px 3px 6px;
 }
 
 :global(.code-language-input) {
@@ -52,7 +53,7 @@
   align-items: center;
 }
 
-:global(.custom-toolbar) {
+:global(.contentkit-toolbar) {
   display: flex;
   flex-direction: column;
   align-content: center;
@@ -62,7 +63,7 @@
   position: fixed;
 }
 
-:global(.custom-toolbar:hover) {
+:global(.contentkit-toolbar:hover) {
   opacity: 1;
 }
 
@@ -73,19 +74,18 @@
   background-color: #fafafa;
 }
 
-:global(.custom-toolbar) {
-  & > :global(.button-wrapper) {
+:global(.contentkit-toolbar) {
+  & > :global(.contentkit-button-wrapper) {
     margin-bottom: 8px;
   }
 }
-:global(.button-wrapper),
-:global(.buttonWrapper) {
+:global(.contentkit-button-wrapper) {
   width: 36px;
   height: 36px;
 }
 
-:global(.button),
-:global(.button-text) {
+:global(.contentkit-button),
+:global(.contentkit-button-text) {
   color: #8c8c8c;
   font-size: 18px;
   border: 0;
@@ -97,39 +97,39 @@
   border-radius: 3px;
 }
 
-:global(.button svg) {
+:global(.contentkit-button svg) {
   fill: #8c8c8c;
   display: block;
   width: 18px;
   height: 18px;
 }
 
-:global(.button:hover),
-:global(.button:focus) {
+:global(.contentkit-button:hover),
+:global(.contentkit-button:focus) {
   color: #595959;
   background-color: #ffffff;
   outline: 0;
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.06);
 }
 
-:global(.button.active) {
+:global(.contentkit-button.contentkit-button-active) {
   background-color: #ffffff;
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.06);
 }
 
-:global(.button svg:hover) {
+:global(.contentkit-button svg:hover) {
   fill: #595959;
 }
 
-:global(.button:disabled) {
+:global(.contentkit-button:disabled) {
   background: #fbfbfb;
 }
 
-:global(.button:disabled svg) {
+:global(.contentkit-button:disabled svg) {
   fill: #bdc9d6;
 }
 
-:global(.input) {
+:global(.contentkit-toolbar-input) {
   height: 34px;
   width: 220px;
   padding: 0 12px;
@@ -140,19 +140,19 @@
   color: #8c8c8c;
 }
 
-:global(.input:focus) {
+:global(.contentkit-toolbar-input:focus) {
   outline: none;
 }
 
-:global(.input::placeholder) {
+:global(.contentkit-toolbar-input::placeholder) {
   color: #bdc9d6;
 }
 
-:global(.input-invalid) {
+:global(.contentkit-toolbar-input-invalid) {
   color: #e65757;
 }
 
-:global(.link) {
+:global(.contentkit-toolbar-link) {
   color: #2996da;
   text-decoration: underline;
 }

@@ -90,7 +90,7 @@ const updateDocument = async (_, { id, raw, encodedHtml }, ctx) => {
     `${id}/${versionId}`,
     JSON.stringify({
       user: ctx.user,
-      document_id: id,
+      postId: id,
       id: versionId,
       raw: raw,
       created_at: new Date().toISOString(),
@@ -99,7 +99,11 @@ const updateDocument = async (_, { id, raw, encodedHtml }, ctx) => {
   )
 
   return pg.head(`
-    UPDATE documents set raw = '${JSON.stringify(raw)}'::jsonb, encoded_html = '${encodedHtml}'
+    UPDATE
+      posts
+    SET
+      raw = '${JSON.stringify(raw)}'::jsonb,
+      encoded_html = '${encodedHtml}'
     WHERE id = '${id}' returning *
   `)
 }
@@ -160,10 +164,10 @@ const deleteImage = (_, args, ctx) => {
 const createVersion = (_, args, ctx) => {
   const versionId = randomBytes(8).toString('hex')
   return ctx.context.redis.set(
-    `${args.documentId}/${versionId}`,
+    `${args.postId}/${versionId}`,
     JSON.stringify({
       user: ctx.user,
-      document_id: args.documentId,
+      postId: args.postId,
       id: versionId,
       raw: args.raw
     })
@@ -181,26 +185,26 @@ const deletePost = (_, args, ctx) => {
   `, [args.id])
 }
 
-const createDocument = (_, args, context) => {
-  return pg.head(`
-    INSERT INTO document(post_id, raw)
-    VALUES(
-      $1::text,
-      $2::jsonb
-    )
-    RETURNING *
-  `, [args.postId, JSON.stringify(args.raw)])
-}
+// const createDocument = (_, args, context) => {
+//   return pg.head(`
+//     INSERT INTO document(post_id, raw)
+//     VALUES(
+//       $1::text,
+//       $2::jsonb
+//     )
+//     RETURNING *
+//   `, [args.postId, JSON.stringify(args.raw)])
+// }
 
-const deleteDocument = (_, args, context) => {
-  return pg.head(`
-    DELETE FROM
-      documents
-    WHERE
-      id = $1
-    RETURNING *
-  `, [args.id])
-}
+// const deleteDocument = (_, args, context) => {
+//   return pg.head(`
+//     DELETE FROM
+//       documents
+//     WHERE
+//       id = $1
+//     RETURNING *
+//   `, [args.id])
+// }
 
 const createProject = (_, args, context) => {
   return pg.head(`
@@ -291,11 +295,6 @@ const resolvers = {
       `, [context.user])
       return data
     },
-    document: async (parent, args, context) => {
-      return pg.head(`
-        SELECT * FROM documents WHERE id = $1
-      `, [args.id])
-    },
     tag: async (parent, args, context) => {
       return pg.head(`
         SELECT * FROM tags WHERE id = $1
@@ -304,9 +303,6 @@ const resolvers = {
     version: async (parent, args, { context }) => {
       return context.redis.get(args.id)
         .then(json => JSON.parse(json))
-      // return pg.query(`
-      //   SELECT * FROM versions WHERE id = $1
-      // `, [args.id])
     },
     post: async (parent, args, context) => {
       if (args.id) {
@@ -314,7 +310,7 @@ const resolvers = {
       }
 
       const condition = args.slug
-        ? `AND slug ILIKE '%${args.slug}%'`
+        ? `AND posts.slug ILIKE '%${args.slug}%'`
         : ''
 
       return pg.head(`
@@ -324,10 +320,6 @@ const resolvers = {
           posts
         JOIN
           projects ON (projects.id = posts.project_id)
-        JOIN
-          posts_tags ON (posts_tags.post_id = posts.id)
-        JOIN
-          tags ON (tags.id = posts_tags.tag_id)
         WHERE
           posts.project_id = $1::text
         AND
@@ -350,9 +342,9 @@ const resolvers = {
     },
     tagsByPost: async (parent, args, context) => {
       const query = `
-      SELECT * from posts_tags
-      JOIN tags ON (posts_tags.tag_id = tags.id)
-      WHERE posts_tags.post_id = $1
+        SELECT * from posts_tags
+        JOIN tags ON (posts_tags.tag_id = tags.id)
+        WHERE posts_tags.post_id = $1
       `
       return pg.query(query, [args.postId])
         .then(data => data || [])
@@ -413,9 +405,9 @@ const resolvers = {
     signinUser: signinUser,
     createPost: createPost,
     deletePost: deletePost,
-    createDocument: createDocument,
+    // createDocument: createDocument,
     updateDocument: updateDocument,
-    deleteDocument: deleteDocument,
+    // deleteDocument: deleteDocument,
     deleteVersion: deleteVersion,
     createImage: createImage,
     deleteImage: deleteImage,
@@ -434,10 +426,23 @@ const resolvers = {
   },
   Feed: {},
   Post: {
-    document: (parent, args, context) => {
-      return pg.head(`
-        SELECT * FROM documents WHERE post_id = $1 
-      `, [parent.id])
+    versions: async (parent, args, { context }) => {
+      const values = await context.redis.keys(`${parent.id}/*`)
+      const result = await Promise.all(
+        values
+          .map(v => context.redis.get(v)
+            .then(json => JSON.parse(json))
+            .then(data => ({
+              id: data.id,
+              createdAt: data.created_at,
+              updatedAt: data.updated_at,
+              raw: data.raw,
+              postId: data.postId
+            }))
+          )
+      )
+      console.log(result)
+      return result
     },
     images: (parent, args, context) => {
       return pg.query(`
@@ -452,7 +457,7 @@ const resolvers = {
     tags: (parent, args, context) => {
       const query = `
         SELECT * from posts_tags
-        JOIN tags ON (posts_tags.tag_id = tags.id)
+        JOIN tags ON (tags.id = posts_tags.tag_id)
         WHERE posts_tags.post_id = $1
       `
       return pg.query(query, [parent.id])
@@ -491,37 +496,12 @@ const resolvers = {
       `, [context.user])
     }
   },
-  Document: {
-    versions: async (parent, args, { context }) => {
-      const values = await context.redis.keys(`${parent.id}/*`)
-      const result = await Promise.all(
-        values
-          .map(v => context.redis.get(v)
-            .then(json => JSON.parse(json))
-            .then(data => ({
-              id: data.id,
-              createdAt: data.created_at,
-              updatedAt: data.updated_at,
-              raw: data.raw,
-              document: {
-                id: data.document_id
-              }
-            }))
-          )
-      )
-      console.log(result)
-      return result
-      // return pg.query(`
-      //   SELECT * FROM versions WHERE document_id = $1
-      // `, [parent.id])
-    }
-  },
   Version: {
-    document: (parent, args, context) => {
-      return pg.head(`
-        SELECT * FROM documents WHERE id = $1
-      `, [parent.documentId])
-    }
+    // document: (parent, args, context) => {
+    //   return pg.head(`
+    //     SELECT * FROM documents WHERE id = $1
+    //   `, [parent.documentId])
+    // }
   },
   JSON: GraphQLJSON
 }
