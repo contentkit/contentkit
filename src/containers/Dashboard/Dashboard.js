@@ -10,7 +10,7 @@ import CreatePost from '../../components/CreatePost'
 import DashboardTable from '../../components/DashboardTable'
 import DashboardToolbar from '../../components/DashboardToolbar'
 import withData from './withData'
-import { selectProject, selectPosts, setEditorState } from '../../lib/redux'
+import { selectProject, selectPosts, setEditorState, setSearchQuery, setSearchLoadingState, updateFeedVariables } from '../../lib/redux'
 
 import { feedQueryShape } from '../../shapes'
 
@@ -28,54 +28,42 @@ class Dashboard extends React.Component {
   static displayName = 'Dashboard'
 
   state = {
-    query: '',
-    selectedPost: undefined
+    query: ''
   }
 
   handleProjectSelect = (selectedProject) => {
-    this.props.updateVariables({
-      project: selectedProject
+    this.updateVariables({
+      projectId: selectedProject
     })
   }
 
-  handlePostSelect = (selectedPost) => {
-    this.setState(prevState => {
-      if (
-        prevState.selectedPost &&
-        prevState.selectedPost.id === selectedPost.id
-      ) {
-        return { selectedPost: undefined }
-      }
-      return { selectedPost }
-    })
+  handleSearch = ({ query }) => {
+    this.updateVariables({ query })
   }
 
-  handleChange = ({ currentTarget }) => {
-    const { value: query } = currentTarget
-    this.setState({ query })
-  }
-
-  handleSearch = debounce(({ query }) => this.updateVariables({ query }), 1000)
+  debouncedSearch = debounce(this.handleSearch, 1000)
 
   updateVariables = (variables) => {
     this.props.feed.fetchMore({
       variables: {
-        ...this.props.variables,
+        ...this.props.feed.variables,
         ...variables
       },
       updateQuery: (_, { fetchMoreResult }) => {
         return fetchMoreResult
       }
+    }).then(() => {
+      this.props.setSearchLoadingState(false)
     })
   }
 
   renderToolbar = () => {
     return (
       <DashboardToolbar
-        handleChange={this.handleChange}
-        handleSearch={this.handleSearch}
+        setSearchQuery={this.props.setSearchQuery}
+        handleSearch={this.debouncedSearch}
         selected={this.props.selectedPosts}
-        query={this.state.query}
+        search={this.props.search}
         client={this.props.client}
         history={this.props.history}
         editorState={this.props.editorState}
@@ -98,7 +86,7 @@ class Dashboard extends React.Component {
 
         <CreatePost
           feed={this.props.feed}
-          selectedProject={this.props.selectedProject}
+          selectedProject={this.props.feedVariables.projectId}
           projects={this.props.projects}
           selectProject={this.props.selectProject}
           client={this.props.client}
@@ -110,6 +98,7 @@ class Dashboard extends React.Component {
           selectedPosts={this.props.selectedPosts}
           client={this.props.client}
           renderToolbar={this.renderToolbar}
+          search={this.props.search}
         />
       </Layout>
     )
@@ -124,7 +113,10 @@ export default compose(
     {
       setEditorState,
       selectProject,
-      selectPosts
+      selectPosts,
+      setSearchQuery,
+      setSearchLoadingState,
+      updateFeedVariables
     }
   ),
   withData

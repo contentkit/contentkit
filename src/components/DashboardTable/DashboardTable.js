@@ -173,11 +173,23 @@ class DashboardTable extends React.Component {
     this.props.selectPosts(selection)
   }
 
-  handleSave = () => {
-
+  handleSave = mutate => (post) => {
+    mutate({
+      variables: {
+        id: post.id,
+        title: post.title
+      },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        updatePost: {
+          __typename: 'Post',
+          ...post
+        }
+      }
+    })
   }
 
-  getColumns = (handleSave) => {
+  getColumns = (mutate) => {
     const columns = [{
       title: 'Title',
       key: 'title',
@@ -221,7 +233,7 @@ class DashboardTable extends React.Component {
           editable: col.editable,
           dataIndex: col.dataIndex,
           title: col.title,
-          handleSave: handleSave,
+          handleSave: this.handleSave(mutate),
           className: classes.cell
         })
       }
@@ -229,14 +241,15 @@ class DashboardTable extends React.Component {
     return columns
   }
 
+  onRowClick = record => evt => {
+    this.onSelectChange(record.key)
+  }
+
   render () {
     const {
-      feed
+      feed,
+      search
     } = this.props
-    let allPosts = feed?.data?.feed?.posts
-    if (!feed?.loading && !allPosts.length) {
-      return false
-    }
 
     const dataSource = (feed?.data?.feed?.posts || []).map(row => ({ ...row, key: row.id }))
     const components = {
@@ -255,30 +268,14 @@ class DashboardTable extends React.Component {
               </div>
               <Table
                 dataSource={dataSource}
-                columns={this.getColumns((post) => {
-                  mutate({
-                    variables: {
-                      id: post.id,
-                      title: post.title
-                    },
-                    optimisticResponse: {
-                      __typename: 'Mutation',
-                      updatePost: {
-                        __typename: 'Post',
-                        ...post
-                      }
-                    }
-                  })
-                })}
+                columns={this.getColumns(mutate)}
                 className={classes.table}
-                loading={feed.loading}
+                loading={feed.loading || search.loading}
                 pagination={false}
                 components={components}
                 onRow={(record, rowIndex) => {
                   return {
-                    onClick: evt => {
-                      this.onSelectChange(record.key)
-                    },
+                    onClick: this.onRowClick(record),
                     className: classnames({
                       [classes.row]: true,
                       [classes.selected]: this.props.selectedPosts.includes(record.id)

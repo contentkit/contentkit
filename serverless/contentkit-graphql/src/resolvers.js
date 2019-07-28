@@ -383,20 +383,23 @@ const resolvers = {
             projects ON (projects.id = posts.project_id)
           WHERE
             projects.user_id = $1::text
-          ${project}
+          AND project_id = $2::text
           ${query}
           ORDER BY
             posts.created_at DESC
-          LIMIT $2
-          OFFSET $3
+          LIMIT $3
+          OFFSET $4
         ) posts,
         (
-          SELECT count(*) FROM posts
-          JOIN projects ON (projects.id = posts.project_id)
-          WHERE projects.user_id = $1::text
+          SELECT
+            count(*)
+          FROM posts
+          WHERE posts.project_id = $2::text
+          ${query}
         ) count
       `
-      const data = await pg.head(str, [context.user, limit, offset])
+      console.log(str)
+      const data = await pg.head(str, [context.user, args.projectId, limit, offset])
       return data
     }
   },

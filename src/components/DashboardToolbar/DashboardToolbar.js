@@ -123,11 +123,18 @@ class DashboardToolbar extends React.Component {
     this.props.history.push('/posts/' + this.props.selected[0])
   }
 
+  handleChange = ({ currentTarget: { value } }) => {
+    this.props.setSearchQuery(value)
+
+    if (value === '' || value.length >= 3) {
+      this.props.handleSearch({ query: value })
+    }
+  }
+
   render () {
     const {
-      handleChange,
       handleSearch,
-      query,
+      search: { query },
       selected
     } = this.props
     const open = selected.length > 0
@@ -157,7 +164,7 @@ class DashboardToolbar extends React.Component {
         </div>
         <SearchInput
           handleSearch={handleSearch}
-          handleChange={handleChange}
+          handleChange={this.handleChange}
           query={query}
           classes={{}}
         />

@@ -17,46 +17,14 @@ const withData = Component =>
       client: PropTypes.object,
       render: PropTypes.func
     }
-
-    state = {
-      variables: {
-        limit: 10,
-        offset: 0,
-        query: '',
-        projectId: undefined
-      }
-    }
-
-    handleSearch = debounce(({ query }: { query: string }) => {
-      this.setState({ query })
-    }, 300)
-
-    updateVariables = variables => {
-      window.requestIdleCallback(() =>
-        this.setState(prevState => ({
-          variables: {
-            ...prevState.variables,
-            ...(variables || {})
-          }
-        }))
-      )
-    }
-
+  
     render () {
-      const { user } = this.props
-      const variables = {
-        ...this.state.variables,
-        projectId: this.props.selectedProject
-      }
       return (
-        <Query query={FEED_QUERY} variables={variables}>
+        <Query query={FEED_QUERY} variables={this.props.feedVariables}>
           {(feed) => (
             <Query query={PROJECTS_QUERY}>
               {(projects) => (
                 <Component
-                  updateVariables={this.updateVariables}
-                  variables={variables}
-                  handleSearch={this.handleSearch}
                   feed={feed}
                   projects={projects}
                   {...this.props}

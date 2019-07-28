@@ -34,13 +34,13 @@ class LazyLoad extends React.Component {
     const { variables } = feed
     let { posts, count } = feed.data.feed
 
-    if (posts.length + 20 > count) {
+    if (posts.length + 10 >= count) {
       return
     }
     return feed.fetchMore({
       variables: {
         ...variables,
-        offset: variables.offset + 10
+        offset: posts.length
       },
       updateQuery: (previousResult, nextResult) => {
         const { fetchMoreResult } = nextResult
@@ -80,8 +80,9 @@ class LazyLoad extends React.Component {
   }, 100)
 
   render () {
+    console.log(this.props)
     return (
-      <div id='lazy-load'>
+      <div>
         {this.props.render(this.state)}
         {this.state.loading && <Spinner />}
       </div>

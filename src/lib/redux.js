@@ -6,6 +6,16 @@ import { createBrowserHistory } from 'history'
 
 const history = createBrowserHistory()
 const initialState = {
+  search: {
+    query: '',
+    loading: false
+  },
+  feedVariables: {
+    limit: 10,
+    offset: 0,
+    query: '',
+    projectId: undefined
+  },
   editorState: EditorState.createEmpty(),
   hydrated: false,
   selectedProject: undefined,
@@ -15,6 +25,9 @@ const initialState = {
 export const SET_EDITOR_STATE = 'SET_EDITOR_STATE'
 export const SELECT_PROJECT = 'SELECT_PROJECT'
 export const SELECT_POST = 'SELECT_POST'
+export const SET_SEARCH_QUERY = 'SET_SEARCH_QUERY'
+export const SET_SEARCH_LOADING_STATE = 'SET_SEARCH_LOADING_STATE'
+export const UPDATE_FEED_VARIABLES = 'UPDATE_FEED_VARIABLES'
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -24,10 +37,40 @@ export const reducer = (state = initialState, action) => {
       return { ...state, ...action.payload }
     case SELECT_PROJECT:
       return { ...state, ...action.payload }
+    case SET_SEARCH_QUERY:
+      return {
+        ...state,
+        search: {
+          ...state.search,
+          loading: true,
+          query: action.payload
+        }
+      }
+    case SET_SEARCH_LOADING_STATE:
+      return {
+        ...state,
+        search: {
+          ...state.search,
+          loading: action.payload
+        }
+      }
+    case UPDATE_FEED_VARIABLES:
+      return {
+        ...state,
+        feedVariables: {
+          ...state.feedVariables,
+          ...action.payload
+        }
+      }
     default:
       return state
   }
 }
+
+export const updateFeedVariables = payload => ({
+  type: UPDATE_FEED_VARIABLES,
+  payload
+})
 
 export const setEditorState = (editorState) => ({
   payload: {
@@ -37,11 +80,11 @@ export const setEditorState = (editorState) => ({
   type: SET_EDITOR_STATE
 })
 
-export const selectProject = (selectedProject) => ({
+export const selectProject = (projectId) => ({
   payload: {
-    selectedProject
+    projectId
   },
-  type: SELECT_PROJECT
+  type: UPDATE_FEED_VARIABLES
 })
 
 export const selectPosts = (selectedPosts) => ({
@@ -49,6 +92,16 @@ export const selectPosts = (selectedPosts) => ({
   payload: {
     selectedPosts
   }
+})
+
+export const setSearchQuery = payload => ({
+  type: SET_SEARCH_QUERY,
+  payload
+})
+
+export const setSearchLoadingState = payload => ({
+  type: SET_SEARCH_LOADING_STATE,
+  payload
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
