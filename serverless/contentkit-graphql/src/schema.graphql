@@ -57,9 +57,9 @@ type Post {
   status: PostStatus
   tags: [Tag]
   raw: JSON
-  html: String
   encodedHtml: String
   versions: [Version]
+  coverImage: Image
 }
 
 type Version {
@@ -123,6 +123,8 @@ type Mutation {
     publishedAt: String
     status: PostStatus
     projectId: ID
+    coverImageId: ID
+    excerpt: String
   ): Post
   deletePost(id: ID!): Post
   deleteProject(id: ID!): Project

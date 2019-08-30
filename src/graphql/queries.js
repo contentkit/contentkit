@@ -59,8 +59,10 @@ export const POST_QUERY = gql`
       status
       excerpt
       raw
-      html
       encodedHtml
+      coverImage {
+        id
+      }
       versions {
         id
         raw

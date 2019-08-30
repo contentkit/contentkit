@@ -13,40 +13,50 @@ import {
 } from '../../graphql/queries'
 import { genKey, genDate } from '../../lib/util'
 import ProjectSelect from '../ProjectSelect'
+import Row from 'antd/lib/row'
+import Col from 'antd/lib/col'
 
 function CreatePostModal (props) {
   const [title, setTitle] = React.useState('')
-  const [selectedProject, setSelectedProject] = React.useState(null)
 
   const handleInputChange = evt => setTitle(evt.target.value)
 
-  React.useEffect(() => {
-    const { projects: { data: { allProjects } } } = props
-    setSelectedProject(
-      allProjects.find(({ id }) => id === props.selectedProject)
-    )
-  }, [props.selectedProject])
-
   const {
     projects,
-    selectProject
+    selectProject,
+    open,
+    selectedProject
   } = props
   return (
     <Modal
       title={'Create post'}
-      visible={props.visible}
-      onOK={() => {}}
-      onCancel={() => {}}
+      visible={open}
+      onOk={() => {
+        props.handleClose()
+        props.createPost.mutate({
+          title: title,
+          projectId: selectedProject
+        })
+      }}
+      onCancel={() => {
+        props.handleClose()
+      }}
     >
-      <Input
-        value={title}
-        onChange={handleInputChange}
-      />
-      <ProjectSelect
-        selectedProject={selectedProject}
-        allProjects={projects?.data?.allProjects}
-        selectProject={selectProject}
-      />
+      <Row gutter={8}>
+        <Col sm={24} md={18}>
+          <Input
+            value={title}
+            onChange={handleInputChange}
+          />
+        </Col>
+        <Col sm={24} md={6}>
+          <ProjectSelect
+            selectedProject={selectedProject}
+            allProjects={projects?.data?.allProjects}
+            selectProject={selectProject}
+          />
+        </Col>
+      </Row>
     </Modal>
   )
 }

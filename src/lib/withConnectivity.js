@@ -3,15 +3,20 @@ import { Provider, Consumer } from 'connectivity-provider'
 import Icon from 'antd/lib/icon'
 import notification from 'antd/lib/notification'
 
-function OfflineNotification (props) {
-  React.useEffect(() => {
-    notification.open({
-      message: `You are ${props.online ? 'online' : 'offline'}`,
-      icon: <Icon type='wifi' />
-    })
-  }, [props.online])
-
-  return props.children
+class OfflineNotification extends React.Component {
+  componentDidUpdate (prevProps) {
+    if (prevProps.online !== this.props.online) {
+      notification.open({
+        message: `You are ${this.props.online ? 'online' : 'offline'}`,
+        icon: <Icon type='wifi' />
+      })
+    }
+  }
+  render () {
+    return (
+      this.props.children
+    )
+  }
 }
 
 const useConnectivity = Component => props => (

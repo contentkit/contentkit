@@ -8,7 +8,7 @@ import Button from 'antd/lib/button'
 import Modal from 'antd/lib/modal'
 import classes from './styles.scss'
 import clsx from 'clsx'
-import Timeline from 'antd/lib/Timeline'
+import Timeline from 'antd/lib/timeline'
 
 const formatDate = (timestamp) =>
   distanceInWords(new Date(timestamp), new Date())
@@ -24,10 +24,8 @@ class PostEditorHistoryModal extends React.Component {
   }
 
   handleClick = version => {
-    let { raw } = version
-    let contentState = convertFromRaw(
-      expand(raw)
-    )
+    const { raw } = version
+    const contentState = convertFromRaw(expand(raw))
 
     this.setState({
       editorState: EditorState.push(

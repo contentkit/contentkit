@@ -14,10 +14,12 @@ import Form from 'antd/lib/form'
 
 const PostEditorMetaModalForm = (props) => {
   const { handleChange, post, projects, selectProject } = props
+
   const title = (post?.data?.post?.title) || ''
   const slug = (post?.data?.post?.slug) || ''
   const excerpt = (post?.data?.post?.excerpt) || ''
   const selectedProject = (post?.data?.post?.project?.id) || ''
+  const coverImage = post?.data?.post?.coverImage
   const publishedAt = (post?.data?.post.publishedAt) || ''
   const allProjects = (projects?.data?.allProjects) || []
   return (

@@ -40,17 +40,20 @@ class EditPostMetaModal extends React.Component {
     user: PropTypes.object
   }
 
-  handlePostMetaUpdate = async (evt: any) => {
+  handlePostMetaUpdate = async (evt) => {
     this.props.onClose()
 
-    let {
+    const {
       document,
       id,
       title,
       status,
-      ...rest
+      excerpt,
+      project: {
+        id: projectId
+      }
     } = this.props.post.data.post
-    let date = convertToDate(this.state.dateInputState).toISOString()
+    const date = convertToDate(this.state.dateInputState).toISOString()
     await this.props.client.mutate({
       mutation: gql`
         mutation(
@@ -59,6 +62,7 @@ class EditPostMetaModal extends React.Component {
           $status: PostStatus
           $publishedAt: String
           $projectId: ID
+          $excerpt: String
         ) {
           updatePost (
             id: $id
@@ -66,6 +70,7 @@ class EditPostMetaModal extends React.Component {
             status: $status
             publishedAt: $publishedAt
             projectId: $projectId
+            excerpt: $excerpt
           ) {
             id
           }
@@ -76,7 +81,8 @@ class EditPostMetaModal extends React.Component {
         title,
         status,
         publishedAt: date,
-        projectId: rest.project.id
+        projectId: projectId,
+        excerpt: excerpt
       }
     })
   }
@@ -131,9 +137,9 @@ class EditPostMetaModal extends React.Component {
         width={700}
       >
         <PostMetaForm
+          user={this.props.user}
           post={this.props.post}
           handleChange={this.handleChange}
-          user={this.props.user}
           dateInputState={this.state.dateInputState}
           handleDateInputChange={this.handleDateInputChange}
           selectProject={this.selectProject}
