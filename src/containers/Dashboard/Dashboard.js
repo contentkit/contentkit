@@ -11,13 +11,14 @@ import DashboardTable from '../../components/DashboardTable'
 import DashboardToolbar from '../../components/DashboardToolbar'
 import withData from './withData'
 import { selectProject, selectPosts, setEditorState, setSearchQuery, setSearchLoadingState, updateFeedVariables } from '../../lib/redux'
+import CreatePostModal from '../../components/CreatePostModal'
 
 import { feedQueryShape } from '../../shapes'
 
 class Dashboard extends React.Component {
   static defaultProps = {
     project: {},
-    selected: undefined
+    selected: undefined,
   }
 
   static propTypes = {
@@ -28,7 +29,8 @@ class Dashboard extends React.Component {
   static displayName = 'Dashboard'
 
   state = {
-    query: ''
+    query: '',
+    modalOpen: false
   }
 
   handleProjectSelect = (selectedProject) => {
@@ -57,6 +59,14 @@ class Dashboard extends React.Component {
     })
   }
 
+  handleModalOpen = () => {
+    this.setState({ modalOpen: true })
+  }
+
+  handleModalClose = () => {
+    this.setState({ modalOpen: false })
+  }
+
   renderToolbar = () => {
     return (
       <DashboardToolbar
@@ -69,6 +79,10 @@ class Dashboard extends React.Component {
         editorState={this.props.editorState}
         setEditorState={this.props.setEditorState}
         feed={this.props.feed}
+        selectedProject={this.props.feedVariables.projectId}
+        projects={this.props.projects}
+        selectProject={this.props.selectProject}
+        handleOpen={this.handleModalOpen}
       />
     )
   }
@@ -83,14 +97,23 @@ class Dashboard extends React.Component {
         selectedPosts={this.props.selectedPosts}
         query={this.state.query}
       >
-
-        <CreatePost
+        <CreatePostModal
           feed={this.props.feed}
           selectedProject={this.props.feedVariables.projectId}
           projects={this.props.projects}
           selectProject={this.props.selectProject}
           client={this.props.client}
+          open={this.state.modalOpen}
+          handleClose={this.handleModalClose}
         />
+
+        {/* <CreatePost
+          feed={this.props.feed}
+          selectedProject={this.props.feedVariables.projectId}
+          projects={this.props.projects}
+          selectProject={this.props.selectProject}
+          client={this.props.client}
+        /> */}
         <DashboardTable
           feed={this.props.feed}
           projects={this.props.projects}

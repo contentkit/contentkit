@@ -62,7 +62,6 @@ export const UPDATE_DOCUMENT = gql`
     ) {
       id
       raw
-      html
       encodedHtml
       versions {
         id
@@ -85,14 +84,16 @@ export const UPDATE_POST = gql`
   mutation (
     $id: ID!
     $title: String!
-    $status: PostStatus
-    $publishedAt: String
+    $status: PostStatus!
+    $publishedAt: String!
+    $excerpt: String!
   ) {
     updatePostMeta(
       id: $id
       title: $title
       status: $status
       publishedAt: $publishedAt
+      excerpt: $excerpt
     ) {
       id
       createdAt
@@ -101,7 +102,6 @@ export const UPDATE_POST = gql`
         url
       }
       raw
-      html
       encodedHtml
       versions {
         id

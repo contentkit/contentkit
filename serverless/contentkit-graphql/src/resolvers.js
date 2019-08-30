@@ -113,33 +113,29 @@ const deleteVersion = (_, { id }, ctx) => {
   return {
     id
   }
-  // return pg.query(`
-  //   DELETE FROM versions WHERE id = $1 RETURNING *
-  // `, [id])
 }
 
 const updatePost = (parent, args, ctx) => {
   args.status = args.status || 'DRAFT'
-  let { id, ...rest } = args
-
-  let params = Object.keys(rest).reduce((acc, key) => {
-    let type = key === 'publishedAt'
-      ? 'timestamp'
-      : key === 'status'
-        ? 'post_status'
-        : 'text'
-    acc.push(`${snakeCase(key)} = '${rest[key]}'::${type}`)
-    return acc
-  }, [])
 
   return pg.head(`
     UPDATE
       posts
     SET
-      ${params.join(', ')}
+      excerpt = $1::text,
+      project_id = $2::text,
+      published_at = $3::timestamp,
+      status = $4::post_status,
+      title = $5::text
     WHERE id = '${args.id}'
     RETURNING *
-  `)
+  `, [
+    args.exerpt,
+    args.projectId,
+    args.publishedAt,
+    args.status,
+    args.title
+  ])
 }
 
 const createImage = (_, args, ctx) => {
@@ -172,11 +168,6 @@ const createVersion = (_, args, ctx) => {
       raw: args.raw
     })
   )
-  // return pg.query(`
-  //   INSERT INTO versions(document_id, raw)
-  //   VALUES($1, $2::jsonb)
-  //   RETURNING *
-  // `, [ctx.documentId, JSON.stringify(args.raw)])
 }
 
 const deletePost = (_, args, ctx) => {
@@ -184,27 +175,6 @@ const deletePost = (_, args, ctx) => {
     DELETE FROM posts WHERE id = $1 RETURNING *
   `, [args.id])
 }
-
-// const createDocument = (_, args, context) => {
-//   return pg.head(`
-//     INSERT INTO document(post_id, raw)
-//     VALUES(
-//       $1::text,
-//       $2::jsonb
-//     )
-//     RETURNING *
-//   `, [args.postId, JSON.stringify(args.raw)])
-// }
-
-// const deleteDocument = (_, args, context) => {
-//   return pg.head(`
-//     DELETE FROM
-//       documents
-//     WHERE
-//       id = $1
-//     RETURNING *
-//   `, [args.id])
-// }
 
 const createProject = (_, args, context) => {
   return pg.head(`
@@ -408,9 +378,7 @@ const resolvers = {
     signinUser: signinUser,
     createPost: createPost,
     deletePost: deletePost,
-    // createDocument: createDocument,
     updateDocument: updateDocument,
-    // deleteDocument: deleteDocument,
     deleteVersion: deleteVersion,
     createImage: createImage,
     deleteImage: deleteImage,
@@ -444,13 +412,20 @@ const resolvers = {
             }))
           )
       )
-      console.log(result)
       return result
     },
     images: (parent, args, context) => {
       return pg.query(`
         SELECT * FROM images WHERE post_id = $1
       `, [parent.id])
+    },
+    coverImage: (parent, args, context) => {
+      if (!parent.coverImageId) {
+        return null
+      }
+      return pg.head(`
+        SELECT * FROM images WHERE id = $1
+      `, [parent.coverImageId])
     },
     project: (parent, args, context) => {
       return pg.head(`
@@ -500,11 +475,7 @@ const resolvers = {
     }
   },
   Version: {
-    // document: (parent, args, context) => {
-    //   return pg.head(`
-    //     SELECT * FROM documents WHERE id = $1
-    //   `, [parent.documentId])
-    // }
+
   },
   JSON: GraphQLJSON
 }

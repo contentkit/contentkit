@@ -9,7 +9,7 @@ import styles from './styles.scss'
 import Input from 'antd/lib/input'
 
 class CreateTagInput extends React.Component {
-  static PropTypes = {
+  static propTypes = {
     createTag: PropTypes.func.isRequired
   }
 
