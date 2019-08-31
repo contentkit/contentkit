@@ -6,8 +6,8 @@ import {
 } from '../../graphql/mutations'
 
 import { Mutation } from 'react-apollo'
-import Login from '@menubar/login'
-import '@menubar/login/dist/style.css'
+import Login from '@graphship/login'
+import '@graphship/login/dist/styles.css'
 import { withRouter } from 'react-router-dom'
 
 class LoginWithData extends React.Component {

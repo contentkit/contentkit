@@ -17,8 +17,8 @@
   "dependencies": {
     "@babel/runtime": "^7.3.4",
     "@contentkit/editor": "latest",
-    "@graphship/apollo-client": "latest",
-    "@graphship/login": "latest",
+    "@graphship/apollo-client": "^0.0.10",
+    "@graphship/login": "^0.0.10",
     "antd": "^3.19.3",
     "apollo-cache-inmemory": "1.5.1",
     "apollo-client": "^2.5.1",

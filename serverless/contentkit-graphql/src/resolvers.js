@@ -130,7 +130,7 @@ const updatePost = (parent, args, ctx) => {
     WHERE id = '${args.id}'
     RETURNING *
   `, [
-    args.exerpt,
+    args.excerpt,
     args.projectId,
     args.publishedAt,
     args.status,
