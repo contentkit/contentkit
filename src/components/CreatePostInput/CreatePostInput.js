@@ -4,31 +4,22 @@ import classes from './styles.scss'
 import Input from 'antd/lib/input'
 import classnames from 'classnames'
 
-class CreatePostInput extends React.Component {
-  state = {
-    value: '',
-    focused: false
-  }
+function CreatePostInput (props) {
+  const [value, setValue] = React.useState('')
+  const [focused, setFocused] = React.useState('')
 
-  shouldComponentUpdate (nextProps, nextState) {
-    return nextProps.value !== this.props.value ||
-    nextProps.loading !== this.props.loading ||
-    nextState.value !== this.state.value ||
-    nextState.focused !== this.state.focused
-  }
-
-  renderAdornment = () => {
+  const renderAdornment = () => {
     const {
       createPost,
       loading
-    } = this.props
+    } = props
     return (
       <ButtonWithSpinner
         className={
           classnames(
             'ant-input-search-button',
             classes.button, {
-              [classes.focused]: this.state.focused
+              [classes.focused]: focused
             }
           )
         }
@@ -40,43 +31,36 @@ class CreatePostInput extends React.Component {
     )
   }
 
-  handleChange = (evt) => {
-    this.setState({ value: evt.target.value })
+  const handleChange = (evt) => {
+    setValue(evt.target.value)
   }
 
-  render () {
-    const {
-      value,
-      handleChange,
-      createPost
-    } = this.props
-    return (
-      <Input
-        ref={ref => {
-          this.ref = ref
-        }}
-        className={
-          classnames(
-            classes.input,
-            'ant-input-search',
-            'ant-input-search-enter-button',
-            'ant-input-search-large'
-          )
-        }
-        addonAfter={this.renderAdornment()}
-        value={value}
-        onChange={handleChange}
-        type={'text'}
-        onPressEnter={createPost}
-        onFocus={
-          evt => this.setState({ focused: true })
-        }
-        onBlur={
-          evt => this.setState({ focused: false })
-        }
-      />
-    )
-  }
+  const handleFocus = () => setFocused(true)
+
+  const handleBlur = () => setFocused(false)
+
+  const {
+    createPost
+  } = props
+  return (
+    <Input
+      className={
+        classnames(
+          classes.input,
+          'ant-input-search',
+          'ant-input-search-enter-button',
+          'ant-input-search-large'
+        )
+      }
+      addonAfter={renderAdornment()}
+      value={value}
+      onChange={handleChange}
+      type={'text'}
+      onPressEnter={createPost}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+    />
+  )
 }
 
 export default CreatePostInput

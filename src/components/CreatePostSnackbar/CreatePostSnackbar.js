@@ -3,18 +3,20 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import message from 'antd/lib/message'
 
-class CreatePostSnackbar extends React.Component {
-  render () {
-    return null
-  }
+function CreatePostSnackbar (props) {
+  const [visible, setVisible] = React.useState(false)
 
-  componentDidUpdate(prevProps) {
-    if (this.props.open) {
-      if (!prevProps.open) {
-        message.info(`Creating a new project ${this.props.newProjectName}`)
+  React.useEffect(() => {
+    if (props.open) {
+      if (!visible) {
+        setVisible(true, () => {
+          message.info(`Creating a new project ${props.newProjectName}`)
+        })
       }
     }
-  }
+  }, [props.open])
+
+  return null
 }
 
 export default CreatePostSnackbar

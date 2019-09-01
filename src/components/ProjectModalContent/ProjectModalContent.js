@@ -5,50 +5,52 @@ import ProjectIdInput from '../ProjectModalIdInput'
 import ProjectModalForm from '../ProjectModalForm'
 import classes from './styles.scss'
 
-class ProjectModalContent extends React.Component {
-  static propTypes = {
-    handleDelete: PropTypes.func.isRequired,
-    handleSave: PropTypes.func.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    project: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired
+function ProjectModalContent (props) {
+  let ref
+
+  function setRef (instance) {
+    ref = instance
   }
 
-  onCopy = () => {
-    this.ref.select()
+  const onCopy = () => {
+    ref.select()
     document.execCommand('copy')
   }
 
-  render () {
-    const {
-      project,
-      handleDelete,
-      handleSave
-    } = this.props
+  const {
+    project,
+    handleDelete,
+    handleSave
+  } = props
 
-    return (
-      <div className={classes.content}>
-        <ProjectModalForm
-          classes={classes}
-          Project={project.data && project.data.project} /* eslint-disable-line */
-          onChange={this.props.onChange}
-        />
-        <ProjectIdInput
-          value={project.data && project.data.project.id} /* eslint-disable-line */
-          setRef={
-            (ref) => { this.ref = ref }
-          }
-          onCopy={this.onCopy}
-          classes={classes}
-        />
-        <WhitelistDomains
-          deleteOrigin={this.props.deleteOrigin}
-          createOrigin={this.props.createOrigin}
-          project={this.props.project}
-        />
-      </div>
-    )
-  }
+  return (
+    <div className={classes.content}>
+      <ProjectModalForm
+        classes={classes}
+        project={project?.data?.project} /* eslint-disable-line */
+        onChange={props.onChange}
+      />
+      <ProjectIdInput
+        value={project.data && project.data.project.id} /* eslint-disable-line */
+        setRef={setRef}
+        onCopy={onCopy}
+        classes={classes}
+      />
+      <WhitelistDomains
+        deleteOrigin={props.deleteOrigin}
+        createOrigin={props.createOrigin}
+        project={props.project}
+      />
+    </div>
+  )
+}
+
+ProjectModalContent.propTypes = {
+  handleDelete: PropTypes.func.isRequired,
+  handleSave: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  project: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired
 }
 
 export default ProjectModalContent

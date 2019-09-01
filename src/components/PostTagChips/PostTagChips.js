@@ -8,24 +8,17 @@ import Tag from 'antd/lib/tag'
 import styles from './styles.scss'
 import Input from 'antd/lib/input'
 
-class CreateTagInput extends React.Component {
-  static propTypes = {
-    createTag: PropTypes.func.isRequired
+function CreateTagInput (props) {
+  const [value, setValue] = React.useState('')
+
+  const handleChange = evt => {
+    setValue(evt.target.value)
   }
 
-  state = {
-    value: ''
-  }
-
-  handleChange = evt => {
-    this.setState({ value: evt.target.value })
-  }
-
-  onKeyDown = evt => {
+  const onKeyDown = evt => {
     if (evt.key === 'Enter') {
-      const { value } = this.state
-      const { post } = this.props
-      this.props.createTag({ 
+      const { post, createTag } = props
+      createTag({
         name: value,
         projectId: post.project.id,
         postId: post.id
@@ -33,19 +26,21 @@ class CreateTagInput extends React.Component {
     }
   }
 
-  render () {
-    const { classes } = this.props
-    return (
-      <div className={styles.inputWrapper}>
-        <Input
-          value={this.state.value}
-          placeholder={'Create tag'}
-          onChange={this.handleChange}
-          onKeyDown={this.onKeyDown}
-        />
-      </div>
-    )
-  }
+  const { classes } = props
+  return (
+    <div className={styles.inputWrapper}>
+      <Input
+        value={value}
+        placeholder={'Create tag'}
+        onChange={handleChange}
+        onKeyDown={onKeyDown}
+      />
+    </div>
+  )
+}
+
+CreateTagInput.propTypes = {
+  createTag: PropTypes.func.isRequired
 }
 
 class PostTagChips extends React.Component {
@@ -100,9 +95,10 @@ class PostTagChips extends React.Component {
     })
 
   render () {
-    const { classes } = this.props
-    const post = this.props.post?.data?.post
-    if (!post?.id) return false
+    const { classes, post } = this.props
+    if (!post?.id) {
+      return false
+    }
     return (
       <Query query={TAG_QUERY} variables={{ postId: post.id }}>
         {tagQuery => (

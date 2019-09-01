@@ -19,6 +19,7 @@ import {
 import { setEditorState } from '../../lib/redux'
 import withData from './withData'
 import styles from './styles.scss'
+import { encode } from '../../lib/utf8'
 
 class BaseEditor extends React.Component {
   static propTypes = {
@@ -38,8 +39,7 @@ class BaseEditor extends React.Component {
   }
 
   componentDidMount () {
-    if (this.props.hydrated) return
-    const editorState = hydrate(this.props)
+    const editorState = hydrate(this.props.editorState, this.props.post?.data?.post?.raw)
     this.props.setEditorState(editorState)
   }
 
@@ -73,7 +73,7 @@ class BaseEditor extends React.Component {
   }
 
   getHtml = (editorState = this.props.editorState) =>
-    window.btoa(exportHtml(editorState))
+    encode(exportHtml(editorState))
 
   onChange = editorState => {
     this.props.setEditorState(editorState)

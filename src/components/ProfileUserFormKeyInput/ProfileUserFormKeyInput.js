@@ -1,22 +1,22 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import Input from 'antd/lib/input'
 import styles from './styles.scss'
 import Icon from 'antd/lib/icon'
 
-const ApiKeyInput = (props) => {
+function ProfileUserFormKeyInput (props) {
   const {
     onCopy,
     setRef,
     generateToken,
-    user,
-    id
+    value
   } = props
-  let secret = user?.data?.user?.secret || ''
   return (
     <div>
       <Input
         className={styles.input}
-        value={secret}
+        value={value}
         ref={setRef}
         placeholder={'API key'}
         addonAfter={
@@ -32,4 +32,11 @@ const ApiKeyInput = (props) => {
   )
 }
 
-export default ApiKeyInput
+ProfileUserFormKeyInput.propTypes = {
+  value: PropTypes.string,
+  onCopy: PropTypes.func.isRequired,
+  setRef: PropTypes.func.isRequired,
+  generateToken: PropTypes.func.isRequired
+}
+
+export default ProfileUserFormKeyInput

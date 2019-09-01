@@ -54,7 +54,8 @@
     "react-transition-group": "^2.6.0",
     "redux": "^4.0.1",
     "refractor": "^2.9.0",
-    "s3-dropzone": "^0.0.48"
+    "s3-dropzone": "^0.0.48",
+    "safe-s3-key": "^0.0.4"
   },
   "standard": {
     "parser": "babel-eslint",

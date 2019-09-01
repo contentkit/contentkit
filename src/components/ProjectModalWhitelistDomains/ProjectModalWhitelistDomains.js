@@ -30,56 +30,48 @@ WhitelistChips.propTypes = {
   domains: PropTypes.array
 }
 
-class WhitelistDomains extends React.Component {
-  state = {
-    value: ''
+function WhitelistDomains (props) {
+  const [value, setValue] = React.useState('')
+
+  const onDelete = (id) => {
+    props.deleteOrigin({ id })
   }
 
-  static propTypes = {
-    createOrigin: PropTypes.func.isRequired,
-    deleteOrigin: PropTypes.func.isRequired,
-    project: projectQueryShape
+  const onChange = evt => {
+    setValue(evt.target.value)
   }
 
-  onDelete = (id) => {
-    this.props.deleteOrigin({
-      id
-    })
-  }
-
-  onChange = evt => {
-    this.setState({ value: evt.target.value })
-  }
-
-  onKeyDown = (e) => {
-    let projectId = this.props.project.data.project.id
-    let name = (' ' + this.state.value).slice(1)
+  const onKeyDown = (e) => {
+    const projectId = props.project.data.project.id
+    const name = (' ' + value).slice(1)
     if (e.key === 'Enter') {
-      this.setState({
-        value: ''
-      }, () => {
-        this.props.createOrigin({ name, projectId })
+      setValue('', () => {
+        props.createOrigin({ name, projectId })
       })
     }
   }
 
-  render () {
-    const { project } = this.props
-    const domains = project?.data?.project?.origins || []
-    return (
-      <div>
-        <WhitelistChips
-          domains={domains}
-          onDelete={this.onDelete}
-        />
-        <Input
-          value={this.state.value}
-          onChange={this.onChange}
-          onKeyDown={this.onKeyDown}
-        />
-      </div>
-    )
-  }
+  const { project } = props
+  const domains = project?.data?.project?.origins || []
+  return (
+    <div>
+      <WhitelistChips
+        domains={domains}
+        onDelete={onDelete}
+      />
+      <Input
+        value={value}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+      />
+    </div>
+  )
+}
+
+WhitelistDomains.propTypes = {
+  createOrigin: PropTypes.func.isRequired,
+  deleteOrigin: PropTypes.func.isRequired,
+  project: projectQueryShape
 }
 
 export default WhitelistDomains

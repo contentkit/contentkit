@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import Layout from '../Layout'
-import CreatePost from '../../components/CreatePost'
 import DashboardTable from '../../components/DashboardTable'
 import DashboardToolbar from '../../components/DashboardToolbar'
 import withData from './withData'
@@ -106,14 +105,6 @@ class Dashboard extends React.Component {
           open={this.state.modalOpen}
           handleClose={this.handleModalClose}
         />
-
-        {/* <CreatePost
-          feed={this.props.feed}
-          selectedProject={this.props.feedVariables.projectId}
-          projects={this.props.projects}
-          selectProject={this.props.selectProject}
-          client={this.props.client}
-        /> */}
         <DashboardTable
           feed={this.props.feed}
           projects={this.props.projects}

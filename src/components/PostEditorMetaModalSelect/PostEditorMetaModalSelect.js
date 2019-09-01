@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Select from 'antd/lib/select'
 
 const PostEditorMetaModalSelect = (props) => {
-  const { post, handleChange } = props
+  const { value, handleChange } = props
 
   const onChange = evt => handleChange(evt, 'status')
   const options = [{
@@ -13,7 +13,6 @@ const PostEditorMetaModalSelect = (props) => {
     value: 'PUBLISHED',
     label: 'Published'
   }]
-  const value = (post.data.post && post.data.post.status)
 
   return (
     <Select

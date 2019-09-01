@@ -1,21 +1,14 @@
 const GraphQLJSON = require('graphql-type-json')
 const snakeCase = require('lodash.snakecase')
 const pg = require('postgres-tools')
-
+const statements = require('./statements')
 const randomBytes = require('crypto').randomBytes
 
 const { AuthenticationError, ValidationError } = require('apollo-server-lambda')
 
 async function createUser (_, args, ctx) {
-  let { email, password } = args
-  let user = await pg.head(`
-    INSERT INTO users(email, password)
-    SELECT $1, $2
-    WHERE NOT EXISTS(
-      SELECT * FROM users WHERE email = $1
-    )
-    RETURNING *
-  `, [email, password])
+  const { email, password } = args
+  const user = await pg.head(statements.Mutation.createUser, [email, password])
   if (user) {
     return user
   } else {
@@ -51,37 +44,23 @@ async function signinUser (_, { email, password }, ctx) {
 }
 
 const updateUser = (_, args, ctx) => {
-  return pg.head(`
-    UPDATE
-      users
-    SET
-      email = $1::text,
-      name = $2::text
-    WHERE id = $3
-    RETURNING *
-  `, [args.email, args.name, ctx.user])
+  return pg.head(statements.Mutation.updateUser, [args.email, args.name, ctx.user])
 }
 
 const deleteUser = (_, args, ctx) => {
-  return pg.head(`
-    DELETE FROM users WHERE id = $1::text RETURNING *
-  `, [ctx.user])
+  return pg.head(statements.Mutation.deleteUser, [ctx.user])
 }
 
 const createPost = (_, { title, projectId }, ctx) => {
-  return pg.head(`
-    insert into posts(
-      project_id,
-      title
-    )
-    values($1, $2) RETURNING *
-  `, [projectId, title])
+  return pg.head(statements.Mutation.createPost, [projectId, title])
 }
 
 const updateDocument = async (_, { id, raw, encodedHtml }, ctx) => {
   raw.blocks = raw.blocks
     .map(block => {
-      if (block.text) block.text = block.text.replace(/'/g, `''`)
+      if (block.text) {
+        block.text = block.text.replace(/'/g, `''`)
+      }
       return block
     })
 
@@ -98,14 +77,7 @@ const updateDocument = async (_, { id, raw, encodedHtml }, ctx) => {
     })
   )
 
-  return pg.head(`
-    UPDATE
-      posts
-    SET
-      raw = '${JSON.stringify(raw)}'::jsonb,
-      encoded_html = '${encodedHtml}'
-    WHERE id = '${id}' returning *
-  `)
+  return pg.head(statements.Mutation.updateDocument, [JSON.stringify(raw), encodedHtml, id])
 }
 
 const deleteVersion = (_, { id }, ctx) => {
@@ -117,44 +89,24 @@ const deleteVersion = (_, { id }, ctx) => {
 
 const updatePost = (parent, args, ctx) => {
   args.status = args.status || 'DRAFT'
+  args.coverImageId = args.coverImageId || 'NULL'
 
-  return pg.head(`
-    UPDATE
-      posts
-    SET
-      excerpt = $1::text,
-      project_id = $2::text,
-      published_at = $3::timestamp,
-      status = $4::post_status,
-      title = $5::text
-    WHERE id = '${args.id}'
-    RETURNING *
-  `, [
+  return pg.head(statements.Mutation.updatePost, [
     args.excerpt,
     args.projectId,
     args.publishedAt,
     args.status,
-    args.title
+    args.title,
+    args.coverImageId
   ])
 }
 
 const createImage = (_, args, ctx) => {
-  return pg.head(`
-    INSERT INTO images(post_id, url)
-    VALUES(
-      '${args.postId}',
-      '${args.url}'
-    )
-    RETURNING *
-  `)
+  return pg.head(statements.Mutation.createImage, [args.postId, args.url])
 }
 
 const deleteImage = (_, args, ctx) => {
-  return pg.head(`
-    DELETE FROM images
-    WHERE id = $1
-    RETURNING *
-  `, [args.id, ctx.user])
+  return pg.head(statements.Mutation.deleteImage, [args.id, ctx.user])
 }
 
 const createVersion = (_, args, ctx) => {
@@ -171,64 +123,35 @@ const createVersion = (_, args, ctx) => {
 }
 
 const deletePost = (_, args, ctx) => {
-  return pg.head(`
-    DELETE FROM posts WHERE id = $1 RETURNING *
-  `, [args.id])
+  return pg.head(statements.Mutation.deletePost, [args.id])
 }
 
 const createProject = (_, args, context) => {
-  return pg.head(`
-    INSERT INTO projects(name, user_id) VALUES('${args.name}', '${context.user}') RETURNING *
-  `)
+  return pg.head(statements.Mutation.createProject, [args.name, context.user])
 }
 
 const deleteProject = (_, args, context) => {
-  return pg.head(`
-    DELETE FROM projects WHERE id = '${args.id}' RETURNING *
-  `)
+  return pg.head(statements.Mutation.deleteProject, [args.id])
 }
 
 const generateToken = (_, args, context) => {
-  return pg.head(`
-    UPDATE users
-    SET secret = (SELECT gen_secret())
-    WHERE id = '${context.user}'
-    RETURNING *
-  `)
+  return pg.head(statements.Mutation.generateToken, [context.user])
 }
 
 const createOrigin = (_, args, context) => {
-  return pg.head(`
-    INSERT INTO
-      origins(
-        project_id,
-        name,
-        origin_type
-      )
-      VALUES(
-        '${args.projectId}',
-        '${args.name}',
-        '${args.originType}'::origin_type
-      )
-    RETURNING *
-  `)
+  return pg.head(statements.Mutation.createOrigin, [
+    args.projectId,
+    args.name,
+    args.originType
+  ])
 }
 
 const deleteOrigin = (_, args, context) => {
-  return pg.head(`
-    DELETE FROM origins
-    WHERE id = '${args.id}'
-    RETURNING *
-  `)
+  return pg.head(statements.Mutation.deleteOrigin, [args.id])
 }
 
 const updateProject = (_, args, context) => {
-  return pg.head(`
-    UPDATE projects
-    SET name = '${args.name}'
-    WHERE id = '${args.id}'
-    RETURNING *
-  `)
+  return pg.head(statements.Mutation.updateProject, [args.name, args.id])
 }
 
 const createTag = (_, args, context) => {
@@ -251,30 +174,22 @@ const createTag = (_, args, context) => {
 }
 
 const deleteTag = (_, args, context) => {
-  const query = `
-    DELETE FROM posts_tags WHERE tag_id = '${args.id}'
-  `
-  return pg.head(query)
+  return pg.head(statements.Mutation.deleteTag, [args.id])
 }
 
 const resolvers = {
   Query: {
-    user: async (parent, args, context) => {
-      let data = await pg.head(`
-        SELECT * FROM users WHERE id = $1
-      `, [context.user])
-      return data
+    user (parent, args, context) {
+      return pg.head(statements.Query.user, [context.user])
     },
-    tag: async (parent, args, context) => {
-      return pg.head(`
-        SELECT * FROM tags WHERE id = $1
-      `, [args.id])
+    tag (parent, args, context) {
+      return pg.head(statements.Query.tag, [args.id])
     },
     version: async (parent, args, { context }) => {
       return context.redis.get(args.id)
         .then(json => JSON.parse(json))
     },
-    post: async (parent, args, context) => {
+    post (parent, args, context) {
       if (args.id) {
         return pg.head(`SELECT * FROM posts WHERE id = $1::text`, [args.id])
       }
@@ -298,26 +213,16 @@ const resolvers = {
       `, [args.projectId, context.user])
     },
     allProjects: async (parent, args, context) => {
-      return pg.query(`
-        SELECT * FROM projects WHERE user_id = $1
-      `, [context.user])
+      return pg.query(statements.Query.allProjects, [context.user])
     },
-    allTags: async (parent, args, context) => {
-      return pg.query('SELECT * FROM tags WHERE project_id = $1', [args.projectId])
+    allTags (parent, args, context) {
+      return pg.query(statements.Query.allTags, [args.projectId])
     },
-    project: async (parent, args, context) => {
-      return pg.head(`
-        SELECT * FROM projects WHERE id = $1
-      `, [args.id])
+    project (parent, args, context) {
+      return pg.head(statements.Query.project, [args.id])
     },
-    tagsByPost: async (parent, args, context) => {
-      const query = `
-        SELECT * from posts_tags
-        JOIN tags ON (posts_tags.tag_id = tags.id)
-        WHERE posts_tags.post_id = $1
-      `
-      return pg.query(query, [args.postId])
-        .then(data => data || [])
+    tagsByPost (parent, args, context) {
+      return pg.query(statements.Query.tagsByPost, [args.postId])
     },
     feed: async (parent, args, context) => {
       const {
@@ -345,26 +250,24 @@ const resolvers = {
               'slug', posts.slug,
               'status', posts.status,
               'excerpt', posts.excerpt,
-              'publishedAt', posts.published_at
+              'publishedAt', posts.published_at,
+              'coverImage', json_build_object(
+                'url', images.url,
+                'id', images.id
+              )
             )
-          FROM
-            posts
-          JOIN
-            projects ON (projects.id = posts.project_id)
-          WHERE
-            projects.user_id = $1::text
+          FROM posts
+          JOIN projects ON (projects.id = posts.project_id)
+          LEFT OUTER JOIN images ON (images.id = posts.cover_image_id)
+          WHERE projects.user_id = $1::text
           AND project_id = $2::text
           ${query}
-          ORDER BY
-            posts.created_at DESC
+          ORDER BY posts.created_at DESC
           LIMIT $3
           OFFSET $4
         ) posts,
         (
-          SELECT
-            count(*)
-          FROM posts
-          WHERE posts.project_id = $2::text
+          SELECT count(*) FROM posts WHERE posts.project_id = $2::text
           ${query}
         ) count
       `
@@ -415,63 +318,45 @@ const resolvers = {
       return result
     },
     images: (parent, args, context) => {
-      return pg.query(`
-        SELECT * FROM images WHERE post_id = $1
-      `, [parent.id])
+      return pg.query(statements.Post.images, [parent.id])
     },
     coverImage: (parent, args, context) => {
+      if (parent.coverImage) {
+        return parent.coverImage
+      }
       if (!parent.coverImageId) {
         return null
       }
-      return pg.head(`
-        SELECT * FROM images WHERE id = $1
-      `, [parent.coverImageId])
+      return pg.head(statements.Post.coverImage, [parent.coverImageId])
     },
-    project: (parent, args, context) => {
-      return pg.head(`
-        SELECT * FROM projects WHERE id = $1
-      `, [parent.projectId])
+    project (parent, args, context) {
+      return pg.head(statements.Post.project, [parent.projectId])
     },
-    tags: (parent, args, context) => {
-      const query = `
-        SELECT * from posts_tags
-        JOIN tags ON (tags.id = posts_tags.tag_id)
-        WHERE posts_tags.post_id = $1
-      `
-      return pg.query(query, [parent.id])
+    tags (parent, args, context) {
+      return pg.query(statements.Post.tags, [parent.id])
     }
   },
   Tag: {
     project: (parent, args, context) => {
-      return pg.head(`
-        SELECT * FROM projects WHERE id = $1
-      `, [parent.projectId])
+      return pg.head(statements.Tag.project, [parent.projectId])
     }
   },
   Project: {
     posts: (parent, args, context) => {
-      return pg.query(`
-        SELECT * FROM posts WHERE project_id = $1
-      `, [parent.id])
+      return pg.query(statements.Project.posts, [parent.id])
     },
     origins: (parent, args, context) => {
-      return pg.query(`
-        SELECT * FROM origins WHERE project_id = $1
-      `, [parent.id])
+      return pg.query(statements.Project.origins, [parent.id])
     }
   },
   Origin: {
-    project: (parent, args, context) => {
-      return pg.head(`
-        SELECT * FROM projects WHERE id = $1
-      `, [parent.projectId])
+    project (parent, args, context) {
+      return pg.head(statements.Origin.project, [parent.projectId])
     }
   },
   User: {
-    projects: (parent, args, context) => {
-      return pg.query(`
-        SELECT * FROM projects WHERE user_id = $1
-      `, [context.user])
+    projects (parent, args, context) {
+      return pg.query(statements.User.projects, [context.user])
     }
   },
   Version: {

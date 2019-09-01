@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Button from 'antd/lib/button'
 import classes from './styles.scss'
 
-const ProjectModalToolbar = (props) => {
+function ProjectModalToolbar (props) {
   const {
     handleSave,
     handleDelete,
@@ -24,10 +24,8 @@ const ProjectModalToolbar = (props) => {
         >
             Close
         </Button>
-        <Button
-          onClick={handleSave}
-        >
-            Save
+        <Button onClick={handleSave}>
+          Save
         </Button>
       </div>
     </div>

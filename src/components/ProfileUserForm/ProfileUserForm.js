@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import propTypes from 'prop-types'
 import Button from 'antd/lib/button'
@@ -10,6 +9,12 @@ import Col from 'antd/lib/col'
 import Form from 'antd/lib/form'
 
 function UserForm (props) {
+  const {
+    onCopy,
+    setRef,
+    generateToken
+  } = props
+  const secret = props?.user?.data?.user.secret || ''
   const email = props?.user?.data?.user?.email || ''
   const name = props?.user?.data?.user?.name || ''
   const { form: { getFieldDecorator } } = props
@@ -37,7 +42,12 @@ function UserForm (props) {
           </Form.Item>
         </Col>
       </Row>
-      <ProfileUserFormKeyInput {...props} />
+      <ProfileUserFormKeyInput
+        onCopy={onCopy}
+        setRef={setRef}
+        generateToken={generateToken}
+        value={secret}
+      />
       <div className={classes.flex}>
         <Button
           className={classes.button}

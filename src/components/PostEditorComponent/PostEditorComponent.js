@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { CSSTransition } from 'react-transition-group'
 
 import { Editor } from '@contentkit/editor'
@@ -32,15 +32,12 @@ const awsConfig = {
   endpoint: config.AWS_BUCKET_URL + '/'
 }
 
-class PostEditorComponent extends React.Component {
-  state = {
-    open: false,
-    tableBlockKey: undefined
-  }
+function PostEditorComponent (props) {
+  const [tableBlockKey, setTableBlockKey] = React.useState(null)
 
-  handleClick = evt => {
+  const handleClick = evt => {
     let { clientY } = evt
-    const { editorState } = this.props
+    const { editorState, onChange } = props
     const currentContent = editorState.getCurrentContent()
     const blockMap = currentContent.getBlockMap()
 
@@ -58,97 +55,95 @@ class PostEditorComponent extends React.Component {
     const newBlockMap = blockMap
       .set(newBlockKey, new ContentBlock({ key: newBlockKey }))
 
-    this.props.onChange(
+    onChange(
       setEditorStateBlockMap(editorState, newBlockMap, newBlockKey)
     )
   }
 
-  handleKeyCommand = (command) => {
+  const handleKeyCommand = (command) => {
     if (command === Command.EDITOR_SAVE) {
-      this.props.save()
+      props.save()
       return HANDLED
     }
     return NOT_HANDLED
   }
 
-  handleOpen = tableBlockKey => {
-    this.setState({ open: true, tableBlockKey })
+  const handleOpen = tableBlockKey => {
+    setTableBlockKey(tableBlockKey)
   }
 
-  handleClose = () => {
-    this.setState({ open: false })
+  const handleClose = () => {
+    setTableBlockKey(null)
   }
 
-  blockRendererFn = (block) => {
+  const blockRendererFn = (block) => {
     if (block.getType() === Block.TABLE) {
       return {
         component: ReadOnlyDraftTable,
         props: {
-          handleClick: this.handleOpen
+          handleClick: handleOpen
         }
       }
     }
   }
 
-  render () {
-    const {
-      editorState,
-      deleteImage,
-      createImage,
-      post,
-      onChange,
-      mutate,
-      save,
-      insertImage,
-      loading,
-      ...rest /* eslint-disable-line */
-    } = this.props
+  const {
+    editorState,
+    deleteImage,
+    createImage,
+    post,
+    onChange,
+    mutate,
+    save,
+    insertImage,
+    loading,
+    ...rest /* eslint-disable-line */
+  } = props
 
-    return (
-      <div className={classes.root}>
-        <CSSTransition
-          classNames={'transition'}
-          unmountOnExit
-          timeout={1000}
-          in={loading}
-        >
-          {state => (
-            <LinearProgress />
-          )}
-        </CSSTransition>
-        <div className={classes.flex}>
-          <div className={classes.editorContainer} onClick={this.handleClick}>
-            <Editor
-              editorState={editorState}
-              onChange={onChange}
-              plugins={plugins.plugins}
-              keyBindingFn={keyBindingFn}
-              blockRendererFn={this.blockRendererFn}
-              handleKeyCommand={this.handleKeyCommand}
-            />
-          </div>
-          <div className={classes.toolbar}>
-            <Toolbar.Component
-              config={awsConfig}
-              refId={post?.data?.post?.id}
-              images={post?.data?.post?.images}
-              deleteImage={deleteImage}
-              createImage={createImage}
-              insertImage={insertImage}
-            />
-          </div>
+  return (
+    <div className={classes.root}>
+      <CSSTransition
+        classNames={'transition'}
+        unmountOnExit
+        timeout={1000}
+        in={loading}
+      >
+        {state => (
+          <LinearProgress />
+        )}
+      </CSSTransition>
+      <div className={classes.flex}>
+        <div className={classes.editorContainer} onClick={handleClick}>
+          <Editor
+            editorState={editorState}
+            onChange={onChange}
+            plugins={plugins.plugins}
+            keyBindingFn={keyBindingFn}
+            blockRendererFn={blockRendererFn}
+            handleKeyCommand={handleKeyCommand}
+          />
         </div>
-        <DraftTableDialog
-          onChange={this.props.onChange}
-          editorState={this.props.editorState}
-          open={this.state.open}
-          tableBlockKey={this.state.tableBlockKey}
-          handleOpen={this.handleOpen}
-          handleClose={this.handleClose}
-        />
+        <div className={classes.toolbar}>
+          <Toolbar.Component
+            config={awsConfig}
+            refId={post?.data?.post?.id}
+            images={post?.data?.post?.images}
+            deleteImage={deleteImage}
+            createImage={createImage}
+            insertImage={insertImage}
+          />
+        </div>
       </div>
-    )
-  }
+      <DraftTableDialog
+        onChange={onChange}
+        editorState={editorState}
+        open={Boolean(tableBlockKey)}
+        tableBlockKey={tableBlockKey}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+      />
+    </div>
+  )
 }
 
 export default PostEditorComponent

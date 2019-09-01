@@ -1,5 +1,4 @@
 import React from 'react'
-import { Mutation } from 'react-apollo'
 import Modal from 'antd/lib/modal'
 import Input from 'antd/lib/input'
 import {
@@ -15,11 +14,26 @@ import { genKey, genDate } from '../../lib/util'
 import ProjectSelect from '../ProjectSelect'
 import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
+import withMutation from '../../lib/withMutation'
+import { compose } from 'react-apollo'
 
 function CreatePostModal (props) {
   const [title, setTitle] = React.useState('')
 
   const handleInputChange = evt => setTitle(evt.target.value)
+
+  const onOk = () => {
+    const { handleClose, createPost, selectedProject } = props
+    handleClose()
+    createPost.mutate({
+      title: title,
+      projectId: selectedProject
+    })
+  }
+
+  const onCancel = () => {
+    props.handleClose()
+  }
 
   const {
     projects,
@@ -27,20 +41,13 @@ function CreatePostModal (props) {
     open,
     selectedProject
   } = props
+  console.log(props)
   return (
     <Modal
       title={'Create post'}
       visible={open}
-      onOk={() => {
-        props.handleClose()
-        props.createPost.mutate({
-          title: title,
-          projectId: selectedProject
-        })
-      }}
-      onCancel={() => {
-        props.handleClose()
-      }}
+      onOk={onOk}
+      onCancel={onCancel}
     >
       <Row gutter={8}>
         <Col sm={24} md={18}>
@@ -61,49 +68,63 @@ function CreatePostModal (props) {
   )
 }
 
-const createPost = ({ mutate, ownProps }) => ({ title, projectId }) => {
-  return mutate({
-    variables: { projectId, title },
-    optimisticResponse: {
-      __typename: 'Mutation',
-      createPost: {
-        __typename: 'Post',
-        id: genKey(),
-        createdAt: genDate(),
-        title: title,
-        slug: '',
-        publishedAt: genDate(),
-        excerpt: null,
-        status: 'DRAFT',
-        project: {
-          __typename: 'Project',
-          id: projectId,
-          name: ''
-        },
-        tags: []
-      }
+const mutations = [
+  withMutation({
+    name: 'createPost',
+    options: {
+      mutation: CREATE_POST
     },
-    update: (store, { data: { createPost } }) => {
-      const posts = [...ownProps.feed.data.feed.posts]
-      posts.unshift(createPost)
-      store.writeQuery({
-        query: FEED_QUERY,
-        data: {
-          ...ownProps.feed.data,
-          feed: {
-            ...ownProps.feed.data.feed,
-            posts: posts
-          }
-        },
-        variables: ownProps.feed.variables
-      })
+    mutate: ({ ownProps, variables }) => ({
+      variables: variables,
+      optimisticResponse: {
+        __typename: 'Mutation',
+        createPost: {
+          __typename: 'Post',
+          id: genKey(),
+          createdAt: genDate(),
+          title: variables.title,
+          slug: '',
+          publishedAt: genDate(),
+          excerpt: '',
+          status: 'DRAFT',
+          project: {
+            __typename: 'Project',
+            id: variables.projectId,
+            name: ''
+          },
+          tags: []
+        }
+      },
+      update: (store, { data: { createPost } }) => {
+        const posts = [...ownProps.feed.data.feed.posts]
+        posts.unshift(createPost)
+        store.writeQuery({
+          query: FEED_QUERY,
+          data: {
+            ...ownProps.feed.data,
+            feed: {
+              ...ownProps.feed.data.feed,
+              posts: posts
+            }
+          },
+          variables: ownProps.feed.variables
+        })
+      }
+    })
+  }),
+  withMutation({
+    name: 'updatePost',
+    mutate: ({ variables }) => ({ variables }),
+    options: {
+      mutation: UPDATE_POST
     }
-  })
-}
-
-class CreatePostModalWithData extends React.Component {
-  createProject = ({ mutate }) => (variables) => {
-    return mutate({
+  }),
+  withMutation({
+    name: 'createProject',
+    options: {
+      mutation: CREATE_PROJECT
+    },
+    mutate: ({ variables, ownProps }) => ({
       variables: variables,
       optimisticResponse: {
         __typename: 'Mutation',
@@ -114,65 +135,90 @@ class CreatePostModalWithData extends React.Component {
         }
       },
       update: (store, { data: { createProject } }) => {
-        const allProjects = [...this.props.projects.data.allProjects]
+        const allProjects = [...ownProps.projects.data.allProjects]
         allProjects.push(createProject)
         store.writeQuery({
           query: PROJECTS_QUERY,
           data: { allProjects },
-          variables: this.props.projects.variables
+          variables: ownProps.projects.variables
         })
       }
     })
-  }
+  })
+]
 
-  updatePost = ({ mutate }) =>
-    (variables) => mutate({ variables })
+// class CreatePostModalWithData extends React.Component {
+//   createProject = ({ mutate }) => (variables) => {
+//     return mutate({
+//       variables: variables,
+//       optimisticResponse: {
+//         __typename: 'Mutation',
+//         createProject: {
+//           __typename: 'Project',
+//           id: genKey(),
+//           name: variables.name
+//         }
+//       },
+//       update: (store, { data: { createProject } }) => {
+//         const allProjects = [...this.props.projects.data.allProjects]
+//         allProjects.push(createProject)
+//         store.writeQuery({
+//           query: PROJECTS_QUERY,
+//           data: { allProjects },
+//           variables: this.props.projects.variables
+//         })
+//       }
+//     })
+//   }
 
-  render () {
-    return (
-      <Mutation mutation={CREATE_POST}>
-        {(createPostMutation, createPostData) => {
-          return (
-            <Mutation mutation={CREATE_PROJECT}>
-              {(createProject, createProjectData) => {
-                return (
-                  <Mutation mutation={UPDATE_POST}>
-                    {(updatePost, updatePostData) => {
-                      return (
-                        <CreatePostModal
-                          {...this.props}
-                          createPost={{
-                            mutate: createPost({
-                              mutate: createPostMutation,
-                              ownProps: this.props
-                            }),
-                            ...createPostData
-                          }}
-                          createProject={{
-                            mutate: this.createProject({
-                              mutate: createProject,
-                              ownProps: this.props
-                            }),
-                            ...createProjectData
-                          }}
-                          updatePost={{
-                            mutate: this.updatePost({
-                              mutate: updatePost
-                            }),
-                            ...updatePostData
-                          }}
-                        />
-                      )
-                    }}
-                  </Mutation>
-                )
-              }}
-            </Mutation>
-          )
-        }}
-      </Mutation>
-    )
-  }
-}
+//   updatePost = ({ mutate }) =>
+//     (variables) => mutate({ variables })
 
-export default CreatePostModalWithData
+//   render () {
+//     return (
+//       <Mutation mutation={CREATE_POST}>
+//         {(createPostMutation, createPostData) => {
+//           return (
+//             <Mutation mutation={CREATE_PROJECT}>
+//               {(createProject, createProjectData) => {
+//                 return (
+//                   <Mutation mutation={UPDATE_POST}>
+//                     {(updatePost, updatePostData) => {
+//                       return (
+//                         <CreatePostModal
+//                           {...this.props}
+//                           createPost={{
+//                             mutate: createPost({
+//                               mutate: createPostMutation,
+//                               ownProps: this.props
+//                             }),
+//                             ...createPostData
+//                           }}
+//                           createProject={{
+//                             mutate: this.createProject({
+//                               mutate: createProject,
+//                               ownProps: this.props
+//                             }),
+//                             ...createProjectData
+//                           }}
+//                           updatePost={{
+//                             mutate: this.updatePost({
+//                               mutate: updatePost
+//                             }),
+//                             ...updatePostData
+//                           }}
+//                         />
+//                       )
+//                     }}
+//                   </Mutation>
+//                 )
+//               }}
+//             </Mutation>
+//           )
+//         }}
+//       </Mutation>
+//     )
+//   }
+// }
+
+export default compose(...mutations)(CreatePostModal)

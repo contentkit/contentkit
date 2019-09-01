@@ -1,7 +1,20 @@
 @import '../../css/theme.scss';
 
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-basis: 30%;
+}
+
+.select {
+  width: 100%;
+  margin-right: 15px;
+}
+
 .root {
   display: flex;
+
   .button {
     color: rgb(188, 193, 217);
     all: unset;

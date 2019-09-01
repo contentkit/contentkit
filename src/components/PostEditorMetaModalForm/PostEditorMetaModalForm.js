@@ -11,17 +11,95 @@ import classes from './styles.scss'
 import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
 import Form from 'antd/lib/form'
+import Icon from 'antd/lib/Icon'
+import clsx from 'clsx'
+import * as config from '../../lib/config'
+import Upload from 'antd/lib/upload'
+import AWS from 'aws-sdk'
+import uuid from 'uuid/v4'
+import safeKey from 'safe-s3-key'
 
-const PostEditorMetaModalForm = (props) => {
-  const { handleChange, post, projects, selectProject } = props
+AWS.config.region = config.AWS_REGION
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  IdentityPoolId: config.IDENTITY_POOL_ID
+})
+const s3 = new AWS.S3()
 
-  const title = (post?.data?.post?.title) || ''
-  const slug = (post?.data?.post?.slug) || ''
-  const excerpt = (post?.data?.post?.excerpt) || ''
-  const selectedProject = (post?.data?.post?.project?.id) || ''
-  const coverImage = post?.data?.post?.coverImage
-  const publishedAt = (post?.data?.post.publishedAt) || ''
-  const allProjects = (projects?.data?.allProjects) || []
+const defaultPost = {
+  title: '',
+  slug: '',
+  excerpt: '',
+  coverImage: {},
+  publishedAt: '',
+  images: [],
+  project: {},
+  status: null
+}
+
+function PostEditorMetaModalForm (props) {
+  console.log(props)
+  const {
+    handleChange,
+    handleCoverImageChange,
+    post,
+    projects,
+    selectProject
+  } = props
+  const {
+    title,
+    slug,
+    excerpt,
+    coverImage,
+    publishedAt,
+    images,
+    project,
+    status
+  } = { ...defaultPost, ...post }
+
+  const [fileList, setFileList] = React.useState([])
+
+  const selectedProject = project?.id
+  const allProjects = projects?.data?.allProjects || []
+
+  React.useEffect(() => {
+    const fileList = images.map(({ id, url }) => ({
+      uid: id,
+      url: `${config.AWS_BUCKET_URL}/${url}`,
+      status: 'done'
+    }))
+    setFileList(fileList)
+  }, [images])
+
+  function action (file) {
+    const params = {
+      Bucket: config.AWS_BUCKET_NAME,
+      Fields: {
+        key: safeKey(`${uuid()}-${file.name}`),
+        'Content-Type': file.type
+      }
+    }
+
+    return new Promise((resolve, reject) => {
+      s3.createPresignedPost(params, (err, data) => {
+        if (err) reject(err)
+        resolve(data)
+      })
+    })
+  }
+
+  function customRequest ({ headers, file, action }) {
+    const formData = new window.FormData()
+    for (let field in action.fields) {
+      formData.append(field, action.fields[field])
+    }
+    formData.append('file', file)
+    return fetch(action.url, {
+      method: 'POST',
+      body: formData,
+      headers: headers
+    })
+  }
+
   return (
     <Form className={classes.root}>
       <Row gutter={16}>
@@ -39,7 +117,7 @@ const PostEditorMetaModalForm = (props) => {
           <Form.Item label={'Status'}>
             <PostStatusSelect
               handleChange={handleChange}
-              post={post}
+              value={status}
             />
           </Form.Item>
         </Col>
@@ -85,7 +163,23 @@ const PostEditorMetaModalForm = (props) => {
           </Form.Item>
         </Col>
       </Row>
-
+      <Row gutter={16}>
+        <Col span={24}>
+          <Upload
+            customRequest={customRequest}
+            action={action}
+            listType='picture-card'
+            fileList={fileList}
+            onPreview={(...args) => console.log('preview', args)}
+            onChange={(...args) => console.log('change', args)}
+          >
+            <div>
+              <Icon type='plus' />
+              <div className='ant-upload-text'>Upload</div>
+            </div>
+          </Upload>
+        </Col>
+      </Row>
       <Row>
         <Col span={24}>
           <Form.Item>
@@ -115,19 +209,15 @@ export const PROJECTS_QUERY = gql`
 const PostMetaForm = Form.create({ name: 'post_meta' })(PostEditorMetaModalForm)
 
 const ModalWithData = props => (
-  <Query
-    query={PROJECTS_QUERY}
-  >
-    {projects =>
-      projects.loading
-        ? null
-        : (
-          <PostMetaForm
-            {...props}
-            projects={projects}
-          />
-        )
-    }
+  <Query query={PROJECTS_QUERY}>
+    {projects => {
+      if (projects.loading) {
+        return null
+      }
+      return (
+        <PostMetaForm {...props} projects={projects} />
+      )
+    }}
   </Query>
 )
 

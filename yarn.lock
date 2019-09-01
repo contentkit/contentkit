@@ -1059,10 +1059,10 @@
   dependencies:
     left-indent "^0.0.6"
 
-"@graphship/apollo-client@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@graphship/apollo-client/-/apollo-client-0.0.9.tgz#1c59fb142e0cabfa540621092d2f3f34473de5da"
-  integrity sha512-rpPUZLHehfF+ZvkCwjNi/hONRVOtBAkha3eS00IAXBUkg5I0HQNBFRZWJH16CJNiaYkLqPSoeuCPqlPFG1Xfnw==
+"@graphship/apollo-client@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@graphship/apollo-client/-/apollo-client-0.0.10.tgz#8369e12a3da1094ea60961145aa87d9b1c2c9ca9"
+  integrity sha512-K8Hs7AzFCEeyQhDQmRHzLLj5Zd26SBcc6VT06rLN+riYwXy0SWifKySy01nigVZfQ8r9njTqPWBIvyffWRqDZg==
   dependencies:
     apollo-cache-inmemory "^1.6.2"
     apollo-client "^2.6.3"
@@ -1070,10 +1070,10 @@
     apollo-link-batch-http "^1.2.12"
     apollo-link-error "^1.1.11"
 
-"@graphship/login@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@graphship/login/-/login-0.0.9.tgz#7de3562ae620865f8f9102f71d385192628fecd5"
-  integrity sha512-cp87EHxbxXlVzVYvT1EJh9uH+0kQnFKli80L/kJG5k511YW/Dmao205gKPgCW1aMbt496e4EQj3FDZ1IXB75PQ==
+"@graphship/login@^0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@graphship/login/-/login-0.0.10.tgz#90a223643e5feca278424a3c6913df281f4821ef"
+  integrity sha512-vfvQmJ2z4ntssgEULA/psuIxZB7m8MmTR3Ld83n7Ig9aadCxxct1OC9UhBaRtThqRd2HRF084fZJa45Zv/bAqA==
   dependencies:
     "@babel/runtime" "^7.4.5"
     fs-extra "^8.1.0"
@@ -9160,6 +9160,11 @@ safe-regex@^1.1.0:
   integrity sha1-QKNmnzsHfR6UPURinhV91IAjvy4=
   dependencies:
     ret "~0.1.10"
+
+safe-s3-key@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/safe-s3-key/-/safe-s3-key-0.0.4.tgz#e09e36a8ceeecb646ba4000718e9d9925a2958c0"
+  integrity sha512-1hO29/rqcbbuA2QXVGrKVzD2H4icB2RX5Xg/g/o4zFyOE0Y54bpPSKlQfnq8JW9dku+3nnnZPotU91uwxz001g==
 
 "safer-buffer@>= 2.1.2 < 3", safer-buffer@^2.0.2, safer-buffer@^2.1.0, safer-buffer@~2.1.0:
   version "2.1.2"

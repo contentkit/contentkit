@@ -1,1 +1,1 @@
-export { default } from './ProjectModalWithData'
+export { default } from './ProjectModal'

@@ -1,40 +1,28 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styles from './styles.scss'
 import Input from 'antd/lib/input'
 
-class PostMetaDatePicker extends React.Component {
-  state = {
-    focused: false,
-    value: ''
+function PostMetaDatePicker (props) {
+  const onChange = (evt) => {
+    props.handleChange(evt.target.value)
   }
 
-  onFocusChange = ({ focused }) => {
-    this.setState({ focused })
-  }
+  return (
+    <div>
+      <Input
+        type='text'
+        onChange={onChange}
+        className={styles.input}
+        value={props.value}
+      />
+    </div>
+  )
+}
 
-  onChange = (evt) => {
-    // const elements = evt.target.value.replace(/[^0-9]/g, '')
-    // const format = [[0, 2], [2, 4], [4, 8]]
-    // const value = format.map(c => elements.slice(...c))
-    // const v = value.filter(c => c !== '' && !isNaN(c)).join('/')
-    this.props.handleChange(evt.target.value)
-  }
-
-  render () {
-    return (
-      <div>
-        <Input
-          type='text'
-          ref={
-            ref => { this.ref = ref }
-          }
-          onChange={this.onChange}
-          className={styles.input}
-          value={this.props.value}
-        />
-      </div>
-    )
-  }
+PostMetaDatePicker.propTypes = {
+  handleChange: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired
 }
 
 export default PostMetaDatePicker

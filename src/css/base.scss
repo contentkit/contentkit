@@ -103,3 +103,6 @@ article, .content {
   height: 100%;
 }
 
+:global(code .public-DraftStyleDefault-block) {
+  margin-bottom: 0px;
+}

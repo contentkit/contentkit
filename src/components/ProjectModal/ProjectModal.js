@@ -6,82 +6,82 @@ import styles from './styles.scss'
 import Button from 'antd/lib/button'
 import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
+import { compose } from 'react-apollo'
+import mutations from './mutations'
 
 import {
   PROJECT_QUERY
 } from '../../graphql/queries'
 
-class ProjectModal extends React.Component {
-  static propTypes = {
-    updateProject: PropTypes.object,
-    handleDelete: PropTypes.func.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    client: PropTypes.object.isRequired
-  }
-
-  onChange = data => {
-    return this.props.client.writeQuery({
+function ProjectModal (props) {
+  const onChange = data => {
+    const { client, project } = props
+    return client.writeQuery({
       query: PROJECT_QUERY,
       data: {
         project: {
-          ...this.props.project.data.project,
+          ...project.data.project,
           ...data
         }
       },
-      variables: { id: this.props.project.variables }
+      variables: project.variables
     })
   }
 
-  handleSave = () => {
-    this.handleClose()
-    this.props.updateProject.mutate(this.props.project.data.project)
+  const handleSave = () => {
+    const { project, updateProject } = props
+    handleClose()
+    updateProject.mutate(project.data.project)
   }
 
-  handleDelete = () => {
-    this.handleClose()
-    const { id } = this.props.project.data.project
-    this.props.handleDelete({ id })
+  const handleDelete = () => {
+    const { handleDelete, project: { data: { project } } } = props
+    handleClose()
+    handleDelete({ id: project.id })
   }
 
-  handleClose = () => this.props.handleClose()
+  const handleClose = () => props.handleClose()
 
-  render () {
-    const {
-      handleClose,
-    } = this.props
-    return (
-      <Modal
-        visible={this.props.open}
-        onCancel={handleClose}
-        onOk={this.handleSave}
-        className={styles.modal}
-        closable={false}
-        footer={
-          <Row className={styles.actions}>
-            <Col span={12}>
-              <Button key={'delete'} onClick={this.handleDelete} type={'danger'}>Delete</Button>
-            </Col>
-            <Col span={12}>
-              <Row justify={'end'} type={'flex'}>
-                <Button key={'cancel'} onClick={handleClose}>Cancel</Button>
-                <Button key={'update'} onClick={this.handleSave} type={'primary'}>Update</Button>
-              </Row>
-            </Col>
-          </Row>
-        }
-      >
-        <ProjectModalContent
-          onChange={this.onChange}
-          handleSave={this.handleSave}
-          handleDelete={this.handleDelete}
-          handleClose={this.props.handleClose}
-          project={this.props.project}
-          deleteOrigin={this.props.deleteOrigin}
-          createOrigin={this.props.createOrigin}
-        />
-      </Modal>
-    )
-  }
+  return (
+    <Modal
+      visible={props.open}
+      onCancel={handleClose}
+      onOk={handleSave}
+      className={styles.modal}
+      closable={false}
+      footer={
+        <Row className={styles.actions}>
+          <Col span={12}>
+            <Button key={'delete'} onClick={handleDelete} type={'danger'}>Delete</Button>
+          </Col>
+          <Col span={12}>
+            <Row justify={'end'} type={'flex'}>
+              <Button key={'cancel'} onClick={handleClose}>Cancel</Button>
+              <Button key={'update'} onClick={handleSave} type={'primary'}>Update</Button>
+            </Row>
+          </Col>
+        </Row>
+      }
+    >
+      <ProjectModalContent
+        onChange={onChange}
+        handleSave={handleSave}
+        handleDelete={handleDelete}
+        handleClose={props.handleClose}
+        project={props.project}
+        deleteOrigin={props.deleteOrigin}
+        createOrigin={props.createOrigin}
+      />
+    </Modal>
+  )
 }
 
-export default ProjectModal
+ProjectModal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  updateProject: PropTypes.object,
+  handleDelete: PropTypes.func.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  client: PropTypes.object.isRequired
+}
+
+export default compose(...mutations)(ProjectModal)

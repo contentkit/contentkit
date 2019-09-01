@@ -49,11 +49,26 @@ class EditPostMetaModal extends React.Component {
       title,
       status,
       excerpt,
+      coverImage,
       project: {
         id: projectId
       }
     } = this.props.post.data.post
     const date = convertToDate(this.state.dateInputState).toISOString()
+
+    const variables = {
+      id,
+      title,
+      status,
+      publishedAt: date,
+      projectId: projectId,
+      excerpt: excerpt
+    }
+
+    if (coverImage) {
+      variables.coverImageId = coverImage.id
+    }
+
     await this.props.client.mutate({
       mutation: gql`
         mutation(
@@ -62,6 +77,7 @@ class EditPostMetaModal extends React.Component {
           $status: PostStatus
           $publishedAt: String
           $projectId: ID
+          $coverImageId: ID
           $excerpt: String
         ) {
           updatePost (
@@ -71,24 +87,18 @@ class EditPostMetaModal extends React.Component {
             publishedAt: $publishedAt
             projectId: $projectId
             excerpt: $excerpt
+            coverImageId: $coverImageId
           ) {
             id
           }
         }
       `,
-      variables: {
-        id,
-        title,
-        status,
-        publishedAt: date,
-        projectId: projectId,
-        excerpt: excerpt
-      }
+      variables
     })
   }
 
   handleChange = (value, key) => {
-    let { post } = this.props.post.data
+    const { post } = this.props.post.data
     this.props.client.writeQuery({
       query: POST_QUERY,
       variables: this.props.post.variables,
@@ -96,6 +106,23 @@ class EditPostMetaModal extends React.Component {
         post: {
           ...post,
           [key]: value
+        }
+      }
+    })
+  }
+
+  handleCoverImageChange = (imageId) => {
+    const { client, post: { variables, data: { post } } } = this.props
+    client.writeQuery({
+      query: POST_QUERY,
+      variables: variables,
+      data: {
+        post: {
+          ...post,
+          coverImage: {
+            id: imageId,
+            __typename: 'Image'
+          }
         }
       }
     })
@@ -138,12 +165,12 @@ class EditPostMetaModal extends React.Component {
       >
         <PostMetaForm
           user={this.props.user}
-          post={this.props.post}
+          post={this.props.post?.data?.post}
           handleChange={this.handleChange}
           dateInputState={this.state.dateInputState}
           handleDateInputChange={this.handleDateInputChange}
+          handleCoverImageChange={this.handleCoverImageChange}
           selectProject={this.selectProject}
-          data={this.props.post?.data?.post}
         />
       </Modal>
     )

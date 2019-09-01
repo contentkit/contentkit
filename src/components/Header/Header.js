@@ -32,43 +32,34 @@ const createNavBarOptions = (props) => {
   return props.logged ? loggedOptions : defaultOptions
 }
 
-class Header extends React.Component {
-  static propTypes = {
-    history: PropTypes.object,
-    loading: PropTypes.bool,
-    render: PropTypes.func,
-    navbar: PropTypes.object,
-    logged: PropTypes.bool
-  }
+function Header (props) {
+  const { ...rest } = props /* eslint-disable-line */
+  const options = createNavBarOptions(props)
+  return (
+    <Layout.Header className={styles.root}>
+      <Link to='/' className={styles.flex}>
+        <div className={styles.brand}>
+          ContentKit
+        </div>
+      </Link>
+      <RightNav
+        render={props.render}
+        options={options}
+        query={props.query}
+      />
+    </Layout.Header>
+  )
+}
 
-  static defaultProps = {
-    render: () => null
-  }
-  shouldComponentUpdate (nextProps, nextState) {
-    return nextProps.logged !== this.props.logged ||
-      nextProps.loading !== this.props.loading ||
-      nextProps.selectedPost !== this.props.selectedPost ||
-      nextProps.query !== this.props.query
-  }
+Header.propTypes = {
+  history: PropTypes.object.isRequired,
+  render: PropTypes.func,
+  navbar: PropTypes.object,
+  logged: PropTypes.bool.isRequired
+}
 
-  render () {
-    const { ...rest } = this.props /* eslint-disable-line */
-    const options = createNavBarOptions(this.props)
-    return (
-      <Layout.Header className={styles.root}>
-        <Link to='/' className={styles.flex}>
-          <div className={styles.brand}>
-            ContentKit
-          </div>
-        </Link>
-        <RightNav
-          render={this.props.render}
-          options={options}
-          query={this.props.query}
-        />
-      </Layout.Header>
-    )
-  }
+Header.defaultProps = {
+  render: () => null
 }
 
 export default Header

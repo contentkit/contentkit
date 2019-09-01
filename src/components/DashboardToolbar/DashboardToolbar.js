@@ -1,13 +1,7 @@
-// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
 import SearchInput from '../DashboardToolbarSearchInput'
-import gql from 'graphql-tag'
-import { EditorState, convertFromRaw } from 'draft-js'
-import { expand } from 'draft-js-compact'
 import classnames from 'classnames'
-import { List } from 'immutable'
-import Button from 'antd/lib/button'
 import styles from './styles.scss'
 import { DELETE_POST } from '../../graphql/mutations'
 import { FEED_QUERY } from '../../graphql/queries'
@@ -59,20 +53,6 @@ const FilePlus = props => (
   </svg>
 )
 
-const fetchRaw = async ({ client, selected }) => {
-  const { data: { post } } = await client.query({
-    query: gql`
-      query($id: ID!) {
-        post(id: $id) {
-          raw
-        }
-      }
-    `,
-    variables: { id: selected }
-  })
-  return post.raw
-}
-
 class DashboardToolbar extends React.Component {
   state = {
     raw: undefined
@@ -84,17 +64,6 @@ class DashboardToolbar extends React.Component {
 
   static defaultProps = {
     selected: []
-  }
-
-  onMouseEnter = async () => {
-    if (this.state.raw) return
-    if (!this.props.selected.length) return
-
-    let raw = await fetchRaw({
-      client: this.props.client,
-      selected: this.props.selected[0]
-    })
-    this.setState({ raw })
   }
 
   handleDelete = async () => {
@@ -116,26 +85,10 @@ class DashboardToolbar extends React.Component {
           variables: { id }
         })
       })
-    ) 
+    )
   }
 
   handleEdit = async () => {
-    let raw = this.state.raw
-    if (!raw) {
-      raw = await fetchRaw({
-        client: this.props.client,
-        selected: this.props.selected
-      })
-    }
-    this.props.setEditorState(
-      EditorState.push(
-        this.props.editorState,
-        convertFromRaw(
-          expand(raw, { parent: null, children: List(), prevSibling: null, nextSibling: null })
-        ),
-        'insert-fragment'
-      )
-    )
     this.props.history.push('/posts/' + this.props.selected[0])
   }
 
@@ -158,11 +111,10 @@ class DashboardToolbar extends React.Component {
     } = this.props
     const open = selected.length > 0
     return (
-      <React.Fragment>
+      <>
         <div className={styles.root}>
           <button
             onClick={this.handleEdit}
-            onMouseEnter={this.onMouseEnter}
             disabled={!open}
             className={classnames(
               styles.button, { [styles.active]: open }
@@ -191,16 +143,12 @@ class DashboardToolbar extends React.Component {
             <FilePlus />
           </button>
         </div>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexBasis: '30%'
-        }}>
+        <div className={styles.filters}>
           <ProjectSelect
             selectedProject={selectedProject}
             allProjects={projects?.data?.allProjects}
             selectProject={selectProject}
+            className={styles.select}
           />
           <SearchInput
             handleSearch={handleSearch}
@@ -209,7 +157,7 @@ class DashboardToolbar extends React.Component {
             classes={{}}
           />
         </div>
-      </React.Fragment>
+      </>
     )
   }
 }
