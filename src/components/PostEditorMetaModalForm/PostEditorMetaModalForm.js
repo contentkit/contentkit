@@ -11,16 +11,12 @@ import classes from './styles.scss'
 import Row from 'antd/lib/row'
 import Col from 'antd/lib/col'
 import Form from 'antd/lib/form'
-import Icon from 'antd/lib/Icon'
+import Icon from 'antd/lib/icon'
 import clsx from 'clsx'
 import * as config from '../../lib/config'
-import Upload from 'antd/lib/upload'
 import AWS from 'aws-sdk'
-import uuid from 'uuid/v4'
 import safeKey from 'safe-s3-key'
 import withQuery from '../../lib/withQuery'
-import withMutation from '../../lib/withMutation'
-import { CREATE_IMAGE } from '../../graphql/mutations'
 import ThumbnailUpload from '../ThumbnailUpload'
 
 AWS.config.region = config.AWS_REGION
@@ -41,7 +37,6 @@ const defaultPost = {
 }
 
 function PostEditorMetaModalForm (props) {
-  console.log(props)
   const {
     handleChange,
     handleCoverImageChange,
@@ -110,8 +105,6 @@ function PostEditorMetaModalForm (props) {
     })
     onSuccess(resp)
   }
-
-  function onChange (value) {}
 
   return (
     <Form className={classes.root}>
@@ -225,19 +218,6 @@ export const PROJECTS_QUERY = gql`
 `
 
 const PostMetaForm = Form.create({ name: 'post_meta' })(PostEditorMetaModalForm)
-
-// const ModalWithData = props => (
-//   <Query query={PROJECTS_QUERY}>
-//     {projects => {
-//       if (projects.loading) {
-//         return null
-//       }
-//       return (
-//         <PostMetaForm {...props} projects={projects} />
-//       )
-//     }}
-//   </Query>
-// )
 
 const mutations = [
   withQuery({

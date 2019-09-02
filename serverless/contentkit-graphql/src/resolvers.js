@@ -97,7 +97,8 @@ const updatePost = (parent, args, ctx) => {
     args.publishedAt,
     args.status,
     args.title,
-    args.coverImageId
+    args.coverImageId,
+    args.id
   ])
 }
 
