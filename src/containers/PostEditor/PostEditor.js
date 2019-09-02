@@ -119,6 +119,8 @@ class BaseEditor extends React.Component {
           getHtml={this.getHtml}
           user={this.props.user}
           saveDocument={this.saveDocument}
+          createImage={this.props.createImage}
+          deleteImage={this.props.deleteImage}
         />
         <PostEditorComponent
           {...this.props}

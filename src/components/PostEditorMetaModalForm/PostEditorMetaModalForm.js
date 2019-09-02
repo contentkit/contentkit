@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import PostStatusSelect from '../PostEditorMetaModalSelect'
 import ProjectSelect from '../../components/ProjectSelect'
-import { Query } from 'react-apollo'
+import { compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
 import PostTagChips from '../PostTagChips'
@@ -18,6 +18,10 @@ import Upload from 'antd/lib/upload'
 import AWS from 'aws-sdk'
 import uuid from 'uuid/v4'
 import safeKey from 'safe-s3-key'
+import withQuery from '../../lib/withQuery'
+import withMutation from '../../lib/withMutation'
+import { CREATE_IMAGE } from '../../graphql/mutations'
+import ThumbnailUpload from '../ThumbnailUpload'
 
 AWS.config.region = config.AWS_REGION
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -43,7 +47,8 @@ function PostEditorMetaModalForm (props) {
     handleCoverImageChange,
     post,
     projects,
-    selectProject
+    selectProject,
+    deleteImage
   } = props
   const {
     title,
@@ -63,22 +68,27 @@ function PostEditorMetaModalForm (props) {
 
   React.useEffect(() => {
     const fileList = images.map(({ id, url }) => ({
-      uid: id,
+      id: id,
       url: `${config.AWS_BUCKET_URL}/${url}`,
       status: 'done'
     }))
     setFileList(fileList)
   }, [images])
 
-  function action (file) {
+  async function action (file) {
+    const key = safeKey(`static/${post.id}/${file.name}`)
     const params = {
       Bucket: config.AWS_BUCKET_NAME,
       Fields: {
-        key: safeKey(`${uuid()}-${file.name}`),
+        key: key,
         'Content-Type': file.type
       }
     }
 
+    await props.createImage({
+      url: key,
+      postId: props.post.id
+    })
     return new Promise((resolve, reject) => {
       s3.createPresignedPost(params, (err, data) => {
         if (err) reject(err)
@@ -87,18 +97,21 @@ function PostEditorMetaModalForm (props) {
     })
   }
 
-  function customRequest ({ headers, file, action }) {
+  async function customRequest ({ headers, file, action, onSuccess }) {
     const formData = new window.FormData()
     for (let field in action.fields) {
       formData.append(field, action.fields[field])
     }
     formData.append('file', file)
-    return fetch(action.url, {
+    const resp = await fetch(action.url, {
       method: 'POST',
       body: formData,
       headers: headers
     })
+    onSuccess(resp)
   }
+
+  function onChange (value) {}
 
   return (
     <Form className={classes.root}>
@@ -165,19 +178,23 @@ function PostEditorMetaModalForm (props) {
       </Row>
       <Row gutter={16}>
         <Col span={24}>
-          <Upload
+          <ThumbnailUpload
             customRequest={customRequest}
             action={action}
-            listType='picture-card'
             fileList={fileList}
-            onPreview={(...args) => console.log('preview', args)}
-            onChange={(...args) => console.log('change', args)}
+            coverImage={post?.coverImage?.id}
+            deleteImage={deleteImage}
+            onSelect={
+              fileId => {
+                handleCoverImageChange(fileId)
+              }
+            }
           >
             <div>
               <Icon type='plus' />
               <div className='ant-upload-text'>Upload</div>
             </div>
-          </Upload>
+          </ThumbnailUpload>
         </Col>
       </Row>
       <Row>
@@ -194,7 +211,8 @@ function PostEditorMetaModalForm (props) {
 PostEditorMetaModalForm.propTypes = {
   projects: PropTypes.object.isRequired,
   post: PropTypes.object,
-  handleChange: PropTypes.func
+  handleChange: PropTypes.func,
+  createImage: PropTypes.func.isRequired
 }
 
 export const PROJECTS_QUERY = gql`
@@ -208,17 +226,25 @@ export const PROJECTS_QUERY = gql`
 
 const PostMetaForm = Form.create({ name: 'post_meta' })(PostEditorMetaModalForm)
 
-const ModalWithData = props => (
-  <Query query={PROJECTS_QUERY}>
-    {projects => {
-      if (projects.loading) {
-        return null
-      }
-      return (
-        <PostMetaForm {...props} projects={projects} />
-      )
-    }}
-  </Query>
-)
+// const ModalWithData = props => (
+//   <Query query={PROJECTS_QUERY}>
+//     {projects => {
+//       if (projects.loading) {
+//         return null
+//       }
+//       return (
+//         <PostMetaForm {...props} projects={projects} />
+//       )
+//     }}
+//   </Query>
+// )
 
-export default ModalWithData
+const mutations = [
+  withQuery({
+    options: {
+      query: PROJECTS_QUERY
+    }
+  })
+]
+
+export default compose(...mutations)(PostMetaForm)

@@ -11,6 +11,8 @@ class PostEditorModals extends React.Component {
       html,
       setDialogState,
       user,
+      createImage,
+      deleteImage,
       ...rest
     } = this.props
 
@@ -30,6 +32,8 @@ class PostEditorModals extends React.Component {
           onClose={() => setDialogState(undefined)}
           client={this.props.client}
           post={this.props.post}
+          createImage={createImage}
+          deleteImage={deleteImage}
         />
       </React.Fragment>
     )

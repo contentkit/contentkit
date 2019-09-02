@@ -106,7 +106,7 @@ const createImage = (_, args, ctx) => {
 }
 
 const deleteImage = (_, args, ctx) => {
-  return pg.head(statements.Mutation.deleteImage, [args.id, ctx.user])
+  return pg.head(statements.Mutation.deleteImage, [args.id])
 }
 
 const createVersion = (_, args, ctx) => {

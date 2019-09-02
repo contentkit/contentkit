@@ -20,8 +20,8 @@ export const _POST_QUERY = gql`
   }
 `
 
-const getDate = ({ post: { data: { post } } }) => {
-  let date = post && post.publishedAt
+const getDate = ({ post }) => {
+  const date = post?.data?.post?.publishedAt
   return date ? new Date(date) : new Date()
 }
 
@@ -32,6 +32,7 @@ class EditPostMetaModal extends React.Component {
   }
 
   static propTypes = {
+    createImage: PropTypes.func.isRequired,
     updatePost: PropTypes.func,
     onClose: PropTypes.func,
     client: PropTypes.object,
@@ -151,7 +152,14 @@ class EditPostMetaModal extends React.Component {
   }
 
   render () {
-    const { post: { data: { post } }, open, onClose } = this.props
+    const {
+      open,
+      onClose,
+      createImage,
+      deleteImage,
+      client
+    } = this.props
+    const post = this.props?.post?.data?.post
     if (!post) return false
 
     const title = (<h2>Update Postmeta</h2>)
@@ -171,6 +179,9 @@ class EditPostMetaModal extends React.Component {
           handleDateInputChange={this.handleDateInputChange}
           handleCoverImageChange={this.handleCoverImageChange}
           selectProject={this.selectProject}
+          createImage={createImage}
+          deleteImage={deleteImage}
+          client={client}
         />
       </Modal>
     )
