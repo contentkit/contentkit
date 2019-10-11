@@ -16,18 +16,33 @@ import debounce from 'lodash.debounce'
 import Icon from 'antd/lib/icon'
 import Button from 'antd/lib/button'
 
+export const UPDATE_POST_TITLE = gql`
+  mutation ($id: ID!, $title: String!) {
+    updatePostTitle(id: $id, title: $title) {
+      id
+      title
+    }
+  }
+`
+
 export const UPDATE_POST = gql`
   mutation (
     $id: ID!
     $title: String!
     $status: PostStatus
     $publishedAt: String
+    $coverImageId: ID
+    $projectId: ID
+    $excerpt: String
   ) {
     updatePost(
       id: $id
       title: $title
       status: $status
       publishedAt: $publishedAt
+      coverImageId: $coverImageId
+      projectId: $projetId
+      excerpt: $excerpt
     ) {
       id
       createdAt
@@ -63,6 +78,14 @@ const EditableFormRow = Form.create()(EditableRow)
 class EditableCell extends React.Component {
   state = {
     editing: false,
+  }
+
+  componentDidMount () {
+    setTimeout(() => {
+      this.ref.onselectstart = () => {
+        return false
+      }
+    }, 0)
   }
 
   toggleEdit = (evt) => {
@@ -104,6 +127,17 @@ class EditableCell extends React.Component {
     }
   }
 
+  navigate = evt => {
+    if (this.state.editing) {
+      return
+    }
+
+    evt.preventDefault()
+    evt.stopPropagation()
+    const { history, record } = this.props
+    history.push(`/posts/${record.id}`)
+  }
+
   renderCell = form => {
     this.form = form
     const { children, dataIndex, record, title } = this.props
@@ -123,6 +157,7 @@ class EditableCell extends React.Component {
             ref={node => (this.input = node)}
             onPressEnter={this.save}
             onFocus={this.onFocus}
+            onClick={this.navigate}
             className={classnames(
               classes.editableInput,
               { [classes.editing]: editing }
@@ -147,7 +182,11 @@ class EditableCell extends React.Component {
       ...restProps
     } = this.props
     return (
-      <td {...restProps} className={classes.cell}>
+      <td
+        {...restProps}
+        className={classes.cell}
+        ref={ref => (this.ref = ref)}
+      >
         {editable ? (
           <EditableContext.Consumer>{this.renderCell}</EditableContext.Consumer>
         ) : (
@@ -162,14 +201,21 @@ class DashboardTable extends React.Component {
   static propTypes = {
     posts: PropTypes.object,
     projects: PropTypes.object,
-    selectedPost: PropTypes.object
+    selectedPosts: PropTypes.array.isRequired,
+    selectPosts: PropTypes.func.isRequired,
+    renderToolbar: PropTypes.func.isRequired
   }
 
-  onSelectChange = (rowKey) => {
+  onSelectChange = (evt, rowKey) => {
+    evt.preventDefault()
+    evt.stopPropagation()
     const { selectedPosts } = this.props
-    const selection = selectedPosts.includes(rowKey)
+    const isSelected = selectedPosts.includes(rowKey)
+    const selection = isSelected
       ? selectedPosts.filter(key => key !== rowKey)
-      : selectedPosts.concat([rowKey])
+      : evt.shiftKey
+        ? selectedPosts.concat([rowKey])
+        : [rowKey]
     this.props.selectPosts(selection)
   }
 
@@ -181,7 +227,7 @@ class DashboardTable extends React.Component {
       },
       optimisticResponse: {
         __typename: 'Mutation',
-        updatePost: {
+        updatePostTitle: {
           __typename: 'Post',
           ...post
         }
@@ -234,7 +280,8 @@ class DashboardTable extends React.Component {
           dataIndex: col.dataIndex,
           title: col.title,
           handleSave: this.handleSave(mutate),
-          className: classes.cell
+          className: classes.cell,
+          history: this.props.history
         })
       }
     })
@@ -242,7 +289,17 @@ class DashboardTable extends React.Component {
   }
 
   onRowClick = record => evt => {
-    this.onSelectChange(record.key)
+    this.onSelectChange(evt, record.key)
+  }
+
+  onRow = (record, rowIndex) => {
+    return {
+      onClick: this.onRowClick(record),
+      className: classnames({
+        [classes.row]: true,
+        [classes.selected]: this.props.selectedPosts.includes(record.id)
+      })
+    }
   }
 
   render () {
@@ -259,7 +316,7 @@ class DashboardTable extends React.Component {
       }
     }
     return (
-      <Mutation mutation={UPDATE_POST}>
+      <Mutation mutation={UPDATE_POST_TITLE}>
         {mutate => (
           <LazyLoad {...this.props} render={({ loading }) => (
             <div className={classes.wrapper}>
@@ -273,15 +330,7 @@ class DashboardTable extends React.Component {
                 loading={feed.loading || search.loading}
                 pagination={false}
                 components={components}
-                onRow={(record, rowIndex) => {
-                  return {
-                    onClick: this.onRowClick(record),
-                    className: classnames({
-                      [classes.row]: true,
-                      [classes.selected]: this.props.selectedPosts.includes(record.id)
-                    })
-                  }
-                }}
+                onRow={this.onRow}
               />
             </div>
           )} />

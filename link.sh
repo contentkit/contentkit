@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 yarn link @contentkit/buttons
 yarn link @contentkit/code
 yarn link @contentkit/editor

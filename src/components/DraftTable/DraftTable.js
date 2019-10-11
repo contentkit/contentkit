@@ -122,12 +122,11 @@ class DraftTable extends React.Component {
       width: `${Math.floor(index / firstRow.length)}%`,
       editable: true
     }))
-  
+
     const columns = rawColumns.map(col => {
       if (!col.editable) {
         return col
       }
-      console.log({ col })
       return {
         ...col,
         onCell: record => ({
@@ -140,7 +139,6 @@ class DraftTable extends React.Component {
       }
     })
 
-    console.log({ dataSource, tableRows, columns })
     const components = {
       body: {
         row: EditableFormRow,

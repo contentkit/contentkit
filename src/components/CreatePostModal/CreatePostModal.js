@@ -41,7 +41,6 @@ function CreatePostModal (props) {
     open,
     selectedProject
   } = props
-  console.log(props)
   return (
     <Modal
       title={'Create post'}

@@ -126,6 +126,7 @@ type Mutation {
     coverImageId: ID
     excerpt: String
   ): Post
+  updatePostTitle(id: ID!, title: String!): Post
   deletePost(id: ID!): Post
   deleteProject(id: ID!): Project
   createImage(postId: ID!, url: String!): Image

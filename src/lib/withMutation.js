@@ -4,7 +4,6 @@ import { Mutation } from 'react-apollo'
 const withMutation = ({ options, name, mutate }) => Component =>
   class extends React.Component {
     render () {
-      console.log(options)
       return (
         <Mutation {...options}>
           {(rawMutate, state) => {
@@ -18,7 +17,6 @@ const withMutation = ({ options, name, mutate }) => Component =>
                   options: options,
                   name: name
                 })
-                console.log({ variables, params })
 
                 return rawMutate(params)
               }

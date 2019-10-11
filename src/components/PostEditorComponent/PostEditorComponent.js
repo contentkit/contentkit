@@ -124,14 +124,16 @@ function PostEditorComponent (props) {
           />
         </div>
         <div className={classes.toolbar}>
-          <Toolbar.Component
-            config={awsConfig}
-            refId={post?.data?.post?.id}
-            images={post?.data?.post?.images}
-            deleteImage={deleteImage}
-            createImage={createImage}
-            insertImage={insertImage}
-          />
+          <div className={classes.toolbarInner}>
+            <Toolbar.Component
+              config={awsConfig}
+              refId={post?.data?.post?.id}
+              images={post?.data?.post?.images}
+              deleteImage={deleteImage}
+              createImage={createImage}
+              insertImage={insertImage}
+            />
+          </div>
         </div>
       </div>
       <DraftTableDialog

@@ -45,7 +45,6 @@ export const hydrate = (editorState, compressedRaw) => {
     return a
   }, [])
 
-  console.log(blocks)
   return EditorState.createWithContent(convertFromRaw({
     ...raw,
     blocks

@@ -102,6 +102,10 @@ const updatePost = (parent, args, ctx) => {
   ])
 }
 
+const updatePostTitle = (parent, args, ctx) => {
+  return pg.head(statements.Mutation.updatePostTitle, [args.title, args.id])
+}
+
 const createImage = (_, args, ctx) => {
   return pg.head(statements.Mutation.createImage, [args.postId, args.url])
 }
@@ -280,24 +284,32 @@ const resolvers = {
   Mutation: {
     createUser: createUser,
     signinUser: signinUser,
+    updateUser: updateUser,
+    generateToken: generateToken,
+    deleteUser: deleteUser,
+
+    updatePost: updatePost,
+    updatePostTitle: updatePostTitle,
     createPost: createPost,
     deletePost: deletePost,
+
     updateDocument: updateDocument,
+
     deleteVersion: deleteVersion,
+    createVersion: createVersion,
+
     createImage: createImage,
     deleteImage: deleteImage,
-    createVersion: createVersion,
+
     createProject: createProject,
-    generateToken: generateToken,
-    updateUser: updateUser,
+    updateProject: updateProject,
+    deleteProject: deleteProject,
+
     createOrigin: createOrigin,
     deleteOrigin: deleteOrigin,
-    updateProject: updateProject,
-    updatePost: updatePost,
-    deleteProject: deleteProject,
+
     createTag: createTag,
-    deleteTag: deleteTag,
-    deleteUser: deleteUser
+    deleteTag: deleteTag
   },
   Feed: {},
   Post: {

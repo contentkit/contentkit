@@ -23,7 +23,8 @@ module.exports = {
     deleteOrigin: 'DELETE FROM origins WHERE id = $1 RETURNING *',
     updateProject: 'UPDATE projects SET name = $1 WHERE id = $2 RETURNING *',
     deleteTag: 'DELETE FROM posts_tags WHERE tag_id = $1',
-    createImage: 'INSERT INTO images(post_id, url) VALUES($1, $2) RETURNING *'
+    createImage: 'INSERT INTO images(post_id, url) VALUES($1, $2) RETURNING *',
+    updatePostTitle: 'UPDATE posts SET title = $1 WHERE id = $2 RETURNING *'
   },
   Post: {
     images: 'SELECT * FROM images WHERE post_id = $1',

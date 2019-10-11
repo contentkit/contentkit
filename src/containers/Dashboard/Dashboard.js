@@ -113,6 +113,7 @@ class Dashboard extends React.Component {
           client={this.props.client}
           renderToolbar={this.renderToolbar}
           search={this.props.search}
+          history={this.props.history}
         />
       </Layout>
     )

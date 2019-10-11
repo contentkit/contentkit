@@ -35,7 +35,6 @@ function Dropzone (props) {
   }
 
   async function onDrop (evt) {
-    console.log(evt)
     evt.preventDefault()
     evt.stopPropagation()
     const files = Array.from(evt.dataTransfer.files)
@@ -56,7 +55,6 @@ function Dropzone (props) {
 
   function onChange (evt) {
     const files = Array.from(inputEl.files)
-    console.log(files)
   }
 
   return (
@@ -123,7 +121,6 @@ function ThumbnailUpload (props) {
     coverImage,
     deleteImage
   } = props
-  console.log({ coverImage })
   return (
     <div className={classes.grid}>
       {
