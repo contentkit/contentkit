@@ -7,7 +7,6 @@ import gql from 'graphql-tag'
 import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
 import PostTagChips from '../PostTagChips'
 import classes from './styles.scss'
-import Icon from 'antd/lib/icon'
 import clsx from 'clsx'
 import * as config from '../../lib/config'
 import AWS from 'aws-sdk'
@@ -16,6 +15,7 @@ import withQuery from '../../lib/withQuery'
 import ThumbnailUpload from '../ThumbnailUpload'
 import Input from '../Input'
 import { Grid } from '@material-ui/core'
+import { Add } from '@material-ui/icons'
 
 AWS.config.region = config.AWS_REGION
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -172,7 +172,7 @@ function PostEditorMetaModalForm (props) {
             }
           >
             <div>
-              <Icon type='plus' />
+              <Add />
               <div className='ant-upload-text'>Upload</div>
             </div>
           </ThumbnailUpload>

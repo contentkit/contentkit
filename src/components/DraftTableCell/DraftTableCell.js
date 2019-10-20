@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import classnames from 'classnames'
+import clsx from 'clsx'
 import styles from './styles.scss'
 
 
@@ -51,7 +51,7 @@ class DraftTableCell extends React.Component {
     return (
       <div
         onMouseDown={evt => onClickCell(evt, cell.key)}
-        className={classnames(styles.tableCell, { selected: isSelected, editing: isEditing })}
+        className={clsx(styles.tableCell, { selected: isSelected, editing: isEditing })}
         ref={this.containerRef}
         style={{
           width: `${this.props.width}%`
@@ -66,7 +66,7 @@ class DraftTableCell extends React.Component {
           onBlur={this.onBlur}
           ref={this.inputRef}
           onFocus={this.onFocus}
-          className={classnames(styles.input)}
+          className={clsx(styles.input)}
           tabIndex={index}
         />
         {this.props.children}

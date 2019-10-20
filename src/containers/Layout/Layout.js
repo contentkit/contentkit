@@ -8,7 +8,6 @@ import { withStyles } from '@material-ui/core/styles'
 
 function Layout (props) {
   const { classes, children, className, ...rest } = props
-  console.log(props)
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -33,7 +32,8 @@ Layout.propTypes = {
 
 const styles = theme => ({
   root: {
-    backgroundColor: '#f0f5ff',
+    backgroundColor: theme.variables.backgroundColor,
+    minHeight: '100vh'
   },
   layout: {},
   footer: {},
