@@ -5,7 +5,7 @@ import { POST_QUERY } from '../../graphql/queries'
 import gql from 'graphql-tag'
 import { createInitialState, convertToDate } from 'draft-js-dates'
 
-import Modal from 'antd/lib/modal'
+import { Dialog, DialogContent } from '@material-ui/core'
 
 export const _POST_QUERY = gql`
   query ($id: ID!) {
@@ -164,26 +164,30 @@ class EditPostMetaModal extends React.Component {
 
     const title = (<h2>Update Postmeta</h2>)
     return (
-      <Modal
-        visible={open}
-        title={title}
-        onCancel={onClose}
-        onOk={this.handlePostMetaUpdate}
-        width={700}
+      <Dialog
+        fullWidth
+        open={open}
+        // title={title}
+        onClose={onClose}
+        // onOk={this.handlePostMetaUpdate}
+        // width={700}
+        size='md'
       >
-        <PostMetaForm
-          user={this.props.user}
-          post={this.props.post?.data?.post}
-          handleChange={this.handleChange}
-          dateInputState={this.state.dateInputState}
-          handleDateInputChange={this.handleDateInputChange}
-          handleCoverImageChange={this.handleCoverImageChange}
-          selectProject={this.selectProject}
-          createImage={createImage}
-          deleteImage={deleteImage}
-          client={client}
-        />
-      </Modal>
+        <DialogContent>
+          <PostMetaForm
+            user={this.props.user}
+            post={this.props.post?.data?.post}
+            handleChange={this.handleChange}
+            dateInputState={this.state.dateInputState}
+            handleDateInputChange={this.handleDateInputChange}
+            handleCoverImageChange={this.handleCoverImageChange}
+            selectProject={this.selectProject}
+            createImage={createImage}
+            deleteImage={deleteImage}
+            client={client}
+          />
+        </DialogContent>
+      </Dialog>
     )
   }
 }

@@ -1,11 +1,16 @@
 import React from 'react'
-import Button from 'antd/lib/button'
+import { IconButton } from '@material-ui/core'
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons'
 
 function KeyboardArrows (props) {
   return (
     <>
-      <Button onClick={props.handlePrev} icon={'left'} shape={'round'} />
-      <Button onClick={props.handleNext} icon={'right'} shape={'round'} />
+      <IconButton onClick={props.handlePrev}>
+        <KeyboardArrowLeft />
+      </IconButton>
+      <IconButton onClick={props.handleNext}>
+        <KeyboardArrowRight />
+      </IconButton>
     </>
   )
 }

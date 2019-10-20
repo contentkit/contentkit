@@ -1,6 +1,6 @@
 
 import React from 'react'
-import Button from 'antd/lib/button'
+import { Button } from '@material-ui/core'
 
 const ButtonWithSpinner = props => (
   <Button type={'primary'} {...props} />

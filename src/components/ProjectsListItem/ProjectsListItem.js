@@ -1,10 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import ProjectAvatar from '../ProjectsListItemAvatar'
-import List from 'antd/lib/list'
-import styles from './styles.scss'
+import { ListItem, ListItemText, ListItemAvatar } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(2)
+  }
+}))
 
 function ProjectsListItem (props) {
+  const classes = useStyles(props)
   const { project, handleClick } = props
 
   const onMouseEnter = evt => {
@@ -16,18 +23,20 @@ function ProjectsListItem (props) {
   }
 
   return (
-    <List.Item
+    <ListItem
       onClick={() => handleClick(props.project.id)}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={styles.root}
+      className={classes.root}
     >
-      <List.Item.Meta
-        avatar={<ProjectAvatar id={project.id} />}
-        title={<span>{project.name}</span>}
-        description={<span>Posts</span>}
+      <ListItemAvatar>
+        <ProjectAvatar id={project.id} />
+      </ListItemAvatar>
+      <ListItemText
+        primary={<span>{project.name}</span>}
+        secondary={<span>Posts</span>}
       />
-    </List.Item>
+    </ListItem>
   )
 }
 

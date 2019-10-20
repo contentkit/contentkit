@@ -1,12 +1,9 @@
-// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
 import RightNav from './RightNav'
 import { Link } from 'react-router-dom'
 import { PROFILE_PATH, LOGIN_PATH, PROJECTS_PATH } from '../../lib/config'
-import Layout from 'antd/lib/layout'
-
-import styles from './styles.scss'
+import { makeStyles } from '@material-ui/styles'
 
 const createNavBarOptions = (props) => {
   const defaultOptions = [{
@@ -32,13 +29,37 @@ const createNavBarOptions = (props) => {
   return props.logged ? loggedOptions : defaultOptions
 }
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 60,
+    padding: '0 30px',
+    backgroundColor: '#fff',
+    zIndex: 2
+  },
+  [theme.breakpoints.up('md')]: {
+    root: {
+      // 0 6px 20px rgba(0,0,0,.06)
+      boxShadow: '0px 6px 20px rgba(0, 0, 0, 0.06)'
+    }
+  },
+  flex: {
+    flexBasis: '50%'
+  },
+  brand: {
+    color: '#111'
+  }
+}))
+
 function Header (props) {
-  const { ...rest } = props /* eslint-disable-line */
+  const classes = useStyles(props)
   const options = createNavBarOptions(props)
   return (
-    <Layout.Header className={styles.root}>
-      <Link to='/' className={styles.flex}>
-        <div className={styles.brand}>
+    <div className={classes.root}>
+      <Link to='/' className={classes.flex}>
+        <div className={classes.brand}>
           ContentKit
         </div>
       </Link>
@@ -47,7 +68,7 @@ function Header (props) {
         options={options}
         query={props.query}
       />
-    </Layout.Header>
+    </div>
   )
 }
 
@@ -55,10 +76,11 @@ Header.propTypes = {
   history: PropTypes.object.isRequired,
   render: PropTypes.func,
   navbar: PropTypes.object,
-  logged: PropTypes.bool.isRequired
+  logged: PropTypes.bool
 }
 
 Header.defaultProps = {
+  logged: true,
   render: () => null
 }
 

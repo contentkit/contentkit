@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Select from 'antd/lib/select'
+import { Select } from '@material-ui/core'
+import Input from '../Input'
 
 function SelectProject (props) {
   React.useEffect(() => {
@@ -11,9 +12,9 @@ function SelectProject (props) {
         selectProject(project.id)
       }
     }
-  })
+  }, [props.allProjects])
 
-  const onChange = value => {
+  const onChange = ({ currentTarget: { value } }) => {
     props.selectProject(value)
   }
 
@@ -25,13 +26,15 @@ function SelectProject (props) {
 
   return (
     <Select
+      native
       label={'Project'}
       value={selectedProject}
       onChange={onChange}
       className={className}
+      input={<Input name='project' id='project' />}
     >
       {
-        allProjects.map(project => <Select.Option key={project.id}>{project.name}</Select.Option>)
+        allProjects.map(project => <option key={project.id} value={project.id}>{project.name}</option>)
       }
     </Select>
   )

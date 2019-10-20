@@ -6,11 +6,7 @@ import { compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
 import PostTagChips from '../PostTagChips'
-import Input from 'antd/lib/input'
 import classes from './styles.scss'
-import Row from 'antd/lib/row'
-import Col from 'antd/lib/col'
-import Form from 'antd/lib/form'
 import Icon from 'antd/lib/icon'
 import clsx from 'clsx'
 import * as config from '../../lib/config'
@@ -18,11 +14,14 @@ import AWS from 'aws-sdk'
 import safeKey from 'safe-s3-key'
 import withQuery from '../../lib/withQuery'
 import ThumbnailUpload from '../ThumbnailUpload'
+import Input from '../Input'
+import { Grid } from '@material-ui/core'
 
 AWS.config.region = config.AWS_REGION
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
   IdentityPoolId: config.IDENTITY_POOL_ID
 })
+
 const s3 = new AWS.S3()
 
 const defaultPost = {
@@ -106,71 +105,60 @@ function PostEditorMetaModalForm (props) {
     onSuccess(resp)
   }
 
+  console.log(props)
   return (
-    <Form className={classes.root}>
-      <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item label={'Title'}>
-            <Input
-              label={'title'}
-              onChange={e => handleChange(e.target.value, 'title')}
-              value={title}
-            />
-          </Form.Item>
-        </Col>
+    <form className={classes.root}>
+      <Grid container spacing={4}>
+        <Grid item xs={6}>
+          <Input
+            label={'title'}
+            onChange={e => handleChange(e.target.value, 'title')}
+            value={title}
+          />
+        </Grid>
 
-        <Col span={12}>
-          <Form.Item label={'Status'}>
-            <PostStatusSelect
-              handleChange={handleChange}
-              value={status}
-            />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item label={'Slug'}>
-            <Input
-              placeholder={'slug'}
-              onChange={e => handleChange(e.target.value, 'slug')}
-              value={slug}
-            />
-          </Form.Item>
-        </Col>
+        <Grid item xs={6}>
+          <PostStatusSelect
+            handleChange={handleChange}
+            value={status}
+          />
+        </Grid>
+      </Grid>
+      <Grid container spacing={4}>
+        <Grid item xs={6}>
+          <Input
+            placeholder={'slug'}
+            onChange={e => handleChange(e.target.value, 'slug')}
+            value={slug}
+          />
+        </Grid>
 
-        <Col span={12}>
-          <Form.Item label={'Project'}>
-            <ProjectSelect
-              allProjects={allProjects}
-              selectedProject={selectedProject}
-              selectProject={selectProject}
-            />
-          </Form.Item>
-        </Col>
-      </Row>
+        <Grid item xs={6}>
+          <ProjectSelect
+            allProjects={allProjects}
+            selectedProject={selectedProject}
+            selectProject={selectProject}
+          />
+        </Grid>
+      </Grid>
 
-      <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item label={'Excerpt'}>
-            <Input
-              placeholder={'excerpt'}
-              onChange={e => handleChange(e.target.value, 'excerpt')}
-              value={excerpt}
-            />
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item label={'Date'}>
-            <PostMetaDatePicker
-              handleChange={value => handleChange(value, 'publishedAt')}
-              value={publishedAt}
-            />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col span={24}>
+      <Grid container spacing={4}>
+        <Grid item xs={6}>
+          <Input
+            placeholder={'excerpt'}
+            onChange={e => handleChange(e.target.value, 'excerpt')}
+            value={excerpt}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <PostMetaDatePicker
+            handleChange={value => handleChange(value, 'publishedAt')}
+            value={publishedAt}
+          />
+        </Grid>
+      </Grid>
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
           <ThumbnailUpload
             customRequest={customRequest}
             action={action}
@@ -188,16 +176,14 @@ function PostEditorMetaModalForm (props) {
               <div className='ant-upload-text'>Upload</div>
             </div>
           </ThumbnailUpload>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={24}>
-          <Form.Item>
-            <PostTagChips post={post} />
-          </Form.Item>
-        </Col>
-      </Row>
-    </Form>
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={12}>
+          <PostTagChips post={post} />
+        </Grid>
+      </Grid>
+    </form>
   )
 }
 
@@ -217,14 +203,15 @@ export const PROJECTS_QUERY = gql`
   }
 `
 
-const PostMetaForm = Form.create({ name: 'post_meta' })(PostEditorMetaModalForm)
+// const PostMetaForm = Form.create({ name: 'post_meta' })(PostEditorMetaModalForm)
 
 const mutations = [
   withQuery({
     options: {
+      name: 'projects',
       query: PROJECTS_QUERY
     }
   })
 ]
 
-export default compose(...mutations)(PostMetaForm)
+export default compose(...mutations)(PostEditorMetaModalForm)

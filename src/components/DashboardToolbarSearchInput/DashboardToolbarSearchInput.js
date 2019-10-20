@@ -1,6 +1,6 @@
 import React from 'react'
-import Input from 'antd/lib/input'
 import PropTypes from 'prop-types'
+import Input from '../Input'
 
 function SearchInput (props) {
   const {
@@ -9,11 +9,18 @@ function SearchInput (props) {
     classes
   } = props
   return (
-    <Input.Search
+    <Input
       onChange={handleChange}
       value={query}
       className={classes.input}
-      onSearch={() => props.handleSearch({ query })}
+      onKeyDown={evt => {
+        switch (evt.which) {
+          case 13:
+            props.handleSearch({ query })
+            break
+          default:
+        }
+      }}
       style={{
         maxWidth: 200
       }}

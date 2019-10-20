@@ -1,8 +1,15 @@
 // @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import Button from 'antd/lib/button'
-import classes from './styles.scss'
+import { Button, Toolbar } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  }
+}))
 
 function ProjectModalToolbar (props) {
   const {
@@ -10,8 +17,9 @@ function ProjectModalToolbar (props) {
     handleDelete,
     handleClose
   } = props
+  const classes = useStyles(props)
   return (
-    <div className={classes.root}>
+    <Toolbar className={classes.root}>
       <Button
         className={classes.button}
         onClick={handleDelete}>
@@ -28,7 +36,7 @@ function ProjectModalToolbar (props) {
           Save
         </Button>
       </div>
-    </div>
+    </Toolbar>
   )
 }
 

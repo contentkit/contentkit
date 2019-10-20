@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Select from 'antd/lib/select'
+import { Select } from '@material-ui/core'
+import Input from '../Input'
 
 const PostEditorMetaModalSelect = (props) => {
   const { value, handleChange } = props
@@ -16,13 +17,15 @@ const PostEditorMetaModalSelect = (props) => {
 
   return (
     <Select
+      native
       onChange={onChange}
       options={options}
       label={'Status'}
       value={value}
+      input={<Input name='select-status' />}
     >
       {
-        options.map(option => <Select.Option key={option.value}>{option.label}</Select.Option>)
+        options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)
       }
     </Select>
   )
