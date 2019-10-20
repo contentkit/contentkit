@@ -137,18 +137,22 @@ class DashboardTable extends React.Component {
     this.onSelectChange(evt, record.key)
   }
 
-  checkboxOnChange = (evt) => {
-    evt.preventDefault()
-    evt.stopPropagation()
-    const { value } = evt.target
+  selectRow = (value, shiftKey = true) => {
     const { selectedPosts } = this.props
     const isSelected = selectedPosts.includes(value)
     const selection = isSelected
       ? selectedPosts.filter(key => key !== value)
-      : evt.shiftKey
+      : shiftKey
         ? selectedPosts.concat([value])
         : [value]
     this.props.selectPosts(selection)
+  }
+
+  checkboxOnChange = (evt) => {
+    evt.preventDefault()
+    evt.stopPropagation()
+    const { value } = evt.target
+    this.selectRow(value, evt.shiftKey)
   }
 
   render () {
@@ -171,7 +175,7 @@ class DashboardTable extends React.Component {
               <Paper elevation={0}>
                 <Table size='small' className={classes.table}>
                   <TableHead>
-                    <TableCell key='checkbox' className={classes.tableCell} />
+                    <TableCell key='checkbox' className={classes.tableCell} padding='checkbox' />
                     {columns.map(column =>
                       <TableCell key={`td_${column.key}`} className={classes.tableCell}>{column.title}</TableCell>  
                     )}
@@ -184,7 +188,7 @@ class DashboardTable extends React.Component {
                           [classes.selected]: this.props.selectedPosts.includes(row.id)
                         })
                         return (
-                          <TableRow key={row.id} className={className}>
+                          <TableRow key={row.id} className={className} onClick={evt => this.selectRow(row.id)}>
                             <TableCell className={classes.tableCell}>
                               <Checkbox
                                 value={row.id}

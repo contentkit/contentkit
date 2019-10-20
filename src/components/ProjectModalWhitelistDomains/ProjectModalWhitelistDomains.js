@@ -1,11 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { projectQueryShape } from '../../shapes'
-import classes from './styles.scss'
 import { Chip } from '@material-ui/core'
 import Input from '../Input'
+import { makeStyles } from '@material-ui/styles'
+
+const useStyles = makeStyles({
+  root: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
+    marginBottom: 15
+  },
+  chip: {}
+})
 
 function WhitelistChips (props) {
+  const classes = useStyles()
   const { domains } = props
   return (
     <div className={classes.root}>

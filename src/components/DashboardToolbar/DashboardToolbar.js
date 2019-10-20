@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import { DELETE_POST } from '../../graphql/mutations'
 import { FEED_QUERY } from '../../graphql/queries'
 import ProjectSelect from '../ProjectSelect'
-import { Toolbar } from '@material-ui/core'
+import { Toolbar, IconButton } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles'
 
 const EditIcon = props => (
@@ -115,7 +115,7 @@ class DashboardToolbar extends React.Component {
     return (
       <>
         <Toolbar className={classes.root}>
-          <button
+          <IconButton
             onClick={this.handleEdit}
             disabled={!open}
             className={clsx(
@@ -123,8 +123,8 @@ class DashboardToolbar extends React.Component {
             )}
           >
             <EditIcon />
-          </button>
-          <button
+          </IconButton>
+          <IconButton
             onClick={this.handleDelete}
             disabled={!open}
             className={clsx(
@@ -133,8 +133,8 @@ class DashboardToolbar extends React.Component {
             )}
           >
             <DeleteIcon />
-          </button>
-          <button
+          </IconButton>
+          <IconButton
             onClick={() => {
               this.props.handleOpen()
             }}
@@ -143,7 +143,7 @@ class DashboardToolbar extends React.Component {
             )}
           >
             <FilePlus />
-          </button>
+          </IconButton>
         </Toolbar>
         <Toolbar className={classes.filters}>
           <ProjectSelect
@@ -179,15 +179,15 @@ const styles = theme => ({
     display: 'flex'
   },
   button: {
+    borderRadius: 0,
     color: 'rgb(188, 193, 217)',
-    all: 'unset',
-    marginRight: 20,
-    '&.active': {
-      color: theme.iconColorActive,
-      '&:hover': {
-        color: theme.iconColorHover,
-        cursor: 'pointer'
-      }
+    marginRight: 20
+  },
+  active: {
+    color: theme.variables.iconColorActive,
+    '&:hover': {
+      color: theme.variables.iconColorHover,
+      cursor: 'pointer'
     }
   }
 })

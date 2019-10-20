@@ -3,9 +3,27 @@ import PropTypes from 'prop-types'
 import WhitelistDomains from '../ProjectModalWhitelistDomains'
 import ProjectIdInput from '../ProjectModalIdInput'
 import ProjectModalForm from '../ProjectModalForm'
-import classes from './styles.scss'
+import { makeStyles } from '@material-ui/styles'
+
+const useStyles = makeStyles(theme => ({
+  formControl: {
+    width: '100%',
+    marginBottom: 15
+  },
+  button: {},
+  input: {
+    marginBottom: 15
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100%'
+  }
+}))
 
 function ProjectModalContent (props) {
+  const classes = useStyles(props)
   const ref = React.useRef()
 
   function setRef (instance) {

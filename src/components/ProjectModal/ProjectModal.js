@@ -1,7 +1,6 @@
 import React from 'react'
 import ProjectModalContent from '../ProjectModalContent'
 import PropTypes from 'prop-types'
-import styles from './styles.scss'
 import { Grid, Dialog, DialogContent, DialogActions, DialogTitle } from '@material-ui/core'
 import { compose } from 'react-apollo'
 import mutations from './mutations'
@@ -11,7 +10,19 @@ import {
 } from '../../graphql/queries'
 import Button from '../Button'
 
+import { makeStyles } from '@material-ui/styles'
+
+const useStyles = makeStyles(theme => ({
+  modal: {},
+  actions: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%'
+  }
+}))
+
 function ProjectModal (props) {
+  const classes = useStyles(props)
   const onChange = data => {
     const { client, project } = props
     return client.writeQuery({
@@ -45,7 +56,7 @@ function ProjectModal (props) {
     <Dialog
       open={props.open}
       onClose={handleClose}
-      className={styles.modal}
+      className={classes.modal}
       size='md'
       fullWidth
     >
@@ -62,7 +73,7 @@ function ProjectModal (props) {
         />
       </DialogContent>
       <DialogActions>
-        <Grid container className={styles.actions}>
+        <Grid container className={classes.actions}>
           <Grid item xs={6}>
             <Button key={'delete'} onClick={handleDelete} color='danger'>Delete</Button>
           </Grid>
