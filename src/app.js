@@ -50,11 +50,11 @@ const ConnectedApp = compose(
 ;(async () => {
   ReactDOM.render(
     <ApolloProvider client={client}>
-      <AuthProvider>
-        <ThemeProvider>
+      <ThemeProvider>
+        <AuthProvider>
           <ConnectedApp />
-        </ThemeProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </ApolloProvider>,
     document.getElementById('root')
   )  

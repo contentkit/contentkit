@@ -22,12 +22,14 @@ import {
   TextField,
   Button
 } from '@material-ui/core'
+import Input from '../Input'
 
 const useStyles = makeStyles(theme => ({
   content: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    // display: 'flex',
+    // justifyContent: 'space-between',
+    // alignItems: 'center'
+    minHeight: 200
   }
 }))
 
@@ -57,21 +59,27 @@ function CreatePostModal (props) {
     selectedProject
   } = props
   return (
-    <Dialog open={open} fullWidth>
+    <Dialog open={open} fullWidth size='md'>
+      <DialogTitle>Create Post</DialogTitle>
       <DialogContent className={classes.content}>
-        <TextField
-          value={title}
-          onChange={handleInputChange}
-          variant='outlined'
-          margin='dense'
-          label={'Post title'}
-
-        />
-        <ProjectSelect
-          selectedProject={selectedProject}
-          allProjects={projects?.data?.allProjects}
-          selectProject={selectProject}
-        />
+        <Grid container spacing={4}>
+          <Grid item xs={6}>
+            <Input
+              value={title}
+              onChange={handleInputChange}
+              //variant='outlined'
+              //margin='dense'
+              label={'Post title'}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <ProjectSelect
+              selectedProject={selectedProject}
+              allProjects={projects?.data?.allProjects}
+              selectProject={selectProject}
+            />
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel}>Cancel</Button>

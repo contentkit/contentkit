@@ -3,10 +3,10 @@ import propTypes from 'prop-types'
 import ProfileUserFormKeyInput from '../ProfileUserFormKeyInput'
 import Input from '../Input'
 import {
-  Grid,
-  Button
+  Grid
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
+import Button from '../Button'
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -41,18 +41,21 @@ function UserForm (props) {
   const secret = props?.user?.data?.user.secret || ''
   const email = props?.user?.data?.user?.email || ''
   const name = props?.user?.data?.user?.name || ''
+  console.log({
+    name, email, secret, props
+  })
   return (
     <div className={props.className}>
       <Grid container spacing={4}>
         <Grid item xs={6}>
           <Input
             className={classes.input}
-            placeholder='Name'
+            // placeholder='Name'
             value={name}
             onChange={(e) => props.handleChange(e, 'name')}
           />
         </Grid>
-        <Grid xs={6}>
+        <Grid item xs={6}>
           <Input
             className={classes.input}
             placeholder='Email'
@@ -70,8 +73,8 @@ function UserForm (props) {
       <div className={classes.flex}>
         <Button
           className={classes.button}
-          type={'primary'}
-          loading={props.updateUser.loading}
+          color='default'
+          // loading={props.updateUser.loading}
           onClick={() => {
             props.updateUser.mutate({
               name: name,

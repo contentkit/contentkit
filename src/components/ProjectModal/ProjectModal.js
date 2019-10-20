@@ -1,17 +1,15 @@
 import React from 'react'
 import ProjectModalContent from '../ProjectModalContent'
 import PropTypes from 'prop-types'
-import Modal from 'antd/lib/modal'
 import styles from './styles.scss'
-import Button from 'antd/lib/button'
-import Row from 'antd/lib/row'
-import Col from 'antd/lib/col'
+import { Grid, Dialog, DialogContent, DialogActions, DialogTitle } from '@material-ui/core'
 import { compose } from 'react-apollo'
 import mutations from './mutations'
 
 import {
   PROJECT_QUERY
 } from '../../graphql/queries'
+import Button from '../Button'
 
 function ProjectModal (props) {
   const onChange = data => {
@@ -41,38 +39,40 @@ function ProjectModal (props) {
   }
 
   const handleClose = () => props.handleClose()
-
+  console.log(props)
+  if (!props.project) return null
   return (
-    <Modal
-      visible={props.open}
-      onCancel={handleClose}
-      onOk={handleSave}
+    <Dialog
+      open={props.open}
+      onClose={handleClose}
       className={styles.modal}
-      closable={false}
-      footer={
-        <Row className={styles.actions}>
-          <Col span={12}>
-            <Button key={'delete'} onClick={handleDelete} type={'danger'}>Delete</Button>
-          </Col>
-          <Col span={12}>
-            <Row justify={'end'} type={'flex'}>
-              <Button key={'cancel'} onClick={handleClose}>Cancel</Button>
-              <Button key={'update'} onClick={handleSave} type={'primary'}>Update</Button>
-            </Row>
-          </Col>
-        </Row>
-      }
+      size='md'
+      fullWidth
     >
-      <ProjectModalContent
-        onChange={onChange}
-        handleSave={handleSave}
-        handleDelete={handleDelete}
-        handleClose={props.handleClose}
-        project={props.project}
-        deleteOrigin={props.deleteOrigin}
-        createOrigin={props.createOrigin}
-      />
-    </Modal>
+      <DialogTitle>{props?.project?.data?.name}</DialogTitle>
+      <DialogContent>
+        <ProjectModalContent
+          onChange={onChange}
+          handleSave={handleSave}
+          handleDelete={handleDelete}
+          handleClose={props.handleClose}
+          project={props.project}
+          deleteOrigin={props.deleteOrigin}
+          createOrigin={props.createOrigin}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Grid container className={styles.actions}>
+          <Grid item xs={6}>
+            <Button key={'delete'} onClick={handleDelete} color='danger'>Delete</Button>
+          </Grid>
+          <Grid item xs={6} justify='flex-end' style={{ justifyContent: 'flex-end', display: 'flex' }}>
+            <Button key={'cancel'} onClick={handleClose} style={{ marginRight: 10 }}>Cancel</Button>
+            <Button key={'update'} onClick={handleSave}>Update</Button>
+          </Grid>
+        </Grid>
+      </DialogActions>
+    </Dialog>
   )
 }
 

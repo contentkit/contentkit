@@ -4,9 +4,9 @@ import { DELETE_TAG, CREATE_TAG } from '../../graphql/mutations'
 import { TAG_QUERY } from '../../graphql/queries'
 import { Mutation, Query } from 'react-apollo'
 import { genKey, genDate } from '../../lib/util'
-import Tag from 'antd/lib/tag'
+import { Chip } from '@material-ui/core'
 import styles from './styles.scss'
-import Input from 'antd/lib/input'
+import Input from '../Input'
 
 function CreateTagInput (props) {
   const [value, setValue] = React.useState('')
@@ -111,17 +111,16 @@ class PostTagChips extends React.Component {
                     <div>
                       <div className={styles.tags}>
                         {tagQuery.data.tagsByPost.map(tag => (
-                          <Tag
-                            closable
-                            visible
+                          <Chip
                             key={tag.id}
-                            onClose={() => this.deleteTag({
+                            onDelete={() => this.deleteTag({
                               query: tagQuery,
                               mutate: deleteTag,
                               variables: { id: tag.id }
                             })}
                             className={styles.chip}
-                          >{tag.name}</Tag>
+                            label={tag.name}
+                          />
                         ))}
                       </div>
                       <CreateTagInput
