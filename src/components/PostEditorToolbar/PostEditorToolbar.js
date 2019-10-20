@@ -1,9 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Button from 'antd/lib/button'
-import classes from './styles.scss'
+import { Button } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
+
+const useStyles = makeStyles(theme => ({
+  toolbar: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    button: {
+      marginRight: 15
+    }
+  }
+}))
 
 function PostEditorToolbar (props) {
+  const classes = useStyles(props)
   return (
     <div className={classes.toolbar}>
       <Button onClick={evt => props.onClick('history')}>

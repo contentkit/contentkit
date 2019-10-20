@@ -4,11 +4,11 @@ import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import { expand } from 'draft-js-compact'
 import distanceInWords from 'date-fns/distance_in_words'
 
-import Button from 'antd/lib/button'
-import Modal from 'antd/lib/modal'
 import classes from './styles.scss'
 import clsx from 'clsx'
 import Timeline from 'antd/lib/timeline'
+
+import { Button, Dialog, DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
 
 const formatDate = (timestamp) =>
   distanceInWords(new Date(timestamp), new Date())
@@ -51,13 +51,41 @@ class PostEditorHistoryModal extends React.Component {
     const { post } = this.props
     const versions = post?.data?.post?.versions || []
     return (
-      <Modal
-        width={700}
-        visible={this.props.open}
-        onCancel={this.props.onClose}
-        onOK={() => {}}
-        title={'History'}
-        footer={[
+      <Dialog
+        fullWidth
+        size='md'
+        onClose={this.props.onClose}
+      >
+        <DialogTitle>History</DialogTitle>
+        <DialogContent>
+          <div className={classes.row}>
+            <div className={clsx(classes.column, classes.sidebar)}>
+              <Timeline>
+                {
+                  versions.map(version => {
+                    return (
+                      <Timeline.Item onClick={evt => this.handleClick(version)} key={version.id}>
+                        <div>
+                          {formatDate(version.createdAt)}
+                        </div>
+                        <div>
+                          {version?.raw?.blocks[0]?.text || ''}
+                        </div>
+                      </Timeline.Item>
+                    )
+                  })
+                }
+              </Timeline>
+            </div>
+            <div className={classes.column}>
+              <Editor
+                editorState={this.state.editorState}
+                readOnly
+              />
+            </div>
+          </div>
+        </DialogContent>
+        <DialogActions>
           <Button
             variant='text'
             onClick={this.props.onClose}
@@ -72,35 +100,8 @@ class PostEditorHistoryModal extends React.Component {
           >
             Restore
           </Button>
-        ]}
-      >
-        <div className={classes.row}>
-          <div className={clsx(classes.column, classes.sidebar)}>
-            <Timeline>
-              {
-                versions.map(version => {
-                  return (
-                    <Timeline.Item onClick={evt => this.handleClick(version)} key={version.id}>
-                      <div>
-                        {formatDate(version.createdAt)}
-                      </div>
-                      <div>
-                        {version?.raw?.blocks[0]?.text || ''}
-                      </div>
-                    </Timeline.Item>
-                  )
-                })
-              }
-            </Timeline>
-          </div>
-          <div className={classes.column}>
-            <Editor
-              editorState={this.state.editorState}
-              readOnly
-            />
-          </div>
-        </div>
-      </Modal>
+        </DialogActions>
+      </Dialog>
     )
   }
 }
