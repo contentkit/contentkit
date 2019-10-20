@@ -1,17 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Icon from 'antd/lib/icon'
-import { IconButton } from '@material-ui/core'
+import { IconButton, InputAdornment } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
+import { Refresh } from '@material-ui/icons'
 import Input from '../Input'
+
 
 const useStyles = makeStyles(theme => ({
   input: {
     marginBottom: 20
   },
   button: {
-    all: 'unset'
+    // all: 'unset'
+  },
+  adornment: {
+    marginRight: 8
   }
 }))
 
@@ -31,11 +35,15 @@ function ProfileUserFormKeyInput (props) {
         ref={setRef}
         placeholder={'API key'}
         endAdornment={
-          <IconButton
-            className={classes.button}
-            onClick={() => generateToken()}>
-            <Icon type='sync' />
-          </IconButton>
+          <InputAdornment position='end' className={classes.adornment}>
+            <IconButton
+              edge='end'
+              size='small'
+              className={classes.button}
+              onClick={() => generateToken()}>
+              <Refresh />
+            </IconButton>
+          </InputAdornment>
         }
         onFocus={onCopy}
       />

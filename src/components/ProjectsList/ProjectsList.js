@@ -16,13 +16,12 @@ function ProjectsList ({
   allProjects,
   handleClick,
   onMouseEnter,
-  onMouseLeave,
+  onMouseLeave
 }) {
   const classes = useStyles()
   return (
     <div className={classes.paper}>
       <List>
-      >
         {allProjects.map(project => {
           return (
             <ProjectsListItem

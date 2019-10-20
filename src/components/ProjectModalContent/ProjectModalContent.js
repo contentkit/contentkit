@@ -6,14 +6,14 @@ import ProjectModalForm from '../ProjectModalForm'
 import classes from './styles.scss'
 
 function ProjectModalContent (props) {
-  let ref
+  const ref = React.useRef()
 
   function setRef (instance) {
-    ref = instance
+    ref.current = ref
   }
 
   const onCopy = () => {
-    ref.select()
+    ref.current.select()
     document.execCommand('copy')
   }
 
@@ -23,6 +23,7 @@ function ProjectModalContent (props) {
     handleSave
   } = props
 
+  if (!project?.data) return null
   return (
     <div className={classes.content}>
       <ProjectModalForm
@@ -31,7 +32,7 @@ function ProjectModalContent (props) {
         onChange={props.onChange}
       />
       <ProjectIdInput
-        value={project.data && project.data.project.id} /* eslint-disable-line */
+        value={project?.data?.project.id} /* eslint-disable-line */
         setRef={setRef}
         onCopy={onCopy}
         classes={classes}

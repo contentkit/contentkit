@@ -34,7 +34,7 @@ function WhitelistDomains (props) {
   const [value, setValue] = React.useState('')
 
   const onDelete = (id) => {
-    props.deleteOrigin({ id })
+    props.deleteOrigin.mutate({ id })
   }
 
   const onChange = evt => {
@@ -45,9 +45,8 @@ function WhitelistDomains (props) {
     const projectId = props.project.data.project.id
     const name = (' ' + value).slice(1)
     if (e.key === 'Enter') {
-      setValue('', () => {
-        props.createOrigin({ name, projectId })
-      })
+      setValue('')
+      props.createOrigin.mutate({ name, projectId })
     }
   }
 

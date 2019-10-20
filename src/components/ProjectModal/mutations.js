@@ -10,7 +10,12 @@ import withQuery from '../../lib/withQuery'
 const mutations = [
   withQuery({
     name: 'project',
+    // options: {
+    //   name: 'project',
+    //   query: PROJECT_QUERY
+    // }
     options: ({ ownProps }) => ({
+      name: 'project',
       query: PROJECT_QUERY,
       variables: {
         id: ownProps.activeProject

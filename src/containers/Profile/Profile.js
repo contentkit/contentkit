@@ -6,8 +6,9 @@ import UserForm from '../../components/ProfileUserForm'
 import { USER_QUERY } from '../../graphql/queries'
 import CodeSnippet from '../../components/CodeSnippet'
 import classes from './styles.scss'
-import Button from 'antd/lib/button'
+// import Button from 'antd/lib/button'
 import Popconfirm from 'antd/lib/popconfirm'
+import Button from '../../components/Button'
 
 class Profile extends React.Component {
   static propTypes = {
@@ -39,10 +40,13 @@ class Profile extends React.Component {
 
   render () {
     let { user } = this.props
+    console.log('Profile', this.props)
+    if (user.loading) return null
     return (
       <Layout
         {...this.props}
-        loading={this.props.updateUser.loading}>
+        loading={this.props.updateUser.loading}
+      >
         <UserForm
           handleChange={this.handleChange}
           updateUser={this.props.updateUser}
@@ -54,7 +58,7 @@ class Profile extends React.Component {
         />
         <div className={classes.container}>
           <Popconfirm title={'Are you sure?'} onConfirm={this.onConfirm} okText='Delete' cancelText='Cancel'>
-            <Button type={'danger'}>
+            <Button color='danger'>
               Delete Account
             </Button>
           </Popconfirm>

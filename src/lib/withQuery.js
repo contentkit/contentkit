@@ -11,8 +11,8 @@ const withQuery = ({ options, name }) => Component =>
         <Query {...queryProps}>
           {state => {
             const componentProps = {
-              [options.name || 'data']: state,
-              ...this.props
+              ...this.props,
+              [queryProps.name || 'data']: state
             }
             return (
               <Component {...componentProps} />
