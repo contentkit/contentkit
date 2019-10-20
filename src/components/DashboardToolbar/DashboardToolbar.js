@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import SearchInput from '../DashboardToolbarSearchInput'
-import classnames from 'classnames'
-import styles from './styles.scss'
+import clsx from 'clsx'
 import { DELETE_POST } from '../../graphql/mutations'
 import { FEED_QUERY } from '../../graphql/queries'
 import ProjectSelect from '../ProjectSelect'
+import { Toolbar } from '@material-ui/core'
+import { withStyles } from '@material-ui/styles'
 
 const EditIcon = props => (
   <svg
@@ -107,17 +108,18 @@ class DashboardToolbar extends React.Component {
       selected,
       selectedProject,
       projects,
-      selectProject
+      selectProject,
+      classes
     } = this.props
     const open = selected.length > 0
     return (
       <>
-        <div className={styles.root}>
+        <Toolbar className={classes.root}>
           <button
             onClick={this.handleEdit}
             disabled={!open}
-            className={classnames(
-              styles.button, { [styles.active]: open }
+            className={clsx(
+              classes.button, { [classes.active]: open }
             )}
           >
             <EditIcon />
@@ -125,9 +127,9 @@ class DashboardToolbar extends React.Component {
           <button
             onClick={this.handleDelete}
             disabled={!open}
-            className={classnames(
-              styles.button,
-              { [styles.active]: open }
+            className={clsx(
+              classes.button,
+              { [classes.active]: open }
             )}
           >
             <DeleteIcon />
@@ -136,19 +138,19 @@ class DashboardToolbar extends React.Component {
             onClick={() => {
               this.props.handleOpen()
             }}
-            className={classnames(
-              styles.button
+            className={clsx(
+              classes.button
             )}
           >
             <FilePlus />
           </button>
-        </div>
-        <div className={styles.filters}>
+        </Toolbar>
+        <Toolbar className={classes.filters}>
           <ProjectSelect
             selectedProject={selectedProject}
             allProjects={projects?.data?.allProjects}
             selectProject={selectProject}
-            className={styles.select}
+            className={classes.select}
           />
           <SearchInput
             handleSearch={handleSearch}
@@ -156,10 +158,38 @@ class DashboardToolbar extends React.Component {
             query={query}
             classes={{}}
           />
-        </div>
+        </Toolbar>
       </>
     )
   }
 }
 
-export default DashboardToolbar
+const styles = theme => ({
+  filters: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexBasis: '45%'
+  },
+  select: {
+    width: '100%',
+    marginRight: 15
+  },
+  root: {
+    display: 'flex'
+  },
+  button: {
+    color: 'rgb(188, 193, 217)',
+    all: 'unset',
+    marginRight: 20,
+    '&.active': {
+      color: theme.iconColorActive,
+      '&:hover': {
+        color: theme.iconColorHover,
+        cursor: 'pointer'
+      }
+    }
+  }
+})
+
+export default withStyles(styles)(DashboardToolbar)

@@ -1,6 +1,5 @@
 import React from 'react'
 import Spinner from './components/Spinner'
-import { Redirect } from 'react-router-dom'
 import Fallback from './components/Fallback'
 
 const styles = {
@@ -26,34 +25,19 @@ export const LoadingOverlay = ({ loading, children }) => (
   </React.Fragment>
 )
 
-const shouldRedirect = props => !(props.user?.loading || props?.user?.data?.user || /login/.test(window.location.pathname))
-
-const withRedirect = Component => props =>
-  shouldRedirect(props)
-    ? <Redirect to='/login' />
-    : <Component {...props} />
-
-export const Dashboard = withRedirect(
-  React.lazy(
-    () => import('./containers/Dashboard')
-  )
+export const Dashboard = React.lazy(
+  () => import('./containers/Dashboard')
 )
 
 export const SignIn = React.lazy(
   () => import('./containers/Login')
 )
 
-export const PostEditor = withRedirect(
-  React.lazy(() => import('./containers/PostEditor'))
-)
+export const PostEditor = React.lazy(() => import('./containers/PostEditor'))
 
-export const Projects = withRedirect(
-  React.lazy(() => import('./containers/Projects'))
-)
+export const Projects = React.lazy(() => import('./containers/Projects'))
 
-export const Profile = withRedirect(
-  React.lazy(() => import('./containers/Profile'))
-)
+export const Profile = React.lazy(() => import('./containers/Profile'))
 
 export default [{
   component: Dashboard,

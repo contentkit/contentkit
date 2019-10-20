@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Tag from 'antd/lib/tag'
 import { projectQueryShape } from '../../shapes'
 import classes from './styles.scss'
-import Input from 'antd/lib/input'
+import { Chip } from '@material-ui/core'
+import Input from '../Input'
 
 function WhitelistChips (props) {
   const { domains } = props
@@ -11,15 +11,15 @@ function WhitelistChips (props) {
     <div className={classes.root}>
       {
         domains.map(domain =>
-          <Tag
+          <Chip
             key={domain.id}
-            onClose={() => props.onDelete(domain.id)}
+            onDelete={() => props.onDelete(domain.id)}
             className={classes.chip}
-            color={'magenta'}
+            color='primary'
             closable
-          >
-            {domain.name}
-          </Tag>
+            label={domain.name}
+            variant='outlined'
+          />
         )
       }
     </div>

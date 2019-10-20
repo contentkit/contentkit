@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { render } from 'react-dom'
+import * as ReactDOM from 'react-dom'
 import { ApolloProvider, withApollo, compose } from 'react-apollo'
 import { BrowserRouter, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
@@ -12,6 +12,7 @@ import 'antd/dist/antd.less'
 import './css/style.scss'
 import Fallback from './components/Fallback'
 import AuthProvider from './components/AuthProvider'
+import { ThemeProvider } from './lib/theme'
 
 const client = createClient()
 
@@ -29,7 +30,6 @@ const App = props => (
                 <Component
                   {...routeProps}
                   {...props}
-                  logged={Boolean(props.user?.data?.user)}
                 />
               )}
               {...rest}
@@ -46,11 +46,16 @@ const ConnectedApp = compose(
   withConnectivity
 )(App)
 
-render(
-  <ApolloProvider client={client}>
-    <AuthProvider>
-      <ConnectedApp />
-    </AuthProvider>
-  </ApolloProvider>,
-  document.getElementById('root')
-)
+
+;(async () => {
+  ReactDOM.render(
+    <ApolloProvider client={client}>
+      <AuthProvider>
+        <ThemeProvider>
+          <ConnectedApp />
+        </ThemeProvider>
+      </AuthProvider>
+    </ApolloProvider>,
+    document.getElementById('root')
+  )  
+})();

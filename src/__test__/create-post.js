@@ -6,7 +6,6 @@ import { mount, configure } from 'enzyme'
 import SelectProject, { ProjectListItem } from '../containers/App/components/SelectProject'
 import { withStore, appState } from '../store/store'
 import sinon from 'sinon'
-import CreatePostInput from '../containers/App/components/CreatePost/CreatePostInput'
 
 const project = {
   id: 'cjh0y8am9i21s010137h3cwcv',

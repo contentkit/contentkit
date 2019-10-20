@@ -1,7 +1,8 @@
 import React from 'react'
-import Icon from 'antd/lib/icon'
-import Input from 'antd/lib/input'
 import styles from './styles.scss'
+import Input from '../Input'
+import { Copy } from '@material-ui/icons'
+import { IconButton } from '@material-ui/icore'
 
 function ProjectModalIdInput (props) {
   const {
@@ -13,15 +14,15 @@ function ProjectModalIdInput (props) {
     <Input
       className={styles.input}
       value={value}
-      ref={setRef}
-      addonAfter={
-        <button
+      inputRef={setRef}
+      endAdornment={
+        <IconButton
           onClick={onCopy}
           onMouseDown={onCopy}
           className={styles.button}
         >
-          <Icon type={'copy'} />
-        </button>
+          <Copy />
+        </IconButton>
       }
     />
   )

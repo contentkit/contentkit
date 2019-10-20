@@ -3,6 +3,7 @@ import * as redux from 'redux'
 import { EditorState } from 'draft-js'
 import { connectRouter } from 'connected-react-router'
 import { createBrowserHistory } from 'history'
+import thunk from 'redux-thunk'
 
 const history = createBrowserHistory()
 const initialState = {
@@ -108,7 +109,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
   ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
   : redux.compose
 
-const middleware = []
+const middleware = [thunk]
 
 const combinedReducer = redux.combineReducers({
   app: reducer,

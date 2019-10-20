@@ -19,6 +19,8 @@
     "@contentkit/editor": "^0.0.35",
     "@graphship/apollo-client": "^0.0.10",
     "@graphship/login": "^0.0.10",
+    "@material-ui/core": "^4.5.0",
+    "@material-ui/icons": "^4.5.1",
     "antd": "^3.19.3",
     "apollo-cache-inmemory": "1.5.1",
     "apollo-client": "^2.5.1",
@@ -54,6 +56,7 @@
     "react-syntax-highlighter": "^10.3.0",
     "react-transition-group": "^2.6.0",
     "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
     "refractor": "^2.9.0",
     "s3-dropzone": "^0.0.57",
     "safe-s3-key": "^0.0.4"
