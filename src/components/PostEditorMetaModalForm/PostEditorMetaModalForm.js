@@ -6,7 +6,6 @@ import { compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
 import PostTagChips from '../PostTagChips'
-import classes from './styles.scss'
 import clsx from 'clsx'
 import * as config from '../../lib/config'
 import AWS from 'aws-sdk'
@@ -14,8 +13,9 @@ import safeKey from 'safe-s3-key'
 import withQuery from '../../lib/withQuery'
 import ThumbnailUpload from '../ThumbnailUpload'
 import Input from '../Input'
-import { Grid } from '@material-ui/core'
+import { Grid, FormControl, InputLabel } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
+import { makeStyles } from '@material-ui/styles'
 
 AWS.config.region = config.AWS_REGION
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -23,6 +23,19 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 })
 
 const s3 = new AWS.S3()
+
+const useStyles = makeStyles(theme => ({
+  thumbnail: {
+    width: '100%',
+    height: '100%'
+  },
+  selected: {
+    backgroundColor: 'green'
+  },
+  gutter: {
+    marginBottom: theme.spacing(2)
+  }
+}))
 
 const defaultPost = {
   title: '',
@@ -36,6 +49,7 @@ const defaultPost = {
 }
 
 function PostEditorMetaModalForm (props) {
+  const classes = useStyles()
   const {
     handleChange,
     handleCoverImageChange,
@@ -110,45 +124,62 @@ function PostEditorMetaModalForm (props) {
     <form className={classes.root}>
       <Grid container spacing={4}>
         <Grid item xs={6}>
-          <Input
-            label={'title'}
-            onChange={e => handleChange(e.target.value, 'title')}
-            value={title}
-          />
+          <FormControl fullWidth>
+            <InputLabel shrink>Title</InputLabel>
+            <Input
+              label={'title'}
+              onChange={e => handleChange(e.target.value, 'title')}
+              value={title}
+              fullWidth
+            />
+          </FormControl>
         </Grid>
-
         <Grid item xs={6}>
-          <PostStatusSelect
-            handleChange={handleChange}
-            value={status}
-          />
+          <FormControl fullWidth>
+            <InputLabel shrink>Status</InputLabel>
+            <PostStatusSelect
+              handleChange={handleChange}
+              value={status}
+            />
+          </FormControl>
         </Grid>
       </Grid>
       <Grid container spacing={4}>
         <Grid item xs={6}>
-          <Input
-            placeholder={'slug'}
-            onChange={e => handleChange(e.target.value, 'slug')}
-            value={slug}
-          />
+          <FormControl fullWidth>
+            <InputLabel shrink>Excerpt</InputLabel>
+            <Input
+              placeholder={'slug'}
+              onChange={e => handleChange(e.target.value, 'slug')}
+              value={slug}
+              fullWidth
+            />
+          </FormControl>
         </Grid>
 
         <Grid item xs={6}>
-          <ProjectSelect
-            allProjects={allProjects}
-            selectedProject={selectedProject}
-            selectProject={selectProject}
-          />
+          <FormControl fullWidth>
+            <InputLabel shrink>Project</InputLabel>
+            <ProjectSelect
+              allProjects={allProjects}
+              selectedProject={selectedProject}
+              selectProject={selectProject}
+            />
+          </FormControl>
         </Grid>
       </Grid>
 
       <Grid container spacing={4}>
         <Grid item xs={6}>
-          <Input
-            placeholder={'excerpt'}
-            onChange={e => handleChange(e.target.value, 'excerpt')}
-            value={excerpt}
-          />
+          <FormControl fullWidth>
+            <InputLabel shrink>Excerpt</InputLabel>
+            <Input
+              placeholder={'excerpt'}
+              onChange={e => handleChange(e.target.value, 'excerpt')}
+              value={excerpt}
+              fullWidth
+            />
+          </FormControl>
         </Grid>
         <Grid item xs={6}>
           <PostMetaDatePicker
@@ -157,7 +188,7 @@ function PostEditorMetaModalForm (props) {
           />
         </Grid>
       </Grid>
-      <Grid container spacing={4}>
+      <Grid container spacing={4} className={classes.gutter}>
         <Grid item xs={12}>
           <ThumbnailUpload
             customRequest={customRequest}
@@ -202,8 +233,6 @@ export const PROJECTS_QUERY = gql`
     }
   }
 `
-
-// const PostMetaForm = Form.create({ name: 'post_meta' })(PostEditorMetaModalForm)
 
 const mutations = [
   withQuery({

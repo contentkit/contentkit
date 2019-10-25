@@ -4,8 +4,8 @@ import PostMetaForm from '../PostEditorMetaModalForm'
 import { POST_QUERY } from '../../graphql/queries'
 import gql from 'graphql-tag'
 import { createInitialState, convertToDate } from 'draft-js-dates'
-
-import { Dialog, DialogContent } from '@material-ui/core'
+import Button from '../Button'
+import { Dialog, DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
 
 export const _POST_QUERY = gql`
   query ($id: ID!) {
@@ -167,12 +167,12 @@ class EditPostMetaModal extends React.Component {
       <Dialog
         fullWidth
         open={open}
-        // title={title}
         onClose={onClose}
-        // onOk={this.handlePostMetaUpdate}
-        // width={700}
-        size='md'
+        maxWidth='md'
       >
+        <DialogTitle>
+          {title}
+        </DialogTitle>
         <DialogContent>
           <PostMetaForm
             user={this.props.user}
@@ -187,6 +187,14 @@ class EditPostMetaModal extends React.Component {
             client={client}
           />
         </DialogContent>
+        <DialogActions>
+          <Button onClick={this.props.onClose}>
+            Cancel
+          </Button>
+          <Button color='success' onClick={this.handlePostMetaUpdate}>
+            OK
+          </Button>
+        </DialogActions>
       </Dialog>
     )
   }

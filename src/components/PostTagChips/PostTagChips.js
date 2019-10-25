@@ -4,11 +4,29 @@ import { DELETE_TAG, CREATE_TAG } from '../../graphql/mutations'
 import { TAG_QUERY } from '../../graphql/queries'
 import { Mutation, Query } from 'react-apollo'
 import { genKey, genDate } from '../../lib/util'
-import { Chip } from '@material-ui/core'
-import styles from './styles.scss'
+import Chip from '../Chip'
 import Input from '../Input'
+import { withStyles } from '@material-ui/styles'
+
+const styles = theme => ({
+  tags: {
+    width: '100%',
+    display: 'flex',
+    marginTop: 8,
+    alignItems: 'center',
+    marginBottom: 16,
+    flexDirection: 'row'
+  },
+  tag: {
+    marginRight: 5
+  },
+  inputWrapper: {
+    width: '100%'
+  }
+})
 
 function CreateTagInput (props) {
+  const { classes } = props
   const [value, setValue] = React.useState('')
 
   const handleChange = evt => {
@@ -26,9 +44,8 @@ function CreateTagInput (props) {
     }
   }
 
-  const { classes } = props
   return (
-    <div className={styles.inputWrapper}>
+    <div className={classes.inputWrapper}>
       <Input
         value={value}
         placeholder={'Create tag'}
@@ -140,4 +157,5 @@ class PostTagChips extends React.Component {
   }
 }
 
-export default PostTagChips
+export default withStyles(styles)(PostTagChips)
+

@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 400,
     whiteSpace: 'nowrap',
     textAlign: 'center',
-    // boxShadow: 0 2px 0 rgba(0,0,0,.015);
     cursor: 'pointer',
     transition: 'all .3s cubic-bezier(.645,.045,.355,1)',
     userSelect: 'none',
@@ -23,7 +22,6 @@ const useStyles = makeStyles(theme => ({
     fontSize: 14,
     borderRadius: 4,
     color: '#fff',
-    // borderColor: '#ff4d4f',
     textShadow: '0 -1px 0 rgba(0,0,0,.12)',
     boxShadow: '0 2px 0 rgba(0,0,0,.045)'
   },
@@ -31,6 +29,12 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.variables.colors.danger,
     '&:hover': {
       backgroundColor: fade(theme.variables.colors.danger, 0.8)
+    }
+  },
+  success: {
+    backgroundColor: theme.variables.colors.success,
+    '&:hover': {
+      backgroundColor: fade(theme.variables.colors.success, 0.8)
     }
   },
   fancy: {
@@ -48,9 +52,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function WrappedButton (props) {
-  const { color, ...rest } = props
+  const { color, className: classNameProp, ...rest } = props
   const classes = useStyles(props)
-  const className = clsx(classes.root, classes[color])
+  const className = clsx(classes.root, classes[color], classNameProp)
   return (
     <ButtonBase {...rest} className={className} />
   )

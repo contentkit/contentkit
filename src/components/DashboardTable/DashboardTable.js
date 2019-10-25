@@ -6,7 +6,8 @@ import LazyLoad from '../LazyLoad'
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
-import { Chip, Checkbox, Paper, TableHead, TableBody, TableCell, TableRow, Table } from '@material-ui/core'
+import { Checkbox, Paper, TableHead, TableBody, TableCell, TableRow, Table } from '@material-ui/core'
+import Chip from '../Chip'
 import { withStyles } from '@material-ui/styles'
 import clsx from 'clsx'
 
@@ -88,7 +89,7 @@ const columns = [{
   editable: false,
   render: (tags) => {
     return tags.map(tag => (
-      <Chip key={tag.id} label={tag.name} />
+      <Chip key={tag.id} label={tag.name} style={{ marginRight: 8 }} />
     ))
   }
 }]

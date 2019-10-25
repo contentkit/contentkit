@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
+import Button from '../Button'
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -9,10 +9,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'center',
-    button: {
-      marginRight: 15
-    }
+    alignItems: 'center'
+  },
+  button: {
+    marginRight: 15
   }
 }))
 
@@ -20,10 +20,10 @@ function PostEditorToolbar (props) {
   const classes = useStyles(props)
   return (
     <div className={classes.toolbar}>
-      <Button onClick={evt => props.onClick('history')}>
+      <Button onClick={evt => props.onClick('history')} className={classes.button}>
         History
       </Button>
-      <Button onClick={evt => props.onClick('postmeta')}>
+      <Button onClick={evt => props.onClick('postmeta')} className={classes.button}>
         Postmeta
       </Button>
     </div>

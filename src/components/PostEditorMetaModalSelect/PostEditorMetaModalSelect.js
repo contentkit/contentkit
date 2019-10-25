@@ -6,7 +6,7 @@ import Input from '../Input'
 const PostEditorMetaModalSelect = (props) => {
   const { value, handleChange } = props
 
-  const onChange = evt => handleChange(evt, 'status')
+  const onChange = ({ currentTarget }) => handleChange(currentTarget.value, 'status')
   const options = [{
     value: 'DRAFT',
     label: 'Draft'
