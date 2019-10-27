@@ -10,10 +10,6 @@ import withQuery from '../../lib/withQuery'
 const mutations = [
   withQuery({
     name: 'project',
-    // options: {
-    //   name: 'project',
-    //   query: PROJECT_QUERY
-    // }
     options: ({ ownProps }) => ({
       name: 'project',
       query: PROJECT_QUERY,
@@ -32,24 +28,25 @@ const mutations = [
       variables,
       optimisticResponse: {
         __typename: 'Mutation',
-        createOrigin: {
-          __typename: 'Origin',
-          id: genKey(),
-          name: variables.name,
-          project: {
-            __typename: 'Project',
-            id: variables.projectId
-          }
+        insert_origins: {
+          returning: [{
+            __typename: 'Origin',
+            id: genKey(),
+            name: variables.name,
+            project: {
+              __typename: 'Project',
+              id: variables.projectId
+            }
+          }]
         }
       },
-      update: (store, { data: { createOrigin } }) => {
+      update: (store, { data: { insert_origins } }) => {
         const query = store.readQuery({
           query: PROJECT_QUERY,
           variables: ownProps.project.variables
         })
         const { data: { project } } = query
-        const origins = [...project.origins]
-        origins.push(createOrigin)
+        const origins = [...project.origins].concat(insert_origins)
         store.writeQuery({
           query: PROJECT_QUERY,
           data: {

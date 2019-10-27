@@ -21,11 +21,11 @@ const withData = Component =>
     render () {
       return (
         <Query query={FEED_QUERY} variables={this.props.feedVariables}>
-          {(feed) => (
+          {(posts) => (
             <Query query={PROJECTS_QUERY}>
               {(projects) => (
                 <Component
-                  feed={feed}
+                  posts={posts}
                   projects={projects}
                   {...this.props}
                 />

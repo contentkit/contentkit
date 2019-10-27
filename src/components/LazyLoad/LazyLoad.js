@@ -7,7 +7,7 @@ import { wrapWithLoadingState } from '../../lib/util'
 
 class LazyLoad extends React.Component {
   static propTypes = {
-    feed: PropTypes.object,
+    posts: PropTypes.object.isRequired,
     projects: PropTypes.object,
     render: PropTypes.func
   }
@@ -30,27 +30,25 @@ class LazyLoad extends React.Component {
   }
 
   load = () => {
-    const { feed } = this.props
-    const { variables } = feed
-    let { posts, count } = feed.data.feed
-
-    if (posts.length + 10 >= count) {
+    const { variables } = this.props.posts
+    let posts = this.props.posts.data.posts
+    if (posts.length + 10 >= 10) {
       return
     }
-    return feed.fetchMore({
+    return this.props.posts.fetchMore({
       variables: {
         ...variables,
         offset: posts.length
       },
       updateQuery: (previousResult, nextResult) => {
-        const { fetchMoreResult } = nextResult
-        return {
-          ...previousResult,
-          feed: {
-            ...previousResult.feed,
-            posts: [...previousResult.feed.posts, ...fetchMoreResult.feed.posts]
-          }
-        }
+        // const { fetchMoreResult } = nextResult
+        // return {
+        //   ...previousResult,
+        //   feed: {
+        //     ...previousResult.posts,
+        //     posts: [...previousResult.feed.posts, ...fetchMoreResult.feed.posts]
+        //   }
+        // }
       }
     }).then(() => this.reset())
   }

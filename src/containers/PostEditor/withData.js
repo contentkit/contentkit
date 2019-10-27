@@ -11,77 +11,86 @@ import { Query, Mutation } from 'react-apollo'
 
 const withData = Component =>
   class extends React.Component {
-    createImage = ({ mutate, post }) => variables => mutate({
+    createImage = ({ mutate, posts }) => variables => mutate({
       variables,
       optimisticResponse: {
         __typename: 'Mutation',
-        createImage: {
-          __typename: 'Image',
-          id: variables.url,
-          ...variables
+        insert_images: {
+          __typename: 'images_mutation_response',
+          returning: [{
+            __typename: 'Image',
+            id: variables.url,
+            ...variables
+          }]
         }
       },
-      update: (store, { data: { createImage } }) => {
-        const images = [...post.data.post.images]
-        images.push(createImage)
+      update: (store, { data: { insert_images } }) => {
+        const images = [...posts.data.posts[0].images]
+        images.push(insert_images.returning[0])
         store.writeQuery({
           query: POST_QUERY,
           data: {
-            post: {
-              ...post.data.post,
+            posts: [{
+              ...posts.data.posts[0],
               images
-            }
+            }]
           },
-          variables: post.variables
+          variables: posts.variables
         })
       }
     })
 
-    deleteImage = ({ mutate, post }) => variables => mutate({
+    deleteImage = ({ mutate, posts }) => variables => mutate({
       variables,
       optimisticResponse: {
         __typename: 'Mutation',
-        deleteImage: {
-          __typename: 'Image',
-          ...variables
+        delete_images: {
+          __typename: 'images_mutation_response',
+          response: [{
+            __typename: 'Image',
+            ...variables
+          }]
         }
       },
-      update: (store, { data: { deleteImage } }) => {
-        let images = [...post.data.post.images]
+      update: (store, { data: { delete_images } }) => {
+        let images = [...posts.data.posts[0].images]
         images = images.filter(img => img.id !== variables.id)
         store.writeQuery({
           query: POST_QUERY,
           data: {
-            post: {
-              ...post.data.post,
+            posts: [{
+              ...posts.data.posts[0],
               images
-            }
+            }]
           },
-          variables: post.variables
+          variables: posts.variables
         })
       }
     })
 
-    updateDocument = ({ mutate, post }) =>
+    updateDocument = ({ mutate, posts }) =>
       variables => mutate({
         variables,
         optimisticResponse: {
           __typename: 'Mutation',
-          updateDocument: {
-            __typename: 'Post',
-            ...post.data.post,
-            ...variables
+          update_posts: {
+            __typename: 'posts_mutation_response',
+            returning: [{
+              __typename: 'Post',
+              ...posts.data.posts[0],
+              ...variables
+            }]
           }
         },
-        update: (store, { data: { updateDocument } }) => {
+        update: (store, { data: { update_posts } }) => {
           const data = {
             query: POST_QUERY,
-            variables: { id: post.data.post.id },
+            variables: { id: posts.data.posts[0].id },
             data: {
-              post: {
-                ...post.data.post,
-                ...updateDocument
-              }
+              posts: [{
+                ...posts.data.posts[0],
+                ...update_posts.returning[0]
+              }]
             }
           }
           store.writeQuery(data)
@@ -91,7 +100,7 @@ const withData = Component =>
     render () {
       return (
         <Query variables={{ id: this.props.match.params.id }} query={POST_QUERY}>
-          {(post) => post.loading ? null : (
+          {(posts) => posts.loading ? null : (
             <Mutation mutation={UPDATE_DOCUMENT}>
               {(updateDocument, updateDocumentData) => (
                 <Mutation mutation={CREATE_IMAGE}>
@@ -100,21 +109,21 @@ const withData = Component =>
                       {(deleteImage) => (
                         <Component
                           {...this.props}
-                          post={post}
+                          posts={posts}
                           updateDocument={{
                             mutate: this.updateDocument({
                               mutate: updateDocument,
-                              post
+                              posts
                             }),
                             ...updateDocumentData
                           }}
                           createImage={this.createImage({
                             mutate: createImage,
-                            post
+                            posts
                           })}
                           deleteImage={this.deleteImage({
                             mutate: deleteImage,
-                            post
+                            posts
                           })}
                         />
                       )}

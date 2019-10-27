@@ -1,0 +1,13 @@
+type Payload {
+  token: String!
+}
+
+type Mutation {
+  register(email: String!, password: String!): Payload
+  login(email: String!, password: String!): Payload
+  getSecret(id: String!): Payload
+}
+
+type Query {
+  getToken: Payload
+}

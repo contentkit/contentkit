@@ -70,16 +70,19 @@ class PostTagChips extends React.Component {
       variables,
       optimisticResponse: {
         __typename: 'Mutation',
-        deleteTag: {
-          __typename: 'Tag',
-          ...variables
+        delete_tags: {
+          __typename: 'tags_mutation_response',
+          returning: [{
+            __typename: 'Tag',
+            ...variables
+          }]
         }
       },
-      update: (store, { data: { deleteTag } }) => {
+      update: (store, { data: { delete_tags } }) => {
         store.writeQuery({
           query: TAG_QUERY,
           data: {
-            tagsByPost: query.data.tagsByPost.filter(c => c.id !== deleteTag.id)
+            posts_tags: query.data.posts_tags.filter(c => c.tag.id !== delete_tags.returning[0].id)
           },
           variables: query.variables
         })
@@ -91,20 +94,23 @@ class PostTagChips extends React.Component {
       variables,
       optimisticResponse: {
         __typename: 'Mutation',
-        createTag: {
-          __typename: 'Tag',
-          id: genKey(),
-          name: variables.name,
-          description: null,
-          createdAt: genDate(),
-          slug: null
+        insert_tags: {
+          __typename: 'tags_mutation_response',
+          returning: {
+            __typename: 'Tag',
+            id: genKey(),
+            name: variables.name,
+            description: null,
+            createdAt: genDate(),
+            slug: null
+          }
         }
       },
-      update: (store, { data: { createTag } }) => {
+      update: (store, { data: { insert_tags } }) => {
         store.writeQuery({
           query: TAG_QUERY,
           data: {
-            tagsByPost: query.data.tagsByPost.concat(createTag)
+            posts_tags: query.data.posts_tags.concat(insert_tags.returning[0])
           },
           variables: query.variables
         })
@@ -126,8 +132,9 @@ class PostTagChips extends React.Component {
                   if (tagQuery.loading) return false
                   return (
                     <div>
+
                       <div className={styles.tags}>
-                        {tagQuery.data.tagsByPost.map(tag => (
+                        {tagQuery.data.posts_tags.map(({ tag }) => (
                           <Chip
                             key={tag.id}
                             onDelete={() => this.deleteTag({

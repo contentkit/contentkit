@@ -46,11 +46,11 @@ function ProjectModalContent (props) {
     <div className={classes.content}>
       <ProjectModalForm
         classes={classes}
-        project={project?.data?.project} /* eslint-disable-line */
+        project={project?.data?.projects[0]} /* eslint-disable-line */
         onChange={props.onChange}
       />
       <ProjectIdInput
-        value={project?.data?.project.id} /* eslint-disable-line */
+        value={project?.data?.projects[0]?.id} /* eslint-disable-line */
         setRef={setRef}
         onCopy={onCopy}
         classes={classes}

@@ -30,6 +30,7 @@
     "apollo-link-error": "^1.1.11",
     "apollo-link-http": "^1.5.5",
     "apollo-link-state": "^0.4.2",
+    "auth0-lock": "^11.18.0",
     "aws-sdk": "^2.413.0",
     "connected-react-router": "^6.4.0",
     "connectivity-provider": "^0.0.3",

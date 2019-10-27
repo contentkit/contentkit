@@ -11,11 +11,11 @@ import '@graphship/login/dist/styles.css'
 import { withRouter } from 'react-router-dom'
 
 class LoginWithData extends React.Component {
-  signin = ({ ownProps, mutate }) => async ({ emailAddress, password }) => {
+  signin = ({ ownProps, mutate }) => async ({ emailAddress: email, password }) => {
     const client = this.props.client
     try {
-      const resp = await mutate({ variables: { emailAddress, password } })
-      const { data: { signinUser: { token } } } = resp
+      const resp = await mutate({ variables: { email, password } })
+      const { data: { login: { token } } } = resp
       if (resp.errors && resp.errors.length) {
         throw resp.errors
       }
@@ -29,13 +29,13 @@ class LoginWithData extends React.Component {
     }
   }
 
-  create = ({ mutate, ownProps }) => async ({ emailAddress, password }) => {
+  create = ({ mutate, ownProps }) => async ({ emailAddress: email, password }) => {
     const client = this.props.client
-    const resp = await mutate({ variables: { email: emailAddress, password } })
+    const resp = await mutate({ variables: { email, password } })
     if (resp.errors && resp.errors.length) {
       throw resp.errors
     }
-    const { data: { signinUser: { token } } } = resp
+    const { data: { register: { token } } } = resp
     if (token) {
       window.localStorage.setItem('token', token)
       await client.resetStore()
@@ -44,7 +44,7 @@ class LoginWithData extends React.Component {
   }
 
   render () {
-    const { user } = this.props
+    const { users } = this.props
     return (
       <Mutation mutation={SIGNUP_USER}>
         {(signupUser, signupUserData) => {
@@ -64,7 +64,7 @@ class LoginWithData extends React.Component {
                     })}
                     resetPassword={() => {}}
                     redirect={() => this.props.history.push('/')}
-                    user={user?.data?.user}
+                    user={users?.data?.user}
                   />
                 )
               }}

@@ -39,22 +39,22 @@ class BaseEditor extends React.Component {
   }
 
   componentDidMount () {
-    const editorState = hydrate(this.props.editorState, this.props.post?.data?.post?.raw)
+    const editorState = hydrate(this.props.editorState, this.props.posts?.data?.posts[0]?.raw)
     this.props.setEditorState(editorState)
   }
 
   saveDocument = ({ editorState }) => {
     const {
-      post: {
+      posts: {
         data: {
-          post
+          posts
         }
       }
     } = this.props
     const raw = toRaw(editorState)
     const html = convertToHtml(editorState)
     return this.props.updateDocument.mutate({
-      id: post.id,
+      id: posts[0].id,
       raw: raw,
       encodedHtml: html
     })
@@ -113,11 +113,11 @@ class BaseEditor extends React.Component {
           editorState={this.props.editorState}
           setEditorState={this.props.setEditorState}
           client={this.props.client}
-          post={this.props.post}
+          posts={this.props.posts}
           setDialogState={this.handleToolbarClick}
           open={this.state.open}
           getHtml={this.getHtml}
-          user={this.props.user}
+          users={this.props.users}
           saveDocument={this.saveDocument}
           createImage={this.props.createImage}
           deleteImage={this.props.deleteImage}

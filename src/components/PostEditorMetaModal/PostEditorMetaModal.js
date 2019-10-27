@@ -8,10 +8,10 @@ import Button from '../Button'
 import { Dialog, DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
 
 export const _POST_QUERY = gql`
-  query ($id: ID!) {
-    post (id: $id) {
+  query ($id: String!) {
+    post (where: { id: { _eq: $id } }) {
       id
-      publishedAt
+      published_at
       title
       slug
       status
@@ -20,15 +20,15 @@ export const _POST_QUERY = gql`
   }
 `
 
-const getDate = ({ post }) => {
-  const date = post?.data?.post?.publishedAt
+const getDate = ({ posts }) => {
+  const date = posts?.data?.posts[0]?.published_at
   return date ? new Date(date) : new Date()
 }
 
 class EditPostMetaModal extends React.Component {
   state = {
     dateInputState: createInitialState(getDate(this.props)),
-    projectId: this.props.post?.data?.post?.project?.id
+    projectId: this.props.posts?.data?.posts[0]?.project?.id
   }
 
   static propTypes = {
@@ -36,16 +36,15 @@ class EditPostMetaModal extends React.Component {
     updatePost: PropTypes.func,
     onClose: PropTypes.func,
     client: PropTypes.object,
-    post: PropTypes.object,
+    posts: PropTypes.object.isRequired,
     open: PropTypes.bool,
-    user: PropTypes.object
+    users: PropTypes.object.isRequired
   }
 
   handlePostMetaUpdate = async (evt) => {
     this.props.onClose()
 
     const {
-      document,
       id,
       title,
       status,
@@ -54,7 +53,7 @@ class EditPostMetaModal extends React.Component {
       project: {
         id: projectId
       }
-    } = this.props.post.data.post
+    } = this.props.posts.data.posts[0]
     const date = convertToDate(this.state.dateInputState).toISOString()
 
     const variables = {
@@ -73,22 +72,29 @@ class EditPostMetaModal extends React.Component {
     await this.props.client.mutate({
       mutation: gql`
         mutation(
-          $id: ID!
+          $id: String!
           $title: String
           $status: PostStatus
           $publishedAt: String
-          $projectId: ID
-          $coverImageId: ID
+          $projectId: String
+          $coverImageId: String
           $excerpt: String
         ) {
-          updatePost (
-            id: $id
-            title: $title
-            status: $status
-            publishedAt: $publishedAt
-            projectId: $projectId
-            excerpt: $excerpt
-            coverImageId: $coverImageId
+          update_posts (
+            objects: [{
+              id: $id
+              title: $title
+              status: $status
+              published_at: $publishedAt
+              project_id: $projectId
+              excerpt: $excerpt
+              cover_image_id: $coverImageId
+            }],
+            where: {
+              id: {
+                _eq: $id
+              }
+            }
           ) {
             id
           }
@@ -99,50 +105,50 @@ class EditPostMetaModal extends React.Component {
   }
 
   handleChange = (value, key) => {
-    const { post } = this.props.post.data
+    const { posts } = this.props.posts.data
     this.props.client.writeQuery({
       query: POST_QUERY,
-      variables: this.props.post.variables,
+      variables: this.props.posts.variables,
       data: {
-        post: {
-          ...post,
+        posts: [{
+          ...posts[0],
           [key]: value
-        }
+        }]
       }
     })
   }
 
   handleCoverImageChange = (imageId) => {
-    const { client, post: { variables, data: { post } } } = this.props
+    const { client, posts: { variables, data: { posts } } } = this.props
     client.writeQuery({
       query: POST_QUERY,
       variables: variables,
       data: {
-        post: {
-          ...post,
+        post: [{
+          ...posts[0],
           coverImage: {
             id: imageId,
             __typename: 'Image'
           }
-        }
+        }]
       }
     })
   }
 
   selectProject = (id) => {
-    let { post } = this.props.post.data
+    let { posts } = this.props.posts.data
 
     this.props.client.writeQuery({
       query: POST_QUERY,
-      variables: this.props.post.variables,
+      variables: this.props.posts.variables,
       data: {
-        post: {
-          ...post,
+        post: [{
+          ...posts[0],
           project: {
             __typename: 'Project',
             id
           }
-        }
+        }]
       }
     })
   }
@@ -159,7 +165,7 @@ class EditPostMetaModal extends React.Component {
       deleteImage,
       client
     } = this.props
-    const post = this.props?.post?.data?.post
+    const post = this.props?.posts?.data?.posts[0]
     if (!post) return false
 
     const title = (<h2>Update Postmeta</h2>)
@@ -175,8 +181,8 @@ class EditPostMetaModal extends React.Component {
         </DialogTitle>
         <DialogContent>
           <PostMetaForm
-            user={this.props.user}
-            post={this.props.post?.data?.post}
+            users={this.props.users}
+            post={this.props.posts?.data?.posts[0]}
             handleChange={this.handleChange}
             dateInputState={this.state.dateInputState}
             handleDateInputChange={this.handleDateInputChange}

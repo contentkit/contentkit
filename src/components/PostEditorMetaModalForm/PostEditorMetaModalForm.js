@@ -62,8 +62,8 @@ function PostEditorMetaModalForm (props) {
     title,
     slug,
     excerpt,
-    coverImage,
-    publishedAt,
+    cover_image,
+    published_at,
     images,
     project,
     status
@@ -72,7 +72,7 @@ function PostEditorMetaModalForm (props) {
   const [fileList, setFileList] = React.useState([])
 
   const selectedProject = project?.id
-  const allProjects = projects?.data?.allProjects || []
+  const allProjects = projects?.data?.projects || []
 
   React.useEffect(() => {
     const fileList = images.map(({ id, url }) => ({
@@ -183,8 +183,8 @@ function PostEditorMetaModalForm (props) {
         </Grid>
         <Grid item xs={6}>
           <PostMetaDatePicker
-            handleChange={value => handleChange(value, 'publishedAt')}
-            value={publishedAt}
+            handleChange={value => handleChange(value, 'published_at')}
+            value={published_at}
           />
         </Grid>
       </Grid>
@@ -194,7 +194,7 @@ function PostEditorMetaModalForm (props) {
             customRequest={customRequest}
             action={action}
             fileList={fileList}
-            coverImage={post?.coverImage?.id}
+            coverImage={post?.cover_image_id}
             deleteImage={deleteImage}
             onSelect={
               fileId => {
@@ -220,14 +220,14 @@ function PostEditorMetaModalForm (props) {
 
 PostEditorMetaModalForm.propTypes = {
   projects: PropTypes.object.isRequired,
-  post: PropTypes.object,
+  post: PropTypes.object.isRequired,
   handleChange: PropTypes.func,
   createImage: PropTypes.func.isRequired
 }
 
 export const PROJECTS_QUERY = gql`
   query {
-    allProjects {
+    projects {
       id
       name
     }

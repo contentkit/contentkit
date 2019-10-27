@@ -1,145 +1,174 @@
 import gql from 'graphql-tag'
 
 export const DELETE_POST = gql`
-  mutation ($id: ID!) {
-    deletePost(id: $id) {
-      id
+  mutation ($id: String!) {
+    delete_posts(where: { id: { _eq: $id } }) {
+      returning {
+        id
+      }
     }
   }
 `
-
+// project id el3lszcis8qs3i1961tzp1wva
 export const CREATE_POST = gql`
-  mutation createPost(
-    $title: String!
-    $projectId: ID!
-  ) {
-    createPost(
-      title: $title,
-      projectId: $projectId
-    ) {
-      id
-      createdAt
-      publishedAt
-      title
-      slug
-      status
-      excerpt
-      project {
+  mutation createPost($userId: String!, $title: String!, $projectId: String!) {
+    insert_posts(objects: { user_id: $userId, title: $title, project_id: $projectId }) {
+      returning {
         id
-        name
-      }
-      tags {
-        id
-        name
+        created_at
+        published_at
+        title
+        slug
+        status
+        excerpt
+        project {
+          id
+          name
+        }
+        posts_tags {
+          tag {
+            id
+            name
+          }
+        }
       }
     }
   }
 `
 
 export const CREATE_PROJECT = gql`
-  mutation ($name: String!) {
-    createProject(name: $name) {
-      name
-      id
-      origins {
-        id
+  mutation ($userId: String!, $name: String!) {
+    insert_projects(objects: {
+      name: $name,
+      user_id: $userId
+    }) {
+      returning {
         name
+        id
       }
     }
   }
 `
+
+// export const UPDATE_DOCUMENT = gql`
+//   mutation (
+//     $id: ID!
+//     $raw: JSON!
+//     $encodedHtml: String!
+//   ) {
+//     updateDocument(
+//       id: $id
+//       raw: $raw
+//       encodedHtml: $encodedHtml
+//     ) {
+//       id
+//       raw
+//       encodedHtml
+//       versions {
+//         id
+//         raw
+//         createdAt
+//       }
+//     }
+//   }
+// `
+
+// export const DELETE_VERSION = gql`
+//   mutation ($id: ID!) {
+//     deleteVersion(id: $id) {
+//       id
+//     }
+//   }
+// `
 
 export const UPDATE_DOCUMENT = gql`
   mutation (
-    $id: ID!
-    $raw: JSON!
+    $id: String!
+    $raw: jsonb!
     $encodedHtml: String!
   ) {
-    updateDocument(
-      id: $id
-      raw: $raw
-      encodedHtml: $encodedHtml
+    update_posts (
+      _set: { raw: $raw, encoded_html: $encodedHtml },
+      where: { id: { _eq: $id } }
     ) {
-      id
-      raw
-      encodedHtml
-      versions {
+      returning {
         id
+        created_at
+        images {
+          id
+          url
+        }
         raw
-        createdAt
+        encoded_html
+        title
+        slug
+        status
+        excerpt 
       }
-    }
-  }
-`
-
-export const DELETE_VERSION = gql`
-  mutation ($id: ID!) {
-    deleteVersion(id: $id) {
-      id
     }
   }
 `
 
 export const UPDATE_POST = gql`
   mutation (
-    $id: ID!
+    $id: String!
     $title: String!
-    $status: PostStatus!
+    $status: post_status!
     $publishedAt: String!
     $excerpt: String!
   ) {
-    updatePostMeta(
-      id: $id
-      title: $title
-      status: $status
-      publishedAt: $publishedAt
-      excerpt: $excerpt
+    update_posts (
+      _set: { title: $title, status: $status, published_at: $publishedAt, excerpt: $excerpt },
+      where: { id: { _eq: $id } }
     ) {
-      id
-      createdAt
-      images {
+      returning {
         id
-        url
-      }
-      raw
-      encodedHtml
-      versions {
-        id
+        created_at
+        images {
+          id
+          url
+        }
         raw
-        createdAt
+        encoded_html
+        title
+        slug
+        status
+        excerpt 
       }
-      title
-      slug
-      status
-      excerpt
     }
   }
 `
 
 export const CREATE_IMAGE = gql`
   mutation ($url: String!, $postId: ID!) {
-    createImage (url: $url, postId: $postId) {
-      id
-      url
+    insert_images (objects: { url: $url, postId: $postId }) {
+      returning {
+        id
+        url
+      }
     } 
   }
 `
 
 export const DELETE_IMAGE = gql`
   mutation ($id: ID!) {
-    deleteImage (id: $id) {
-      id
+    delete_images (where: { id: { _eq: $id } }) {
+      returning {
+        id
+      }
     } 
   }
 `
 
 export const UPDATE_USER = gql`
-  mutation updateUser($name: String!, $email: String!) {
-    updateUser(name: $name, email: $email) {
-      id
-      email
-      name
-      secret
+  mutation updateUser($id: String!, $name: String!, $email: String!) {
+    update_users(where: { id: { _eq: $id } }, _set: { name: $name, email: $email }) {
+      returning {
+        id,
+        email,
+        name,
+        secret
+      }
     }
   }
 `
@@ -153,15 +182,18 @@ export const GENERATE_TOKEN = gql`
   }
 `
 
+export const GET_TOKEN = gql`
+  mutation {
+    getToken {
+      token
+    }
+  }
+`
+
 export const UPDATE_PROJECT = gql`
-  mutation ($id: ID!, $name: String!) {
-    updateProject (
-      id: $id,
-      name: $name
-    ) {
-      id
-      name
-      origins {
+  mutation ($id: String!, $name: String!) {
+    update_projects(where: { id: { _eq: $id } }, _set: { name: $name }) {
+      returning {
         id
         name
       }
@@ -170,22 +202,22 @@ export const UPDATE_PROJECT = gql`
 `
 
 export const DELETE_PROJECT = gql`
-  mutation ($id: ID!) {
-    deleteProject (
-      id: $id
-    ) {
-      id
+  mutation ($id: String!) {
+    delete_projects(where: { id: { _eq: $id } }) {
+      returning { 
+        id
+      }
     }
   }
 `
 
 export const AUTHENTICATE_USER = gql`
   mutation(
-    $emailAddress: String!
+    $email: String!
     $password: String!
   ) {
-    signinUser(
-      email: $emailAddress,
+    login(
+      email: $email,
       password: $password
     ) {
       token
@@ -198,10 +230,7 @@ export const SIGNUP_USER = gql`
     $email: String!,
     $password: String!,
   ) {
-    createUser(email: $email, password: $password) {
-      id
-    }
-    signinUser(
+    register(
       email: $email,
       password: $password
     ) {
@@ -211,49 +240,56 @@ export const SIGNUP_USER = gql`
 `
 
 export const DELETE_ORIGIN = gql`
-  mutation ($id: ID!) {
-    deleteOrigin (
-      id: $id
-    ) {
-      id
-    }
-  }
-`
-
-export const DELETE_TAG = gql`
-  mutation ($id: ID!) {
-    deleteTag (
-      id: $id
-    ) {
-      id
-    }
-  }
-`
-
-export const CREATE_ORIGIN = gql`
-  mutation ($projectId: ID!, $name: String!) {
-    createOrigin (
-      projectId: $projectId,
-      name: $name,
-      originType: DOMAIN
-    ) {
-      name
-      id
-      project {
+  mutation ($id: String!) {
+    delete_origins (where: { id: { _eq: $id } }) {
+      returning {
         id
       }
     }
   }
 `
 
+export const DELETE_TAG = gql`
+  mutation ($id: String!) {
+    delete_tags (where: { id: { _eq: $id } }) {
+      returning {
+        id
+      }
+    }
+  }
+`
+
+export const CREATE_ORIGIN = gql`
+  mutation ($projectId: String!, $name: String!, $userId: String!) {
+    insert_origins (
+      objects: [{
+        project_id: $projectId,
+        name: $name,
+        origin_type: DOMAIN,
+        user_id: $userId
+      }]
+    ) {
+      returning {
+        name
+        id
+        project {
+          id
+        }
+      }
+    }
+  }
+`
+
 export const CREATE_TAG = gql`
-  mutation ($name: String, $projectId: ID!, $postId: ID!) {
-    createTag(name: $name, projectId: $projectId, postId: $postId) {
-      name
-      id
-      createdAt
-      description
-      slug
+  mutation ($name: String, $projectId: String!, $postId: String!, $userId: String!) {
+    insert_tags(objects: [{ user_id: $userId, name: $name, projectId: $projectId, postId: $postId }]) {
+      returning {
+        name
+        id
+        createdAt
+        description
+        slug
+      }
     }
   }
 `

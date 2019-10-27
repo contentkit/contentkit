@@ -38,12 +38,12 @@ function UserForm (props) {
     setRef,
     generateToken
   } = props
-  const secret = props?.user?.data?.user.secret || ''
-  const email = props?.user?.data?.user?.email || ''
-  const name = props?.user?.data?.user?.name || ''
-  console.log({
-    name, email, secret, props
-  })
+  const [user] = props?.users?.data?.users || []
+  const {
+    secret = '',
+    email = '',
+    name = ''
+  } = user
   return (
     <div className={props.className}>
       <Grid container spacing={4}>

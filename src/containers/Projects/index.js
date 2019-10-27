@@ -24,20 +24,21 @@ class ProjectsMutations extends React.Component {
     variables,
     optimisticResponse: {
       __typename: 'Mutation',
-      createProject: {
-        __typename: 'Project',
-        ...variables,
-        id: Math.floor(Math.random(1e6)),
-        origins: []
+      insert_projects: {
+        __typename: 'projects_mutation_response',
+        returning: [{
+          __typename: 'Project',
+          ...variables,
+          id: Math.floor(Math.random(1e6)),
+          origins: []
+        }]
       }
     },
-    update: (store, { data: { createProject } }) => {
-      const allProjects = [...projects.data.allProjects]
-      allProjects.push(createProject)
+    update: (store, { data: { insert_projects } }) => {
       store.writeQuery({
         query: PROJECTS_QUERY,
         data: {
-          allProjects
+          projects: [...projects.data.projects].concat(insert_projects.returning)
         },
         variables: projects.variables
       })
@@ -53,16 +54,18 @@ class ProjectsMutations extends React.Component {
       query: PROJECTS_QUERY,
       variables: projects.variables,
       data: {
-        allProjects: projects.data.allProjects.filter(project =>
+        projects: projects.data.projects.filter(project =>
           project.id !== id
         )
       }
     })
     this.props.client.mutate({
       mutation: gql`
-        mutation($id: ID!) {
-          deleteProject(id: $id) {
-            id
+        mutation($id: String!) {
+          delete_projects(where: { id: { _eq: $id } }) {
+            returning {
+              id
+            }
           }
         }
       `,
@@ -71,7 +74,7 @@ class ProjectsMutations extends React.Component {
   }
 
   render () {
-    const { user } = this.props
+    const { users } = this.props
     return (
       <Query query={PROJECTS_QUERY}>
         {(projects) => {

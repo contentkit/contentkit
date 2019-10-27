@@ -53,7 +53,7 @@ function WhitelistDomains (props) {
   }
 
   const onKeyDown = (e) => {
-    const projectId = props.project.data.project.id
+    const projectId = props.project.data.projects[0].id
     const name = (' ' + value).slice(1)
     if (e.key === 'Enter') {
       setValue('')
@@ -62,7 +62,7 @@ function WhitelistDomains (props) {
   }
 
   const { project } = props
-  const domains = project?.data?.project?.origins || []
+  const domains = project?.data?.projects[0]?.origins || []
   return (
     <div>
       <WhitelistChips
