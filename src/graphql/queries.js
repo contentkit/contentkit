@@ -16,7 +16,7 @@ export const FEED_QUERY = gql`
     $query: String,
     $projectId: String
   ) {
-    posts(
+    posts_aggregate(
       limit: $limit,
       offset: $offset,
       where: {
@@ -25,22 +25,27 @@ export const FEED_QUERY = gql`
         }
       }
     ) {
-      id
-      created_at
-      published_at
-      title
-      slug
-      status
-      excerpt
-      posts_tags {
-        tag {
+      aggregate {
+        count
+      }
+      nodes {
+        id
+        created_at
+        published_at
+        title
+        slug
+        status
+        excerpt
+        posts_tags {
+          tag {
+            id
+            name
+          }
+        }
+        project {
           id
           name
         }
-      }
-      project {
-        id
-        name
       }
     }
   }

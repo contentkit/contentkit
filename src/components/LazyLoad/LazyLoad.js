@@ -30,25 +30,25 @@ class LazyLoad extends React.Component {
   }
 
   load = () => {
-    const { variables } = this.props.posts
-    let posts = this.props.posts.data.posts
-    if (posts.length + 10 >= 10) {
+    const { variables, data: { posts_aggregate } } = this.props.posts
+    const { nodes } = posts_aggregate 
+    if (nodes.length + 10 >= posts_aggregate.aggregate.count) {
       return
     }
     return this.props.posts.fetchMore({
       variables: {
         ...variables,
-        offset: posts.length
+        offset: nodes.length
       },
       updateQuery: (previousResult, nextResult) => {
-        // const { fetchMoreResult } = nextResult
-        // return {
-        //   ...previousResult,
-        //   feed: {
-        //     ...previousResult.posts,
-        //     posts: [...previousResult.feed.posts, ...fetchMoreResult.feed.posts]
-        //   }
-        // }
+        const { fetchMoreResult } = nextResult
+        return {
+          ...previousResult,
+          posts_aggregate: {
+            ...previousResult.posts,
+            nodes: [...previousResult.posts_aggregate.nodes, ...fetchMoreResult.posts_aggregate.nodes]
+          }
+        }
       }
     }).then(() => this.reset())
   }

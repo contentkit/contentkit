@@ -168,8 +168,7 @@ class DashboardTable extends React.Component {
       classes
     } = this.props
 
-    console.log(this.props)
-    const dataSource = (posts?.data?.posts || []).map(row => ({ ...row, key: row.id }))
+    const dataSource = (posts?.data?.posts_aggregate?.nodes || []).map(row => ({ ...row, key: row.id }))
     return (
       <Mutation mutation={UPDATE_POST_TITLE}>
         {mutate => (
