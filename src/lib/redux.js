@@ -1,4 +1,3 @@
-// @flow
 import * as redux from 'redux'
 import { EditorState } from 'draft-js'
 import { connectRouter } from 'connected-react-router'

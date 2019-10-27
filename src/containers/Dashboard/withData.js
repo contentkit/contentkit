@@ -1,10 +1,8 @@
-// @flow
 import React from 'react'
 import { Query } from 'react-apollo'
 
 import { FEED_QUERY, PROJECTS_QUERY } from '../../graphql/queries'
 
-import debounce from 'lodash.debounce'
 import PropTypes from 'prop-types'
 
 const withData = Component =>

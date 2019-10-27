@@ -223,9 +223,6 @@ class DashboardTable extends React.Component {
 }
 
 const styles = theme => ({
-  // table: {
-  //   borderColor: theme.variables.borderColor
-  // },
   tableCell: {
     borderBottom: `1px solid ${theme.variables.borderColor}`,
   },

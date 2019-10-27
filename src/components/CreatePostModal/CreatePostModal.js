@@ -19,16 +19,12 @@ import {
   DialogTitle,
   DialogActions,
   Grid,
-  TextField,
   Button
 } from '@material-ui/core'
 import Input from '../Input'
 
 const useStyles = makeStyles(theme => ({
   content: {
-    // display: 'flex',
-    // justifyContent: 'space-between',
-    // alignItems: 'center'
     minHeight: 200
   }
 }))

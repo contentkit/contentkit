@@ -6,7 +6,6 @@ import UserForm from '../../components/ProfileUserForm'
 import { USER_QUERY } from '../../graphql/queries'
 import CodeSnippet from '../../components/CodeSnippet'
 import classes from './styles.scss'
-// import Button from 'antd/lib/button'
 import Popconfirm from 'antd/lib/popconfirm'
 import Button from '../../components/Button'
 

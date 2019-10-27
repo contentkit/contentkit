@@ -1,5 +1,3 @@
-// @flow
-
 import { EditorState, convertFromRaw, convertToRaw, genKey } from 'draft-js'
 import { exportHtml } from '@contentkit/editor'
 import { expand, compress } from 'draft-js-compact'
