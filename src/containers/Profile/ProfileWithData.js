@@ -16,13 +16,13 @@ class ProfileWithData extends React.Component {
         __typename: 'Mutation',
         generateToken: {
           __typename: 'User',
-          ...this.props.user.data.user,
+          ...this.props.users.data.users[0],
           secret: 'pending...'
         }
       },
       update: (store, { data: { generateToken } }) => {
         const user = {
-          ...this.props.user.data.user,
+          ...this.props.users.data.users[0],
           secret: generateToken.secret
         }
 

@@ -28,10 +28,10 @@ function ProjectModal (props) {
     return client.writeQuery({
       query: PROJECT_QUERY,
       data: {
-        project: {
-          ...project.data.project,
+        projects: [{
+          ...project.data.projects[0],
           ...data
-        }
+        }]
       },
       variables: project.variables
     })
@@ -40,18 +40,18 @@ function ProjectModal (props) {
   const handleSave = () => {
     const { project, updateProject } = props
     handleClose()
-    updateProject.mutate(project.data.project)
+    const { name, id } = project.data.projects[0]
+    updateProject.mutate({ name, id })
   }
 
   const handleDelete = () => {
-    const { handleDelete, project: { data: { project } } } = props
+    const { handleDelete, project: { data: { projects } } } = props
     handleClose()
-    handleDelete({ id: project.id })
+    handleDelete({ id: projects[0].id })
   }
 
   const handleClose = () => props.handleClose()
-  console.log(props)
-  if (!props.project) return null
+  if (props.project.loading) return null
   return (
     <Dialog
       open={props.open}
@@ -60,7 +60,7 @@ function ProjectModal (props) {
       size='md'
       fullWidth
     >
-      <DialogTitle>{props?.project?.data?.name}</DialogTitle>
+      <DialogTitle>{props?.project?.data?.projects[0]?.name}</DialogTitle>
       <DialogContent>
         <ProjectModalContent
           onChange={onChange}

@@ -12,36 +12,38 @@ import { withStyles } from '@material-ui/styles'
 import clsx from 'clsx'
 
 export const UPDATE_POST_TITLE = gql`
-  mutation ($id: ID!, $title: String!) {
-    updatePostTitle(id: $id, title: $title) {
-      id
-      title
+  mutation ($id: String!, $title: String!) {
+    update_posts(where: { id: { _eq: $ID } }, _set: { title: $title }) {
+      returning {
+        id
+        title
+      }
     }
   }
 `
 
 export const UPDATE_POST = gql`
   mutation (
-    $id: ID!
+    $id: String!
     $title: String!
     $status: PostStatus
     $publishedAt: String
-    $coverImageId: ID
-    $projectId: ID
+    $coverImageId: String
+    $projectId: String
     $excerpt: String
   ) {
-    updatePost(
+    insert_posts(object: {
       id: $id
       title: $title
       status: $status
-      publishedAt: $publishedAt
-      coverImageId: $coverImageId
-      projectId: $projetId
+      published_at: $publishedAt
+      cover_image_id: $coverImageId
+      project_id: $projetId
       excerpt: $excerpt
-    ) {
+    }) {
       id
-      createdAt
-      publishedAt
+      created_at
+      published_at
       title
       slug
       status
@@ -50,9 +52,11 @@ export const UPDATE_POST = gql`
         id
         name
       }
-      tags {
-        id
-        name
+      posts_tags {
+        tag {
+          id
+          name
+        }
       }
     }
   }
@@ -78,17 +82,17 @@ const columns = [{
   editable: false
 }, {
   title: 'Date',
-  key: 'createdAt',
+  key: 'created_at',
   dataIndex: 'createdAt',
   editable: false,
   render: (date) => formatDate(date)
 }, {
   title: 'Tags',
-  key: 'tags',
+  key: 'posts_tags',
   dataIndex: 'tags',
   editable: false,
-  render: (tags) => {
-    return tags.map(tag => (
+  render: (posts_tags) => {
+    return posts_tags.map(({ tag }) => (
       <Chip key={tag.id} label={tag.name} style={{ marginRight: 8 }} />
     ))
   }
@@ -158,13 +162,14 @@ class DashboardTable extends React.Component {
 
   render () {
     const {
-      feed,
+      posts,
       search,
       selectedPosts,
       classes
     } = this.props
 
-    const dataSource = (feed?.data?.feed?.posts || []).map(row => ({ ...row, key: row.id }))
+    console.log(this.props)
+    const dataSource = (posts?.data?.posts || []).map(row => ({ ...row, key: row.id }))
     return (
       <Mutation mutation={UPDATE_POST_TITLE}>
         {mutate => (
@@ -218,9 +223,6 @@ class DashboardTable extends React.Component {
 }
 
 const styles = theme => ({
-  // table: {
-  //   borderColor: theme.variables.borderColor
-  // },
   tableCell: {
     borderBottom: `1px solid ${theme.variables.borderColor}`,
   },

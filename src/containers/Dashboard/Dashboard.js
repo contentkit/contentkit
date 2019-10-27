@@ -22,7 +22,7 @@ class Dashboard extends React.Component {
 
   static propTypes = {
     history: propTypes.object.isRequired,
-    feed: feedQueryShape.isRequired
+    posts: feedQueryShape.isRequired
   }
 
   static displayName = 'Dashboard'
@@ -97,16 +97,17 @@ class Dashboard extends React.Component {
         query={this.state.query}
       >
         <CreatePostModal
-          feed={this.props.feed}
+          posts={this.props.posts}
           selectedProject={this.props.feedVariables.projectId}
           projects={this.props.projects}
           selectProject={this.props.selectProject}
           client={this.props.client}
           open={this.state.modalOpen}
           handleClose={this.handleModalClose}
+          users={this.props.users}
         />
         <DashboardTable
-          feed={this.props.feed}
+          posts={this.props.posts}
           projects={this.props.projects}
           selectPosts={this.props.selectPosts}
           selectedPosts={this.props.selectedPosts}

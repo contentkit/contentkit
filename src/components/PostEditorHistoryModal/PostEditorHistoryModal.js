@@ -20,7 +20,7 @@ class PostEditorHistoryModal extends React.Component {
 
   static propTypes = {
     open: PropTypes.bool.isRequired,
-    post: PropTypes.object.isRequired
+    posts: PropTypes.object.isRequired
   }
 
   handleClick = version => {
@@ -48,13 +48,14 @@ class PostEditorHistoryModal extends React.Component {
   }
 
   render () {
-    const { post } = this.props
+    const { post, open } = this.props
     const versions = post?.data?.post?.versions || []
     return (
       <Dialog
         fullWidth
         size='md'
         onClose={this.props.onClose}
+        open={open}
       >
         <DialogTitle>History</DialogTitle>
         <DialogContent>

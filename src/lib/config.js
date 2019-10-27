@@ -3,7 +3,7 @@ export const PROFILE_PATH = '/profile'
 export const PROJECTS_PATH = '/projects'
 export const LOGIN_PATH = '/login'
 
-export const GRAPHQL_ENDPOINT = 'https://api.contentkit.co/graphql'
+export const GRAPHQL_ENDPOINT = 'http://hasura.contentkit.co/v1/graphql'
 export const AWS_BUCKET_URL = 'https://s3.amazonaws.com/contentkit'
 export const AWS_REGION = 'us-east-1'
 export const AWS_BUCKET_NAME = 'contentkit'

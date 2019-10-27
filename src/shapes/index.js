@@ -49,7 +49,7 @@ export const feedShape = PropTypes.shape({
 
 export const feedQueryShape = PropTypes.shape({
   data: PropTypes.shape({
-    feed: feedShape
+    posts: PropTypes.arrayOf(postShape)
   })
 })
 

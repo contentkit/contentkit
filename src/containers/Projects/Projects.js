@@ -23,7 +23,7 @@ export const findIndex = (arr, id) => {
 class Projects extends React.Component {
   static defaultProps = {
     data: {
-      allProjects: []
+      projects: []
     },
     activeProject: undefined
   }
@@ -40,7 +40,7 @@ class Projects extends React.Component {
 
   handleClose = () => {
     this.setState({
-      activeProject: undefined,
+      activeProject: null,
       open: false
     })
   }
@@ -62,7 +62,8 @@ class Projects extends React.Component {
 
   createProject = () => {
     this.props.createProject.mutate({
-      name: haikunator.haikunate()
+      name: haikunator.haikunate(),
+      userId: this.props.users.data.users[0].id
     })
   }
 
@@ -89,7 +90,7 @@ class Projects extends React.Component {
         <div className={classes.container}>
           <div className={classes.inner}>
             <ProjectsList
-              allProjects={projects.data && projects.data.allProjects}
+              allProjects={projects?.data?.projects}
               handleClick={this.handleClick}
               onMouseEnter={this.onMouseEnter}
               onMouseLeave={this.onMouseLeave}

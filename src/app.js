@@ -13,7 +13,6 @@ import './css/style.scss'
 import Fallback from './components/Fallback'
 import AuthProvider from './components/AuthProvider'
 import { ThemeProvider } from './lib/theme'
-
 const client = createClient()
 
 const UP_STAGE = process.env.UP_STAGE || undefined
@@ -27,10 +26,12 @@ const App = props => (
             <Route
               key={rest.path}
               render={routeProps => (
-                <Component
-                  {...routeProps}
-                  {...props}
-                />
+                <AuthProvider>
+                  <Component
+                    {...routeProps}
+                    {...props}
+                  />
+                </AuthProvider>
               )}
               {...rest}
             />
@@ -46,14 +47,11 @@ const ConnectedApp = compose(
   withConnectivity
 )(App)
 
-
 ;(async () => {
   ReactDOM.render(
     <ApolloProvider client={client}>
       <ThemeProvider>
-        <AuthProvider>
-          <ConnectedApp />
-        </AuthProvider>
+        <ConnectedApp />
       </ThemeProvider>
     </ApolloProvider>,
     document.getElementById('root')

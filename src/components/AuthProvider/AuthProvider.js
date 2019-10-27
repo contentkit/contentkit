@@ -1,26 +1,25 @@
 import React from 'react'
 import { Query } from 'react-apollo'
 import { USER_QUERY } from '../../graphql/queries'
-import { Redirect } from 'react-router-dom'
+import { Redirect, withRouter } from 'react-router-dom'
 
 function AuthProvider (props) {
   return (
     <Query query={USER_QUERY}>
-      {user => {
-        if (!user.loading) {
-          if (!user.data.user) {
-            if (window.location.pathname !== '/login') {
+      {users => {
+        if (!users.loading) {
+          if (!users?.data?.users) {
+            if (!props.history.location.pathname.startsWith('/login')) {
               return <Redirect to='/login' />
             }
           }
         }
         return React.Children.map(props.children, child => {
-          console.log({ user })
-          return React.cloneElement(child, { user, logged: true })
+          return React.cloneElement(child, { users, logged: true })
         })
       }}
     </Query>
   )
 }
 
-export default AuthProvider
+export default withRouter(AuthProvider)

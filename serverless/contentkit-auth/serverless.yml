@@ -1,14 +1,14 @@
-service: contentkit-graphql
+service: contentkit-auth
 
 plugins:
-  - serverless-domain-manager
+  # - serverless-domain-manager
 
 custom:
   stage: prod
   debug: "*"
   deploymentBucket: 'global-deployment-bucket'
   customDomain:
-    domainName: api.contentkit.co
+    domainName: auth.contentkit.co
     stage: ${self:provider.stage}
     certificateName: '*.contentkit.co'
     createRoute53Record: true
@@ -22,18 +22,13 @@ provider:
   deploymentBucket:
     name: ${self:custom.deploymentBucket}
   environment:
-    PGHOST: ${ssm:/contentkit/PGHOST}
+    PGHOST: ${ssm:/rds/pg_host~true}
     PGUSER: postgres
-    PGDATABASE: contentkit
-    PGPASSWORD: ${ssm:/contentkit/PGPASSWORD~true}
+    PGDATABASE: snowplow
+    PGPASSWORD: ${ssm:/rds/pg_password~true}
     PGPORT: 5432
-    BUCKET_NAME: contentkit-dev-deploymentbucket-3hlcbqx9f9nl
-    REDIS_CONNECTION_STRING: ${ssm:/contentkit.redis_connection_string~true}
-  iamRoleStatements:
-    - Effect: "Allow"
-      Resource: "*"
-      Action:
-        - "s3:*"
+    CLIENT_SESSION_ID: 921286926a3ca2babf26eb927c46e99055fc
+    CLIENT_SESSION_SECRET: ${ssm:/contentkit/client_secret~true}
 
 functions:
   handler:

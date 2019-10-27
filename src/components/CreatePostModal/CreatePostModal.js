@@ -19,16 +19,12 @@ import {
   DialogTitle,
   DialogActions,
   Grid,
-  TextField,
   Button
 } from '@material-ui/core'
 import Input from '../Input'
 
 const useStyles = makeStyles(theme => ({
   content: {
-    // display: 'flex',
-    // justifyContent: 'space-between',
-    // alignItems: 'center'
     minHeight: 200
   }
 }))
@@ -44,7 +40,8 @@ function CreatePostModal (props) {
     handleClose()
     createPost.mutate({
       title: title,
-      projectId: selectedProject
+      projectId: selectedProject,
+      userId: props.users.data.users[0].id
     })
   }
 
@@ -75,7 +72,7 @@ function CreatePostModal (props) {
           <Grid item xs={6}>
             <ProjectSelect
               selectedProject={selectedProject}
-              allProjects={projects?.data?.allProjects}
+              allProjects={projects?.data?.projects}
               selectProject={selectProject}
             />
           </Grid>
@@ -99,36 +96,34 @@ const mutations = [
       variables: variables,
       optimisticResponse: {
         __typename: 'Mutation',
-        createPost: {
-          __typename: 'Post',
-          id: genKey(),
-          createdAt: genDate(),
-          title: variables.title,
-          slug: '',
-          publishedAt: genDate(),
-          excerpt: '',
-          status: 'DRAFT',
-          project: {
-            __typename: 'Project',
-            id: variables.projectId,
-            name: ''
-          },
-          tags: []
+        insert_posts: {
+          __typename: 'posts_mutation_response',
+          returning: [{
+            __typename: 'Post',
+            id: genKey(),
+            created_at: genDate(),
+            title: variables.title,
+            slug: '',
+            published_at: genDate(),
+            excerpt: '',
+            status: 'DRAFT',
+            project: {
+              __typename: 'Project',
+              id: variables.projectId,
+              name: ''
+            },
+            posts_tags: []
+          }]
         }
       },
-      update: (store, { data: { createPost } }) => {
-        const posts = [...ownProps.feed.data.feed.posts]
-        posts.unshift(createPost)
+      update: (store, { data: { insert_posts } }) => {
+        const posts = ownProps.posts.data.posts.concat(insert_posts.returning)
         store.writeQuery({
           query: FEED_QUERY,
           data: {
-            ...ownProps.feed.data,
-            feed: {
-              ...ownProps.feed.data.feed,
-              posts: posts
-            }
+            posts: posts
           },
-          variables: ownProps.feed.variables
+          variables: ownProps.posts.variables
         })
       }
     })
@@ -149,18 +144,20 @@ const mutations = [
       variables: variables,
       optimisticResponse: {
         __typename: 'Mutation',
-        createProject: {
-          __typename: 'Project',
-          id: genKey(),
-          name: variables.name
+        insert_projects: {
+          returning: [{
+            __typename: 'Project',
+            id: genKey(),
+            name: variables.name
+          }]
         }
       },
-      update: (store, { data: { createProject } }) => {
-        const allProjects = [...ownProps.projects.data.allProjects]
-        allProjects.push(createProject)
+      update: (store, { data: { insert_projects } }) => {
+        const projects = [...ownProps.projects.data.projects]
+        projects.push(insert_projects.returning)
         store.writeQuery({
           query: PROJECTS_QUERY,
-          data: { allProjects },
+          data: { projects },
           variables: ownProps.projects.variables
         })
       }

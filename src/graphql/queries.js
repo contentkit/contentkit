@@ -2,13 +2,9 @@ import gql from 'graphql-tag'
 
 export const PROJECTS_QUERY = gql`
   query {
-    allProjects {
+    projects {
       id
       name
-      origins {
-        id
-        name
-      }
     }
   }
 `
@@ -18,56 +14,51 @@ export const FEED_QUERY = gql`
     $limit: Int, 
     $offset: Int, 
     $query: String,
-    $projectId: ID
+    $projectId: String
   ) {
-    feed(
+    posts(
       limit: $limit,
       offset: $offset,
-      query: $query,
-      projectId: $projectId
+      where: {
+        project_id: {
+          _eq: $projectId
+        }
+      }
     ) {
-      count
-      posts { 
+      id
+      created_at
+      published_at
+      title
+      slug
+      status
+      excerpt
+      posts_tags {
+        tag {
+          id
+          name
+        }
+      }
+      project {
         id
-        createdAt
-        publishedAt
-        title
-        slug
-        status
-        excerpt
-        tags {
-          id
-          name
-        }
-        project {
-          id
-          name
-        }
+        name
       }
     }
   }
 `
 
 export const POST_QUERY = gql`
-  query ($id: ID!) {
-    post (id: $id) {
+  query ($id: String!) {
+    posts (where: { id: { _eq: $id } }) {
       id
-      createdAt
-      publishedAt
+      created_at
+      published_at
       title
       slug
       status
       excerpt
       raw
-      encodedHtml
-      coverImage {
-        id
-      }
-      versions {
-        id
-        raw
-        createdAt
-      }
+      encoded_html
+      cover_image_id
       images {
         id
         url
@@ -80,21 +71,17 @@ export const POST_QUERY = gql`
 `
 
 export const PROJECT_QUERY = gql`
-  query ($id: ID!) {
-    project(id: $id) {
+  query ($id: String!) {
+    projects(where: { id: { _eq: $id } }) {
       id
       name
-      origins {
-        id
-        name
-      }
     }
   }
 `
 
 export const USER_QUERY = gql`
   query {
-    user {
+    users {
       id
       email
       name
@@ -108,12 +95,14 @@ export const USER_QUERY = gql`
 `
 
 export const TAG_QUERY = gql`
-  query($postId: ID!) {
-    tagsByPost(postId: $postId) {
-      id
-      name
-      description
-      slug
+  query($postId: String!) {
+    posts_tags(where: { post_id: { _eq: $postId } }) {
+      tag {
+        id
+        name
+        description
+        slug
+      }
     }
   }
 `

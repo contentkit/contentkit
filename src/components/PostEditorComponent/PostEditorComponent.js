@@ -19,7 +19,7 @@ import '../../css/editor/toolbar.scss'
 import keyBindingFn from './keyBindingFn'
 import DraftTableDialog from '../DraftTableDialog'
 import ReadOnlyDraftTable from '../ReadOnlyDraftTable'
-import LinearProgress from '../LinearProgress'
+import LinearProgress from '@material-ui/core/LinearProgress'
 
 import * as config from '../../lib/config'
 
@@ -91,7 +91,7 @@ function PostEditorComponent (props) {
     editorState,
     deleteImage,
     createImage,
-    post,
+    posts,
     onChange,
     mutate,
     save,
@@ -127,8 +127,8 @@ function PostEditorComponent (props) {
           <div className={classes.toolbarInner}>
             <Toolbar.Component
               config={awsConfig}
-              refId={post?.data?.post?.id}
-              images={post?.data?.post?.images}
+              refId={posts?.data?.posts[0]?.id}
+              images={posts?.data?.posts[0]?.images}
               deleteImage={deleteImage}
               createImage={createImage}
               insertImage={insertImage}

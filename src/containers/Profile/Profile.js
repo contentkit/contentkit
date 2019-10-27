@@ -6,7 +6,6 @@ import UserForm from '../../components/ProfileUserForm'
 import { USER_QUERY } from '../../graphql/queries'
 import CodeSnippet from '../../components/CodeSnippet'
 import classes from './styles.scss'
-// import Button from 'antd/lib/button'
 import Popconfirm from 'antd/lib/popconfirm'
 import Button from '../../components/Button'
 
@@ -21,10 +20,10 @@ class Profile extends React.Component {
     this.props.client.writeQuery({
       query: USER_QUERY,
       data: {
-        user: {
-          ...this.props.user.data.user,
+        users: [{
+          ...this.props.users[0].data.user,
           [key]: e.target.value
-        }
+        }]
       }
     })
   }
@@ -39,9 +38,8 @@ class Profile extends React.Component {
   }
 
   render () {
-    let { user } = this.props
-    console.log('Profile', this.props)
-    if (user.loading) return null
+    let { users } = this.props
+    if (users.loading) return null
     return (
       <Layout
         {...this.props}
@@ -53,7 +51,7 @@ class Profile extends React.Component {
           generateToken={this.props.generateToken.mutate}
           onCopy={this.onCopy}
           setRef={ref => { this.ref = ref }}
-          user={user}
+          users={users}
           className={classes.container}
         />
         <div className={classes.container}>

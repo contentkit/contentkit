@@ -10,7 +10,7 @@ class PostEditorModals extends React.Component {
       open,
       html,
       setDialogState,
-      user,
+      users,
       createImage,
       deleteImage,
       ...rest
@@ -21,17 +21,17 @@ class PostEditorModals extends React.Component {
         <PostEditorHistoryModal
           open={open === 'history'}
           onClose={() => setDialogState(undefined)}
-          post={this.props.post}
+          posts={this.props.posts}
           saveDocument={this.props.saveDocument}
           editorState={this.props.editorState}
           setEditorState={this.props.setEditorState}
         />
         <PostMetaModal
           open={open === 'postmeta'}
-          user={user}
+          users={users}
           onClose={() => setDialogState(undefined)}
           client={this.props.client}
-          post={this.props.post}
+          posts={this.props.posts}
           createImage={createImage}
           deleteImage={deleteImage}
         />

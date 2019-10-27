@@ -6,13 +6,11 @@ import { makeStyles } from '@material-ui/styles'
 import { Refresh } from '@material-ui/icons'
 import Input from '../Input'
 
-
 const useStyles = makeStyles(theme => ({
   input: {
     marginBottom: 20
   },
   button: {
-    // all: 'unset'
   },
   adornment: {
     marginRight: 8

@@ -68,20 +68,19 @@ class DashboardToolbar extends React.Component {
   }
 
   handleDelete = async () => {
-    const { feed, selected } = this.props
-    feed.client.cache.writeQuery({
+    const { posts, selected } = this.props
+    posts.client.cache.writeQuery({
       query: FEED_QUERY,
       data: {
-        feed: {
-          ...feed.data.feed,
-          posts: feed.data.feed.posts.filter((post) => !selected.includes(post.id))
+        posts: {
+          posts: posts.data.posts.filter((post) => !selected.includes(post.id))
         }
       },
-      variables: feed.variables
+      variables: posts.variables
     })
     await Promise.all(
       selected.map(id => {
-        return feed.client.mutate({
+        return posts.client.mutate({
           mutation: DELETE_POST,
           variables: { id }
         })
@@ -148,7 +147,7 @@ class DashboardToolbar extends React.Component {
         <Toolbar className={classes.filters}>
           <ProjectSelect
             selectedProject={selectedProject}
-            allProjects={projects?.data?.allProjects}
+            allProjects={projects?.data?.projects}
             selectProject={selectProject}
             className={classes.select}
           />
