@@ -23,7 +23,8 @@ export const FEED_QUERY = gql`
         project_id: {
           _eq: $projectId
         }
-      }
+      },
+      order_by: {published_at: desc_nulls_last}
     ) {
       aggregate {
         count

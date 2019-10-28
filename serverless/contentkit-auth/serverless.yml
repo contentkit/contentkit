@@ -31,16 +31,22 @@ provider:
     CLIENT_SESSION_SECRET: ${ssm:/contentkit/client_secret~true}
 
 functions:
+  auth:
+    handler: src/auth/handler.handler
   handler:
-    handler: src/handler.handler
+    handler: src/graphql/handler.handler
     events:
       - http:
           path: graphql
           method: post
+          integration: lambda-proxy
+          authorizer: auth
           cors: true
       - http:
           path: graphql
           method: get
+          integration: lambda-proxy
+          authorizer: auth
           cors: true
 
 resources:

@@ -34,8 +34,6 @@ class ProfileWithData extends React.Component {
     })
 
   render () {
-    const { user } = this.props
-    console.log('ProfileWithData', this.props)
     return (
       <Mutation mutation={UPDATE_USER}>
         {(updateUser, updateUserData) => {

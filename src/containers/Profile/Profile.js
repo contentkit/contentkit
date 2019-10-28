@@ -21,7 +21,7 @@ class Profile extends React.Component {
       query: USER_QUERY,
       data: {
         users: [{
-          ...this.props.users[0].data.user,
+          ...this.props.users.data.users[0],
           [key]: e.target.value
         }]
       }

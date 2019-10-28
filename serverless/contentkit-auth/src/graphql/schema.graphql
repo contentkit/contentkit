@@ -2,9 +2,14 @@ type Payload {
   token: String!
 }
 
+type ResetPasswordPayload {
+  success: Boolean!
+}
+
 type Mutation {
   register(email: String!, password: String!): Payload
   login(email: String!, password: String!): Payload
+  resetPassword(email: String!, password: String!): ResetPasswordPayload
   getSecret(id: String!): Payload
 }
 
