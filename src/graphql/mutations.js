@@ -191,7 +191,7 @@ export const GET_TOKEN = gql`
 `
 
 export const UPDATE_PROJECT = gql`
-  mutation ($id: String!, $name: String!) {
+  mutation ($id: String!, $name: String!, $userId: String!) {
     update_projects(where: { id: { _eq: $id } }, _set: { name: $name }) {
       returning {
         id
@@ -265,7 +265,6 @@ export const CREATE_ORIGIN = gql`
       objects: [{
         project_id: $projectId,
         name: $name,
-        origin_type: DOMAIN,
         user_id: $userId
       }]
     ) {

@@ -113,7 +113,7 @@ class DashboardToolbar extends React.Component {
     const open = selected.length > 0
     return (
       <>
-        <Toolbar className={classes.root}>
+        <Toolbar className={classes.root} disableGutters>
           <IconButton
             onClick={this.handleEdit}
             disabled={!open}
@@ -144,7 +144,7 @@ class DashboardToolbar extends React.Component {
             <FilePlus />
           </IconButton>
         </Toolbar>
-        <Toolbar className={classes.filters}>
+        <Toolbar className={classes.filters} disableGutters>
           <ProjectSelect
             selectedProject={selectedProject}
             allProjects={projects?.data?.projects}
@@ -179,8 +179,7 @@ const styles = theme => ({
   },
   button: {
     borderRadius: 0,
-    color: 'rgb(188, 193, 217)',
-    marginRight: 20
+    color: '#000'
   },
   active: {
     color: theme.variables.iconColorActive,

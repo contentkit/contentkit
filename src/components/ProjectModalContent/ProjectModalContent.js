@@ -59,6 +59,7 @@ function ProjectModalContent (props) {
         deleteOrigin={props.deleteOrigin}
         createOrigin={props.createOrigin}
         project={props.project}
+        users={props.users}
       />
     </div>
   )

@@ -55,9 +55,10 @@ function WhitelistDomains (props) {
   const onKeyDown = (e) => {
     const projectId = props.project.data.projects[0].id
     const name = (' ' + value).slice(1)
+    const userId = props.users.data.users[0].id
     if (e.key === 'Enter') {
       setValue('')
-      props.createOrigin.mutate({ name, projectId })
+      props.createOrigin.mutate({ name, projectId, userId })
     }
   }
 

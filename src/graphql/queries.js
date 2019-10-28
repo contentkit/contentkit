@@ -22,9 +22,14 @@ export const FEED_QUERY = gql`
       where: {
         project_id: {
           _eq: $projectId
+        },
+        title: {
+          _ilike: $query
         }
       },
-      order_by: {published_at: desc_nulls_last}
+      order_by: {
+        published_at: desc_nulls_last
+      }
     ) {
       aggregate {
         count

@@ -29,6 +29,7 @@ const mutations = [
       optimisticResponse: {
         __typename: 'Mutation',
         insert_origins: {
+          __typename: 'origins_mutation_response',
           returning: [{
             __typename: 'Origin',
             id: genKey(),
@@ -56,7 +57,7 @@ const mutations = [
               origins
             }]
           },
-          variables: project.variables
+          variables: query.variables
         })
       }
     })

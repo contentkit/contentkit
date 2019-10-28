@@ -37,6 +37,7 @@ const useStyles = makeStyles(theme => ({
     height: 60,
     padding: '0 30px',
     backgroundColor: '#161616',
+    borderBottom: '1px solid #393939',
     // backgroundColor: theme.palette.common.white,
     zIndex: 2
   },

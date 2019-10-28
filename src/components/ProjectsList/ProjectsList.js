@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    borderRadius: 5,
+    borderRadius: 0,
     boxShadow: theme.variables.shadow1,
     backgroundColor: '#fff'
   }

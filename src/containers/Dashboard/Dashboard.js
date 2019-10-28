@@ -45,10 +45,12 @@ class Dashboard extends React.Component {
   debouncedSearch = debounce(this.handleSearch, 1000)
 
   updateVariables = (variables) => {
-    this.props.feed.fetchMore({
+    const query = variables.query || ''
+    this.props.posts.fetchMore({
       variables: {
-        ...this.props.feed.variables,
-        ...variables
+        ...this.props.posts.variables,
+        ...variables,
+        query: query ? `%${query}%` : '%'
       },
       updateQuery: (_, { fetchMoreResult }) => {
         return fetchMoreResult

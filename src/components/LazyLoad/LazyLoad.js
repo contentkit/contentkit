@@ -35,6 +35,7 @@ class LazyLoad extends React.Component {
     // if (nodes.length + 10 >= posts_aggregate.aggregate.count) {
     //   return
     // }
+    console.log(this.props)
     return this.props.posts.fetchMore({
       variables: {
         ...variables,

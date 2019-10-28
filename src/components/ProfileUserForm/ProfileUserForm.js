@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     padding: 40,
     maxWidth: 960,
     backgroundColor: '#fff',
-    borderRadius: 5,
+    borderRadius: 0,
     boxShadow: theme.variables.shadow1
   },
   input: {

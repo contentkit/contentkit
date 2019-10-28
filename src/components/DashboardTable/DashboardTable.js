@@ -6,7 +6,8 @@ import LazyLoad from '../LazyLoad'
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
-import { Paper, TableHead, TableBody, TableCell, TableRow, Table } from '@material-ui/core'
+import { Toolbar, Paper, TableHead, TableBody, TableCell, TableRow, Table, IconButton } from '@material-ui/core'
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons'
 import Chip from '../Chip'
 import { withStyles } from '@material-ui/styles'
 import clsx from 'clsx'
@@ -134,20 +135,42 @@ class DashboardTable extends React.Component {
       : shiftKey
         ? selectedPosts.concat([value])
         : [value]
-    console.log({
-      selection,
-      selectedPosts
-    })
+
     this.props.selectPosts(selection)
   }
 
   checkboxOnChange = (evt) => {
     evt.persist()
     const value = evt.target.value
-    console.log(value)
     evt.preventDefault()
     evt.stopPropagation()
     // this.selectRow(value, evt.shiftKey)
+  }
+
+  load = (direction) => {
+    const { variables, data: { posts_aggregate } } = this.props.posts
+    const { nodes } = posts_aggregate
+    const nextVariables = {
+      ...variables,
+      limit: 10,
+      offset: direction === 'FORWARD' ? variables.offset + 10 : Math.max(0, variables.offset - 10)
+    }
+    console.log({ nextVariables, direction })
+    return this.props.posts.fetchMore({
+      variables: nextVariables,
+      updateQuery: (previousResult, nextResult) => {
+        const { fetchMoreResult } = nextResult
+        return fetchMoreResult
+        // return {
+        //   ...previousResult,
+        //   posts_aggregate: {
+        //     ...previousResult.posts_aggregate,
+        //     nodes: [...previousResult.posts_aggregate.nodes, ...fetchMoreResult.posts_aggregate.nodes]
+        //   }
+        // }
+      }
+    })
+    //.then(() => this.reset())
   }
 
   render () {
@@ -162,7 +185,6 @@ class DashboardTable extends React.Component {
     return (
       <Mutation mutation={UPDATE_POST_TITLE}>
         {mutate => (
-          <LazyLoad {...this.props} render={({ loading }) => (
             <div className={classes.wrapper}>
               <div className={classes.toolbar}>
                 {this.props.renderToolbar(this.props)}
@@ -203,9 +225,16 @@ class DashboardTable extends React.Component {
                     }
                   </TableBody>
                 </Table>
+                <Toolbar disableGutters className={classes.pagination}>
+                  <IconButton onClick={evt => this.load('BACKWARD')}>
+                    <KeyboardArrowLeft />
+                  </IconButton>
+                  <IconButton onClick={evt => this.load('FORWARD')}>
+                    <KeyboardArrowRight />
+                  </IconButton>
+                </Toolbar>
               </Paper>
             </div>
-          )} />
         )}
       </Mutation>
     )
@@ -233,7 +262,9 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20
+  },
+  pagination: {
+    justifyContent: 'flex-end'
   }
 })
 

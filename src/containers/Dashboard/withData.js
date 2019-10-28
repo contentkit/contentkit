@@ -17,8 +17,13 @@ const withData = Component =>
     }
   
     render () {
+      const { feedVariables } = this.props
+      const variables = {
+        ...feedVariables,
+        query: feedVariables.query ? `%${feedVariables.query}%` : '%'
+      }
       return (
-        <Query query={FEED_QUERY} variables={this.props.feedVariables}>
+        <Query query={FEED_QUERY} variables={variables}>
           {(posts) => (
             <Query query={PROJECTS_QUERY}>
               {(projects) => (

@@ -41,13 +41,15 @@ function ProjectModal (props) {
     const { project, updateProject } = props
     handleClose()
     const { name, id } = project.data.projects[0]
-    updateProject.mutate({ name, id })
+    const userId = props.users.data.users[0].id
+    updateProject.mutate({ name, id, userId })
   }
 
   const handleDelete = () => {
     const { handleDelete, project: { data: { projects } } } = props
     handleClose()
-    handleDelete({ id: projects[0].id })
+    const userId = props.users.data.users[0].id
+    handleDelete({ id: projects[0].id, userId })
   }
 
   const handleClose = () => props.handleClose()
@@ -73,6 +75,7 @@ function ProjectModal (props) {
           project={props.project}
           deleteOrigin={props.deleteOrigin}
           createOrigin={props.createOrigin}
+          users={props.users}
         />
       </DialogContent>
       <DialogActions>
