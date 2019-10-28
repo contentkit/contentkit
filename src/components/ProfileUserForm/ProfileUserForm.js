@@ -42,7 +42,8 @@ function UserForm (props) {
   const {
     secret = '',
     email = '',
-    name = ''
+    name = '',
+    id
   } = user
   return (
     <div className={props.className}>
@@ -50,7 +51,7 @@ function UserForm (props) {
         <Grid item xs={6}>
           <Input
             className={classes.input}
-            // placeholder='Name'
+            placeholder='Name'
             value={name}
             onChange={(e) => props.handleChange(e, 'name')}
           />
@@ -78,7 +79,8 @@ function UserForm (props) {
           onClick={() => {
             props.updateUser.mutate({
               name: name,
-              email: email
+              email: email,
+              id: id
             })
           }}
         >

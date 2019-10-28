@@ -32,9 +32,9 @@ class LazyLoad extends React.Component {
   load = () => {
     const { variables, data: { posts_aggregate } } = this.props.posts
     const { nodes } = posts_aggregate 
-    if (nodes.length + 10 >= posts_aggregate.aggregate.count) {
-      return
-    }
+    // if (nodes.length + 10 >= posts_aggregate.aggregate.count) {
+    //   return
+    // }
     return this.props.posts.fetchMore({
       variables: {
         ...variables,
