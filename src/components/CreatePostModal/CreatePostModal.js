@@ -124,11 +124,14 @@ const mutations = [
         }
       },
       update: (store, { data: { insert_posts } }) => {
-        const posts = ownProps.posts.data.posts.concat(insert_posts.returning)
         store.writeQuery({
           query: FEED_QUERY,
           data: {
-            posts: posts
+            ...ownProps.posts.data,
+            posts_aggregate: {
+              ...ownProps.posts.data.posts_aggregate,
+              nodes: ownProps.posts.data.posts_aggregate.nodes.concat(insert_posts.returning)
+            }
           },
           variables: ownProps.posts.variables
         })
