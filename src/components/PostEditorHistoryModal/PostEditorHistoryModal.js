@@ -56,6 +56,9 @@ class PostEditorHistoryModal extends React.Component {
         size='md'
         onClose={this.props.onClose}
         open={open}
+        PaperProps={{
+          square: true
+        }}
       >
         <DialogTitle>History</DialogTitle>
         <DialogContent>

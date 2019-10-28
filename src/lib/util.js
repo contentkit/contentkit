@@ -46,7 +46,7 @@ export const wrapWithLoadingState = async (update, asyncFn, isUnmounted) => {
   )
 }
 
-export const slugify = (text: string) => {
+export const slugify = (text) => {
   return text.toString().toLowerCase()
     .replace(/\s+/g, '-')
     .replace(/[^\w\-]+/g, '')

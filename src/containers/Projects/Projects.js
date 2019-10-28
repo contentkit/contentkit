@@ -1,11 +1,10 @@
-// @flow
 import React from 'react'
 import Layout from '../Layout'
 import ProjectModal from '../../components/ProjectModal'
-import Button from 'antd/lib/button'
 import Haikunator from 'haikunator'
 import ProjectsList from '../../components/ProjectsList'
 import classes from './styles.scss'
+import Button from '../../components/Button'
 
 const haikunator = new Haikunator()
 

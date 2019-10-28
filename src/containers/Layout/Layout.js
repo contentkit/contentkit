@@ -1,7 +1,6 @@
 import * as React from 'react'
 import PropTypes from 'prop-types'
 import Header from '../../components/Header'
-// import styles from './styles.scss'
 import { CssBaseline } from '@material-ui/core'
 import clsx from 'clsx'
 import { withStyles } from '@material-ui/core/styles'
@@ -32,7 +31,8 @@ Layout.propTypes = {
 
 const styles = theme => ({
   root: {
-    backgroundColor: theme.variables.backgroundColor,
+    backgroundColor: '#f4f4f4',
+    // backgroundColor: theme.variables.backgroundColor,
     minHeight: '100vh'
   },
   layout: {},

@@ -175,6 +175,9 @@ class EditPostMetaModal extends React.Component {
         open={open}
         onClose={onClose}
         maxWidth='md'
+        PaperProps={{
+          square: true
+        }}
       >
         <DialogTitle>
           {title}

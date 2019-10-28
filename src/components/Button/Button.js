@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     height: 32,
     padding: '0 15px',
     fontSize: 14,
-    borderRadius: 4,
+    borderRadius: 0,
     color: '#fff',
     textShadow: '0 -1px 0 rgba(0,0,0,.12)',
     boxShadow: '0 2px 0 rgba(0,0,0,.045)'
@@ -44,9 +44,11 @@ const useStyles = makeStyles(theme => ({
     }
   },
   default: {
-    backgroundColor: 'rgba(240, 245, 255, 0.6)',
-    border: '1px solid #bcc1d9',
-    color: theme.variables.textColor,
+    backgroundColor: '#0f62fe',
+    color: '#fff',
+    // backgroundColor: 'rgba(240, 245, 255, 0.6)',
+    // border: '1px solid #bcc1d9',
+    // color: theme.variables.textColor,
     '&:hover': {}
   }
 }))

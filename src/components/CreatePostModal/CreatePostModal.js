@@ -56,7 +56,14 @@ function CreatePostModal (props) {
     selectedProject
   } = props
   return (
-    <Dialog open={open} fullWidth size='md'>
+    <Dialog
+      open={open}
+      fullWidth
+      size='md'
+      PaperProps={{
+        square: true
+      }}
+    >
       <DialogTitle>Create Post</DialogTitle>
       <DialogContent className={classes.content}>
         <Grid container spacing={4}>

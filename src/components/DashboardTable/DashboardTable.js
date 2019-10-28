@@ -6,10 +6,11 @@ import LazyLoad from '../LazyLoad'
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
-import { Checkbox, Paper, TableHead, TableBody, TableCell, TableRow, Table } from '@material-ui/core'
+import { Paper, TableHead, TableBody, TableCell, TableRow, Table } from '@material-ui/core'
 import Chip from '../Chip'
 import { withStyles } from '@material-ui/styles'
 import clsx from 'clsx'
+import Checkbox from '../Checkbox'
 
 export const UPDATE_POST_TITLE = gql`
   mutation ($id: String!, $title: String!) {
@@ -109,19 +110,6 @@ class DashboardTable extends React.Component {
     renderToolbar: PropTypes.func.isRequired
   }
 
-  onSelectChange = (evt, rowKey) => {
-    evt.preventDefault()
-    evt.stopPropagation()
-    const { selectedPosts } = this.props
-    const isSelected = selectedPosts.includes(rowKey)
-    const selection = isSelected
-      ? selectedPosts.filter(key => key !== rowKey)
-      : evt.shiftKey
-        ? selectedPosts.concat([rowKey])
-        : [rowKey]
-    this.props.selectPosts(selection)
-  }
-
   handleSave = mutate => (post) => {
     mutate({
       variables: {
@@ -138,10 +126,6 @@ class DashboardTable extends React.Component {
     })
   }
 
-  onRowClick = record => evt => {
-    this.onSelectChange(evt, record.key)
-  }
-
   selectRow = (value, shiftKey = true) => {
     const { selectedPosts } = this.props
     const isSelected = selectedPosts.includes(value)
@@ -150,14 +134,20 @@ class DashboardTable extends React.Component {
       : shiftKey
         ? selectedPosts.concat([value])
         : [value]
+    console.log({
+      selection,
+      selectedPosts
+    })
     this.props.selectPosts(selection)
   }
 
   checkboxOnChange = (evt) => {
+    evt.persist()
+    const value = evt.target.value
+    console.log(value)
     evt.preventDefault()
     evt.stopPropagation()
-    const { value } = evt.target
-    this.selectRow(value, evt.shiftKey)
+    // this.selectRow(value, evt.shiftKey)
   }
 
   render () {
@@ -193,12 +183,13 @@ class DashboardTable extends React.Component {
                           [classes.selected]: this.props.selectedPosts.includes(row.id)
                         })
                         return (
-                          <TableRow key={row.id} className={className} onClick={evt => this.selectRow(row.id)}>
+                          <TableRow key={row.id} className={className} onMouseDown={evt => this.selectRow(row.id)}>
                             <TableCell className={classes.tableCell}>
                               <Checkbox
                                 value={row.id}
                                 checked={selectedPosts.includes(row.id)}
-                                onChange={this.checkboxOnChange}
+                                // onChange={this.checkboxOnChange}
+                                id={`checkbox_${row.id}`}
                               />
                             </TableCell>
                             {columns.map(column =>
@@ -223,13 +214,15 @@ class DashboardTable extends React.Component {
 
 const styles = theme => ({
   tableCell: {
-    borderBottom: `1px solid ${theme.variables.borderColor}`,
+    backgroundColor: '#f4f4f4',
+    borderBottom: '1px solid #e0e0e0',
+    // borderBottom: `1px solid ${theme.variables.borderColor}`,
   },
   wrapper: {
     margin: '1em 0',
     padding: 30,
     boxShadow: theme.variables.shadow1,
-    borderRadius: 5,
+    // borderRadius: 5,
     backgroundColor: theme.variables.cardBackground
   },
   table: {

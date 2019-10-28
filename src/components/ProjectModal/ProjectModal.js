@@ -59,6 +59,9 @@ function ProjectModal (props) {
       className={classes.modal}
       size='md'
       fullWidth
+      PaperProps={{
+        square: true
+      }}
     >
       <DialogTitle>{props?.project?.data?.projects[0]?.name}</DialogTitle>
       <DialogContent>

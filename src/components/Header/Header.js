@@ -36,7 +36,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     height: 60,
     padding: '0 30px',
-    backgroundColor: theme.palette.common.white,
+    backgroundColor: '#161616',
+    // backgroundColor: theme.palette.common.white,
     zIndex: 2
   },
   [theme.breakpoints.up('md')]: {
@@ -45,10 +46,12 @@ const useStyles = makeStyles(theme => ({
     }
   },
   flex: {
-    flexBasis: '50%'
+    flexBasis: '50%',
+    textDecoration: 'none'
   },
   brand: {
-    color: theme.palette.grey['900']
+    color: '#fff',
+    // color: theme.palette.grey['900']
   }
 }))
 

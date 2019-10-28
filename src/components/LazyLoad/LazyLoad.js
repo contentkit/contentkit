@@ -45,7 +45,7 @@ class LazyLoad extends React.Component {
         return {
           ...previousResult,
           posts_aggregate: {
-            ...previousResult.posts,
+            ...previousResult.posts_aggregate,
             nodes: [...previousResult.posts_aggregate.nodes, ...fetchMoreResult.posts_aggregate.nodes]
           }
         }

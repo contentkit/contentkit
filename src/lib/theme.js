@@ -24,7 +24,8 @@ const variables = {
     info: '#40a9ff',
     warning: '#ffc53d'
   },
-  fontFamily: '-apple-system,BlinkMacSystemFont,segoe ui,roboto,oxygen,ubuntu,cantarell,fira sans,droid sans,helvetica neue,sans-serif',
+  fontFamily: 'IBM Plex Sans',
+  // fontFamily: '-apple-system,BlinkMacSystemFont,segoe ui,roboto,oxygen,ubuntu,cantarell,fira sans,droid sans,helvetica neue,sans-serif',
   textColor: '#595959',
   errorColor: '#e4567b',
   borderColor: '#f5f5f5',
@@ -52,6 +53,7 @@ const theme = createMuiTheme({
   },
   typography: {
     fontFamily: [
+      'IBM Plex Sans',
       '-apple-system',
       'BlinkMacSystemFont',
       '"Segoe UI"',
