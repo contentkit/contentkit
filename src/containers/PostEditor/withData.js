@@ -25,14 +25,12 @@ const withData = Component =>
         }
       },
       update: (store, { data: { insert_images } }) => {
-        const images = [...posts.data.posts[0].images]
-        images.push(insert_images.returning[0])
         store.writeQuery({
           query: POST_QUERY,
           data: {
             posts: [{
               ...posts.data.posts[0],
-              images
+              images: [...posts.data.posts[0].images].concat(insert_images.returning)
             }]
           },
           variables: posts.variables

@@ -6,9 +6,9 @@ import distanceInWords from 'date-fns/distance_in_words'
 
 import classes from './styles.scss'
 import clsx from 'clsx'
-import Timeline from 'antd/lib/timeline'
 
-import { Button, Dialog, DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
+import { Dialog, DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
+import Button from '../Button'
 
 const formatDate = (timestamp) =>
   distanceInWords(new Date(timestamp), new Date())
@@ -64,7 +64,7 @@ class PostEditorHistoryModal extends React.Component {
         <DialogContent>
           <div className={classes.row}>
             <div className={clsx(classes.column, classes.sidebar)}>
-              <Timeline>
+              {/* <Timeline>
                 {
                   versions.map(version => {
                     return (
@@ -79,7 +79,7 @@ class PostEditorHistoryModal extends React.Component {
                     )
                   })
                 }
-              </Timeline>
+              </Timeline> */}
             </div>
             <div className={classes.column}>
               <Editor
@@ -96,7 +96,7 @@ class PostEditorHistoryModal extends React.Component {
             color={'secondary'}
           >
             Close
-          </Button>,
+          </Button>
           <Button
             variant='text'
             onClick={this.handleRestore}

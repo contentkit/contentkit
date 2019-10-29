@@ -6,14 +6,18 @@ import UserForm from '../../components/ProfileUserForm'
 import { USER_QUERY } from '../../graphql/queries'
 import CodeSnippet from '../../components/CodeSnippet'
 import classes from './styles.scss'
-import Popconfirm from 'antd/lib/popconfirm'
 import Button from '../../components/Button'
+import { Dialog, DialogContent, DialogHeader, DialogActions } from '@material-ui/core'
 
 class Profile extends React.Component {
   static propTypes = {
     history: PropTypes.object,
     logged: PropTypes.bool,
     user: PropTypes.object
+  }
+
+  state = {
+    open: false
   }
 
   handleChange = (e, key) => {
@@ -55,12 +59,26 @@ class Profile extends React.Component {
           className={classes.container}
         />
         <div className={classes.container}>
-          <Popconfirm title={'Are you sure?'} onConfirm={this.onConfirm} okText='Delete' cancelText='Cancel'>
-            <Button color='danger'>
+          <Button color='danger' onClick={evt => this.setState({ open: true })}>
+            Delete Account
+          </Button>
+        </div>
+        <Dialog
+          open={this.state.open}
+          onClose={evt => this.setState({ open: false })}
+        >
+          <DialogContent>
+            Are you sure?
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={evt => this.setState({ open: false })}>
+              Cancel
+            </Button>
+            <Button color='danger' onClick={this.onConfirm}>
               Delete Account
             </Button>
-          </Popconfirm>
-        </div>
+          </DialogActions>
+        </Dialog>
         <div className={classes.code}>
           <CodeSnippet {...this.props} />
         </div>

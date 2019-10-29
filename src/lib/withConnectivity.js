@@ -1,20 +1,38 @@
 import React from 'react'
 import { Provider, Consumer } from 'connectivity-provider'
-import Icon from 'antd/lib/icon'
-import notification from 'antd/lib/notification'
+import { Snackbar } from '@material-ui/core'
 
 class OfflineNotification extends React.Component {
+  state = {
+    open: false
+  }
   componentDidUpdate (prevProps) {
     if (prevProps.online !== this.props.online) {
-      notification.open({
-        message: `You are ${this.props.online ? 'online' : 'offline'}`,
-        icon: <Icon type='wifi' />
-      })
+      this.setState({ open: true })
     }
   }
+
+  handleClose = evt => {
+    this.setState({ open: false })
+  }
+
   render () {
+    const { open } = this.state
     return (
-      this.props.children
+      <React.Fragment>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={open}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+        >
+          You are {this.props.online ? 'online' : 'offline'}
+        </Snackbar>
+        {this.props.children}
+      </React.Fragment>
     )
   }
 }

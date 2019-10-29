@@ -17,7 +17,7 @@ import '@contentkit/code/src/style.scss'
 import '../../css/editor/toolbar.scss'
 
 import keyBindingFn from './keyBindingFn'
-import DraftTableDialog from '../DraftTableDialog'
+// import DraftTableDialog from '../DraftTableDialog'
 import ReadOnlyDraftTable from '../ReadOnlyDraftTable'
 import LinearProgress from '@material-ui/core/LinearProgress'
 
@@ -136,14 +136,14 @@ function PostEditorComponent (props) {
           </div>
         </div>
       </div>
-      <DraftTableDialog
+      {/* <DraftTableDialog
         onChange={onChange}
         editorState={editorState}
         open={Boolean(tableBlockKey)}
         tableBlockKey={tableBlockKey}
         handleOpen={handleOpen}
         handleClose={handleClose}
-      />
+      /> */}
     </div>
   )
 }

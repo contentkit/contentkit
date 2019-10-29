@@ -141,7 +141,7 @@ export const UPDATE_POST = gql`
 
 export const CREATE_IMAGE = gql`
   mutation ($url: String!, $postId: ID!) {
-    insert_images (objects: { url: $url, postId: $postId }) {
+    insert_images (objects: { url: $url, post_id: $postId }) {
       returning {
         id
         url
@@ -280,19 +280,43 @@ export const CREATE_ORIGIN = gql`
 `
 
 export const CREATE_TAG = gql`
-  mutation ($name: String, $projectId: String!, $postId: String!, $userId: String!) {
-    insert_tags(objects: [{ user_id: $userId, name: $name, projectId: $projectId, postId: $postId }]) {
+  mutation ($name: String, $projectId: String!, $userId: String!, $postId: String!, $tagId: String!) {
+    insert_tags(objects: [{ id: $tagId, user_id: $userId, name: $name, project_id: $projectId }]) {
       returning {
         name
         id
-        createdAt
+        created_at
         description
         slug
+      }
+    }
+    insert_posts_tags(
+      objects: [{
+        tag_id: $tagId,
+        post_id: $postId
+      }]
+    ) {
+      returning {
+        tag_id
+        post_id
       }
     }
   }
 `
 
+export const CREATE_POST_TAG_CONNECTION = gql`
+  mutation ($tagId: String!, $postId: String!) {
+    insert_posts_tags(objects: [{
+      tag_id: $tagId,
+      post_id: $postId
+    }]) {
+      returning {
+        tag_id
+        post_id
+      }
+    }
+  }
+`
 export const DELETE_USER = gql`
   mutation {
     deleteUser {

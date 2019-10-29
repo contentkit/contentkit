@@ -54,6 +54,7 @@ function PostEditorMetaModalForm (props) {
     handleChange,
     handleCoverImageChange,
     post,
+    users,
     projects,
     selectProject,
     deleteImage
@@ -211,7 +212,7 @@ function PostEditorMetaModalForm (props) {
       </Grid>
       <Grid container>
         <Grid item xs={12}>
-          <PostTagChips post={post} />
+          <PostTagChips post={post} users={users} />
         </Grid>
       </Grid>
     </form>

@@ -1,25 +1,37 @@
 import React from 'react'
-import { Mutation } from 'react-apollo'
+import { Mutation, compose } from 'react-apollo'
 
 const withMutation = ({ options, name, mutate }) => Component =>
   class extends React.Component {
+
+    mutate = commit => async variables => {
+      const params = {
+        variables: variables,
+        ownProps: this.props,
+        options: options,
+        name: name
+      }
+    
+      const composedMutate = compose(mutate, commit)
+
+      let data
+      try {
+        data = await composedMutate(params)        
+      } catch (err) {
+        console.log(err)
+      }
+
+      return data
+    }
+
     render () {
       return (
         <Mutation {...options}>
-          {(rawMutate, state) => {
+          {(commit, state) => {
             const componentProps = { ...this.props }
             componentProps[name] = {
               state,
-              mutate: (variables) => {
-                const params = mutate({
-                  variables: variables,
-                  ownProps: this.props,
-                  options: options,
-                  name: name
-                })
-
-                return rawMutate(params)
-              }
+              mutate: this.mutate(mutate).bind(this)
             }
             return (
               <Component {...componentProps} />

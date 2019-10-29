@@ -1,12 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { DELETE_TAG, CREATE_TAG } from '../../graphql/mutations'
-import { TAG_QUERY } from '../../graphql/queries'
+import { DELETE_TAG, CREATE_TAG, CREATE_POST_TAG_CONNECTION } from '../../graphql/mutations'
+import { TAG_QUERY, POST_QUERY } from '../../graphql/queries'
 import { Mutation, Query } from 'react-apollo'
 import { genKey, genDate } from '../../lib/util'
 import Chip from '../Chip'
 import Input from '../Input'
 import { withStyles } from '@material-ui/styles'
+import { withApollo, compose } from 'react-apollo'
 
 const styles = theme => ({
   tags: {
@@ -39,7 +40,9 @@ function CreateTagInput (props) {
       createTag({
         name: value,
         projectId: post.project.id,
-        postId: post.id
+        postId: post.id,
+        userId: props.users.data.users[0].id,
+        tagId: [...Array(20)].map(i=>(~~(Math.random()*36)).toString(36)).join('')
       })
     }
   }
@@ -89,36 +92,70 @@ class PostTagChips extends React.Component {
       }
     })
 
-  createTag = ({ mutate, query }) => variables =>
-    mutate({
+  createTag = ({ mutate, query }) => async (variables) => {
+    const data = await mutate({
       variables,
       optimisticResponse: {
         __typename: 'Mutation',
         insert_tags: {
           __typename: 'tags_mutation_response',
-          returning: {
+          returning: [{
             __typename: 'Tag',
             id: genKey(),
             name: variables.name,
             description: null,
             createdAt: genDate(),
             slug: null
-          }
+          }]
         }
       },
       update: (store, { data: { insert_tags } }) => {
         store.writeQuery({
           query: TAG_QUERY,
           data: {
-            posts_tags: query.data.posts_tags.concat(insert_tags.returning[0])
+            posts_tags: query.data.posts_tags.concat(insert_tags.returning.map(tag => ({ tag })))
           },
           variables: query.variables
         })
       }
     })
+    return data
+
+    // this.props.client.mutate({
+    //   mutation: CREATE_POST_TAG_CONNECTION,
+    //   variables: {
+    //     post_id: postId,
+    //     tag_id: data.insert_tags.returning[0].id
+    //   },
+    //   optimisticResponse: {
+    //     __typename: 'Mutation',
+    //     insert_posts_tags: {
+    //       __typename: 'posts_tags_mutation_response',
+    //       returning: [{
+    //         __typename: 'PostsTags',
+    //         post_id: postId,
+    //         tag_id: data.insert_tags.returning[0].id
+    //       }]
+    //     }
+    //   },
+    //   update: (store, { data: { insert_posts_tags } }) => {
+    //     const { variables: params, data: { posts } } = this.props.post
+    //     store.writeQuery({
+    //       query: POST_QUERY,
+    //       variables: params,
+    //       data: {
+    //         posts: [{
+    //           ...posts[0],
+    //           posts_tags: posts[0].post_tags.concat([{ tag: data.insert_tags.returning[0] }])
+    //         }]
+    //       }
+    //     })
+    //   }
+    // })
+  }
 
   render () {
-    const { classes, post } = this.props
+    const { classes, post, users } = this.props
     if (!post?.id) {
       return false
     }
@@ -148,6 +185,7 @@ class PostTagChips extends React.Component {
                         ))}
                       </div>
                       <CreateTagInput
+                        users={users}
                         post={post}
                         classes={classes}
                         createTag={this.createTag({ mutate: createTag, query: tagQuery })}
@@ -164,5 +202,8 @@ class PostTagChips extends React.Component {
   }
 }
 
-export default withStyles(styles)(PostTagChips)
+export default compose(
+  withApollo,
+  withStyles(styles)
+)(PostTagChips)
 

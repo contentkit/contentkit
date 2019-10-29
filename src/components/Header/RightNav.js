@@ -15,7 +15,6 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     backgroundColor: '#e0e0e0'
-    // backgroundImage: 'linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)',
   },
   menu: {
     boxShadow: '0 1px 1px 0 rgba(216,224,234,0.5)',
@@ -25,8 +24,6 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       color: '#f4f4f4',
       backgroundColor: '#353535'
-      // color: '#2f54eb',
-      // backgroundColor: '#fff'
     }
   },
   paper: {
@@ -52,7 +49,6 @@ function RightNav (props) {
       <Avatar
         onClick={openMenu}
         className={classes.avatar}
-        // src={`https://avatar.tobi.sh/1234`}
       />
       <Menu
         anchorEl={anchorEl}
