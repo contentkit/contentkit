@@ -1,7 +1,7 @@
 import React from 'react'
 import { Query } from 'react-apollo'
 
-import { FEED_QUERY, PROJECTS_QUERY } from '../../graphql/queries'
+import { POSTS_AGGREGATE_QUERY, PROJECTS_QUERY } from '../../graphql/queries'
 
 import PropTypes from 'prop-types'
 
@@ -17,13 +17,13 @@ const withData = Component =>
     }
   
     render () {
-      const { feedVariables } = this.props
+      const { postsAggregateVariables } = this.props
       const variables = {
-        ...feedVariables,
-        query: feedVariables.query ? `%${feedVariables.query}%` : '%'
+        ...postsAggregateVariables,
+        query: postsAggregateVariables.query ? `%${postsAggregateVariables.query}%` : '%'
       }
       return (
-        <Query query={FEED_QUERY} variables={variables}>
+        <Query query={POSTS_AGGREGATE_QUERY} variables={variables}>
           {(posts) => (
             <Query query={PROJECTS_QUERY}>
               {(projects) => (

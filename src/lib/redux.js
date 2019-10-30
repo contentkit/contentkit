@@ -10,7 +10,7 @@ const initialState = {
     query: '',
     loading: false
   },
-  feedVariables: {
+  postsAggregateVariables: {
     limit: 10,
     offset: 0,
     query: '',
@@ -57,8 +57,8 @@ export const reducer = (state = initialState, action) => {
     case UPDATE_FEED_VARIABLES:
       return {
         ...state,
-        feedVariables: {
-          ...state.feedVariables,
+        postsAggregateVariables: {
+          ...state.postsAggregateVariables,
           ...action.payload
         }
       }

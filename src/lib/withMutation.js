@@ -4,19 +4,17 @@ import { Mutation, compose } from 'react-apollo'
 const withMutation = ({ options, name, mutate }) => Component =>
   class extends React.Component {
 
-    mutate = commit => async variables => {
-      const params = {
+    mutate = commit => async variables => {  
+      const params = mutate({
         variables: variables,
         ownProps: this.props,
         options: options,
         name: name
-      }
-    
-      const composedMutate = compose(mutate, commit)
+      })
 
       let data
       try {
-        data = await composedMutate(params)        
+        data = await commit(params)        
       } catch (err) {
         console.log(err)
       }
@@ -31,7 +29,7 @@ const withMutation = ({ options, name, mutate }) => Component =>
             const componentProps = { ...this.props }
             componentProps[name] = {
               state,
-              mutate: this.mutate(mutate).bind(this)
+              mutate: this.mutate(commit).bind(this)
             }
             return (
               <Component {...componentProps} />

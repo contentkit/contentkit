@@ -5,7 +5,7 @@ import {
   UPDATE_POST
 } from '../../graphql/mutations'
 import {
-  FEED_QUERY,
+  POSTS_AGGREGATE_QUERY,
   PROJECTS_QUERY
 } from '../../graphql/queries'
 import { genKey, genDate } from '../../lib/util'
@@ -35,7 +35,8 @@ function CreatePostModal (props) {
 
   const handleInputChange = evt => setTitle(evt.target.value)
 
-  const onSubmit = () => {
+  const onSubmit = (evt) => {
+    console.log(evt)
     const { handleClose, createPost, selectedProject } = props
     handleClose()
     createPost.mutate({
@@ -125,7 +126,7 @@ const mutations = [
       },
       update: (store, { data: { insert_posts } }) => {
         store.writeQuery({
-          query: FEED_QUERY,
+          query: POSTS_AGGREGATE_QUERY,
           data: {
             ...ownProps.posts.data,
             posts_aggregate: {

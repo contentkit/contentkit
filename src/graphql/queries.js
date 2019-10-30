@@ -9,7 +9,7 @@ export const PROJECTS_QUERY = gql`
   }
 `
 
-export const FEED_QUERY = gql`
+export const POSTS_AGGREGATE_QUERY = gql`
   query (
     $limit: Int, 
     $offset: Int, 

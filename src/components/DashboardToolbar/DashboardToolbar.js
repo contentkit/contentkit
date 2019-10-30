@@ -1,12 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import SearchInput from '../DashboardToolbarSearchInput'
-import clsx from 'clsx'
-import { DELETE_POST } from '../../graphql/mutations'
-import { FEED_QUERY } from '../../graphql/queries'
-import ProjectSelect from '../ProjectSelect'
 import { Toolbar, IconButton } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles'
+import { withApollo, compose } from 'react-apollo'
+import clsx from 'clsx'
+
+import SearchInput from '../DashboardToolbarSearchInput'
+import { DELETE_POST } from '../../graphql/mutations'
+import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
+import ProjectSelect from '../ProjectSelect'
 
 const EditIcon = props => (
   <svg
@@ -68,21 +70,24 @@ class DashboardToolbar extends React.Component {
   }
 
   handleDelete = async () => {
-    const { posts, selected } = this.props
-    posts.client.cache.writeQuery({
-      query: FEED_QUERY,
+    const { client, posts, selected, users } = this.props
+    client.cache.writeQuery({
+      query: POSTS_AGGREGATE_QUERY,
       data: {
-        posts: {
-          posts: posts.data.posts.filter((post) => !selected.includes(post.id))
+        posts_aggregate: {
+          ...posts.data.posts_aggregate,
+          nodes: posts.data.posts_aggregate.nodes.filter((post) => !selected.includes(post.id))
         }
       },
       variables: posts.variables
     })
+
+    const userId = users.data.users[0].id
     await Promise.all(
       selected.map(id => {
         return posts.client.mutate({
           mutation: DELETE_POST,
-          variables: { id }
+          variables: { id, userId }
         })
       })
     )
@@ -190,4 +195,7 @@ const styles = theme => ({
   }
 })
 
-export default withStyles(styles)(DashboardToolbar)
+export default compose(
+  withStyles(styles),
+  withApollo
+)(DashboardToolbar)

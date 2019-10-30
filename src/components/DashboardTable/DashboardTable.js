@@ -12,6 +12,10 @@ import Chip from '../Chip'
 import { withStyles } from '@material-ui/styles'
 import clsx from 'clsx'
 import Checkbox from '../Checkbox'
+import {
+  CSSTransition,
+  TransitionGroup,
+} from 'react-transition-group';
 
 export const UPDATE_POST_TITLE = gql`
   mutation ($id: String!, $title: String!) {
@@ -100,6 +104,39 @@ const columns = [{
   }
 }]
 
+function DashboardTableRow (props) {
+  const {
+    row,
+    className,
+    selectRow,
+    selectedPosts,
+    columns,
+    classes
+  } = props
+  return (
+    <CSSTransition
+      key={row.id}
+      timeout={1000}
+      classNames='item'
+    >
+      <TableRow key={row.id} className={className} onMouseDown={evt => selectRow(row.id)}>
+        <TableCell className={classes.tableCell}>
+          <Checkbox
+            value={row.id}
+            checked={selectedPosts.includes(row.id)}
+            id={`checkbox_${row.id}`}
+          />
+        </TableCell>
+        {columns.map(column =>
+          <TableCell key={column.key} className={classes.tableCell}>
+            {column.render(row[column.key])}
+          </TableCell>
+        )}
+      </TableRow>
+    </CSSTransition>
+  )
+}
+
 const formatDate = (str) => distanceInWordsToNow(new Date(str))
 
 class DashboardTable extends React.Component {
@@ -155,7 +192,6 @@ class DashboardTable extends React.Component {
       limit: 10,
       offset: direction === 'FORWARD' ? variables.offset + 10 : Math.max(0, variables.offset - 10)
     }
-    console.log({ nextVariables, direction })
     return this.props.posts.fetchMore({
       variables: nextVariables,
       updateQuery: (previousResult, nextResult) => {
@@ -185,56 +221,52 @@ class DashboardTable extends React.Component {
     return (
       <Mutation mutation={UPDATE_POST_TITLE}>
         {mutate => (
-            <div className={classes.wrapper}>
-              <div className={classes.toolbar}>
-                {this.props.renderToolbar(this.props)}
-              </div>
-              <Paper elevation={0}>
-                <Table size='small' className={classes.table}>
-                  <TableHead>
-                    <TableCell key='checkbox' className={classes.tableCell} padding='checkbox' />
-                    {columns.map(column =>
-                      <TableCell key={`td_${column.key}`} className={classes.tableCell}>{column.title}</TableCell>  
-                    )}
-                  </TableHead>
-                  <TableBody>
-                    {
-                      dataSource.map(row => {
-                        const className = clsx({
-                          [classes.row]: true,
-                          [classes.selected]: this.props.selectedPosts.includes(row.id)
-                        })
-                        return (
-                          <TableRow key={row.id} className={className} onMouseDown={evt => this.selectRow(row.id)}>
-                            <TableCell className={classes.tableCell}>
-                              <Checkbox
-                                value={row.id}
-                                checked={selectedPosts.includes(row.id)}
-                                // onChange={this.checkboxOnChange}
-                                id={`checkbox_${row.id}`}
-                              />
-                            </TableCell>
-                            {columns.map(column =>
-                              <TableCell key={column.key} className={classes.tableCell}>
-                                {column.render(row[column.key])}
-                              </TableCell>
-                            )}
-                          </TableRow>
-                        )
-                      })
-                    }
-                  </TableBody>
-                </Table>
-                <Toolbar disableGutters className={classes.pagination}>
-                  <IconButton onClick={evt => this.load('BACKWARD')}>
-                    <KeyboardArrowLeft />
-                  </IconButton>
-                  <IconButton onClick={evt => this.load('FORWARD')}>
-                    <KeyboardArrowRight />
-                  </IconButton>
-                </Toolbar>
-              </Paper>
+          <div className={classes.wrapper}>
+            <div className={classes.toolbar}>
+              {this.props.renderToolbar(this.props)}
             </div>
+            <Paper elevation={0}>
+              <TransitionGroup>
+              <Table size='small' className={classes.table}>
+                <TableHead>
+                  <TableCell key='checkbox' className={classes.tableCell} padding='checkbox' />
+                  {columns.map(column =>
+                    <TableCell key={`td_${column.key}`} className={classes.tableCell}>{column.title}</TableCell>  
+                  )}
+                </TableHead>
+                <TableBody>
+                  {
+                    dataSource.map(row => {
+                      const className = clsx({
+                        [classes.row]: true,
+                        [classes.selected]: this.props.selectedPosts.includes(row.id)
+                      })
+                      return (
+                        <DashboardTableRow
+                          key={row.id}
+                          row={row}
+                          className={className}
+                          selectRow={this.selectRow}
+                          selectedPosts={selectedPosts}
+                          columns={columns}
+                          classes={classes}
+                        />
+                      )
+                    })
+                  }
+                </TableBody>
+              </Table>
+              </TransitionGroup>
+              <Toolbar disableGutters className={classes.pagination}>
+                <IconButton onClick={evt => this.load('BACKWARD')}>
+                  <KeyboardArrowLeft />
+                </IconButton>
+                <IconButton onClick={evt => this.load('FORWARD')}>
+                  <KeyboardArrowRight />
+                </IconButton>
+              </Toolbar>
+            </Paper>
+          </div>
         )}
       </Mutation>
     )
@@ -265,7 +297,9 @@ const styles = theme => ({
   },
   pagination: {
     justifyContent: 'flex-end'
-  }
+  },
+  selected: {},
+  row: {}
 })
 
 export default withStyles(styles)(DashboardTable)

@@ -79,11 +79,12 @@ class Dashboard extends React.Component {
         history={this.props.history}
         editorState={this.props.editorState}
         setEditorState={this.props.setEditorState}
-        feed={this.props.feed}
-        selectedProject={this.props.feedVariables.projectId}
+        posts={this.props.posts}
+        selectedProject={this.props.postsAggregateVariables.projectId}
         projects={this.props.projects}
         selectProject={this.props.selectProject}
         handleOpen={this.handleModalOpen}
+        users={this.props.users}
       />
     )
   }
@@ -100,7 +101,7 @@ class Dashboard extends React.Component {
       >
         <CreatePostModal
           posts={this.props.posts}
-          selectedProject={this.props.feedVariables.projectId}
+          selectedProject={this.props.postsAggregateVariables.projectId}
           projects={this.props.projects}
           selectProject={this.props.selectProject}
           client={this.props.client}

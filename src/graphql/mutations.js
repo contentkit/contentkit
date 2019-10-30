@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
 export const DELETE_POST = gql`
-  mutation ($id: String!) {
-    delete_posts(where: { id: { _eq: $id } }) {
+  mutation ($id: String!, $userId: String!) {
+    delete_posts(where: { id: { _eq: $id }, user_id: { _eq: $userId } }) {
       returning {
         id
       }
