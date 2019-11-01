@@ -1,9 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+// @ts-ignore
 import Spinner from '../Spinner'
-import styles from './styles.scss'
+import { makeStyles } from '@material-ui/styles'
 
-function Fallback (props) {
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+}))
+
+function Fallback (props: any) {
+  const classes = useStyles(props)
   React.useEffect(() => {
     let start = Date.now()
 
@@ -13,7 +26,7 @@ function Fallback (props) {
     }
   })
   return (
-    <div className={styles.root}>
+    <div className={classes.root}>
       <div>
         <Spinner />
       </div>

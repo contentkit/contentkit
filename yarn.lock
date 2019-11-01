@@ -1082,10 +1082,10 @@
     apollo-link-batch-http "^1.2.12"
     apollo-link-error "^1.1.11"
 
-"@graphship/login@^0.0.8":
-  version "0.0.8"
-  resolved "https://nexus.jx.k8s.devmissiongraph.io/repository/npm-all/@graphship/login/-/login-0.0.8.tgz#ebfca97bb864df4ef31bc79b9f48467c8d3d7178"
-  integrity sha512-rSlBhM0MlJhfkEQRs45RMl+FXkj4TS8SEEf7WA6/WVm7OonI6PggQwGl/0Vo8p710cnsyVh9D46rF7UqIEfzsg==
+"@graphship/login@^0.0.10":
+  version "0.0.10"
+  resolved "https://nexus.jx.k8s.devmissiongraph.io/repository/npm-all/@graphship/login/-/login-0.0.10.tgz#90a223643e5feca278424a3c6913df281f4821ef"
+  integrity sha512-vfvQmJ2z4ntssgEULA/psuIxZB7m8MmTR3Ld83n7Ig9aadCxxct1OC9UhBaRtThqRd2HRF084fZJa45Zv/bAqA==
   dependencies:
     "@babel/runtime" "^7.4.5"
     fs-extra "^8.1.0"
@@ -1434,6 +1434,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/history@*":
+  version "4.7.3"
+  resolved "https://nexus.jx.k8s.devmissiongraph.io/repository/npm-all/@types/history/-/history-4.7.3.tgz#856c99cdc1551d22c22b18b5402719affec9839a"
+  integrity sha512-cS5owqtwzLN5kY+l+KgKdRJ/Cee8tlmQoGQuIE9tWnSmS3JMKzmxo2HIAk2wODMifGwO20d62xZQLYz+RLfXmw==
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.1.tgz#42995b446db9a48a11a07ec083499a860e9138ff"
@@ -1469,6 +1474,23 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
   integrity sha512-ce5d3q03Ex0sy4R14722Rmt6MT07Ua+k4FwDfdcToYJcMKNtRVQvJ6JCAPdAmAnbRb6CsX6aYb9m96NGod9uTw==
 
+"@types/react-router-dom@^5.1.1":
+  version "5.1.1"
+  resolved "https://nexus.jx.k8s.devmissiongraph.io/repository/npm-all/@types/react-router-dom/-/react-router-dom-5.1.1.tgz#77a2dae8ba6ff1df51d27517f7646127a51a1a3e"
+  integrity sha512-yXqWGaehta/cdmjvEQfCbHFX6l1c7QHuE5n2OfhcJ33ufbt55xhAKqQ0BmT24YM3s7OKwrrUUgY3FaSzO7be3Q==
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+    "@types/react-router" "*"
+
+"@types/react-router@*":
+  version "5.1.2"
+  resolved "https://nexus.jx.k8s.devmissiongraph.io/repository/npm-all/@types/react-router/-/react-router-5.1.2.tgz#41e5e6aa333a7b9a2bfdac753c04e1ca4b3e0d21"
+  integrity sha512-euC3SiwDg3NcjFdNmFL8uVuAFTpZJm0WMFUw+4eXMUnxa7M9RGFEG0szt0z+/Zgk4G2k9JBFhaEnY64RBiFmuw==
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+
 "@types/react-slick@^0.23.4":
   version "0.23.4"
   resolved "https://registry.yarnpkg.com/@types/react-slick/-/react-slick-0.23.4.tgz#c97e2a9e7e3d1933c68593b8e82752fab1e8ce53"
@@ -1487,6 +1509,14 @@
   version "16.8.23"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.23.tgz#ec6be3ceed6353a20948169b6cb4c97b65b97ad2"
   integrity sha512-abkEOIeljniUN9qB5onp++g0EY38h7atnDHxwKUFz1r3VH1+yG1OKi2sNPTyObL40goBmfKFpdii2lEzwLX1cA==
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^2.2.0"
+
+"@types/react@^16.9.11":
+  version "16.9.11"
+  resolved "https://nexus.jx.k8s.devmissiongraph.io/repository/npm-all/@types/react/-/react-16.9.11.tgz#70e0b7ad79058a7842f25ccf2999807076ada120"
+  integrity sha512-UBT4GZ3PokTXSWmdgC/GeCGEJXE5ofWyibCcecRLUVN2ZBpXQGVgQGtG2foS7CrTKFKlQVVswLvf7Js6XA/CVQ==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -9717,6 +9747,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+typescript@^3.7.0-beta:
+  version "3.7.0-beta"
+  resolved "https://nexus.jx.k8s.devmissiongraph.io/repository/npm-all/typescript/-/typescript-3.7.0-beta.tgz#4ad556e0eee14b90ecc39261001690e16e5eeba9"
+  integrity sha512-4jyCX+IQamrPJxgkABPq9xf+hUN+GWHVxoj+oey1TadCPa4snQl1RKwUba+1dyzYCamwlCxKvZQ3TjyWLhMGBA==
 
 ua-parser-js@^0.7.18:
   version "0.7.20"

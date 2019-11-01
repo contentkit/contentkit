@@ -3,29 +3,13 @@ import Layout from '../Layout'
 import ProjectModal from '../../components/ProjectModal'
 import Haikunator from 'haikunator'
 import ProjectsList from '../../components/ProjectsList'
-import classes from './styles.scss'
 import Button from '../../components/Button'
+import { withStyles } from '@material-ui/styles'
 
 const haikunator = new Haikunator()
 
-export const findIndex = (arr, id) => {
-  let index = 0
-  while (index < arr.length) {
-    if (arr[index].id === id) {
-      break
-    }
-    index++
-  }
-  return index >= arr.length ? -1 : index
-}
-
-class Projects extends React.Component {
-  static defaultProps = {
-    data: {
-      projects: []
-    },
-    activeProject: undefined
-  }
+class Projects extends React.Component<any, any> {
+  static defaultProps = {}
 
   state = {
     activeProject: undefined,
@@ -70,7 +54,8 @@ class Projects extends React.Component {
     const { ...rest } = this.props
     const {
       createProject,
-      projects
+      projects,
+      classes
     } = this.props
     return (
       <Layout
@@ -108,5 +93,13 @@ class Projects extends React.Component {
   }
 }
 
-export default Projects
+export default withStyles(theme => ({
+  container: {
+    width: '660px',
+    margin: '2em auto',
+  },
+  inner: {
+    margin: '2em 0'
+  }
+}))(Projects)
 

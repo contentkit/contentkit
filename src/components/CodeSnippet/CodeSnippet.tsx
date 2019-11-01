@@ -1,7 +1,7 @@
 import React from 'react'
 import createAsyncLoadingHighlighter from 'react-syntax-highlighter/dist/esm/async-syntax-highlighter';
 import supportedLanguages from 'react-syntax-highlighter/dist/esm/languages/prism/supported-languages';
-import classes from './styles.scss'
+import { withStyles } from '@material-ui/styles'
 
 const style = require('./theme.json')
 
@@ -13,15 +13,17 @@ const SyntaxHighlighter = createAsyncLoadingHighlighter({
 
 class CodeSnippet extends React.Component {
   render () {
-    let user = this.props.user?.data?.user
-    let projectId = (user?.projects?.length && user.projects[0].id) || ''
-    const code = `
-curl 'https://api.contentkit.co/graphql' \\
-  -H 'authorization: ${user?.secret || ''}' \\
-  -H 'content-type: application/json' \\
-  --data-binary '{ "variables": { "id": "${projectId}" }, "query": "query ($id: ID!) { project(id: $id) { name } }" }'
-
-`
+    const { classes, users } = this.props
+    // @ts-ignore
+    const user = users?.data?.users[0]
+    // @ts-ignore
+    const projectId = (user?.projects?.length && user.projects[0].id) || ''
+    const code = [
+      `curl 'https://api.contentkit.co/graphql' \\`,
+      `-H 'authorization: \${user?.secret || ''}' \\`,
+      `-H 'content-type: application/json' \\`,
+      `--data-binary '{ "variables": { "id": "${projectId}" }, "query": "query ($id: ID!) { project(id: $id) { name } }" }'`
+    ].join('\n')
     return (
       <div className={classes.root}>
         <SyntaxHighlighter
@@ -64,4 +66,13 @@ curl 'https://api.contentkit.co/graphql' \\
   }
 }
 
-export default CodeSnippet
+const styles = theme => ({
+  root: {
+    marginBottom: 16,
+    borderRadius: 8,
+    background: '#121212',
+    padding: '24px 24px 0px'
+  }
+})
+
+export default withStyles(styles)(CodeSnippet)

@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import { PROJECTS_QUERY } from '../../graphql/queries'
 import { UPDATE_PROJECT, CREATE_PROJECT } from '../../graphql/mutations'
@@ -8,7 +7,7 @@ import { withRouter } from 'react-router-dom'
 import gql from 'graphql-tag'
 import Projects from './Projects'
 
-export const findIndex = (arr, id) => {
+export const findIndex = (arr: Array<any>, id: string) => {
   let index = 0
   while (index < arr.length) {
     if (arr[index].id === id) {
@@ -19,7 +18,7 @@ export const findIndex = (arr, id) => {
   return index >= arr.length ? -1 : index
 }
 
-class ProjectsMutations extends React.Component {
+class ProjectsMutations extends React.Component<any, any> {
   createProject = ({ mutate, projects }) => variables => mutate({
     variables,
     optimisticResponse: {

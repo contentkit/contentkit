@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import propTypes from 'prop-types'
 import debounce from 'lodash.debounce'
@@ -13,8 +12,34 @@ import { selectProject, selectPosts, setEditorState, setSearchQuery, setSearchLo
 import CreatePostModal from '../../components/CreatePostModal'
 
 import { feedQueryShape } from '../../shapes'
+import { ObservableQuery } from 'apollo-client'
+import { PostsAggregateVariables, SelectProject, SetSearchLoadingState, SetEditorState } from '../../types'
+import { EditorState } from 'draft-js'
 
-class Dashboard extends React.Component {
+type Posts = {
+  variables: any,
+  data: {
+    
+  }
+}
+
+type DashboardProps = any & {
+  posts: Posts,
+  setSearchLoadingState: SetSearchLoadingState,
+  selectProject: SelectProject,
+  setSearchQuery: () => void,
+  postsAggregateVariables: PostsAggregateVariables,
+  editorState: EditorState,
+  setEditorState: SetEditorState,
+  logged: boolean
+}
+
+type DashboardState = {
+  modalOpen: boolean,
+  query: string
+}
+
+class Dashboard extends React.Component<DashboardProps, any> {
   static defaultProps = {
     project: {},
     selected: undefined,
@@ -32,19 +57,19 @@ class Dashboard extends React.Component {
     modalOpen: false
   }
 
-  handleProjectSelect = (selectedProject) => {
+  handleProjectSelect = (selectedProject: string) => {
     this.updateVariables({
       projectId: selectedProject
     })
   }
 
-  handleSearch = ({ query }) => {
+  handleSearch = ({ query }: { query: string }) => {
     this.updateVariables({ query })
   }
 
   debouncedSearch = debounce(this.handleSearch, 1000)
 
-  updateVariables = (variables) => {
+  updateVariables = (variables: PostsAggregateVariables) => {
     const query = variables.query || ''
     this.props.posts.fetchMore({
       variables: {

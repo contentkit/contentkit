@@ -23,7 +23,7 @@ import {
 } from '@material-ui/core'
 import Input from '../Input'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: any) => ({
   content: {
     minHeight: 200
   }
@@ -36,7 +36,6 @@ function CreatePostModal (props) {
   const handleInputChange = evt => setTitle(evt.target.value)
 
   const onSubmit = (evt) => {
-    console.log(evt)
     const { handleClose, createPost, selectedProject } = props
     handleClose()
     createPost.mutate({

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Mutation, compose } from 'react-apollo'
 
-const withMutation = ({ options, name, mutate }) => Component =>
+const withMutation = ({ options, name, mutate }: any) => (Component: any) =>
   class extends React.Component {
 
     mutate = commit => async variables => {  

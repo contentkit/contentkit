@@ -1,7 +1,7 @@
 import React from 'react'
 import { Query } from 'react-apollo'
 
-const withQuery = ({ options, name }) => Component =>
+const withQuery = ({ options, name }: any) => Component =>
   class extends React.Component {
     render () {
       const queryProps = typeof options === 'function'

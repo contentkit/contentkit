@@ -1,8 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import LazyLoad from '../LazyLoad'
-
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'

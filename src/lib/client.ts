@@ -31,7 +31,9 @@ export default () => {
       errorLink,
       httpLink
     ]),
+    // @ts-ignore
     cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
+    // @ts-ignore
     dataIdFromObject: object => object.id,
     shouldBatch: true,
     ssrMode: false, // default

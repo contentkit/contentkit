@@ -1,8 +1,9 @@
 import React from 'react'
+// @ts-ignore
 import { Provider, Consumer } from 'connectivity-provider'
 import { Snackbar } from '@material-ui/core'
 
-class OfflineNotification extends React.Component {
+class OfflineNotification extends React.Component<any, any> {
   state = {
     open: false
   }

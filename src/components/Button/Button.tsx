@@ -5,7 +5,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator'
 
 import clsx from 'clsx'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: any) => ({
   root: {
     lineHeight: 1.499,
     position: 'relative',
@@ -46,9 +46,6 @@ const useStyles = makeStyles(theme => ({
   default: {
     backgroundColor: '#0f62fe',
     color: '#fff',
-    // backgroundColor: 'rgba(240, 245, 255, 0.6)',
-    // border: '1px solid #bcc1d9',
-    // color: theme.variables.textColor,
     '&:hover': {}
   }
 }))
@@ -56,6 +53,7 @@ const useStyles = makeStyles(theme => ({
 function WrappedButton (props) {
   const { color, className: classNameProp, ...rest } = props
   const classes = useStyles(props)
+  // @ts-ignore
   const className = clsx(classes.root, classes[color], classNameProp)
   return (
     <ButtonBase {...rest} className={className} />

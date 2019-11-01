@@ -1,12 +1,13 @@
 import React from 'react'
 import { Query } from 'react-apollo'
+// @ts-ignore
 import { USER_QUERY } from '../../graphql/queries'
 import { Redirect, withRouter } from 'react-router-dom'
 
-function AuthProvider (props) {
+function AuthProvider (props: any) {
   return (
     <Query query={USER_QUERY}>
-      {users => {
+      {(users: any) => {
         if (!users.loading) {
           if (!users?.data?.users) {
             if (!props.history.location.pathname.startsWith('/login')) {

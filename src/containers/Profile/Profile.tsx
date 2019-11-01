@@ -38,7 +38,8 @@ class Profile extends React.Component {
   }
 
   onConfirm = () => {
-    this.props.deleteUser.mutate()
+    const { deleteUser, users: { data: { users } } } = this.props
+    deleteUser.mutate(users[0].id)
   }
 
   render () {

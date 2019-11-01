@@ -135,6 +135,7 @@ async function getSecret (_, { id }, ctx) {
   } catch (err) {
     throw new AuthenticationError('Cannot decode token')
   }
+  console.log({ decoded })
   let user
   try {
     const data = await ctx.client.query(
@@ -144,6 +145,7 @@ async function getSecret (_, { id }, ctx) {
   } catch (err) {
     throw err
   }
+  console.log(user)
 
   if (!user) {
     throw new AuthenticationError('User not found')

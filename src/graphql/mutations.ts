@@ -318,9 +318,13 @@ export const CREATE_POST_TAG_CONNECTION = gql`
   }
 `
 export const DELETE_USER = gql`
-  mutation {
-    deleteUser {
-      id
+  mutation($userId: String!) {
+    delete_users(
+      where: { id: { _ew: $userId } } ) 
+    {
+      returning {
+        id
+      }
     }
   }
 `
