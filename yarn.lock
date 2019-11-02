@@ -963,41 +963,41 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@contentkit/buttons@^0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@contentkit/buttons/-/buttons-0.0.35.tgz#5de545876a28952d8c298b5be64248206a6cc376"
-  integrity sha512-0eOSXiplCRT+aNmxaXkU2o5RmK0X67q0oBhQaJv5BjCjC0OKdtvRO4oZld91nlvsaSbAGzSLD8g+iIeRY7H8HQ==
+"@contentkit/buttons@^0.0.36":
+  version "0.0.36"
+  resolved "https://registry.npmjs.org/@contentkit/buttons/-/buttons-0.0.36.tgz#806783837c2686d1acf287867a86c2b1c81559c4"
+  integrity sha512-Pshhs09FZYhIdpk0nY6ayloKlfrONYpKiNrGUBbVu1BBFjij9j17e0KjW2TOOetalvTLMvtUd7AX0+qvUeh5zA==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@contentkit/util" "^0.0.35"
+    "@contentkit/util" "^0.0.36"
     clsx "^1.0.4"
     draft-js-blocks "^0.0.23"
     react-valid-attributes "^0.0.2"
 
-"@contentkit/code@^0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@contentkit/code/-/code-0.0.35.tgz#7d0d79c700d2027d380429009490eefcbf239ccd"
-  integrity sha512-aU8UjentG3ro1SvDYFUMouYQaQRW+fXJE3m3ocNzR+rMNYbOOulTB+HPEG/uNjd2MrXeJ81j+mY4T4q5gzrBhw==
+"@contentkit/code@^0.0.36":
+  version "0.0.36"
+  resolved "https://registry.npmjs.org/@contentkit/code/-/code-0.0.36.tgz#3b01c359dbe57580c1567dd2e277b3b0160cbcf2"
+  integrity sha512-PTIOKRMan8CK5TUi15t4S//rxpshBkrbJ+ZNLoE4U2NUX57f2G/JTT4vZsz2a5uAq6ERsO9bmVuOIAOaCNsqFw==
   dependencies:
-    "@contentkit/util" "^0.0.35"
+    "@contentkit/util" "^0.0.36"
     clsx "^1.0.4"
     decorate-component-with-props "^1.1.0"
     draft-js-blocks "^0.0.20"
 
-"@contentkit/editor@^0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@contentkit/editor/-/editor-0.0.35.tgz#e4e57cbe51ab3a076be9c16c9f57186ebbc08a03"
-  integrity sha512-mZzAxwVq6TBTQ7m+XbEVcZTvlmgtBz2UBeKDdGy6A7w0JAsECLlU7raXe+XHKF5rrI+iM4bkeNvl4iyH1pa6ug==
+"@contentkit/editor@^0.0.36":
+  version "0.0.36"
+  resolved "https://registry.npmjs.org/@contentkit/editor/-/editor-0.0.36.tgz#66d999ede3d82038e73569a07d472e7d4770ad19"
+  integrity sha512-BbFOcdIECHUppGjz7f+yAdi/q3dH8PVonq8CRS4p2GILTo6E0bAXPb4tNNqklXSRd7piN5gNajyTwYrAr6cQYA==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@contentkit/buttons" "^0.0.35"
-    "@contentkit/code" "^0.0.35"
-    "@contentkit/embed" "^0.0.35"
-    "@contentkit/focus" "^0.0.35"
-    "@contentkit/markdown" "^0.0.35"
-    "@contentkit/new-line" "^0.0.35"
-    "@contentkit/toolbar" "^0.0.35"
-    "@contentkit/util" "^0.0.35"
+    "@contentkit/buttons" "^0.0.36"
+    "@contentkit/code" "^0.0.36"
+    "@contentkit/embed" "^0.0.36"
+    "@contentkit/focus" "^0.0.36"
+    "@contentkit/markdown" "^0.0.36"
+    "@contentkit/new-line" "^0.0.36"
+    "@contentkit/toolbar" "^0.0.36"
+    "@contentkit/util" "^0.0.36"
     clsx "^1.0.4"
     decorate-component-with-props "^1.1.0"
     draft-js-anchor-plugin "^2.0.2"
@@ -1010,12 +1010,12 @@
     pretty "^2.0.0"
     prismjs "^1.15.0"
     prop-types "^15.6.1"
-    s3-dropzone "^0.0.48"
+    s3-dropzone "^0.0.57"
 
-"@contentkit/embed@^0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@contentkit/embed/-/embed-0.0.35.tgz#26fea61441b16b6db8a173926acee4d520390111"
-  integrity sha512-PcvuFfl2vem0wP2CSnYIA09DCQo/QQycm62QJktrAWA5bBDL+bsMzeVMnA+9pe5S8gb5fLrhkzZ5QT/Vy0jsSA==
+"@contentkit/embed@^0.0.36":
+  version "0.0.36"
+  resolved "https://registry.npmjs.org/@contentkit/embed/-/embed-0.0.36.tgz#2b7078d3dabda8bcb5ac068176b71d9768888c8a"
+  integrity sha512-yitUwNy9JGY2/enaLM8TwENH5uAJo25Rm2PAyc2gzmMKSpxxJhFvP1T3CVmZ6upDovcdOxyYIyY0HZDjshRYzw==
   dependencies:
     "@babel/runtime" "^7.5.5"
     append-stylesheet "^0.0.2"
@@ -1023,10 +1023,10 @@
     lodash.frompairs "^4.0.1"
     url "^0.11.0"
 
-"@contentkit/focus@^0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@contentkit/focus/-/focus-0.0.35.tgz#f48c0c77ff080872262d711d3a066432d01a813a"
-  integrity sha512-iDo4+92H0ZTbBa19PKwMY6NPy0vkXcRf4NpuDLYKGfSfaEsN9hGwxePFx3YiiMo/OkRvItkU7apDlPx0B9IDrg==
+"@contentkit/focus@^0.0.36":
+  version "0.0.36"
+  resolved "https://registry.npmjs.org/@contentkit/focus/-/focus-0.0.36.tgz#8a26ac3e5263a86365f95204f00abe383dd94983"
+  integrity sha512-mhnFm9VD0xtO1hFK5VQXpUVk7qDG2GuGEEA6TI78+AnkYA2E+cJQHFBAeE31OwH6+F4XSsjEOfqlN+FJHpvxTg==
   dependencies:
     clsx "^1.0.4"
     decorate-component-with-props "^1.0.2"
@@ -1034,35 +1034,35 @@
     immutable "~3.7.4"
     prop-types "^15.5.8"
 
-"@contentkit/markdown@^0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@contentkit/markdown/-/markdown-0.0.35.tgz#c6cb8c85ae5d6e0e536fa9df1f39f1e9325e352f"
-  integrity sha512-xdsoDzV4t6K0oXejh2eLgIx0Meh5dw+Z73GfUpBC+Xl9y1H9UY1UaVqCy6RwM6OTDQj1e0DBvukaO4K6iS8b8A==
+"@contentkit/markdown@^0.0.36":
+  version "0.0.36"
+  resolved "https://registry.npmjs.org/@contentkit/markdown/-/markdown-0.0.36.tgz#9ddb7de509fefcbace6156b3706a033780de8074"
+  integrity sha512-t8weFE7yrV3hX6EdTKOBv7XhwpKUFRpm9a4osampGb9+3X943hhoibTLODckCaJybpIej2bydkbAUkcCAWMWTQ==
 
-"@contentkit/new-line@^0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@contentkit/new-line/-/new-line-0.0.35.tgz#5e4514690bd66551dc2e3b5e4ca780f0bf544b57"
-  integrity sha512-ZpICyySlDZc8HeFrk+byGS9sCrnV1sWBDmA7Y8aXnBT7NcuZ/MeGcmkcA3Bex98OuhgqyKhUslxp1Dzoc6lNGQ==
+"@contentkit/new-line@^0.0.36":
+  version "0.0.36"
+  resolved "https://registry.npmjs.org/@contentkit/new-line/-/new-line-0.0.36.tgz#20a6450b8a59faf66c42889dd795e8caece3fe10"
+  integrity sha512-Bmff9a5HIOPQTmSLrztWtRJ+DzbTPvSEvXPXfWpel0M+5UVIQzLf7aRQN3OJqP2jPQxEpcG3G7cEUVlfcpQzTQ==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@contentkit/util" "^0.0.35"
+    "@contentkit/util" "^0.0.36"
 
-"@contentkit/toolbar@^0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@contentkit/toolbar/-/toolbar-0.0.35.tgz#e6f3be6b17c10142d322752fbf4d1c99770e08df"
-  integrity sha512-CyF9aHPG75DT/EsXRBCqmSnTkrqmyZLbiBzPPW8Xz8GQ9pcfIJyFw9D9EuzG5Umw7TeDdBdc+xF7T31oC8m7Mw==
+"@contentkit/toolbar@^0.0.36":
+  version "0.0.36"
+  resolved "https://registry.npmjs.org/@contentkit/toolbar/-/toolbar-0.0.36.tgz#10b4d956a7ad35efe3d234e6b96907317d318828"
+  integrity sha512-4qaM/tBJoLrNteCu50Ai+SHnNal76H33hYh8jlJ/+HM/wRXB2H42AIDURtGVhKhebsA9tLC1cRr4ruy0LCKreA==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@contentkit/util" "^0.0.35"
+    "@contentkit/util" "^0.0.36"
     clsx "^1.0.4"
     decorate-component-with-props "^1.0.2"
     lodash.debounce "^4.0.8"
     prop-types "^15.5.8"
 
-"@contentkit/util@^0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@contentkit/util/-/util-0.0.35.tgz#b4413578e5727a65ddd39f7fd9c31f3e58271c32"
-  integrity sha512-kx4cG+c8qYf2IYyIfRGHSADiBTjJ34/HSG3/CLQ7ov+Y9DvMmqQ3nZ2c5aIe/3vIxavmAgPtSJEM/N3NkVkX1w==
+"@contentkit/util@^0.0.36":
+  version "0.0.36"
+  resolved "https://registry.npmjs.org/@contentkit/util/-/util-0.0.36.tgz#7f19412f4f9c13eb70301f3024fb43b2556c951e"
+  integrity sha512-OoyuXgVT3GFEq16c4X1tCVJzYSCtFyAK+YUWF6lkE9r11VtWmwUOgyLMEIjuUuVG4+vbLBOF455FDV+dJaGl/A==
   dependencies:
     left-indent "^0.0.6"
 
@@ -3248,11 +3248,6 @@ deep-is@~0.1.3:
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
   integrity sha1-s2nW+128E+7PUk+RsHD+7cNXzzQ=
 
-deepmerge@^2.1.0:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.2.1.tgz#5d3ff22a01c00f645405a2fbc17d0778a1801170"
-  integrity sha512-R9hc1Xa/NOBi9WRVUWg19rl1UB7Tt4kuPd+thNJgFZoxXsTz7ncaPaeIm+40oSGuP33DfMb4sZt1QIGiJzC4EA==
-
 deepmerge@^4.0.0:
   version "4.1.1"
   resolved "https://nexus.jx.k8s.devmissiongraph.io/repository/npm-all/deepmerge/-/deepmerge-4.1.1.tgz#ee0866e4019fe62c1276b9062d4c4803d9aea14c"
@@ -3988,11 +3983,6 @@ fbjs@^1.0.0:
     promise "^7.1.1"
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.18"
-
-file-type@^10.7.0:
-  version "10.11.0"
-  resolved "https://registry.yarnpkg.com/file-type/-/file-type-10.11.0.tgz#2961d09e4675b9fb9a3ee6b69e9cd23f43fd1890"
-  integrity sha512-uzk64HRpUZyTGZtVuvrjP0FYxzQrBf4rojot6J65YMEbwBLB0CWm0CLojVpwpmFmxcE/lkvYICgfcGozbBq6rw==
 
 file-type@^12.0.1:
   version "12.2.0"
@@ -8241,7 +8231,7 @@ react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-redux@^6.0.0, react-redux@^6.0.1:
+react-redux@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-6.0.1.tgz#0d423e2c1cb10ada87293d47e7de7c329623ba4d"
   integrity sha512-T52I52Kxhbqy/6TEfBv85rQSDz6+Y28V/pf52vDWs1YRXG19mcFOGfHnY2HsNFHyhP+ST34Aih98fvt6tqwVcQ==
@@ -8316,13 +8306,6 @@ react-slick@~0.24.0:
     json2mq "^0.2.0"
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
-
-react-subscriptions@^0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/react-subscriptions/-/react-subscriptions-0.0.10.tgz#59b4b661b64196e219bab0eade2c1f5899e3e313"
-  integrity sha512-6up/ZAYRnKLq3sBwthUTn+jcMjJ4R830afFDbPyynTb9yqex72MLP0N+DkE7avMVzN/CX3kGFUKCHb8VknraiA==
-  dependencies:
-    deepmerge "^2.1.0"
 
 react-syntax-highlighter@^10.3.0:
   version "10.3.5"
@@ -8758,21 +8741,6 @@ rsvp@^4.8.4:
   version "4.8.5"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"
   integrity sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA==
-
-s3-dropzone@^0.0.48:
-  version "0.0.48"
-  resolved "https://registry.yarnpkg.com/s3-dropzone/-/s3-dropzone-0.0.48.tgz#fc1073d555885f2987900ce417c484cbb72de69d"
-  integrity sha512-DS0PI760hqViWJcNi0rFBiUz45EaxkNciaoTQsLQMcPp1urAVFoP0wqwPdSnaB8rarJFBVeBf+AwBdqj7fkcNg==
-  dependencies:
-    classnames "^2.2.5"
-    file-type "^10.7.0"
-    lodash.debounce "^4.0.8"
-    lodash.uniqby "^4.7.0"
-    react-redux "^6.0.0"
-    react-subscriptions "^0.0.10"
-    react-valid-attributes "^0.0.2"
-    redux "^4.0.1"
-    whatwg-fetch "^3.0.0"
 
 s3-dropzone@^0.0.57:
   version "0.0.57"
