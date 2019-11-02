@@ -1,7 +1,9 @@
-import { InputBase } from '@material-ui/core'
-import { withStyles } from '@material-ui/styles'
+import React from 'react'
+import { InputBase, Paper } from '@material-ui/core'
+import { withStyles, makeStyles } from '@material-ui/styles'
+import { classes } from 'istanbul-lib-coverage'
 
-const Input = withStyles(theme => ({
+const StyledInputBase = withStyles(theme => ({
   root: {
     width: '100%',
     'label + &': {
@@ -9,7 +11,7 @@ const Input = withStyles(theme => ({
     }
   },
   input: {
-    backgroundColor: '#f4f4f4',
+    backgroundColor: 'transparent',
     border: 'none',
     borderRadius: 0,
     position: 'relative',
@@ -30,9 +32,30 @@ const Input = withStyles(theme => ({
     ].join(','),
     '&:focus': {
       borderRadius: 0,
-      outline: '2px solid #0f62fe'
     }
   }
 }))(InputBase)
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: '#f4f4f4',
+    border: '2px solid #f4f4f4',
+    '&:focus-within': {
+      borderRadius: 0,
+      border: '2px solid #0f62fe'
+    }
+  }
+}))
+
+function Input (props) {
+  const classes = useStyles(props)
+  return (   
+    <Paper elevation={0} className={classes.root} square>
+      <StyledInputBase
+        {...props}
+      />
+    </Paper>
+  )
+}
 
 export default Input

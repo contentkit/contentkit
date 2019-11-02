@@ -74,7 +74,7 @@ class EditPostMetaModal extends React.Component<any, any> {
         mutation(
           $id: String!
           $title: String
-          $status: PostStatus
+          $status: post_status!
           $publishedAt: String
           $projectId: String
           $coverImageId: String

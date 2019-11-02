@@ -3,6 +3,18 @@ import PropTypes from 'prop-types'
 import { Select } from '@material-ui/core'
 import Input from '../Input'
 
+type Project = {
+  id: string,
+  name: string
+}
+
+type SelectProjectProps = {
+  allProjects: Project[],
+  selectedProject: string,
+  selectProject: (value: string) => void
+  className: string
+}
+
 function SelectProject (props) {
   React.useEffect(() => {
     const { allProjects, selectedProject, selectProject } = props

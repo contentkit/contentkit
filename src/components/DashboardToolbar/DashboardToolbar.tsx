@@ -1,14 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Toolbar, IconButton } from '@material-ui/core'
+import { Grid, Snackbar, Toolbar, IconButton, Menu, MenuItem, InputAdornment, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles'
 import { withApollo, compose } from 'react-apollo'
 import clsx from 'clsx'
-
+import keyBy from 'lodash.keyby'
+import { SearchOutlined } from '@material-ui/icons'
 import SearchInput from '../DashboardToolbarSearchInput'
 import { DELETE_POST } from '../../graphql/mutations'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
 import ProjectSelect from '../ProjectSelect'
+import Button from '../Button'
 
 const EditIcon = props => (
   <svg
@@ -56,10 +58,32 @@ const FilePlus = props => (
   </svg>
 )
 
-class DashboardToolbar extends React.Component {
+
+const Cog = props => (
+  <svg 
+    focusable="false" 
+    preserveAspectRatio="xMidYMid meet"
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    aria-hidden="true"
+  >
+    <path d="M13.5,8.4c0-0.1,0-0.3,0-0.4c0-0.1,0-0.3,0-0.4l1-0.8c0.4-0.3,0.4-0.9,0.2-1.3l-1.2-2C13.3,3.2,13,3,12.6,3	c-0.1,0-0.2,0-0.3,0.1l-1.2,0.4c-0.2-0.1-0.4-0.3-0.7-0.4l-0.3-1.3C10.1,1.3,9.7,1,9.2,1H6.8c-0.5,0-0.9,0.3-1,0.8L5.6,3.1	C5.3,3.2,5.1,3.3,4.9,3.4L3.7,3C3.6,3,3.5,3,3.4,3C3,3,2.7,3.2,2.5,3.5l-1.2,2C1.1,5.9,1.2,6.4,1.6,6.8l0.9,0.9c0,0.1,0,0.3,0,0.4	c0,0.1,0,0.3,0,0.4L1.6,9.2c-0.4,0.3-0.5,0.9-0.2,1.3l1.2,2C2.7,12.8,3,13,3.4,13c0.1,0,0.2,0,0.3-0.1l1.2-0.4	c0.2,0.1,0.4,0.3,0.7,0.4l0.3,1.3c0.1,0.5,0.5,0.8,1,0.8h2.4c0.5,0,0.9-0.3,1-0.8l0.3-1.3c0.2-0.1,0.4-0.2,0.7-0.4l1.2,0.4	c0.1,0,0.2,0.1,0.3,0.1c0.4,0,0.7-0.2,0.9-0.5l1.1-2c0.2-0.4,0.2-0.9-0.2-1.3L13.5,8.4z M12.6,12l-1.7-0.6c-0.4,0.3-0.9,0.6-1.4,0.8	L9.2,14H6.8l-0.4-1.8c-0.5-0.2-0.9-0.5-1.4-0.8L3.4,12l-1.2-2l1.4-1.2c-0.1-0.5-0.1-1.1,0-1.6L2.2,6l1.2-2l1.7,0.6	C5.5,4.2,6,4,6.5,3.8L6.8,2h2.4l0.4,1.8c0.5,0.2,0.9,0.5,1.4,0.8L12.6,4l1.2,2l-1.4,1.2c0.1,0.5,0.1,1.1,0,1.6l1.4,1.2L12.6,12z"></path>
+    <path d="M8,11c-1.7,0-3-1.3-3-3s1.3-3,3-3s3,1.3,3,3C11,9.6,9.7,11,8,11C8,11,8,11,8,11z M8,6C6.9,6,6,6.8,6,7.9C6,7.9,6,8,6,8	c0,1.1,0.8,2,1.9,2c0,0,0.1,0,0.1,0c1.1,0,2-0.8,2-1.9c0,0,0-0.1,0-0.1C10,6.9,9.2,6,8,6C8.1,6,8,6,8,6z"></path>
+  </svg>
+)
+
+class DashboardToolbar extends React.Component<any, any> {
+  cancel: () => void
+  timerID: number
+
   state = {
-    raw: undefined
+    anchorEl: undefined,
+    snackbarOpen: false,
+    snackbarMessage: ''
   }
+
   static propTypes = {
     handleChange: PropTypes.func,
     handleSearch: PropTypes.func
@@ -69,31 +93,67 @@ class DashboardToolbar extends React.Component {
     selected: []
   }
 
-  handleDelete = async () => {
-    const { client, posts, selected, users } = this.props
-    client.cache.writeQuery({
-      query: POSTS_AGGREGATE_QUERY,
-      data: {
-        posts_aggregate: {
-          ...posts.data.posts_aggregate,
-          nodes: posts.data.posts_aggregate.nodes.filter((post) => !selected.includes(post.id))
-        }
-      },
-      variables: posts.variables
+  resetSnackbar = () => {
+    this.setState({
+      snackbarMessage: '',
+      snackbarOpen: false
     })
-
-    const userId = users.data.users[0].id
-    await Promise.all(
-      selected.map(id => {
-        return posts.client.mutate({
-          mutation: DELETE_POST,
-          variables: { id, userId }
-        })
-      })
-    )
   }
 
-  handleEdit = async () => {
+  undoAction = evt => {
+    this.cancel()
+    this.resetSnackbar()
+  }
+
+  onCloseSnackbar = async evt => {
+    this.resetSnackbar()
+  }
+
+  onDelete = async () => {
+    const { client, posts, selected, users } = this.props
+    const { data: { posts_aggregate: { nodes } } } = posts
+    const lookup = keyBy(nodes, 'id')
+
+    this.setState({
+      snackbarOpen: true,
+      snackbarMessage: `Deleted ${selected.map(id => lookup[id].title).join(', ')}`
+    })
+
+    const writeNodes = (nodes) => {
+      return client.writeQuery({
+        query: POSTS_AGGREGATE_QUERY,
+        data: {
+          posts_aggregate: {
+            ...posts.data.posts_aggregate,
+            nodes: nodes
+          }
+        },
+        variables: posts.variables
+      })
+    }
+
+    writeNodes(
+      nodes.filter((post) => !selected.includes(post.id))
+    )
+
+    this.cancel = () => {
+      clearInterval(this.timerID)
+      writeNodes(nodes)
+    }
+
+    this.timerID = window.setTimeout(async () => {
+      const { posts, selected, users } = this.props
+      const userId = users.data.users[0].id
+      await Promise.all(
+        selected.map(id => posts.client.mutate({
+          mutation: DELETE_POST,
+          variables: { id, userId }
+        }))
+      )
+    }, 4000)
+  }
+
+  onEdit = async () => {
     this.props.history.push('/posts/' + this.props.selected[0])
   }
 
@@ -103,6 +163,14 @@ class DashboardToolbar extends React.Component {
     if (value === '' || value.length >= 3) {
       this.props.handleSearch({ query: value })
     }
+  }
+
+  onMenuOpen = evt => {
+    this.setState({ anchorEl: evt.target })
+  }
+
+  onMenuClose = evt => {
+    this.setState({ anchorEl: null })
   }
 
   render () {
@@ -116,63 +184,69 @@ class DashboardToolbar extends React.Component {
       classes
     } = this.props
     const open = selected.length > 0
+    const { snackbarMessage, snackbarOpen } = this.state
     return (
-      <>
-        <Toolbar className={classes.root} disableGutters>
-          <IconButton
-            onClick={this.handleEdit}
-            disabled={!open}
-            className={clsx(
-              classes.button, { [classes.active]: open }
-            )}
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            onClick={this.handleDelete}
-            disabled={!open}
-            className={clsx(
-              classes.button,
-              { [classes.active]: open }
-            )}
-          >
-            <DeleteIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => {
-              this.props.handleOpen()
-            }}
-            className={clsx(
-              classes.button
-            )}
-          >
-            <FilePlus />
-          </IconButton>
-        </Toolbar>
-        <Toolbar className={classes.filters} disableGutters>
-          <ProjectSelect
-            selectedProject={selectedProject}
-            allProjects={projects?.data?.projects}
-            selectProject={selectProject}
-            className={classes.select}
-          />
-          <SearchInput
-            handleSearch={handleSearch}
-            handleChange={this.handleChange}
-            query={query}
-            classes={{}}
-          />
-        </Toolbar>
-      </>
+      <div className={classes.root}>
+        <Typography variant='subtitle2' style={{ padding: '10px 0px 0px 10px' }}>Posts</Typography>
+        <div className={classes.flex}>
+          <div className={classes.toolbar}>
+            <SearchInput
+              onSearch={handleSearch}
+              onChange={this.handleChange}
+              value={query}
+              className={classes.input}
+              placeholder={'Search...'}
+            />
+            <ProjectSelect
+              selectedProject={selectedProject}
+              allProjects={projects?.data?.projects}
+              selectProject={selectProject}
+              className={classes.select}
+            />
+          </div>
+          <div className={classes.actions}>
+            <Menu
+              anchorEl={this.state.anchorEl}
+              open={Boolean(this.state.anchorEl)}
+              onClose={this.onMenuClose}
+            >
+              <MenuItem key='edit' onClick={this.onEdit}>Edit</MenuItem>
+              <MenuItem key='delete' onClick={this.onDelete}>Delete</MenuItem>
+            </Menu>
+            <IconButton onClick={this.onMenuOpen} disabled={!selected.length}>
+              <Cog />
+            </IconButton>
+            <Button onClick={this.props.handleOpen}>New Post</Button>
+          </div>
+        </div>
+        <Snackbar
+          open={snackbarOpen}
+          onClose={this.onCloseSnackbar}
+          autoHideDuration={4000}
+          ContentProps={{
+            'aria-describedby': 'snackbar-fab-message-id',
+          }}
+          message={<span id="snackbar-fab-message-id">{snackbarMessage}</span>}
+          action={
+            <Button color="inherit" size="small" onClick={this.undoAction}>
+              Undo
+            </Button>
+          }
+          className={classes.snackbar}
+        />
+        </div>
     )
   }
 }
 
 const styles = theme => ({
-  filters: {
+  input: {
+    width: 500
+  },
+  actions: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     flexBasis: '45%'
   },
   select: {
@@ -180,6 +254,19 @@ const styles = theme => ({
     marginRight: 15
   },
   root: {
+    width: '100%',
+    backgroundColor: '#f4f4f4',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  flex: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    backgroundColor: '#f4f4f4'
+  },
+  toolbar: {
     display: 'flex'
   },
   button: {

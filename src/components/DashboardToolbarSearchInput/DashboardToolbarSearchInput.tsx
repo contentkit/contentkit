@@ -4,34 +4,35 @@ import Input from '../Input'
 
 function SearchInput (props) {
   const {
-    handleChange,
-    query,
-    classes
+    onChange,
+    value,
+    className,
+    classes,
+    ...rest
   } = props
+
+  function onKeyDown (evt) {
+    if (evt.which === 13) {
+      props.onSearch({ value })
+    }
+  }
+
   return (
     <Input
-      onChange={handleChange}
-      value={query}
-      className={classes.input}
-      onKeyDown={evt => {
-        switch (evt.which) {
-          case 13:
-            props.handleSearch({ query })
-            break
-          default:
-        }
-      }}
-      style={{
-        maxWidth: 200
-      }}
+      onChange={onChange}
+      value={value}
+      className={className}
+      onKeyDown={onKeyDown}
+      classes={classes}
+      {...rest}
     />
   )
 }
 
 SearchInput.propTypes = {
-  handleSearch: PropTypes.func.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  query: PropTypes.string
+  onSearch: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string
 }
 
 export default SearchInput
