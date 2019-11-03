@@ -20,7 +20,7 @@ class LoginWithData extends React.Component {
       }
       if (token) {
         window.localStorage.setItem('token', token)
-        await client.resetStore()
+        // await client.resetStore()
       }
       return resp
     } catch (err) {
@@ -62,7 +62,7 @@ class LoginWithData extends React.Component {
                       ...this.props
                     })}
                     resetPassword={() => {}}
-                    redirect={() => this.props.history.push('/')}
+                    redirect={() => {}}
                     user={users?.data?.user}
                   />
                 )

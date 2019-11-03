@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/styles'
 
 const haikunator = new Haikunator()
 
-class Projects extends React.Component<any, any> {
+class Projects extends React.Component {
   static defaultProps = {}
 
   state = {

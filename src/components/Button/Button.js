@@ -5,7 +5,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator'
 
 import clsx from 'clsx'
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     lineHeight: 1.499,
     position: 'relative',
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: any) => ({
     touchAction: 'manipulation',
     height: 40,
     padding: '0 15px',
-    fontSize: 16,
+    fontSize: 14,
     borderRadius: 0,
     color: '#fff',
     textShadow: '0 -1px 0 rgba(0,0,0,.12)',

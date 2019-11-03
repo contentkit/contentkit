@@ -25,7 +25,7 @@ const getDate = ({ posts }) => {
   return date ? new Date(date) : new Date()
 }
 
-class EditPostMetaModal extends React.Component<any, any> {
+class EditPostMetaModal extends React.Component {
   state = {
     dateInputState: createInitialState(getDate(this.props)),
     projectId: this.props.posts?.data?.posts[0]?.project?.id

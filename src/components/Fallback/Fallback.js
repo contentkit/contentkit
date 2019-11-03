@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function Fallback (props: any) {
+function Fallback (props) {
   const classes = useStyles(props)
   React.useEffect(() => {
     let start = Date.now()

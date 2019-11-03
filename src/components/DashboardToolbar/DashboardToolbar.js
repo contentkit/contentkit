@@ -74,10 +74,7 @@ const Cog = props => (
   </svg>
 )
 
-class DashboardToolbar extends React.Component<any, any> {
-  cancel: () => void
-  timerID: number
-
+class DashboardToolbar extends React.Component {
   state = {
     anchorEl: undefined,
     snackbarOpen: false,
@@ -241,7 +238,7 @@ class DashboardToolbar extends React.Component<any, any> {
 
 const styles = theme => ({
   input: {
-    width: 500
+    // width: 500
   },
   actions: {
     display: 'flex',
@@ -267,7 +264,10 @@ const styles = theme => ({
     backgroundColor: '#f4f4f4'
   },
   toolbar: {
-    display: 'flex'
+    display: 'flex',
+    '& > div': {
+      flexBasis: '50%'
+    }
   },
   button: {
     borderRadius: 0,

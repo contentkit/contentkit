@@ -13,33 +13,32 @@ import CreatePostModal from '../../components/CreatePostModal'
 
 import { feedQueryShape } from '../../shapes'
 import { ObservableQuery } from 'apollo-client'
-import { PostsAggregateVariables, SelectProject, SetSearchLoadingState, SetEditorState } from '../../types'
 import { EditorState } from 'draft-js'
 
-type Posts = {
-  variables: any,
-  data: {
+// type Posts = {
+//   variables: any,
+//   data: {
     
-  }
-}
+//   }
+// }
 
-type DashboardProps = any & {
-  posts: Posts,
-  setSearchLoadingState: SetSearchLoadingState,
-  selectProject: SelectProject,
-  setSearchQuery: () => void,
-  postsAggregateVariables: PostsAggregateVariables,
-  editorState: EditorState,
-  setEditorState: SetEditorState,
-  logged: boolean
-}
+// type DashboardProps = any & {
+//   posts: Posts,
+//   setSearchLoadingState: SetSearchLoadingState,
+//   selectProject: SelectProject,
+//   setSearchQuery: () => void,
+//   postsAggregateVariables: PostsAggregateVariables,
+//   editorState: EditorState,
+//   setEditorState: SetEditorState,
+//   logged: boolean
+// }
 
-type DashboardState = {
-  modalOpen: boolean,
-  query: string
-}
+// type DashboardState = {
+//   modalOpen: boolean,
+//   query: string
+// }
 
-class Dashboard extends React.Component<DashboardProps, any> {
+class Dashboard extends React.Component {
   static defaultProps = {
     project: {},
     selected: undefined,
@@ -57,19 +56,19 @@ class Dashboard extends React.Component<DashboardProps, any> {
     modalOpen: false
   }
 
-  handleProjectSelect = (selectedProject: string) => {
+  handleProjectSelect = (selectedProject) => {
     this.updateVariables({
       projectId: selectedProject
     })
   }
 
-  handleSearch = ({ query }: { query: string }) => {
+  handleSearch = ({ query }) => {
     this.updateVariables({ query })
   }
 
   debouncedSearch = debounce(this.handleSearch, 1000)
 
-  updateVariables = (variables: PostsAggregateVariables) => {
+  updateVariables = (variables) => {
     const query = variables.query || ''
     this.props.posts.fetchMore({
       variables: {

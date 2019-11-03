@@ -23,7 +23,7 @@ import {
 } from '@material-ui/core'
 import Input from '../Input'
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeStyles((theme) => ({
   content: {
     minHeight: 200
   }

@@ -15,7 +15,7 @@ const StyledInputBase = withStyles(theme => ({
     border: 'none',
     borderRadius: 0,
     position: 'relative',
-    fontSize: 16,
+    fontSize: 14,
     padding: '10px 26px 10px 12px',
     transition: theme.transitions.create(['border-color', 'box-shadow']),
     fontFamily: [
