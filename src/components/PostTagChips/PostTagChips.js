@@ -77,7 +77,7 @@ class PostTagChips extends React.Component {
           __typename: 'tags_mutation_response',
           returning: [{
             __typename: 'Tag',
-            ...variables
+            id: variables.tagId
           }]
         }
       },
@@ -93,6 +93,7 @@ class PostTagChips extends React.Component {
     })
 
   createTag = ({ mutate, query }) => async (variables) => {
+    const tagId = genKey()
     const data = await mutate({
       variables,
       optimisticResponse: {
@@ -100,12 +101,20 @@ class PostTagChips extends React.Component {
         insert_tags: {
           __typename: 'tags_mutation_response',
           returning: [{
-            __typename: 'Tag',
-            id: genKey(),
+            __typename: 'tags',
+            id: tagId,
             name: variables.name,
             description: null,
-            createdAt: genDate(),
+            created_at: genDate(),
             slug: null
+          }]
+        },
+        insert_posts_tags: {
+          __typename: 'posts_tags_mutation_response',
+          returning: [{
+            __typename: 'posts_tags',
+            post_id: variables.postId,
+            tag_id: tagId
           }]
         }
       },
@@ -177,7 +186,10 @@ class PostTagChips extends React.Component {
                             onDelete={() => this.deleteTag({
                               query: tagQuery,
                               mutate: deleteTag,
-                              variables: { id: tag.id }
+                              variables: {
+                                tagId: tag.id,
+                                postId: post.id
+                              }
                             })}
                             className={styles.chip}
                             label={tag.name}

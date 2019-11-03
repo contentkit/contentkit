@@ -75,13 +75,13 @@ class EditPostMetaModal extends React.Component {
           $id: String!
           $title: String
           $status: post_status!
-          $publishedAt: String
+          $publishedAt: timestamp!
           $projectId: String
           $coverImageId: String
           $excerpt: String
         ) {
           update_posts (
-            objects: [{
+            _set: {
               id: $id
               title: $title
               status: $status
@@ -89,14 +89,14 @@ class EditPostMetaModal extends React.Component {
               project_id: $projectId
               excerpt: $excerpt
               cover_image_id: $coverImageId
-            }],
+            },
             where: {
               id: {
                 _eq: $id
               }
             }
           ) {
-            id
+            returning { id }
           }
         }
       `,

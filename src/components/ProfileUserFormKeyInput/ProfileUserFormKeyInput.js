@@ -8,7 +8,6 @@ import Input from '../Input'
 
 const useStyles = makeStyles(theme => ({
   input: {
-    marginBottom: 20
   },
   button: {
   },
@@ -26,26 +25,24 @@ function ProfileUserFormKeyInput (props) {
   } = props
   const classes = useStyles(props)
   return (
-    <div>
-      <Input
-        className={classes.input}
-        value={value}
-        ref={setRef}
-        placeholder={'API key'}
-        endAdornment={
-          <InputAdornment position='end' className={classes.adornment}>
-            <IconButton
-              edge='end'
-              size='small'
-              className={classes.button}
-              onClick={() => generateToken()}>
-              <Refresh />
-            </IconButton>
-          </InputAdornment>
-        }
-        onFocus={onCopy}
-      />
-    </div>
+    <Input
+      className={classes.input}
+      value={value}
+      ref={setRef}
+      placeholder={'API key'}
+      endAdornment={
+        <InputAdornment position='end' className={classes.adornment}>
+          <IconButton
+            edge='end'
+            size='small'
+            className={classes.button}
+            onClick={() => generateToken()}>
+            <Refresh />
+          </IconButton>
+        </InputAdornment>
+      }
+      onFocus={onCopy}
+    />
   )
 }
 
