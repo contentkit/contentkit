@@ -4,7 +4,7 @@
   "main": "dist",
   "scripts": {
     "clean": "rimraf dist && rimraf .cache",
-    "dev": "UP_STAGE='/staging' parcel src/index.html",
+    "dev": "NODE_ENV=production UP_STAGE='/staging' parcel src/index.html",
     "build": "NODE_ENV=production parcel build src/index.html --public-url /assets/",
     "lint": "standard \"src/**/*.js\" --verbose --fix | snazzy"
   },
