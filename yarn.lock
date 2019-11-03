@@ -897,10 +897,10 @@
     apollo-link-batch-http "^1.2.12"
     apollo-link-error "^1.1.11"
 
-"@graphship/login@0.0.15":
-  version "0.0.15"
-  resolved "https://registry.npmjs.org/@graphship/login/-/login-0.0.15.tgz#feaff11f373b18b42c3becb4078fbfd04237d3b2"
-  integrity sha512-O6/79buGC19iHzhQ69XPPW7IFyQ3A3/jNdfyzo5pLixUSUJnmh6fNIFc1itZVDcj78wFC4sC8WsMYBZOajKFWw==
+"@graphship/login@0.0.16":
+  version "0.0.16"
+  resolved "https://registry.npmjs.org/@graphship/login/-/login-0.0.16.tgz#2b67d04f592cce30de83fbdf5271bebbcddc4a87"
+  integrity sha512-h517YUbMFSvhdFFl5123325WTQWl0P5Z+lAKEwbjM8AxLQErSaskVi6QCil5GuUjSMpZOKVP6OZxH0Lc6inrCQ==
   dependencies:
     "@babel/runtime" "^7.4.5"
     query-string "^6.5.0"

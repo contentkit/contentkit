@@ -3,7 +3,7 @@ import React from 'react'
 import { Provider, Consumer } from 'connectivity-provider'
 import { Snackbar } from '@material-ui/core'
 
-class OfflineNotification extends React.Component<any, any> {
+class OfflineNotification extends React.Component {
   state = {
     open: false
   }

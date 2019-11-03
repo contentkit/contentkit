@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom'
 import gql from 'graphql-tag'
 import Projects from './Projects'
 
-export const findIndex = (arr: Array<any>, id: string) => {
+export const findIndex = (arr, id) => {
   let index = 0
   while (index < arr.length) {
     if (arr[index].id === id) {
@@ -18,7 +18,7 @@ export const findIndex = (arr: Array<any>, id: string) => {
   return index >= arr.length ? -1 : index
 }
 
-class ProjectsMutations extends React.Component<any, any> {
+class ProjectsMutations extends React.Component {
   createProject = ({ mutate, projects }) => variables => mutate({
     variables,
     optimisticResponse: {

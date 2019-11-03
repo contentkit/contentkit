@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles'
 import clsx from 'clsx'
 
 // @ts-ignore
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeStyles((theme) => ({
   checkbox: {
     position: 'absolute',
     width: '1px',
@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme: any) => ({
   }
 }))
 
-function Checkbox (props: any) {
+function Checkbox (props) {
   const classes = useStyles(props)
   const labelClassName = clsx(classes.label, {
     [classes.checkedLabel]: props.checked
