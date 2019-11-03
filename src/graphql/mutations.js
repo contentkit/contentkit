@@ -250,8 +250,13 @@ export const DELETE_ORIGIN = gql`
 `
 
 export const DELETE_TAG = gql`
-  mutation ($id: String!) {
-    delete_tags (where: { id: { _eq: $id } }) {
+  mutation ($tagId: String!, $postId: String!) {
+    delete_posts_tags(where: { tag_id: { _eq: $tagId }, post_id: { _eq: $postId } }) {
+      returning {
+        post_id
+      }
+    }
+    delete_tags (where: { id: { _eq: $tagId } }) {
       returning {
         id
       }
@@ -285,7 +290,6 @@ export const CREATE_TAG = gql`
       returning {
         name
         id
-        created_at
         description
         slug
       }

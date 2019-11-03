@@ -5,7 +5,7 @@ import {
 } from '../../graphql/mutations'
 
 import { Mutation } from 'react-apollo'
-import Login from '@graphship/login'
+import Login from './StyledLogin'
 // import '@graphship/login/dist/styles.css'
 import { withRouter } from 'react-router-dom'
 
@@ -14,6 +14,7 @@ class LoginWithData extends React.Component {
     const client = this.props.client
     try {
       const resp = await mutate({ variables: { email, password } })
+      console.log(resp)
       const { data: { login: { token } } } = resp
       if (resp.errors && resp.errors.length) {
         throw resp.errors

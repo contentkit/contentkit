@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 0,
     boxShadow: theme.variables.shadow1
   },
-  input: {
+  gutter: {
     marginBottom: theme.spacing(2)
   },
   flex: {
@@ -47,10 +47,10 @@ function UserForm (props) {
   } = user
   return (
     <div className={props.className}>
-      <Grid container spacing={4}>
+      <Grid container spacing={4} className={classes.gutter}>
         <Grid item xs={6}>
           <Input
-            className={classes.input}
+            //className={classes.input}
             placeholder='Name'
             value={name}
             onChange={(e) => props.handleChange(e, 'name')}
@@ -58,19 +58,21 @@ function UserForm (props) {
         </Grid>
         <Grid item xs={6}>
           <Input
-            className={classes.input}
+            //className={classes.input}
             placeholder='Email'
             value={email}
             onChange={(e) => props.handleChange(e, 'email')}
           />
         </Grid>
       </Grid>
-      <ProfileUserFormKeyInput
-        onCopy={onCopy}
-        setRef={setRef}
-        generateToken={generateToken}
-        value={secret}
-      />
+      <div className={classes.gutter}>
+        <ProfileUserFormKeyInput
+          onCopy={onCopy}
+          setRef={setRef}
+          generateToken={generateToken}
+          value={secret}
+        />
+      </div>
       <div className={classes.flex}>
         <Button
           className={classes.button}
