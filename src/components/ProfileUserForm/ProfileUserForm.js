@@ -1,7 +1,7 @@
 import React from 'react'
 import propTypes from 'prop-types'
 import ProfileUserFormKeyInput from '../ProfileUserFormKeyInput'
-import Input from '../Input'
+import FormInput from '../FormInput'
 import {
   Grid
 } from '@material-ui/core'
@@ -49,19 +49,21 @@ function UserForm (props) {
     <div className={props.className}>
       <Grid container spacing={4} className={classes.gutter}>
         <Grid item xs={6}>
-          <Input
-            //className={classes.input}
+          <FormInput
             placeholder='Name'
             value={name}
             onChange={(e) => props.handleChange(e, 'name')}
+            label='Name'
+            fullWidth
           />
         </Grid>
         <Grid item xs={6}>
-          <Input
-            //className={classes.input}
+          <FormInput
             placeholder='Email'
             value={email}
             onChange={(e) => props.handleChange(e, 'email')}
+            label='Email'
+            fullWidth
           />
         </Grid>
       </Grid>

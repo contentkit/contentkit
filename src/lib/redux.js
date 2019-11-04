@@ -17,7 +17,6 @@ const initialState = {
     projectId: undefined
   },
   editorState: EditorState.createEmpty(),
-  hydrated: false,
   selectedProject: undefined,
   selectedPosts: []
 }
@@ -74,8 +73,7 @@ export const updateFeedVariables = payload => ({
 
 export const setEditorState = (editorState) => ({
   payload: {
-    editorState,
-    hydrated: true
+    editorState
   },
   type: SET_EDITOR_STATE
 })

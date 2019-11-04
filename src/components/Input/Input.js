@@ -1,11 +1,13 @@
 import React from 'react'
-import { InputBase, Paper } from '@material-ui/core'
+import { InputBase } from '@material-ui/core'
 import { withStyles, makeStyles } from '@material-ui/styles'
-import { classes } from 'istanbul-lib-coverage'
+import clsx from 'clsx'
 
-const StyledInputBase = withStyles(theme => ({
+export const StyledInputBase = withStyles(theme => ({
   root: {
     width: '100%',
+    backgroundColor: '#f4f4f4',
+    border: '2px solid #f4f4f4',
     'label + &': {
       marginTop: theme.spacing(3)
     }
@@ -36,26 +38,4 @@ const StyledInputBase = withStyles(theme => ({
   }
 }))(InputBase)
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    backgroundColor: '#f4f4f4',
-    border: '2px solid #f4f4f4',
-    '&:focus-within': {
-      borderRadius: 0,
-      border: '2px solid #0f62fe'
-    }
-  }
-}))
-
-function Input (props) {
-  const classes = useStyles(props)
-  return (   
-    <Paper elevation={0} className={classes.root} square>
-      <StyledInputBase
-        {...props}
-      />
-    </Paper>
-  )
-}
-
-export default Input
+export default StyledInputBase

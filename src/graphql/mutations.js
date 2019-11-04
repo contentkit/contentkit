@@ -140,8 +140,8 @@ export const UPDATE_POST = gql`
 `
 
 export const CREATE_IMAGE = gql`
-  mutation ($url: String!, $postId: ID!) {
-    insert_images (objects: { url: $url, post_id: $postId }) {
+  mutation ($url: String!, $postId: String!, $userId: String!) {
+    insert_images (objects: { url: $url, post_id: $postId, user_id: $userId }) {
       returning {
         id
         url

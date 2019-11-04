@@ -38,15 +38,19 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   fancy: {
-    backgroundImage: 'linear-gradient(160deg, #121212 12.5%, #323232 85%)',
-    '&:hover': {
-      backgroundImage: 'linear-gradient(160deg, #262626 12.5%, #595959 85%)',
-    }
+    // backgroundImage: 'linear-gradient(160deg, #121212 12.5%, #323232 85%)',
+    // '&:hover': {
+    //   backgroundImage: 'linear-gradient(160deg, #262626 12.5%, #595959 85%)',
+    // }
   },
   default: {
     backgroundColor: '#0f62fe',
     color: '#fff',
     '&:hover': {}
+  },
+  secondary: {
+    backgroundColor: 'transparent',
+    color: theme.palette.text.primary
   }
 }))
 

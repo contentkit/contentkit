@@ -1,3 +1,4 @@
+$background: #161616;
 
 :global(.code-block-tooltip) {
   z-index: 2 !important;
@@ -178,8 +179,9 @@
 }
 
 :global(.code-block-container) {
-  border: 1px solid #d8e0ea;
-  border-radius: 2px;
+  background-color: $background;
+  // border: 1px solid #d8e0ea;
+  // border-radius: 2px;
   font-size: 14px;
   margin-top: 10px;
   margin-bottom: 20px;

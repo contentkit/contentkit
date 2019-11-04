@@ -29,8 +29,25 @@ provider:
     PGPORT: 5432
     CLIENT_SESSION_ID: 921286926a3ca2babf26eb927c46e99055fc
     CLIENT_SESSION_SECRET: ${ssm:/contentkit/client_secret~true}
+    AWS_BUCKET: contentkit
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: "*"
 
 functions:
+  # upload:
+  #   handler: src/upload/handler.handler
+  #   events:
+  #     - http:
+  #         path: upload
+  #         method: post
+  #         cors: true
+  #     - http:
+  #         path: upload
+  #         method: get
+  #         cors: true
   auth:
     handler: src/auth/handler.handler
   handler:

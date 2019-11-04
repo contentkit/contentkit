@@ -163,11 +163,7 @@ class DashboardToolbar extends React.Component {
   }
 
   onMenuOpen = evt => {
-    this.setState({ anchorEl: evt.target })
-  }
-
-  onMenuClose = evt => {
-    this.setState({ anchorEl: null })
+    this.props.setContextMenuAnchorEl(evt)
   }
 
   render () {
@@ -178,7 +174,9 @@ class DashboardToolbar extends React.Component {
       selectedProject,
       projects,
       selectProject,
-      classes
+      classes,
+      contextMenuAnchorEl,
+      contextMenuOnClose
     } = this.props
     const open = selected.length > 0
     const { snackbarMessage, snackbarOpen } = this.state
@@ -203,9 +201,9 @@ class DashboardToolbar extends React.Component {
           </div>
           <div className={classes.actions}>
             <Menu
-              anchorEl={this.state.anchorEl}
-              open={Boolean(this.state.anchorEl)}
-              onClose={this.onMenuClose}
+              anchorEl={contextMenuAnchorEl}
+              open={Boolean(contextMenuAnchorEl)}
+              onClose={contextMenuOnClose}
             >
               <MenuItem key='edit' onClick={this.onEdit}>Edit</MenuItem>
               <MenuItem key='delete' onClick={this.onDelete}>Delete</MenuItem>

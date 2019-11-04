@@ -20,8 +20,12 @@ import keyBindingFn from './keyBindingFn'
 // import DraftTableDialog from '../DraftTableDialog'
 import ReadOnlyDraftTable from '../ReadOnlyDraftTable'
 import LinearProgress from '@material-ui/core/LinearProgress'
-
+import ContentKitEditor from '../ContentKitEditor'
+import gql from 'graphql-tag'
+import { Mutation } from 'react-apollo'
 import * as config from '../../lib/config'
+import BaseDropzone from '../BaseDropzone'
+import { CREATE_IMAGE } from '../../graphql/mutations'
 
 const Toolbar = plugins.toolbar
 
@@ -32,41 +36,68 @@ const awsConfig = {
   endpoint: config.AWS_BUCKET_URL + '/'
 }
 
+const UPLOAD_MUTATION = gql`
+  mutation($userId: String!, $key: String!) {
+    createPresignedPost(userId: $userId, key: $key) {
+      url
+      fields
+    }
+  }
+`
+
+export function sanitizeFileName (name) {
+  let filename = name.replace(/[^A-Za-z-_.0-9]/g, '')
+  return filename || Math.random().toString(36).substr(2, 9) // handle case where filename is all special characters, e.g., %%==^.pdf
+}
+
+export async function uploadDocument (file, filename, payload) {
+  const formData = new window.FormData()
+  for (const field in payload.fields) {
+    formData.append(field, payload.fields[field])
+  }
+  formData.append('file', file, filename)
+
+  return fetch(payload.url, {
+    method: 'POST',
+    body: formData
+  }).then(() => {
+    window.URL.revokeObjectURL(file.preview)
+  })
+}
+
+function genId () {
+  return [...Array(20)].map(i=>(~~(Math.random()*36)).toString(36)).join('')
+}
+
 function PostEditorComponent (props) {
   const [tableBlockKey, setTableBlockKey] = React.useState(null)
+  const [isDragging, setDrag] = React.useState(false)
 
-  const handleClick = evt => {
-    let { clientY } = evt
-    const { editorState, onChange } = props
-    const currentContent = editorState.getCurrentContent()
-    const blockMap = currentContent.getBlockMap()
+  const handleClick = () => {}
+  // const handleClick = evt => {
+  //   let { clientY } = evt
+  //   const { editorState, onChange } = props
+  //   const currentContent = editorState.getCurrentContent()
+  //   const blockMap = currentContent.getBlockMap()
 
-    const last = blockMap.toSeq().last()
-    if (!last) return
+  //   const last = blockMap.toSeq().last()
+  //   if (!last) return
 
-    const blockKey = last.getKey()
-    const elem = document.querySelector(`[data-offset-key="${blockKey}-0-0"]`)
-    if (!elem) return
-    const rect = elem.getBoundingClientRect()
+  //   const blockKey = last.getKey()
+  //   const elem = document.querySelector(`[data-offset-key="${blockKey}-0-0"]`)
+  //   if (!elem) return
+  //   const rect = elem.getBoundingClientRect()
 
-    if (clientY < rect.bottom) return
-    const newBlockKey = genKey()
+  //   if (clientY < rect.bottom) return
+  //   const newBlockKey = genKey()
 
-    const newBlockMap = blockMap
-      .set(newBlockKey, new ContentBlock({ key: newBlockKey }))
+  //   const newBlockMap = blockMap
+  //     .set(newBlockKey, new ContentBlock({ key: newBlockKey }))
 
-    onChange(
-      setEditorStateBlockMap(editorState, newBlockMap, newBlockKey)
-    )
-  }
-
-  const handleKeyCommand = (command) => {
-    if (command === Command.EDITOR_SAVE) {
-      props.save()
-      return HANDLED
-    }
-    return NOT_HANDLED
-  }
+  //   onChange(
+  //     setEditorStateBlockMap(editorState, newBlockMap, newBlockKey)
+  //   )
+  // }
 
   const handleOpen = tableBlockKey => {
     setTableBlockKey(tableBlockKey)
@@ -76,15 +107,36 @@ function PostEditorComponent (props) {
     setTableBlockKey(null)
   }
 
-  const blockRendererFn = (block) => {
-    if (block.getType() === Block.TABLE) {
-      return {
-        component: ReadOnlyDraftTable,
-        props: {
-          handleClick: handleOpen
-        }
+  const onDrop = (mutate) => async (files) => {
+    const { client, users, posts: { data: { posts } } } = props
+
+    const postId = posts[0].id
+    const userId = users.data.users[0].id
+    const [file] = files
+    const { name, type, size } = file
+    const filename = sanitizeFileName(name)
+    const key = `static/${postId}/${filename}`
+    const { data: { createPresignedPost } } = await mutate({
+      variables: {
+        userId: userId,
+        key: key
       }
+    })
+
+    try {
+      await uploadDocument(file, filename, createPresignedPost)
+    } catch {
+      return
     }
+    const { data } = await client.mutate({
+      mutation: CREATE_IMAGE,
+      variables: {
+        url: key,
+        postId: postId,
+        userId: userId
+      }
+    })
+    console.log(data)
   }
 
   const {
@@ -101,50 +153,46 @@ function PostEditorComponent (props) {
   } = props
 
   return (
-    <div className={classes.root}>
-      <CSSTransition
-        classNames={'transition'}
-        unmountOnExit
-        timeout={1000}
-        in={loading}
-      >
-        {state => (
-          <LinearProgress />
-        )}
-      </CSSTransition>
-      <div className={classes.flex}>
-        <div className={classes.editorContainer} onClick={handleClick}>
-          <Editor
-            editorState={editorState}
-            onChange={onChange}
-            plugins={plugins.plugins}
-            keyBindingFn={keyBindingFn}
-            blockRendererFn={blockRendererFn}
-            handleKeyCommand={handleKeyCommand}
-          />
-        </div>
-        <div className={classes.toolbar}>
-          <div className={classes.toolbarInner}>
-            <Toolbar.Component
-              config={awsConfig}
-              refId={posts?.data?.posts[0]?.id}
-              images={posts?.data?.posts[0]?.images}
-              deleteImage={deleteImage}
-              createImage={createImage}
-              insertImage={insertImage}
-            />
-          </div>
-        </div>
-      </div>
-      {/* <DraftTableDialog
-        onChange={onChange}
-        editorState={editorState}
-        open={Boolean(tableBlockKey)}
-        tableBlockKey={tableBlockKey}
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-      /> */}
-    </div>
+    <Mutation mutation={UPLOAD_MUTATION}>
+      {upload => {
+        return (
+          <BaseDropzone className={classes.root} onDrop={onDrop(upload)} setDrag={setDrag}>
+            <CSSTransition
+              classNames={'transition'}
+              unmountOnExit
+              timeout={1000}
+              in={loading}
+            >
+              {state => (
+                <LinearProgress />
+              )}
+            </CSSTransition>
+            <div className={classes.flex}>
+              <div className={classes.editorContainer} onClick={handleClick}>
+                <ContentKitEditor
+                  editorState={editorState}
+                  onChange={onChange}
+                  plugins={plugins}
+                  save={props.save}
+                />
+              </div>
+              <div className={classes.toolbar}>
+                <div className={classes.toolbarInner}>
+                  <Toolbar.Component
+                    config={awsConfig}
+                    refId={posts?.data?.posts[0]?.id}
+                    images={posts?.data?.posts[0]?.images}
+                    deleteImage={deleteImage}
+                    createImage={createImage}
+                    insertImage={insertImage}
+                  />
+                </div>
+              </div>
+            </div>
+          </BaseDropzone>
+        )
+      }}
+    </Mutation>
   )
 }
 

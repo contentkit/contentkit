@@ -86,6 +86,10 @@ export const PROJECT_QUERY = gql`
     projects(where: { id: { _eq: $id } }) {
       id
       name
+      origins {
+        id
+        name
+      }
     }
   }
 `

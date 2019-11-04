@@ -1,3 +1,10 @@
+scalar JSON
+
+type PresignedPayload {
+  url: String!
+  fields: JSON
+}
+
 type Payload {
   token: String!
 }
@@ -11,6 +18,7 @@ type Mutation {
   login(email: String!, password: String!): Payload
   resetPassword(email: String!, password: String!): ResetPasswordPayload
   getSecret(id: String!): Payload
+  createPresignedPost(userId: String!, key: String!): PresignedPayload
 }
 
 type Query {

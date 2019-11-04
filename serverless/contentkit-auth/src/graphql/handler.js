@@ -4,6 +4,9 @@ const bcrypt = require('bcryptjs')
 const Pool = require('pg-pool')
 const fs = require('fs')
 const path = require('path')
+const GraphQLJSON = require('graphql-type-json')
+
+const { createPresignedPost } = require('./upload')
 
 const { CLIENT_SESSION_SECRET, CLIENT_SESSION_ID } = process.env
 
@@ -135,7 +138,6 @@ async function getSecret (_, { id }, ctx) {
   } catch (err) {
     throw new AuthenticationError('Cannot decode token')
   }
-  console.log({ decoded })
   let user
   try {
     const data = await ctx.client.query(
@@ -145,7 +147,6 @@ async function getSecret (_, { id }, ctx) {
   } catch (err) {
     throw err
   }
-  console.log(user)
 
   if (!user) {
     throw new AuthenticationError('User not found')
@@ -171,12 +172,14 @@ const resolvers = {
     login,
     register,
     getSecret,
-    resetPassword
+    resetPassword,
+    createPresignedPost
   },
   Payload: {},
   Query: {
     getToken
-  }
+  },
+  JSON: GraphQLJSON
 }
 
 const server = new ApolloServer({

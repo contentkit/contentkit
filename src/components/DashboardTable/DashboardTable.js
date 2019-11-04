@@ -18,6 +18,7 @@ import {
 import orderBy from 'lodash/orderBy'
 import Input from '../Input'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
+import DashboardToolbar from '../DashboardToolbar'
 
 // type Direction = 'asc' | 'desc'
 
@@ -263,6 +264,7 @@ function DashboardTableRow (props) {
     columns,
     classes,
     onChange,
+    onContextMenu,
     onSave
   } = props
   const [columnKey, setColumnKey] = React.useState(null)
@@ -285,6 +287,7 @@ function DashboardTableRow (props) {
       <TableRow
         key={row.id}
         className={className}
+        onContextMenu={evt => onContextMenu(evt, row)}
       >
         <TableCell className={classes.checkboxTableCell}>
           <Checkbox
@@ -329,7 +332,20 @@ class DashboardTable extends React.Component {
   state = {
     offset: 0,
     sortDirection: 'desc',
-    sortColumn: 'title'
+    sortColumn: 'title',
+    contextMenuAnchorEl: null
+  }
+
+  setContextMenuAnchorEl = evt => {
+    this.setState({
+      contextMenuAnchorEl: evt.target
+    })
+  }
+
+  contextMenuOnClose = () => {
+    this.setState({
+      contextMenuAnchorEl: null
+    })
   }
 
   handleSave = mutate => (post) => {
@@ -360,12 +376,10 @@ class DashboardTable extends React.Component {
     this.props.selectPosts(selection)
   }
 
-  checkboxOnChange = (evt) => {
-    evt.persist()
-    const value = evt.target.value
+  onContextMenu = (evt, row) => {
     evt.preventDefault()
-    evt.stopPropagation()
-    // this.selectRow(value, evt.shiftKey)
+    this.props.selectPosts([row.id])
+    this.setContextMenuAnchorEl(evt)
   }
 
   load = (direction) => {
@@ -465,19 +479,27 @@ class DashboardTable extends React.Component {
       posts,
       search,
       selectedPosts,
-      classes
+      classes,
+      getToolbarProps
     } = this.props
-    const { offset, sortColumn, sortDirection } = this.state
+    const { offset, sortColumn, sortDirection, contextMenuAnchorEl } = this.state
 
     const dataSource = (posts?.data?.posts_aggregate?.nodes || [])
       .slice(offset, offset + 10)
       .map(row => ({ ...row, key: row.id }))
+
+    const toolbarProps = getToolbarProps()
     return (
       <Mutation mutation={UPDATE_POST_TITLE}>
         {mutate => (
           <div className={classes.wrapper}>
             <div className={classes.toolbar}>
-              {this.props.renderToolbar(this.props)}
+              <DashboardToolbar
+                {...toolbarProps}
+                contextMenuAnchorEl={contextMenuAnchorEl}
+                setContextMenuAnchorEl={this.setContextMenuAnchorEl}
+                contextMenuOnClose={this.contextMenuOnClose}
+              />
             </div>
             <Paper elevation={0}>
               <TransitionGroup>
@@ -525,6 +547,7 @@ class DashboardTable extends React.Component {
                           classes={classes}
                           onChange={this.onChange}
                           onSave={this.onSave}
+                          onContextMenu={this.onContextMenu}
                         />
                       )
                     })

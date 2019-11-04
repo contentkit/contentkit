@@ -197,10 +197,10 @@ class EditPostMetaModal extends React.Component {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.props.onClose}>
+          <Button color='secondary' onClick={this.props.onClose}>
             Cancel
           </Button>
-          <Button color='success' onClick={this.handlePostMetaUpdate}>
+          <Button color='default' onClick={this.handlePostMetaUpdate}>
             OK
           </Button>
         </DialogActions>
@@ -208,5 +208,6 @@ class EditPostMetaModal extends React.Component {
     )
   }
 }
+
 
 export default EditPostMetaModal

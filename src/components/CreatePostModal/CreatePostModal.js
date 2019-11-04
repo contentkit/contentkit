@@ -21,7 +21,7 @@ import {
   Grid,
   Button
 } from '@material-ui/core'
-import Input from '../Input'
+import FormInput from '../FormInput'
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -68,11 +68,9 @@ function CreatePostModal (props) {
       <DialogContent className={classes.content}>
         <Grid container spacing={4}>
           <Grid item xs={6}>
-            <Input
+            <FormInput
               value={title}
               onChange={handleInputChange}
-              //variant='outlined'
-              //margin='dense'
               label={'Post title'}
             />
           </Grid>

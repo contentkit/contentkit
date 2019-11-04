@@ -92,25 +92,23 @@ class Dashboard extends React.Component {
     this.setState({ modalOpen: false })
   }
 
-  renderToolbar = () => {
-    return (
-      <DashboardToolbar
-        setSearchQuery={this.props.setSearchQuery}
-        handleSearch={this.debouncedSearch}
-        selected={this.props.selectedPosts}
-        search={this.props.search}
-        client={this.props.client}
-        history={this.props.history}
-        editorState={this.props.editorState}
-        setEditorState={this.props.setEditorState}
-        posts={this.props.posts}
-        selectedProject={this.props.postsAggregateVariables.projectId}
-        projects={this.props.projects}
-        selectProject={this.props.selectProject}
-        handleOpen={this.handleModalOpen}
-        users={this.props.users}
-      />
-    )
+  getToolbarProps = () => {
+    return {
+      setSearchQuery: this.props.setSearchQuery,
+      handleSearch: this.debouncedSearch,
+      selected: this.props.selectedPosts,
+      search: this.props.search,
+      client: this.props.client,
+      history: this.props.history,
+      editorState: this.props.editorState,
+      setEditorState: this.props.setEditorState,
+      posts: this.props.posts,
+      selectedProject: this.props.postsAggregateVariables.projectId,
+      projects: this.props.projects,
+      selectProject: this.props.selectProject,
+      handleOpen: this.handleModalOpen,
+      users: this.props.users
+    }
   }
 
   render () {
@@ -142,6 +140,7 @@ class Dashboard extends React.Component {
           renderToolbar={this.renderToolbar}
           search={this.props.search}
           history={this.props.history}
+          getToolbarProps={this.getToolbarProps}
         />
       </Layout>
     )

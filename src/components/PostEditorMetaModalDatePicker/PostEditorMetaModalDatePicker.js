@@ -12,13 +12,13 @@ function PostMetaDatePicker (props) {
   return (
     <div>
       <FormControl fullWidth>
-        <InputLabel>Date</InputLabel>
         <Input
           type='text'
           onChange={onChange}
           className={styles.input}
           value={props.value}
           fullWidth
+          label='Date'
         />
       </FormControl>
     </div>

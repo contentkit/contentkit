@@ -13,6 +13,8 @@ import safeKey from 'safe-s3-key'
 import withQuery from '../../lib/withQuery'
 import ThumbnailUpload from '../ThumbnailUpload'
 import Input from '../Input'
+import FormInput from '../FormInput'
+
 import { Grid, FormControl, InputLabel } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/styles'
@@ -125,15 +127,13 @@ function PostEditorMetaModalForm (props) {
     <form className={classes.root}>
       <Grid container spacing={4}>
         <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel shrink>Title</InputLabel>
-            <Input
-              label={'title'}
-              onChange={e => handleChange(e.target.value, 'title')}
-              value={title}
-              fullWidth
-            />
-          </FormControl>
+          <FormInput
+            label={'title'}
+            onChange={e => handleChange(e.target.value, 'title')}
+            value={title}
+            fullWidth
+            label={'Title'}
+          />
         </Grid>
         <Grid item xs={6}>
           <FormControl fullWidth>
@@ -147,15 +147,13 @@ function PostEditorMetaModalForm (props) {
       </Grid>
       <Grid container spacing={4}>
         <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel shrink>Excerpt</InputLabel>
-            <Input
+            <FormInput
               placeholder={'slug'}
               onChange={e => handleChange(e.target.value, 'slug')}
               value={slug}
               fullWidth
+              label='Slug'
             />
-          </FormControl>
         </Grid>
 
         <Grid item xs={6}>
@@ -172,15 +170,13 @@ function PostEditorMetaModalForm (props) {
 
       <Grid container spacing={4}>
         <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel shrink>Excerpt</InputLabel>
-            <Input
+            <FormInput
               placeholder={'excerpt'}
               onChange={e => handleChange(e.target.value, 'excerpt')}
               value={excerpt}
               fullWidth
+              label={'Excerpt'}
             />
-          </FormControl>
         </Grid>
         <Grid item xs={6}>
           <PostMetaDatePicker

@@ -46,7 +46,7 @@ const mutations = [
           query: PROJECT_QUERY,
           variables: ownProps.project.variables
         })
-        const { data: { projects } } = query
+        const { projects } = query
         const [project] = projects
         const origins = [...project.origins].concat(insert_origins.returning)
         store.writeQuery({
