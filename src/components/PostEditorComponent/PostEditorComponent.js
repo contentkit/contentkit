@@ -5,7 +5,7 @@ import { Editor } from '@contentkit/editor'
 import { setEditorStateBlockMap, Block, Command, HANDLED, NOT_HANDLED } from '@contentkit/util'
 import plugins from '@contentkit/editor/lib/plugins'
 import { genKey, ContentBlock } from 'draft-js'
-
+import clsx from 'clsx'
 import classes from './styles.scss'
 
 import '@contentkit/editor/lib/css/normalize.css'
@@ -17,7 +17,6 @@ import '@contentkit/code/src/style.scss'
 import '../../css/editor/toolbar.scss'
 
 import keyBindingFn from './keyBindingFn'
-// import DraftTableDialog from '../DraftTableDialog'
 import ReadOnlyDraftTable from '../ReadOnlyDraftTable'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import ContentKitEditor from '../ContentKitEditor'
@@ -107,7 +106,8 @@ function PostEditorComponent (props) {
     setTableBlockKey(null)
   }
 
-  const onDrop = (mutate) => async (files) => {
+  const onDrop = (mutate) => async (files, event) => {
+    setDrag(false)
     const { client, users, posts: { data: { posts } } } = props
 
     const postId = posts[0].id
@@ -116,12 +116,7 @@ function PostEditorComponent (props) {
     const { name, type, size } = file
     const filename = sanitizeFileName(name)
     const key = `static/${postId}/${filename}`
-    const { data: { createPresignedPost } } = await mutate({
-      variables: {
-        userId: userId,
-        key: key
-      }
-    })
+    const createPresignedPost = await props.getFormData({ key, userId })
 
     try {
       await uploadDocument(file, filename, createPresignedPost)
@@ -136,6 +131,8 @@ function PostEditorComponent (props) {
         userId: userId
       }
     })
+
+    props.insertImage(`https://s3.amazonaws.com/contentkit/${key}`)
     console.log(data)
   }
 
@@ -151,7 +148,7 @@ function PostEditorComponent (props) {
     loading,
     ...rest /* eslint-disable-line */
   } = props
-
+  console.log({ isDragging })
   return (
     <Mutation mutation={UPLOAD_MUTATION}>
       {upload => {
@@ -168,7 +165,7 @@ function PostEditorComponent (props) {
               )}
             </CSSTransition>
             <div className={classes.flex}>
-              <div className={classes.editorContainer} onClick={handleClick}>
+              <div className={clsx(classes.editorContainer, { [classes.drag]: isDragging })} onClick={handleClick}>
                 <ContentKitEditor
                   editorState={editorState}
                   onChange={onChange}

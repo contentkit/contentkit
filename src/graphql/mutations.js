@@ -151,7 +151,7 @@ export const CREATE_IMAGE = gql`
 `
 
 export const DELETE_IMAGE = gql`
-  mutation ($id: ID!) {
+  mutation ($id: String!) {
     delete_images (where: { id: { _eq: $id } }) {
       returning {
         id
@@ -329,6 +329,15 @@ export const DELETE_USER = gql`
       returning {
         id
       }
+    }
+  }
+`
+
+export const UPLOAD_MUTATION = gql`
+  mutation($userId: String!, $key: String!) {
+    createPresignedPost(userId: $userId, key: $key) {
+      url
+      fields
     }
   }
 `

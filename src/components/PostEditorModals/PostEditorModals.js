@@ -13,6 +13,7 @@ class PostEditorModals extends React.Component {
       users,
       createImage,
       deleteImage,
+      getFormData,
       ...rest
     } = this.props
 
@@ -34,6 +35,7 @@ class PostEditorModals extends React.Component {
           posts={this.props.posts}
           createImage={createImage}
           deleteImage={deleteImage}
+          getFormData={getFormData}
         />
       </React.Fragment>
     )

@@ -18,6 +18,7 @@ import { setEditorState } from '../../lib/redux'
 import withData from './withData'
 import styles from './styles.scss'
 import { encode } from '../../lib/utf8'
+import { UPLOAD_MUTATION } from '../../graphql/mutations'
 
 class BaseEditor extends React.Component {
   static propTypes = {
@@ -83,6 +84,14 @@ class BaseEditor extends React.Component {
     }
   }
 
+  getFormData = async (variables) => {
+    const { data: { createPresignedPost } } = await this.props.client.mutate({
+      mutation: UPLOAD_MUTATION,
+      variables
+    })
+    return createPresignedPost
+  }
+
   insertImage = (src) => {
     this.props.setEditorState(
       insertImage(
@@ -119,6 +128,7 @@ class BaseEditor extends React.Component {
           saveDocument={this.saveDocument}
           createImage={this.props.createImage}
           deleteImage={this.props.deleteImage}
+          getFormData={this.getFormData}
         />
         <PostEditorComponent
           {...this.props}
@@ -127,6 +137,7 @@ class BaseEditor extends React.Component {
           save={this.manualSave}
           insertImage={this.insertImage}
           loading={this.state.loading}
+          getFormData={this.getFormData}
         />
       </Layout>
     )

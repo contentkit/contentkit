@@ -163,7 +163,8 @@ class EditPostMetaModal extends React.Component {
       onClose,
       createImage,
       deleteImage,
-      client
+      client,
+      getFormData
     } = this.props
     const post = this.props?.posts?.data?.posts[0]
     if (!post) return false
@@ -191,6 +192,7 @@ class EditPostMetaModal extends React.Component {
             handleDateInputChange={this.handleDateInputChange}
             handleCoverImageChange={this.handleCoverImageChange}
             selectProject={this.selectProject}
+            getFormData={getFormData}
             createImage={createImage}
             deleteImage={deleteImage}
             client={client}

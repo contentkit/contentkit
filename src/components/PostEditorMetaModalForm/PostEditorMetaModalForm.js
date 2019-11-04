@@ -96,15 +96,16 @@ function PostEditorMetaModalForm (props) {
       }
     }
 
+    const userId = users.data.users[0].id
+
     await props.createImage({
       url: key,
-      postId: props.post.id
+      postId: props.post.id,
+      userId: userId
     })
-    return new Promise((resolve, reject) => {
-      s3.createPresignedPost(params, (err, data) => {
-        if (err) reject(err)
-        resolve(data)
-      })
+
+    return props.getFormData({
+      key, userId
     })
   }
 
@@ -122,7 +123,6 @@ function PostEditorMetaModalForm (props) {
     onSuccess(resp)
   }
 
-  console.log(props)
   return (
     <form className={classes.root}>
       <Grid container spacing={4}>
