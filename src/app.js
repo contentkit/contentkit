@@ -1,14 +1,10 @@
 import * as React from 'react'
-// @ts-ignore
 import * as ReactDOM from 'react-dom'
 import { ApolloProvider, withApollo, compose } from 'react-apollo'
-// @ts-ignore
 import { BrowserRouter, Route } from 'react-router-dom'
-// @ts-ignore
 import { Provider } from 'react-redux'
 
 import withConnectivity from './lib/withConnectivity'
-// @ts-ignore
 import createClient from './lib/client'
 import { store } from './lib/redux'
 import pages from './pages'

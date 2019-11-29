@@ -22,12 +22,12 @@ provider:
   deploymentBucket:
     name: ${self:custom.deploymentBucket}
   environment:
-    PGHOST: ${ssm:/rds/pg_host~true}
+    PGHOST: ${ssm:/contentkit/pg_host}
     PGUSER: postgres
     PGDATABASE: snowplow
-    PGPASSWORD: ${ssm:/rds/pg_password~true}
+    PGPASSWORD: ${ssm:/contentkit/pg_password~true}
     PGPORT: 5432
-    CLIENT_SESSION_ID: 921286926a3ca2babf26eb927c46e99055fc
+    CLIENT_SESSION_ID: ${ssm:/contentkit/client_session_id}
     CLIENT_SESSION_SECRET: ${ssm:/contentkit/client_secret~true}
     AWS_BUCKET: contentkit
   iamRoleStatements:
