@@ -24,7 +24,7 @@ provider:
   environment:
     PGHOST: ${ssm:/contentkit/pg_host}
     PGUSER: postgres
-    PGDATABASE: snowplow
+    PGDATABASE: contentkit
     PGPASSWORD: ${ssm:/contentkit/pg_password~true}
     PGPORT: 5432
     CLIENT_SESSION_ID: ${ssm:/contentkit/client_session_id}

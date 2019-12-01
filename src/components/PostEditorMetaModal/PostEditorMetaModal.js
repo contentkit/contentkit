@@ -22,12 +22,13 @@ export const _POST_QUERY = gql`
 
 const getDate = ({ posts }) => {
   const date = posts?.data?.posts[0]?.published_at
-  return date ? new Date(date) : new Date()
+  return date
+  // return (date ? new Date(date) : new Date()).toISOString()
 }
 
 class EditPostMetaModal extends React.Component {
   state = {
-    dateInputState: createInitialState(getDate(this.props)),
+    dateInputState: getDate(this.props),
     projectId: this.props.posts?.data?.posts[0]?.project?.id
   }
 
@@ -49,24 +50,20 @@ class EditPostMetaModal extends React.Component {
       title,
       status,
       excerpt,
-      coverImage,
+      cover_image_id,
+      published_at,
       project: {
         id: projectId
       }
     } = this.props.posts.data.posts[0]
-    const date = convertToDate(this.state.dateInputState).toISOString()
-
     const variables = {
       id,
       title,
       status,
-      publishedAt: date,
+      publishedAt: published_at,
       projectId: projectId,
-      excerpt: excerpt
-    }
-
-    if (coverImage) {
-      variables.coverImageId = coverImage.id
+      excerpt: excerpt,
+      coverImageId: cover_image_id
     }
 
     await this.props.client.mutate({
@@ -154,10 +151,12 @@ class EditPostMetaModal extends React.Component {
   }
 
   handleDateInputChange = (dateInputState) => {
+    console.log(dateInputState)
     this.setState({ dateInputState })
   }
 
   render () {
+    console.log(this.props)
     const {
       open,
       onClose,
@@ -188,8 +187,7 @@ class EditPostMetaModal extends React.Component {
             users={this.props.users}
             post={this.props.posts?.data?.posts[0]}
             handleChange={this.handleChange}
-            dateInputState={this.state.dateInputState}
-            handleDateInputChange={this.handleDateInputChange}
+            handleDateInputChange={this.handleChange}
             handleCoverImageChange={this.handleCoverImageChange}
             selectProject={this.selectProject}
             getFormData={getFormData}
