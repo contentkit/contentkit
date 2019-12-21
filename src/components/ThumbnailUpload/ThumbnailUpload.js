@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import classes from './styles.scss'
 import clsx from 'clsx'
+import { makeStyles } from '@material-ui/styles'
+import { IconButton } from '@material-ui/core'
 
 const DeleteIcon = props => (
   <svg
@@ -18,6 +19,27 @@ const DeleteIcon = props => (
     <path fill='currentColor' d='M440 64H336l-33.6-44.8A48 48 0 0 0 264 0h-80a48 48 0 0 0-38.4 19.2L112 64H8a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h18.9l33.2 372.3a48 48 0 0 0 47.8 43.7h232.2a48 48 0 0 0 47.8-43.7L421.1 96H440a8 8 0 0 0 8-8V72a8 8 0 0 0-8-8zM171.2 38.4A16.1 16.1 0 0 1 184 32h80a16.1 16.1 0 0 1 12.8 6.4L296 64H152zm184.8 427a15.91 15.91 0 0 1-15.9 14.6H107.9A15.91 15.91 0 0 1 92 465.4L59 96h330z'></path>
   </svg>
 )
+
+const useDropzoneStyles = makeStyles(theme => ({
+  dropzone: {
+    backgroundColor: '#fafafa',
+    border: '1px dashed #ddd',
+    width: 100,
+    height: 100,
+    zIndex: 9999,
+    padding: 10,
+    boxSizing: 'border-box',
+  },
+  input: {
+    display: 'none'
+  },
+  drag: {
+    borderColor: '#ccc',
+    background: '#dbdbdb',
+    backgroundImage: 'linear-gradient(-45deg, #d2d2d2 25%, transparent 25%, transparent 50%, #d2d2d2 50%, #d2d2d2 75%, transparent 75%, transparent)',
+    backgroundSize: '40px 40px'
+  }
+}))
 
 function Dropzone (props) {
   const [files, setFiles] = React.useState([])
@@ -57,6 +79,8 @@ function Dropzone (props) {
     const files = Array.from(inputEl.files)
   }
 
+  const classes = useDropzoneStyles(props)
+
   return (
     <div
       onDrop={onDrop}
@@ -68,6 +92,62 @@ function Dropzone (props) {
     </div>
   )
 }
+
+const useThumbnailStyles = makeStyles(theme => ({
+  thumbnail: {
+    width: 100,
+    height: 100,
+    margin: '0 10px 0 0',
+    position: 'relative',
+    padding: 10,
+    boxSizing: 'border-box',
+    borderRadius: 3,
+    cursor: 'pointer',
+    // '& img': {
+    //   width: '100%',
+    //   height: '100%',
+    //   objectFit: 'cover'
+    // },
+    // '&.hover': {
+    //   img {
+    //     filter: grayscale(50%) brightness(50%);
+    //   }
+    // }
+  },
+  selected: {
+    border: '3px solid #d9f7be'
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
+  },
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+
+    // button {
+    //   all: unset;
+    //   cursor: pointer;
+    //   margin: 5px;
+    //   padding: 2px;
+    //   box-sizing: border-box;
+    //   opacity: 0.9;
+    //   border: 0.5px solid transparent;
+    //   cursor: pointer;
+  
+    //   &:hover {
+    //     opacity: 1;
+    //     background-color: rgba(244, 249, 253, 0.3);
+    //   }
+    // }
+  }
+}))
 
 function Thumbnail (props) {
   const { selected } = props
@@ -86,6 +166,8 @@ function Thumbnail (props) {
     props.deleteImage({ id: props.fileId })
   }
 
+  const classes = useThumbnailStyles(props)
+
   return (
     <figure
       className={clsx(classes.thumbnail, {
@@ -101,9 +183,9 @@ function Thumbnail (props) {
         hover && (
           <div className={classes.overlay}>
             <div className={classes.toolbar}>
-              <button onClick={onDelete}>
+              <IconButton onClick={onDelete}>
                 <DeleteIcon />
-              </button>
+              </IconButton>
             </div>
           </div>
         )
@@ -111,6 +193,12 @@ function Thumbnail (props) {
     </figure>
   )
 }
+
+const useThumbnailUploadStyles = makeStyles(theme => ({
+  flex: {
+    display: 'flex'
+  }
+}))
 
 function ThumbnailUpload (props) {
   const {
@@ -121,8 +209,10 @@ function ThumbnailUpload (props) {
     coverImage,
     deleteImage
   } = props
+  const classes = useThumbnailUploadStyles(props)
+
   return (
-    <div className={classes.grid}>
+    <div className={classes.flex}>
       {
         fileList.map(item => {
           return (

@@ -22,6 +22,9 @@ import {
   Button
 } from '@material-ui/core'
 import FormInput from '../FormInput'
+import Haikunator from 'haikunator'
+
+const haikunator = new Haikunator()
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -35,9 +38,11 @@ function CreatePostModal (props) {
 
   const handleInputChange = evt => setTitle(evt.target.value)
 
-  const onSubmit = (evt) => {
-    const { handleClose, createPost, selectedProject } = props
+  const onSubmit = async (evt) => {
+    let { handleClose, createPost } = props
     handleClose()
+
+    const selectedProject =  await getProjectId()
     createPost.mutate({
       title: title,
       projectId: selectedProject,
@@ -47,6 +52,31 @@ function CreatePostModal (props) {
 
   const onCancel = () => {
     props.handleClose()
+  }
+
+  const getProjectId = () => {
+    const { selectedProject } = props
+
+    if (selectedProject) {
+      return selectedProject
+    }
+
+    return createProject()
+  }
+
+  const createProject = async () => {
+    let data
+    try {
+      data = await props.createProject.mutate({
+        name: haikunator.haikunate(),
+        userId: props.users.data.users[0].id
+      })
+    } catch (err) {
+      console.error(err)
+      return
+    }
+
+    return data.data.insert_projects.returning[0].id
   }
 
   const {
@@ -172,5 +202,32 @@ const mutations = [
     })
   })
 ]
+
+/*
+createProject = ({ mutate, projects }) => variables => mutate({
+    variables,
+    optimisticResponse: {
+      __typename: 'Mutation',
+      insert_projects: {
+        __typename: 'projects_mutation_response',
+        returning: [{
+          __typename: 'Project',
+          ...variables,
+          id: Math.floor(Math.random(1e6)),
+          origins: []
+        }]
+      }
+    },
+    update: (store, { data: { insert_projects } }) => {
+      store.writeQuery({
+        query: PROJECTS_QUERY,
+        data: {
+          projects: [...projects.data.projects].concat(insert_projects.returning)
+        },
+        variables: projects.variables
+      })
+    }
+  })
+*/
 
 export default compose(...mutations)(CreatePostModal)

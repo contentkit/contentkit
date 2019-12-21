@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import Layout from '../Layout'
 import DashboardTable from '../../components/DashboardTable'
 import DashboardToolbar from '../../components/DashboardToolbar'
-import withData from './withData'
+import queries from './withData'
 import { selectProject, selectPosts, setEditorState, setSearchQuery, setSearchLoadingState, updateFeedVariables } from '../../lib/redux'
 import CreatePostModal from '../../components/CreatePostModal'
 
@@ -161,5 +161,6 @@ export default compose(
       updateFeedVariables
     }
   ),
-  withData
+  queries
+  // ...queries
 )(Dashboard)

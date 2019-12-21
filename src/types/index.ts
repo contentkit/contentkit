@@ -82,11 +82,6 @@ export type Adapter = {
   restore: (key: string) => void
 }
 
-// export type FetchMore = ({
-//   variables: any,
-//   updateQuery: (previousResult: any, nextResult: any) => Promise<any>
-// }) => void
-
 export type Client = {
   query: (args: any) => void,
   mutate: (args: any) => void

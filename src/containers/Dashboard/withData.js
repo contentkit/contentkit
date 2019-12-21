@@ -1,6 +1,6 @@
 import React from 'react'
 import { Query } from 'react-apollo'
-
+import { graphql } from '@apollo/react-hoc'
 import { POSTS_AGGREGATE_QUERY, PROJECTS_QUERY } from '../../graphql/queries'
 
 import PropTypes from 'prop-types'
@@ -41,3 +41,15 @@ const withData = Component =>
   }
 
 export default withData
+
+// export default [
+//   graphql(POSTS_AGGREGATE_QUERY, {
+//     options: ({ postsAggregateVariables }) => ({
+//       variables: {
+//         ...postsAggregateVariables,
+//         query: postsAggregateVariables.query ? `%${postsAggregateVariables.query}%` : '%'
+//       }
+//     })
+//   }),
+//   graphql(PROJECTS_QUERY)
+// ]

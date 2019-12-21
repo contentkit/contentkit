@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Select } from '@material-ui/core'
+import { Select, FormControl, InputLabel } from '@material-ui/core'
 import Input from '../Input'
 
 // type Project = {
@@ -36,10 +36,10 @@ function SelectProject (props) {
     className
   } = props
 
-  return (
+  const select = (
     <Select
       native
-      label={'Project'}
+      labelId={'project-select'}
       value={selectedProject}
       onChange={onChange}
       className={className}
@@ -49,6 +49,14 @@ function SelectProject (props) {
         allProjects.map(project => <option key={project.id} value={project.id}>{project.name}</option>)
       }
     </Select>
+  )
+  return (
+    <FormControl fullWidth>
+      <InputLabel shrink id='project-select'>
+        Projects
+      </InputLabel>
+      {select}
+    </FormControl>
   )
 }
 

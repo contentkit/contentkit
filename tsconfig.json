@@ -2,14 +2,16 @@
   "compilerOptions": {
     "allowJs": true,
     "esModuleInterop": true,
-    "target": "es5",
     "module": "commonjs",
     "strict": false,
     "jsx": "react",
     "baseUrl": ".",
+    "target": "es6",
+    "jsx": "react",
     "paths": {
       "~*": ["src/*"]
     },
-    "lib": ["dom", "es2015"]
+    "lib": ["dom", "es2015"],
+    "outDir": "./dist"
   }
 }
