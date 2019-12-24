@@ -14,17 +14,26 @@ function ContentKitEditor (props) {
     keyBindingFn,
     blockRendererFn,
     createHandleKeyCommand,
-    save
+    renderToolbar,
+    keyBindings,
+    save,
+    classes
   } = props
-  const handleKeyCommand = createHandleKeyCommand(save)
   return (
     <Editor
       editorState={editorState}
       onChange={onChange}
-      plugins={plugins.plugins}
+      plugins={plugins}
       keyBindingFn={keyBindingFn}
       blockRendererFn={blockRendererFn}
-      handleKeyCommand={handleKeyCommand}
+      classes={classes}
+      keyBindings={{
+        [Command.EDITOR_SAVE]: (_, editorState) => {
+          save()
+          return HANDLED
+        }
+      }}
+      renderToolbar={renderToolbar}
     />
   )
 }

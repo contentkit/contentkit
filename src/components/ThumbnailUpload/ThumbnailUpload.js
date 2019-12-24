@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/styles'
 import { IconButton } from '@material-ui/core'
+import CancelIcon from '@material-ui/icons/Cancel'
 
 const DeleteIcon = props => (
   <svg
@@ -114,6 +115,11 @@ const useThumbnailStyles = makeStyles(theme => ({
     //   }
     // }
   },
+  image: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover'
+  },
   selected: {
     border: '3px solid #d9f7be'
   },
@@ -125,12 +131,9 @@ const useThumbnailStyles = makeStyles(theme => ({
     bottom: 0
   },
   toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-    width: '100%',
-
+    top: -15,
+    right: -15,
+    position: 'absolute'
     // button {
     //   all: unset;
     //   cursor: pointer;
@@ -151,12 +154,17 @@ const useThumbnailStyles = makeStyles(theme => ({
 
 function Thumbnail (props) {
   const { selected } = props
+  console.log({ selected })
   const [hover, setHover] = React.useState(false)
 
   const onMouseEnter = () => setHover(true)
   const onMouseLeave = () => setHover(false)
 
   function onClick (evt) {
+    console.log(evt)
+    console.log({ props })
+    evt.preventDefault()
+    evt.stopPropagation()
     props.onSelect(props.fileId)
   }
 
@@ -178,13 +186,13 @@ function Thumbnail (props) {
       onMouseLeave={onMouseLeave}
       onClick={onClick}
     >
-      <img src={props.src} />
+      <img src={props.src} className={classes.image} />
       {
         hover && (
           <div className={classes.overlay}>
             <div className={classes.toolbar}>
               <IconButton onClick={onDelete}>
-                <DeleteIcon />
+                <CancelIcon />
               </IconButton>
             </div>
           </div>

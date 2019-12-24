@@ -1,17 +1,9 @@
 import { EditorState, convertFromRaw, convertToRaw, genKey } from 'draft-js'
-import { exportHtml } from '@contentkit/editor'
+import { convertToHTML } from '@contentkit/convert'
 import { expand, compress } from 'draft-js-compact'
 import { encode } from '../../lib/utf8'
 import { Block } from '@contentkit/util'
 import transform from '@contentkit/util/lib/utils/transform'
-
-export const convertToHtml = editorState => {
-  const html = exportHtml(editorState)
-
-  return encode(html)
-}
-
-export const isLoaded = ({ post }) => Boolean(post && post.Post)
 
 export const toRaw = editorState => {
   return compress(convertToRaw(editorState.getCurrentContent()))

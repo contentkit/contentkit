@@ -9,3 +9,7 @@ yarn link @contentkit/markdown
 yarn link @contentkit/new-line
 yarn link @contentkit/toolbar
 yarn link @contentkit/util
+yarn link @contentkit/convert
+yarn link @contentkit/types
+yarn link @contentkit/plugins
+yarn link @contentkit/components

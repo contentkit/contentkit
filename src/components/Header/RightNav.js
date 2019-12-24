@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, MenuItem, Avatar } from '@material-ui/core'
+import { Menu, MenuItem, Avatar, Toolbar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
@@ -28,7 +28,10 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     backgroundColor: '#161616'
-  }
+  },
+  // toolbar: {
+  //   flexDirection: 'column'
+  // }
 }))
 
 function RightNav (props) {
@@ -44,6 +47,7 @@ function RightNav (props) {
   return (
     <div
       className={classes.root}
+      // className={classes.toolbar}
     >
       {render()}
       <Avatar

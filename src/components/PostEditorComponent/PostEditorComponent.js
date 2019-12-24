@@ -3,16 +3,13 @@ import { CSSTransition } from 'react-transition-group'
 
 import { Editor } from '@contentkit/editor'
 import { setEditorStateBlockMap, Block, Command, HANDLED, NOT_HANDLED } from '@contentkit/util'
-import plugins from '@contentkit/editor/lib/plugins'
 import { genKey, ContentBlock } from 'draft-js'
 import clsx from 'clsx'
 import classes from './styles.scss'
 
-import '@contentkit/editor/lib/css/normalize.css'
-import '@contentkit/editor/lib/css/Draft.css'
-import '@contentkit/editor/lib/css/prism.css'
-import '@contentkit/editor/lib/css/CheckableListItem.css'
-import 's3-dropzone/lib/styles.css'
+import '@contentkit/editor/src/css/Draft.css'
+import '@contentkit/editor/src/css/prism.css'
+import '@contentkit/editor/src/css/CheckableListItem.css'
 import '@contentkit/code/src/style.scss'
 import '../../css/editor/toolbar.scss'
 
@@ -25,8 +22,8 @@ import { Mutation } from 'react-apollo'
 import * as config from '../../lib/config'
 import BaseDropzone from '../BaseDropzone'
 import { CREATE_IMAGE } from '../../graphql/mutations'
-
-const Toolbar = plugins.toolbar
+import { plugins } from './plugins'
+import Toolbar from './Toolbar'
 
 const awsConfig = {
   identityPoolId: config.IDENTITY_POOL_ID,
@@ -64,51 +61,32 @@ export async function uploadDocument (file, filename, payload) {
   })
 }
 
-function genId () {
-  return [...Array(20)].map(i=>(~~(Math.random()*36)).toString(36)).join('')
-}
+class PostEditorComponent extends React.Component {
 
-function PostEditorComponent (props) {
-  const [tableBlockKey, setTableBlockKey] = React.useState(null)
-  const [isDragging, setDrag] = React.useState(false)
+  constructor (props) {
+    super (props)
 
-  const handleClick = () => {}
-  // const handleClick = evt => {
-  //   let { clientY } = evt
-  //   const { editorState, onChange } = props
-  //   const currentContent = editorState.getCurrentContent()
-  //   const blockMap = currentContent.getBlockMap()
-
-  //   const last = blockMap.toSeq().last()
-  //   if (!last) return
-
-  //   const blockKey = last.getKey()
-  //   const elem = document.querySelector(`[data-offset-key="${blockKey}-0-0"]`)
-  //   if (!elem) return
-  //   const rect = elem.getBoundingClientRect()
-
-  //   if (clientY < rect.bottom) return
-  //   const newBlockKey = genKey()
-
-  //   const newBlockMap = blockMap
-  //     .set(newBlockKey, new ContentBlock({ key: newBlockKey }))
-
-  //   onChange(
-  //     setEditorStateBlockMap(editorState, newBlockMap, newBlockKey)
-  //   )
-  // }
-
-  const handleOpen = tableBlockKey => {
-    setTableBlockKey(tableBlockKey)
+    this.state = {
+      tableBlockKey: null,
+      isDragging: false
+    }
   }
 
-  const handleClose = () => {
-    setTableBlockKey(null)
+  handleClick = () => {}
+  
+  handleOpen = tableBlockKey => {
+    setState({ tableBlockKey })
   }
 
-  const onDrop = (mutate) => async (files, event) => {
-    setDrag(false)
-    const { client, users, posts: { data: { posts } } } = props
+  handleClose = () => {
+    setState({ tableBlockKey: null })
+  }
+
+  setDrag = isDragging => this.setState({ isDragging })
+
+  onDrop = (mutate) => async (files, event) => {
+    this.setDrag(false)
+    const { client, users, posts: { data: { posts } } } = this.props
 
     const postId = posts[0].id
     const userId = users.data.users[0].id
@@ -116,7 +94,7 @@ function PostEditorComponent (props) {
     const { name, type, size } = file
     const filename = sanitizeFileName(name)
     const key = `static/${postId}/${filename}`
-    const createPresignedPost = await props.getFormData({ key, userId })
+    const createPresignedPost = await this.props.getFormData({ key, userId })
 
     try {
       await uploadDocument(file, filename, createPresignedPost)
@@ -132,65 +110,74 @@ function PostEditorComponent (props) {
       }
     })
 
-    props.insertImage(`https://s3.amazonaws.com/contentkit/${key}`)
-    console.log(data)
+    this.props.insertImage(`https://s3.amazonaws.com/contentkit/${key}`)
   }
 
-  const {
-    editorState,
-    deleteImage,
-    createImage,
-    posts,
-    onChange,
-    mutate,
-    save,
-    insertImage,
-    loading,
-    ...rest /* eslint-disable-line */
-  } = props
-  console.log({ isDragging })
-  return (
-    <Mutation mutation={UPLOAD_MUTATION}>
-      {upload => {
-        return (
-          <BaseDropzone className={classes.root} onDrop={onDrop(upload)} setDrag={setDrag}>
-            <CSSTransition
-              classNames={'transition'}
-              unmountOnExit
-              timeout={1000}
-              in={loading}
-            >
-              {state => (
-                <LinearProgress />
-              )}
-            </CSSTransition>
-            <div className={classes.flex}>
-              <div className={clsx(classes.editorContainer, { [classes.drag]: isDragging })} onClick={handleClick}>
+  render () {
+    const {
+      editorState,
+      deleteImage,
+      createImage,
+      posts,
+      onChange,
+      mutate,
+      save,
+      insertImage,
+      loading,
+      ...rest /* eslint-disable-line */
+    } = this.props
+    const { isDragging, tableBlockKey } = this.state
+    return (
+      <Mutation mutation={UPLOAD_MUTATION}>
+        {upload => {
+          return (
+            <BaseDropzone className={classes.root} onDrop={this.onDrop(upload)} setDrag={this.setDrag}>
+              <CSSTransition
+                classNames={'transition'}
+                unmountOnExit
+                timeout={1000}
+                in={loading}
+              >
+                {state => (
+                  <LinearProgress />
+                )}
+              </CSSTransition>
+              <div className={classes.flex}>
                 <ContentKitEditor
                   editorState={editorState}
                   onChange={onChange}
                   plugins={plugins}
-                  save={props.save}
+                  save={this.props.save}
+                  classes={{
+                    editor: 'monograph-editor',
+                    root: clsx('ck-editorContainer', classes.editorContainer, { [classes.drag]: isDragging })
+                  }}
+                  onClick={this.handleClick}
+                  renderToolbar={store => {
+                    return (
+                      <div className={clsx(classes.toolbar, 'ck-toolbar')}>
+                        <div className={classes.toolbarInner}>
+                          <Toolbar
+                            config={awsConfig}
+                            refId={posts?.data?.posts[0]?.id}
+                            images={posts?.data?.posts[0]?.images}
+                            deleteImage={deleteImage}
+                            createImage={createImage}
+                            insertImage={insertImage}
+                            store={store}
+                          />
+                        </div>
+                      </div>
+                    )
+                  }}
                 />
               </div>
-              <div className={classes.toolbar}>
-                <div className={classes.toolbarInner}>
-                  <Toolbar.Component
-                    config={awsConfig}
-                    refId={posts?.data?.posts[0]?.id}
-                    images={posts?.data?.posts[0]?.images}
-                    deleteImage={deleteImage}
-                    createImage={createImage}
-                    insertImage={insertImage}
-                  />
-                </div>
-              </div>
-            </div>
-          </BaseDropzone>
-        )
-      }}
-    </Mutation>
-  )
+            </BaseDropzone>
+          )
+        }}
+      </Mutation>
+    )
+  }
 }
 
 export default PostEditorComponent

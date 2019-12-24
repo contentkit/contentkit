@@ -33,7 +33,8 @@ function SelectProject (props) {
   const {
     selectedProject,
     allProjects,
-    className
+    className,
+    hideLabel
   } = props
 
   const select = (
@@ -50,6 +51,11 @@ function SelectProject (props) {
       }
     </Select>
   )
+
+  if (hideLabel) {
+    return select
+  }
+
   return (
     <FormControl fullWidth>
       <InputLabel shrink id='project-select'>
@@ -68,7 +74,8 @@ SelectProject.propTypes = {
 
 SelectProject.defaultProps = {
   allProjects: [],
-  selectedProject: null
+  selectedProject: null,
+  hideLabel: true
 }
 
 export default SelectProject

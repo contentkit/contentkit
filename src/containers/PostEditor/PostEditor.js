@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { compose, withApollo } from 'react-apollo'
+import { encode } from '../../lib/utf8'
 
 import Layout from '../Layout'
-import { exportHtml } from '@contentkit/editor/lib/util'
+import { convertToHTML } from '@contentkit/convert'
 import insertImage from '@contentkit/editor/lib/modifiers/insertImage'
 import PostEditorToolbar from '../../components/PostEditorToolbar'
 import PostEditorComponent from '../../components/PostEditorComponent'
@@ -12,12 +13,10 @@ import PostEditorModals from '../../components/PostEditorModals'
 import {
   hydrate,
   toRaw,
-  convertToHtml
 } from './util'
 import { setEditorState } from '../../lib/redux'
 import withData from './withData'
 import styles from './styles.scss'
-import { encode } from '../../lib/utf8'
 import { UPLOAD_MUTATION } from '../../graphql/mutations'
 
 class BaseEditor extends React.Component {
@@ -51,7 +50,7 @@ class BaseEditor extends React.Component {
       }
     } = this.props
     const raw = toRaw(editorState)
-    const html = convertToHtml(editorState)
+    const html = encode(convertToHTML(editorState))
     return this.props.updateDocument.mutate({
       id: posts[0].id,
       raw: raw,
@@ -72,7 +71,7 @@ class BaseEditor extends React.Component {
   }
 
   getHtml = (editorState = this.props.editorState) =>
-    encode(exportHtml(editorState))
+    encode(convertToHTML(editorState))
 
   onChange = editorState => {
     this.props.setEditorState(editorState)

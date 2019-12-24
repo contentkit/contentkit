@@ -4,6 +4,7 @@ import RightNav from './RightNav'
 import { Link } from 'react-router-dom'
 import { PROFILE_PATH, LOGIN_PATH, PROJECTS_PATH } from '../../lib/config'
 import { makeStyles } from '@material-ui/styles'
+import { Drawer } from '@material-ui/core'
 
 const createNavBarOptions = (props) => {
   const defaultOptions = [{
@@ -18,7 +19,7 @@ const createNavBarOptions = (props) => {
     label: 'Account',
     onClick: e => props.history.replace(PROFILE_PATH)
   }, {
-    label: 'Sign out',
+    label: 'Login',
     onClick: e => {
       window.localStorage.removeItem('token')
       props.client.resetStore()
@@ -38,8 +39,13 @@ const useStyles = makeStyles(theme => ({
     padding: '0 30px',
     backgroundColor: '#161616',
     borderBottom: '1px solid #393939',
-    // backgroundColor: theme.palette.common.white,
-    zIndex: 2
+    // zIndex: 2,
+    // position: 'fixed',
+    // top: 0,
+    // left: 0,
+    // bottom: 0,
+    // width: 60,
+    // flexDirection: 'column'
   },
   [theme.breakpoints.up('md')]: {
     root: {
@@ -53,12 +59,27 @@ const useStyles = makeStyles(theme => ({
   brand: {
     color: '#fff',
     // color: theme.palette.grey['900']
+  },
+  drawer: {
+    width: 60,
+    backgroundColor: '#161616',
+    flexDirection: 'column',
+    alignItems: 'center'
   }
 }))
 
 function Header (props) {
   const classes = useStyles(props)
   const options = createNavBarOptions(props)
+  // return (
+  //   <Drawer variant='permanent' classes={{ paper: classes.drawer }}>
+  //     <Link to='/' className={classes.flex}>
+  //       <div className={classes.brand}>
+  //         CK
+  //       </div>
+  //     </Link>
+  //   </Drawer>
+  // )
   return (
     <div className={classes.root}>
       <Link to='/' className={classes.flex}>

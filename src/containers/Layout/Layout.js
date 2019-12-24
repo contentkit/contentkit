@@ -32,7 +32,6 @@ Layout.propTypes = {
 const styles = theme => ({
   root: {
     backgroundColor: '#f4f4f4',
-    // backgroundColor: theme.variables.backgroundColor,
     minHeight: '100vh'
   },
   layout: {},

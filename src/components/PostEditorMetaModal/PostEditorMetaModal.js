@@ -121,12 +121,9 @@ class EditPostMetaModal extends React.Component {
       query: POST_QUERY,
       variables: variables,
       data: {
-        post: [{
+        posts: [{
           ...posts[0],
-          coverImage: {
-            id: imageId,
-            __typename: 'Image'
-          }
+          cover_image_id: imageId
         }]
       }
     })
@@ -151,12 +148,10 @@ class EditPostMetaModal extends React.Component {
   }
 
   handleDateInputChange = (dateInputState) => {
-    console.log(dateInputState)
     this.setState({ dateInputState })
   }
 
   render () {
-    console.log(this.props)
     const {
       open,
       onClose,

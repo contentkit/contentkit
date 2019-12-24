@@ -1,6 +1,5 @@
 import React from 'react'
 import './enzyme'
-import { createEmpty } from '@contentkit/editor'
 import Monograph from '@contentkit/editor/lib/editor'
 import { mount } from 'enzyme'
 import * as config from '../lib/config'
