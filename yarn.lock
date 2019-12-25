@@ -826,6 +826,14 @@
     "@contentkit/types" "^0.0.41"
     "@contentkit/util" "^0.0.41"
 
+"@contentkit/code@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.npmjs.org/@contentkit/code/-/code-0.0.42.tgz#09298800e7fe0905f2107c3ebf8ed82b2869791d"
+  integrity sha512-fxrjz6wj2NmrnS0KeJWWkdGeUFfy6Vp6jSZriMS/+m5iA8G4S3kFvqL4IZVrTKdnwPmqejhDm4HWPRS3IT4wMA==
+  dependencies:
+    "@contentkit/types" "^0.0.42"
+    "@contentkit/util" "^0.0.42"
+
 "@contentkit/components@^0.0.41":
   version "0.0.41"
   resolved "https://registry.npmjs.org/@contentkit/components/-/components-0.0.41.tgz#b4ba68cd62b99af21dcc3706692f43a145156f1c"
@@ -834,30 +842,41 @@
     "@contentkit/util" "^0.0.41"
     clsx "^1.0.4"
 
-"@contentkit/convert@^0.0.41":
-  version "0.0.41"
-  resolved "https://registry.npmjs.org/@contentkit/convert/-/convert-0.0.41.tgz#86f034dd3108c7c440818cf5ac05ac6cbcc91d2a"
-  integrity sha512-zJtfKCIzUUSCzX09S+Vihv7BAqC82ibnrzKZgsyL2ZaTkqdVOHyLOmAdba0wtwVG2sMOiWwIHZUNYEiUEP1PMQ==
+"@contentkit/components@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.npmjs.org/@contentkit/components/-/components-0.0.42.tgz#f0537dc5ec19582268d81d70e102810a75e36984"
+  integrity sha512-lmExG3ZbEV15WG7qhMJqOdMuFTbaomObbDtSE5yVB/dtqUGiKgx5wOaalWDB0Jpuon3O8I6u01I7GfMQjV/Psg==
   dependencies:
-    "@contentkit/code" "^0.0.41"
-    "@contentkit/types" "^0.0.41"
-    "@contentkit/util" "^0.0.41"
+    "@contentkit/sidebar" "^0.0.42"
+    "@contentkit/types" "^0.0.42"
+    "@contentkit/util" "^0.0.42"
+    clsx "^1.0.4"
+    safe-s3-key "^0.0.4"
+
+"@contentkit/convert@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.npmjs.org/@contentkit/convert/-/convert-0.0.42.tgz#57910e29c836306b3a3618bf3474cc5605728d33"
+  integrity sha512-V9T+25pVelo+PEbwPuT45K1Zetmz1R8h2hctb5/9nFJfnpKDwtdaFaYew09YYNP3hFfIXOrFTo8qZEH2bvZSdw==
+  dependencies:
+    "@contentkit/code" "^0.0.42"
+    "@contentkit/types" "^0.0.42"
+    "@contentkit/util" "^0.0.42"
     draft-js-export-html "^1.4.1"
     html-element-attributes "^2.2.0"
     lodash.groupby "^4.6.0"
     lodash.pick "^4.4.0"
     prismjs "^1.17.1"
 
-"@contentkit/editor@^0.0.41":
-  version "0.0.41"
-  resolved "https://registry.npmjs.org/@contentkit/editor/-/editor-0.0.41.tgz#3259e77d4a708a3e98c7cd6a7fb30ec4eefe4d76"
-  integrity sha512-x5c6DVgq/Wz6eGLMNaPCpYnO0qNFVmwbfCDYctvZh9cOUIYl+MU0+KwBX20SxlNdjDHNvaJkaR4JOKU4wZlyUg==
+"@contentkit/editor@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.npmjs.org/@contentkit/editor/-/editor-0.0.42.tgz#c0d9137e987f05350cccebcccf3cc525e4ce6d5b"
+  integrity sha512-9bTexBxRYXuZMe+aX3FiJsLaRx+/ZCzACqNKpsdtzo2e880oDsXqgPsMpl9hffZ2jmG+7A6pZvlKQfclmTwJiQ==
   dependencies:
     "@babel/runtime" "^7.6.3"
-    "@contentkit/components" "^0.0.41"
+    "@contentkit/components" "^0.0.42"
     "@contentkit/toolbar" "^0.0.41"
-    "@contentkit/types" "^0.0.41"
-    "@contentkit/util" "^0.0.41"
+    "@contentkit/types" "^0.0.42"
+    "@contentkit/util" "^0.0.42"
     clsx "^1.0.4"
     decorate-component-with-props "^1.1.0"
     draft-js-anchor-plugin "^2.0.3"
@@ -870,54 +889,61 @@
     pretty "^2.0.0"
     prismjs "^1.17.1"
     prop-types "^15.6.1"
-    s3-dropzone "^0.0.57"
 
-"@contentkit/embed@^0.0.41":
-  version "0.0.41"
-  resolved "https://registry.npmjs.org/@contentkit/embed/-/embed-0.0.41.tgz#3222dee3cb24ef43eed330a7ad73adaeae024fdf"
-  integrity sha512-LrVs/xv8oq3zRhmYwR7YNZ/2CpocYajpyoiU9fjf5FIgF02T3Qg1BGe/Fj87+N84JGRPx8lPe4HggoqFgU2PrQ==
+"@contentkit/embed@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.npmjs.org/@contentkit/embed/-/embed-0.0.42.tgz#cacf9d05ae24d6898cf3a2a749115c0b51215c51"
+  integrity sha512-wPSP8cw0nCWhceKj9LAgkdU269/CsglPuuMmDAI9KsFIzcWPIEOhZcXb+C8ofRwKyR/IAvHwfAet2gXOYMqbyA==
   dependencies:
     "@babel/runtime" "^7.6.3"
-    "@contentkit/types" "^0.0.41"
-    "@contentkit/util" "^0.0.41"
+    "@contentkit/types" "^0.0.42"
+    "@contentkit/util" "^0.0.42"
     append-stylesheet "^0.0.2"
     clsx "^1.0.4"
     lodash.frompairs "^4.0.1"
     url "^0.11.0"
 
-"@contentkit/focus@^0.0.41":
-  version "0.0.41"
-  resolved "https://registry.npmjs.org/@contentkit/focus/-/focus-0.0.41.tgz#27af78538ed625198510c3a1da91099fcaab950d"
-  integrity sha512-bzbST4O4Dygu069wKaTDPu8BAGNQ3Y0GmU9SurFZeuFQzoW9w+x3U7vVP8qJYvyJvYoyTg6dwYDpfNS758f7qA==
+"@contentkit/focus@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.npmjs.org/@contentkit/focus/-/focus-0.0.42.tgz#62ed7ffc7da5fb960f9758c47ca119f5a3c40fce"
+  integrity sha512-0yk8muI2b6ty5Hld9x6Wh77EvEMXyoa0KyhASGwLpmqBhWLqdhex4h/ZWlLLPJ94oA7Gl5nRtWW9x5w001RbzA==
   dependencies:
-    "@contentkit/types" "^0.0.41"
-    "@contentkit/util" "^0.0.41"
+    "@contentkit/types" "^0.0.42"
+    "@contentkit/util" "^0.0.42"
     clsx "^1.0.4"
     decorate-component-with-props "^1.0.2"
     find-with-regex "^1.1.3"
     immutable "~4.0.0-rc.12"
     prop-types "^15.5.8"
 
-"@contentkit/markdown@^0.0.41":
-  version "0.0.41"
-  resolved "https://registry.npmjs.org/@contentkit/markdown/-/markdown-0.0.41.tgz#0a554bd61e679fc5f61bde089fe3d7c60c1f6cfe"
-  integrity sha512-zmspIIz2ynIidpuHbPYIyrEt27fNYi4TVbGyL7UZoxda3V7CzX5HxLma/g3qnPv+/hP0IFz4r9yra/8t1e+wtA==
+"@contentkit/markdown@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.npmjs.org/@contentkit/markdown/-/markdown-0.0.42.tgz#9426e38c401a655dae25b16a457914f7ddd6474d"
+  integrity sha512-OYxG3Kbmc1w4lajPpXcBZSRZGfUVCa0XSLnAD60nnUFaASMvqwbrRzzjneDu7u51X+K7E1Oy0LCUv6nGVWq9hw==
   dependencies:
-    "@contentkit/types" "^0.0.41"
-    "@contentkit/util" "^0.0.41"
+    "@contentkit/types" "^0.0.42"
+    "@contentkit/util" "^0.0.42"
 
-"@contentkit/plugins@^0.0.41":
-  version "0.0.41"
-  resolved "https://registry.npmjs.org/@contentkit/plugins/-/plugins-0.0.41.tgz#87ca40846d19f351bdbfe9cfb6e8c72c3d961df7"
-  integrity sha512-q5gb7jM5DMFCBLQFzkEKpE5f5H8H7aoX1vJ7HazwpdTaahT5KoGsSEqzfGarmu8GgxHrXPNpnaqxE/tenwVnhQ==
+"@contentkit/plugins@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.npmjs.org/@contentkit/plugins/-/plugins-0.0.42.tgz#23f1f828bee78f8db8ac22380c16f28d042ab5fd"
+  integrity sha512-zgJf/jgV8YUw0VQKfvCc3Vpjv1FYSGnU8o1cYK8JZvDmMPN2zeVfwB9bre6Yo5Mu4KgK02KMMi08cPqeSNE1Lw==
   dependencies:
-    "@contentkit/code" "^0.0.41"
-    "@contentkit/embed" "^0.0.41"
-    "@contentkit/focus" "^0.0.41"
-    "@contentkit/markdown" "^0.0.41"
-    "@contentkit/types" "^0.0.41"
-    "@contentkit/util" "^0.0.41"
+    "@contentkit/code" "^0.0.42"
+    "@contentkit/embed" "^0.0.42"
+    "@contentkit/focus" "^0.0.42"
+    "@contentkit/markdown" "^0.0.42"
+    "@contentkit/types" "^0.0.42"
+    "@contentkit/util" "^0.0.42"
     decorate-component-with-props "^1.1.0"
+
+"@contentkit/sidebar@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.npmjs.org/@contentkit/sidebar/-/sidebar-0.0.42.tgz#8a802d5cd7508e2ba67af0b020b8efdc73e17545"
+  integrity sha512-smM4fv+wBKzxUSOTqudICd5/kUDBDQ8nI8BtZ+3qzK4CJH6qEvV2EIYiI5Hk570FhOSbLScSgMhVSKQssTLVeQ==
+  dependencies:
+    "@contentkit/types" "^0.0.42"
+    "@contentkit/util" "^0.0.42"
 
 "@contentkit/toolbar@^0.0.41":
   version "0.0.41"
@@ -936,10 +962,22 @@
   resolved "https://registry.npmjs.org/@contentkit/types/-/types-0.0.41.tgz#82dbbb7f263c27edf901eb368b8914ecec77d84a"
   integrity sha512-6p/sRsxvyA7fJoskypoBQ7ipHvOxzxVazfjwYVYFDJnZc/vavFkvar8jAillVLaVl2bsf0gkO7c1u03N+xLcrA==
 
+"@contentkit/types@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.npmjs.org/@contentkit/types/-/types-0.0.42.tgz#2c9db202172d789db363e0d3a0b67f9bca7ec483"
+  integrity sha512-lvWpsC0RjsfUtF8ZZRWLEOq94RFQInelNpL7M2eYcZ3smgXAyTUFwdhKSLQ8NnRPeihQ2l8uaF9BNOq+5qPRVw==
+
 "@contentkit/util@^0.0.41":
   version "0.0.41"
   resolved "https://registry.npmjs.org/@contentkit/util/-/util-0.0.41.tgz#87653416af547c59532b2f34aa6cb6dfca9e7417"
   integrity sha512-XLlbSmq01HXLU7F1DtWewOqVIetv+LPPYWroHDAzme8uB83My551Tu8sF+m+d3LZi+o9shWJYHHe1sD4ylkzEg==
+  dependencies:
+    left-indent "^0.0.6"
+
+"@contentkit/util@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.npmjs.org/@contentkit/util/-/util-0.0.42.tgz#7e799ed55f230164bf550afb87fbe3cd3fbbff7d"
+  integrity sha512-o8gXo4ZSm+dRJ4VQwxqSnSNnwYnAE6dbFC0maHL7M5ZwShA3gqcD2SiOKumdQ3s0x3QRKsz5iDOWujEXsVq+oQ==
   dependencies:
     left-indent "^0.0.6"
 

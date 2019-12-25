@@ -11,9 +11,6 @@ function ContentKitEditor (props) {
     editorState,
     onChange,
     plugins,
-    keyBindingFn,
-    blockRendererFn,
-    createHandleKeyCommand,
     renderToolbar,
     keyBindings,
     save,
@@ -24,8 +21,6 @@ function ContentKitEditor (props) {
       editorState={editorState}
       onChange={onChange}
       plugins={plugins}
-      keyBindingFn={keyBindingFn}
-      blockRendererFn={blockRendererFn}
       classes={classes}
       keyBindings={{
         [Command.EDITOR_SAVE]: (_, editorState) => {
@@ -33,37 +28,8 @@ function ContentKitEditor (props) {
           return HANDLED
         }
       }}
-      renderToolbar={renderToolbar}
     />
   )
-}
-
-const { hasCommandModifier } = KeyBindingUtil
-
-function keyBindingFn (evt) {
-  if (evt.keyCode === 83 && hasCommandModifier(evt)) {
-    return 'editor-save'
-  }
-
-  if (evt.key === 'Backspace') {
-    return 'backspace'
-  }
-
-  if (evt.key === 'Tab') {
-    return 'tab'
-  }
-
-  return getDefaultKeyBinding(evt)
-}
-
-function createHandleKeyCommand (callback) {
-  return (command) => {
-    if (command === Command.EDITOR_SAVE) {
-      callback()
-      return HANDLED
-    }
-    return NOT_HANDLED
-  }
 }
 
 const blockRendererFn = (block) => {
@@ -75,10 +41,6 @@ const blockRendererFn = (block) => {
   }
 }
 
-ContentKitEditor.defaultProps = {
-  keyBindingFn,
-  createHandleKeyCommand,
-  blockRendererFn
-}
+ContentKitEditor.defaultProps = {}
 
 export default ContentKitEditor

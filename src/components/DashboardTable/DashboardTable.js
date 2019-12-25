@@ -7,20 +7,16 @@ import gql from 'graphql-tag'
 import { SvgIcon,Select, Theme, TableSortLabel, Toolbar, Paper, TableHead, TableBody, TableCell, TableRow, Table, IconButton, InputAdornment } from '@material-ui/core'
 import { SortDirection } from '@material-ui/core/TableCell'
 import { KeyboardArrowLeft, KeyboardArrowRight, Edit } from '@material-ui/icons'
-import Chip from '../Chip'
+import { Input, Chip, Checkbox } from '@contentkit/components'
 import { withStyles, makeStyles } from '@material-ui/styles'
 import clsx from 'clsx'
-import Checkbox from '../Checkbox'
 import {
   CSSTransition,
   TransitionGroup,
 } from 'react-transition-group'
 import orderBy from 'lodash/orderBy'
-import Input from '../Input'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
 import DashboardToolbar from '../DashboardToolbar'
-
-// type Direction = 'asc' | 'desc'
 
 const EditIcon = props => (
   <svg width="16" height="16" aria-hidden="true" focusable="false" data-prefix="fal" data-icon="pen" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M493.25 56.26l-37.51-37.51C443.25 6.25 426.87 0 410.49 0s-32.76 6.25-45.26 18.74L12.85 371.12.15 485.34C-1.45 499.72 9.88 512 23.95 512c.89 0 1.78-.05 2.69-.15l114.14-12.61 352.48-352.48c24.99-24.99 24.99-65.51-.01-90.5zM126.09 468.68l-93.03 10.31 10.36-93.17 263.89-263.89 82.77 82.77-263.99 263.98zm344.54-344.54l-57.93 57.93-82.77-82.77 57.93-57.93c6.04-6.04 14.08-9.37 22.63-9.37 8.55 0 16.58 3.33 22.63 9.37l37.51 37.51c12.47 12.48 12.47 32.78 0 45.26z"></path></svg>
@@ -156,7 +152,6 @@ function TableCellInput (props) {
       disabled={!isEditing}
       value={value}
       onChange={onChange}
-      // onClick={toggleClick}
       onBlur={onBlur}
       endAdornment={
         <InputAdornment position='end' className={classes.adornment}>

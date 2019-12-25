@@ -25,13 +25,6 @@ import { CREATE_IMAGE } from '../../graphql/mutations'
 import { plugins } from './plugins'
 import Toolbar from './Toolbar'
 
-const awsConfig = {
-  identityPoolId: config.IDENTITY_POOL_ID,
-  region: config.AWS_REGION,
-  bucketName: config.AWS_BUCKET_NAME,
-  endpoint: config.AWS_BUCKET_URL + '/'
-}
-
 const UPLOAD_MUTATION = gql`
   mutation($userId: String!, $key: String!) {
     createPresignedPost(userId: $userId, key: $key) {
@@ -148,28 +141,6 @@ class PostEditorComponent extends React.Component {
                   onChange={onChange}
                   plugins={plugins}
                   save={this.props.save}
-                  classes={{
-                    editor: 'monograph-editor',
-                    root: clsx('ck-editorContainer', classes.editorContainer, { [classes.drag]: isDragging })
-                  }}
-                  onClick={this.handleClick}
-                  renderToolbar={store => {
-                    return (
-                      <div className={clsx(classes.toolbar, 'ck-toolbar')}>
-                        <div className={classes.toolbarInner}>
-                          <Toolbar
-                            config={awsConfig}
-                            refId={posts?.data?.posts[0]?.id}
-                            images={posts?.data?.posts[0]?.images}
-                            deleteImage={deleteImage}
-                            createImage={createImage}
-                            insertImage={insertImage}
-                            store={store}
-                          />
-                        </div>
-                      </div>
-                    )
-                  }}
                 />
               </div>
             </BaseDropzone>

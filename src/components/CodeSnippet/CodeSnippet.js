@@ -1,6 +1,6 @@
 import React from 'react'
-import createAsyncLoadingHighlighter from 'react-syntax-highlighter/dist/esm/async-syntax-highlighter';
-import supportedLanguages from 'react-syntax-highlighter/dist/esm/languages/prism/supported-languages';
+import createAsyncLoadingHighlighter from 'react-syntax-highlighter/dist/esm/async-syntax-highlighter'
+import supportedLanguages from 'react-syntax-highlighter/dist/esm/languages/prism/supported-languages'
 import { withStyles } from '@material-ui/styles'
 
 const style = require('./theme.json')

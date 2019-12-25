@@ -7,7 +7,6 @@ const style = {
 
 class BaseDropzone extends React.Component {
   onDragOver = evt => {
-    console.log('dragOver', evt)
     this.props.setDrag(true)
     evt.stopPropagation()
     evt.preventDefault()
@@ -17,9 +16,7 @@ class BaseDropzone extends React.Component {
     this.props.setDrag(false)
   }
 
-  onDragEnter = (evt) => {
-    console.log('dragEnter', evt)
-  }
+  onDragEnter = (evt) => {}
 
   onDrop = evt => {
     const files = Array.from(evt.dataTransfer.files)

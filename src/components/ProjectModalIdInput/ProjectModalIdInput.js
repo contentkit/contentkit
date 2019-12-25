@@ -1,5 +1,5 @@
 import React from 'react'
-import Input from '../Input'
+import { Input } from '@contentkit/components'
 import { FileCopy } from '@material-ui/icons'
 import { IconButton, InputAdornment } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'

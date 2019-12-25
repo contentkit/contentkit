@@ -4,39 +4,22 @@ import debounce from 'lodash.debounce'
 import { withRouter } from 'react-router-dom'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
-import Layout from '../Layout'
+import { EditorState } from 'draft-js'
+import { AppWrapper } from '@contentkit/components'
+
 import DashboardTable from '../../components/DashboardTable'
 import DashboardToolbar from '../../components/DashboardToolbar'
 import queries from './withData'
-import { selectProject, selectPosts, setEditorState, setSearchQuery, setSearchLoadingState, updateFeedVariables } from '../../lib/redux'
+import {
+  selectProject,
+  selectPosts,
+  setEditorState,
+  setSearchQuery,
+  setSearchLoadingState,
+  updateFeedVariables
+} from '../../lib/redux'
 import CreatePostModal from '../../components/CreatePostModal'
-
 import { feedQueryShape } from '../../shapes'
-import { ObservableQuery } from 'apollo-client'
-import { EditorState } from 'draft-js'
-
-// type Posts = {
-//   variables: any,
-//   data: {
-    
-//   }
-// }
-
-// type DashboardProps = any & {
-//   posts: Posts,
-//   setSearchLoadingState: SetSearchLoadingState,
-//   selectProject: SelectProject,
-//   setSearchQuery: () => void,
-//   postsAggregateVariables: PostsAggregateVariables,
-//   editorState: EditorState,
-//   setEditorState: SetEditorState,
-//   logged: boolean
-// }
-
-// type DashboardState = {
-//   modalOpen: boolean,
-//   query: string
-// }
 
 class Dashboard extends React.Component {
   static defaultProps = {
@@ -113,13 +96,10 @@ class Dashboard extends React.Component {
 
   render () {
     return (
-      <Layout
+      <AppWrapper
         history={this.props.history}
-        render={() => null}
         logged={this.props.logged}
         client={this.props.client}
-        selectedPosts={this.props.selectedPosts}
-        query={this.state.query}
       >
         <CreatePostModal
           posts={this.props.posts}
@@ -142,7 +122,7 @@ class Dashboard extends React.Component {
           history={this.props.history}
           getToolbarProps={this.getToolbarProps}
         />
-      </Layout>
+      </AppWrapper>
     )
   }
 }

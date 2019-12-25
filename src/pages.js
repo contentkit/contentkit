@@ -39,6 +39,8 @@ export const Projects = React.lazy(() => import('./containers/Projects'))
 
 export const Profile = React.lazy(() => import('./containers/Profile'))
 
+export const Playground = React.lazy(() => import('./containers/Playground'))
+
 export default [{
   component: Dashboard,
   path: '/',
@@ -62,5 +64,9 @@ export default [{
 }, {
   component: Fallback,
   path: '/fallback',
+  exact: true
+}, {
+  component: Playground,
+  path: '/playground',
   exact: true
 }]

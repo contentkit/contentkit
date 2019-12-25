@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { projectQueryShape } from '../../shapes'
-import Chip from '../Chip'
-import Input from '../Input'
+import { Chip, Input } from '@contentkit/components'
 import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles({

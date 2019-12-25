@@ -1,13 +1,13 @@
 // @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import Layout from '../Layout'
 import UserForm from '../../components/ProfileUserForm'
 import { USER_QUERY } from '../../graphql/queries'
 import CodeSnippet from '../../components/CodeSnippet'
-import classes from './styles.scss'
 import Button from '../../components/Button'
 import { Dialog, DialogContent, DialogHeader, DialogActions } from '@material-ui/core'
+import { AppWrapper } from '@contentkit/components'
+import { withStyles } from '@material-ui/styles'
 
 class Profile extends React.Component {
   static propTypes = {
@@ -43,10 +43,10 @@ class Profile extends React.Component {
   }
 
   render () {
-    let { users } = this.props
+    const { users, classes } = this.props
     if (users.loading) return null
     return (
-      <Layout
+      <AppWrapper
         {...this.props}
         loading={this.props.updateUser.loading}
       >
@@ -83,9 +83,26 @@ class Profile extends React.Component {
         <div className={classes.code}>
           <CodeSnippet {...this.props} />
         </div>
-      </Layout>
+      </AppWrapper>
     )
   }
 }
 
-export default Profile
+export default withStyles(theme => ({
+  container: {
+    margin: '2em auto 1em auto',
+    padding: 40,
+    maxWidth: 960,
+    backgroundColor: '#fff',
+    borderRadius: 0,
+    // boxShadow: $shadow-1;
+  },
+  code: {
+    backgroundImage: 'linear-gradient(160deg, #121212 12.5%, #323232 85%)',
+    // box-shadow: $shadow-1;
+    borderRadius: 0,
+    margin: '2em auto 1em auto',
+    padding: '40px',
+    maxWidth: '960px'
+  }
+}))(Profile)

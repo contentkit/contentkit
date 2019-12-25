@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Select, FormControl, InputLabel } from '@material-ui/core'
-import Input from '../Input'
-
+import { Input } from '@contentkit/components'
 // type Project = {
 //   id: string,
 //   name: string

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { IconButton, InputAdornment } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { Refresh } from '@material-ui/icons'
-import Input from '../Input'
+import { Input } from '@contentkit/components'
 
 const useStyles = makeStyles(theme => ({
   input: {

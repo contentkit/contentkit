@@ -4,8 +4,7 @@ import { DELETE_TAG, CREATE_TAG, CREATE_POST_TAG_CONNECTION } from '../../graphq
 import { TAG_QUERY, POST_QUERY } from '../../graphql/queries'
 import { Mutation, Query } from 'react-apollo'
 import { genKey, genDate } from '../../lib/util'
-import Chip from '../Chip'
-import Input from '../Input'
+import { Input, Chip } from '@contentkit/components'
 import { withStyles } from '@material-ui/styles'
 import { withApollo, compose } from 'react-apollo'
 

@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { compose, withApollo } from 'react-apollo'
 import { encode } from '../../lib/utf8'
 
-import Layout from '../Layout'
 import { convertToHTML } from '@contentkit/convert'
 import insertImage from '@contentkit/editor/lib/modifiers/insertImage'
 import PostEditorToolbar from '../../components/PostEditorToolbar'
@@ -16,8 +15,8 @@ import {
 } from './util'
 import { setEditorState } from '../../lib/redux'
 import withData from './withData'
-import styles from './styles.scss'
 import { UPLOAD_MUTATION } from '../../graphql/mutations'
+import { AppWrapper, Toolbar } from '@contentkit/components'
 
 class BaseEditor extends React.Component {
   static propTypes = {
@@ -101,19 +100,20 @@ class BaseEditor extends React.Component {
   }
 
   renderToolbar = () => (
-    <PostEditorToolbar
+    <Toolbar
       onClick={this.handleToolbarClick}
+      getEditorState={() => this.props.editorState}
+      setEditorState={this.props.setEditorState}
     />
   )
 
   render = () => {
     return (
-      <Layout
+      <AppWrapper
         history={this.props.history}
-        render={this.renderToolbar}
+        renderToolbar={this.renderToolbar}
         client={this.props.client}
         logged={this.props.logged}
-        className={styles.layout}
       >
         <PostEditorModals
           editorState={this.props.editorState}
@@ -138,7 +138,7 @@ class BaseEditor extends React.Component {
           loading={this.state.loading}
           getFormData={this.getFormData}
         />
-      </Layout>
+      </AppWrapper>
     )
   }
 }

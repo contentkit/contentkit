@@ -1,10 +1,10 @@
 import React from 'react'
-import Layout from '../Layout'
 import ProjectModal from '../../components/ProjectModal'
 import Haikunator from 'haikunator'
 import ProjectsList from '../../components/ProjectsList'
 import Button from '../../components/Button'
 import { withStyles } from '@material-ui/styles'
+import { AppWrapper } from '@contentkit/components'
 
 const haikunator = new Haikunator()
 
@@ -53,16 +53,17 @@ class Projects extends React.Component {
   render () {
     const { ...rest } = this.props
     const {
+      client,
       createProject,
       projects,
       classes
     } = this.props
     return (
-      <Layout
+      <AppWrapper
+        client={client}
         loading={createProject.loading}
         history={this.props.history}
         logged={this.props.logged}
-        render={() => null}
       >
         <ProjectModal
           {...rest}
@@ -88,7 +89,7 @@ class Projects extends React.Component {
             New Project
           </Button>
         </div>
-      </Layout>
+      </AppWrapper>
     )
   }
 }

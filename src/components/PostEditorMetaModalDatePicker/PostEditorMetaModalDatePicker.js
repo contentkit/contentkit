@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './styles.scss'
-import Input from '../Input'
+import { Input } from '@contentkit/components'
 import { FormControl, InputLabel } from '@material-ui/core'
 
 function PostMetaDatePicker (props) {

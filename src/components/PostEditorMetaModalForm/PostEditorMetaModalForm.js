@@ -12,7 +12,7 @@ import AWS from 'aws-sdk'
 import safeKey from 'safe-s3-key'
 import withQuery from '../../lib/withQuery'
 import ThumbnailUpload from '../ThumbnailUpload'
-import Input from '../Input'
+import { Input } from '@contentkit/components'
 import FormInput from '../FormInput'
 
 import { Grid, FormControl, InputLabel } from '@material-ui/core'

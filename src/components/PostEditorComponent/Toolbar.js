@@ -2,8 +2,6 @@
 import React from 'react'
 import { EditorToolbar, ContentBlockButtons, InlineStyleButtons } from '@contentkit/toolbar'
 
-console.log({ EditorToolbar, ContentBlockButtons, InlineStyleButtons })
-
 function HeadlinePicker (props) {
   return (
     <div

@@ -9,9 +9,8 @@ import {
 } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles';
 import { Visibility, VisibilityOff } from '@material-ui/icons'
-
 import Button from '../../components/Button'
-import Input from '../../components/Input'
+import { Input } from '@contentkit/components'
 
 const styles = theme => ({
   container: {
