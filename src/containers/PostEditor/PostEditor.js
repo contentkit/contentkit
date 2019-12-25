@@ -102,8 +102,11 @@ class BaseEditor extends React.Component {
   renderToolbar = () => (
     <Toolbar
       onClick={this.handleToolbarClick}
+      // uploads={this.props.posts?.data?.posts[0]?.images}
+      uploads={[]}
       getEditorState={() => this.props.editorState}
       setEditorState={this.props.setEditorState}
+      client={this.props.client}
     />
   )
 
@@ -114,6 +117,7 @@ class BaseEditor extends React.Component {
         renderToolbar={this.renderToolbar}
         client={this.props.client}
         logged={this.props.logged}
+        history={this.props.history}
       >
         <PostEditorModals
           editorState={this.props.editorState}

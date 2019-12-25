@@ -24,6 +24,7 @@ import BaseDropzone from '../BaseDropzone'
 import { CREATE_IMAGE } from '../../graphql/mutations'
 import { plugins } from './plugins'
 import Toolbar from './Toolbar'
+import { withStyles } from '@material-ui/styles'
 
 const UPLOAD_MUTATION = gql`
   mutation($userId: String!, $key: String!) {
@@ -117,6 +118,7 @@ class PostEditorComponent extends React.Component {
       save,
       insertImage,
       loading,
+      classes,
       ...rest /* eslint-disable-line */
     } = this.props
     const { isDragging, tableBlockKey } = this.state
@@ -132,7 +134,7 @@ class PostEditorComponent extends React.Component {
                 in={loading}
               >
                 {state => (
-                  <LinearProgress />
+                  <LinearProgress className={classes.progress} />
                 )}
               </CSSTransition>
               <div className={classes.flex}>
@@ -151,4 +153,22 @@ class PostEditorComponent extends React.Component {
   }
 }
 
-export default PostEditorComponent
+export default withStyles(theme => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    height: '100%',
+    flexBasis: '100%'
+  },
+  progress: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    width: '100%',
+    height: 5,
+    top: 48
+  },
+  flex: {}
+}))(PostEditorComponent)

@@ -37,12 +37,6 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: fade(theme.variables.colors.success, 0.8)
     }
   },
-  fancy: {
-    // backgroundImage: 'linear-gradient(160deg, #121212 12.5%, #323232 85%)',
-    // '&:hover': {
-    //   backgroundImage: 'linear-gradient(160deg, #262626 12.5%, #595959 85%)',
-    // }
-  },
   default: {
     backgroundColor: '#0f62fe',
     color: '#fff',

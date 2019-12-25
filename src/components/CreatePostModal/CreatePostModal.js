@@ -203,31 +203,4 @@ const mutations = [
   })
 ]
 
-/*
-createProject = ({ mutate, projects }) => variables => mutate({
-    variables,
-    optimisticResponse: {
-      __typename: 'Mutation',
-      insert_projects: {
-        __typename: 'projects_mutation_response',
-        returning: [{
-          __typename: 'Project',
-          ...variables,
-          id: Math.floor(Math.random(1e6)),
-          origins: []
-        }]
-      }
-    },
-    update: (store, { data: { insert_projects } }) => {
-      store.writeQuery({
-        query: PROJECTS_QUERY,
-        data: {
-          projects: [...projects.data.projects].concat(insert_projects.returning)
-        },
-        variables: projects.variables
-      })
-    }
-  })
-*/
-
 export default compose(...mutations)(CreatePostModal)
