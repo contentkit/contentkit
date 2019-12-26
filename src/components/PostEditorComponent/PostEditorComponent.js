@@ -2,10 +2,7 @@ import React from 'react'
 import { CSSTransition } from 'react-transition-group'
 
 import { Editor } from '@contentkit/editor'
-import { setEditorStateBlockMap, Block, Command, HANDLED, NOT_HANDLED } from '@contentkit/util'
-import { genKey, ContentBlock } from 'draft-js'
 import clsx from 'clsx'
-import classes from './styles.scss'
 
 import '@contentkit/editor/src/css/Draft.css'
 import '@contentkit/editor/src/css/prism.css'
@@ -13,18 +10,14 @@ import '@contentkit/editor/src/css/CheckableListItem.css'
 import '@contentkit/code/src/style.scss'
 import '../../css/editor/toolbar.scss'
 
-import keyBindingFn from './keyBindingFn'
-import ReadOnlyDraftTable from '../ReadOnlyDraftTable'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import ContentKitEditor from '../ContentKitEditor'
 import gql from 'graphql-tag'
-import { Mutation } from 'react-apollo'
 import * as config from '../../lib/config'
 import BaseDropzone from '../BaseDropzone'
 import { CREATE_IMAGE } from '../../graphql/mutations'
 import { plugins } from './plugins'
-import Toolbar from './Toolbar'
-import { withStyles } from '@material-ui/styles'
+import { makeStyles } from '@material-ui/styles'
 
 const UPLOAD_MUTATION = gql`
   mutation($userId: String!, $key: String!) {
@@ -55,105 +48,7 @@ export async function uploadDocument (file, filename, payload) {
   })
 }
 
-class PostEditorComponent extends React.Component {
-
-  constructor (props) {
-    super (props)
-
-    this.state = {
-      tableBlockKey: null,
-      isDragging: false
-    }
-  }
-
-  handleClick = () => {}
-  
-  handleOpen = tableBlockKey => {
-    setState({ tableBlockKey })
-  }
-
-  handleClose = () => {
-    setState({ tableBlockKey: null })
-  }
-
-  setDrag = isDragging => this.setState({ isDragging })
-
-  onDrop = (mutate) => async (files, event) => {
-    this.setDrag(false)
-    const { client, users, posts: { data: { posts } } } = this.props
-
-    const postId = posts[0].id
-    const userId = users.data.users[0].id
-    const [file] = files
-    const { name, type, size } = file
-    const filename = sanitizeFileName(name)
-    const key = `static/${postId}/${filename}`
-    const createPresignedPost = await this.props.getFormData({ key, userId })
-
-    try {
-      await uploadDocument(file, filename, createPresignedPost)
-    } catch {
-      return
-    }
-    const { data } = await client.mutate({
-      mutation: CREATE_IMAGE,
-      variables: {
-        url: key,
-        postId: postId,
-        userId: userId
-      }
-    })
-
-    this.props.insertImage(`https://s3.amazonaws.com/contentkit/${key}`)
-  }
-
-  render () {
-    const {
-      editorState,
-      deleteImage,
-      createImage,
-      posts,
-      onChange,
-      mutate,
-      save,
-      insertImage,
-      loading,
-      classes,
-      ...rest /* eslint-disable-line */
-    } = this.props
-    const { isDragging, tableBlockKey } = this.state
-    return (
-      <Mutation mutation={UPLOAD_MUTATION}>
-        {upload => {
-          return (
-            <BaseDropzone className={classes.root} onDrop={this.onDrop(upload)} setDrag={this.setDrag}>
-              <CSSTransition
-                classNames={'transition'}
-                unmountOnExit
-                timeout={1000}
-                in={loading}
-              >
-                {state => (
-                  <LinearProgress className={classes.progress} />
-                )}
-              </CSSTransition>
-              <div className={classes.flex}>
-                <ContentKitEditor
-                  editorState={editorState}
-                  onChange={onChange}
-                  plugins={plugins}
-                  save={this.props.save}
-                />
-              </div>
-            </BaseDropzone>
-          )
-        }}
-      </Mutation>
-    )
-  }
-}
-
-export default withStyles(theme => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -170,5 +65,88 @@ export default withStyles(theme => ({
     height: 5,
     top: 48
   },
-  flex: {}
-}))(PostEditorComponent)
+  editor: {
+    width: '100%',
+    height: '100%'
+  },
+  drag: {
+    borderColor: '#ccc',
+    background: '#dbdbdb',
+    backgroundImage: 'linear-gradient(-45deg,#d2d2d2 25%,transparent 25%,transparent 50%,#d2d2d2 50%,#d2d2d2 75%,transparent 75%,transparent)',
+    backgroundSize: '40px 40px',
+  }
+}))
+
+function PostEditorComponent(props) {
+  const [isDragging, setDrag] = React.useState(false)
+  const classes = useStyles(props)
+
+  const {
+    getFormData,
+    client,
+    insertImage,
+    loading,
+    editorState,
+    onChange,
+    save,
+    editorRef,
+    posts,
+    users
+  } = props
+
+  // const [uploadMutation, uploadData] = useMutation(UPLOAD_MUTATION)
+  const handleClick = () => {}
+
+  const onDrop = async (files, event) => {
+    setDrag(false)
+    const postId = posts[0].id
+    const userId = users.data.users[0].id
+    const [file] = files
+    const { name, type, size } = file
+    const filename = sanitizeFileName(name)
+    const key = `static/${postId}/${filename}`
+    const createPresignedPost = await getFormData({ key, userId })
+
+    try {
+      await uploadDocument(file, filename, createPresignedPost)
+    } catch {
+      return
+    }
+    const { data } = await client.mutate({
+      mutation: CREATE_IMAGE,
+      variables: {
+        url: key,
+        postId: postId,
+        userId: userId
+      }
+    })
+
+    insertImage(`https://s3.amazonaws.com/contentkit/${key}`)
+  }
+
+  return (
+    <BaseDropzone className={classes.root} onDrop={onDrop} setDrag={setDrag}>
+      <CSSTransition
+        classNames={'transition'}
+        unmountOnExit
+        timeout={1000}
+        in={loading}
+      >
+        {state => (
+          <LinearProgress className={classes.progress} />
+        )}
+      </CSSTransition>
+      <div className={clsx(classes.editor, { [classes.drag]: isDragging })}>
+        <ContentKitEditor
+          editorState={editorState}
+          onChange={onChange}
+          plugins={plugins}
+          save={save}
+          editorRef={editorRef}
+        />
+      </div>
+    </BaseDropzone>
+  )
+}
+
+export default PostEditorComponent

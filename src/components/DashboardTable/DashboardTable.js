@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
-import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import { SvgIcon,Select, Theme, TableSortLabel, Toolbar, Paper, TableHead, TableBody, TableCell, TableRow, Table, IconButton, InputAdornment } from '@material-ui/core'
 import { SortDirection } from '@material-ui/core/TableCell'
@@ -274,54 +273,41 @@ function DashboardTableRow (props) {
   }
 
   return (
-    <CSSTransition
-      key={row.id}
-      timeout={1000}
-      classNames='item'
+    <TableRow
+      className={className}
+      onContextMenu={evt => onContextMenu(evt, row)}
     >
-      <TableRow
-        key={row.id}
-        className={className}
-        onContextMenu={evt => onContextMenu(evt, row)}
-      >
-        <TableCell className={classes.checkboxTableCell}>
-          <Checkbox
-            value={row.id}
-            checked={selectedPosts.includes(row.id)}
-            id={`checkbox_${row.id}`}
-            onChange={evt => selectRow(row.id)}
-          />
-        </TableCell>
-        {columns.map(column => (
-          <EditableCell
-            toggleEditing={toggleEditing}
-            isEditing={column.key === columnKey}
-            column={column}
-            row={row}
-            onChange={onChange}
-            onSave={onSave}
-          />
-        ))}
-      </TableRow>
-    </CSSTransition>
+      <TableCell className={classes.checkboxTableCell}>
+        <Checkbox
+          value={row.id}
+          checked={selectedPosts.includes(row.id)}
+          id={`checkbox_${row.id}`}
+          onChange={evt => selectRow(row.id)}
+        />
+      </TableCell>
+      {columns.map(column => (
+        <EditableCell
+          key={`${row.id}-${column.key}`}
+          toggleEditing={toggleEditing}
+          isEditing={column.key === columnKey}
+          column={column}
+          row={row}
+          onChange={onChange}
+          onSave={onSave}
+        />
+      ))}
+    </TableRow>
   )
 }
 
 const formatDate = (str) => distanceInWordsToNow(new Date(str))
-
-// type DashboardTableState = {
-//   offset: number,
-//   sortDirection: SortDirection,
-//   sortColumn: string
-// }
 
 class DashboardTable extends React.Component {
   static propTypes = {
     posts: PropTypes.object,
     projects: PropTypes.object,
     selectedPosts: PropTypes.array.isRequired,
-    selectPosts: PropTypes.func.isRequired,
-    renderToolbar: PropTypes.func.isRequired
+    selectPosts: PropTypes.func.isRequired
   }
 
   state = {
@@ -485,83 +471,79 @@ class DashboardTable extends React.Component {
 
     const toolbarProps = getToolbarProps()
     return (
-      <Mutation mutation={UPDATE_POST_TITLE}>
-        {mutate => (
-          <div className={classes.wrapper}>
-            <div className={classes.toolbar}>
-              <DashboardToolbar
-                {...toolbarProps}
-                contextMenuAnchorEl={contextMenuAnchorEl}
-                setContextMenuAnchorEl={this.setContextMenuAnchorEl}
-                contextMenuOnClose={this.contextMenuOnClose}
-              />
-            </div>
-            <Paper elevation={0}>
-              <TransitionGroup>
-              <Table size='small' className={classes.table}>
-                <TableHead>
-                  <TableCell key='checkbox' className={classes.tableHeadCell} padding='checkbox' />
-                  {columns.map(column =>
-                    <TableCell
-                      key={`tc_${column.key}`}
-                      className={classes.tableHeadCell}
-                      sortDirection={sortDirection}
-                    >
-                      <TableSortLabel
-                        IconComponent={SortDown}
-                        active={this.state.sortColumn === column.key}
-                        direction={sortDirection}
-                        onClick={evt => {
-                          const { sortColumn, sortDirection } = this.state
-                          this.setState({
-                            sortColumn: column.key,
-                            sortDirection: sortColumn === column.key && sortDirection === 'desc' ? 'asc' : 'desc'
-                          })
-                        }}
-                      >
-                        {column.title}
-                      </TableSortLabel>
-                    </TableCell>  
-                  )}
-                </TableHead>
-                <TableBody>
-                  {
-                    orderBy(dataSource, [sortColumn], [sortDirection]).map(row => {
-                      const className = clsx({
-                        [classes.row]: true,
-                        [classes.selected]: this.props.selectedPosts.includes(row.id)
+      <div className={classes.wrapper}>
+        <div className={classes.toolbar}>
+          <DashboardToolbar
+            {...toolbarProps}
+            contextMenuAnchorEl={contextMenuAnchorEl}
+            setContextMenuAnchorEl={this.setContextMenuAnchorEl}
+            contextMenuOnClose={this.contextMenuOnClose}
+          />
+        </div>
+        <Paper elevation={0}>
+          <TransitionGroup>
+          <Table size='small' className={classes.table}>
+            <TableHead>
+              <TableCell key='checkbox' className={classes.tableHeadCell} padding='checkbox' />
+              {columns.map(column =>
+                <TableCell
+                  key={`tc_${column.key}`}
+                  className={classes.tableHeadCell}
+                  sortDirection={sortDirection}
+                >
+                  <TableSortLabel
+                    IconComponent={SortDown}
+                    active={this.state.sortColumn === column.key}
+                    direction={sortDirection}
+                    onClick={evt => {
+                      const { sortColumn, sortDirection } = this.state
+                      this.setState({
+                        sortColumn: column.key,
+                        sortDirection: sortColumn === column.key && sortDirection === 'desc' ? 'asc' : 'desc'
                       })
-                      return (
-                        <DashboardTableRow
-                          key={row.id}
-                          row={row}
-                          className={className}
-                          selectRow={this.selectRow}
-                          selectedPosts={selectedPosts}
-                          columns={columns}
-                          classes={classes}
-                          onChange={this.onChange}
-                          onSave={this.onSave}
-                          onContextMenu={this.onContextMenu}
-                        />
-                      )
-                    })
-                  }
-                </TableBody>
-              </Table>
-              </TransitionGroup>
-              <Toolbar disableGutters className={classes.pagination}>
-                <IconButton onClick={evt => this.getNextPage('BACKWARD')}>
-                  <KeyboardArrowLeft />
-                </IconButton>
-                <IconButton onClick={evt => this.getNextPage('FORWARD')}>
-                  <KeyboardArrowRight />
-                </IconButton>
-              </Toolbar>
-            </Paper>
-          </div>
-        )}
-      </Mutation>
+                    }}
+                  >
+                    {column.title}
+                  </TableSortLabel>
+                </TableCell>  
+              )}
+            </TableHead>
+            <TableBody>
+              {
+                orderBy(dataSource, [sortColumn], [sortDirection]).map(row => {
+                  const className = clsx({
+                    [classes.row]: true,
+                    [classes.selected]: this.props.selectedPosts.includes(row.id)
+                  })
+                  return (
+                    <DashboardTableRow
+                      key={row.id}
+                      row={row}
+                      className={className}
+                      selectRow={this.selectRow}
+                      selectedPosts={selectedPosts}
+                      columns={columns}
+                      classes={classes}
+                      onChange={this.onChange}
+                      onSave={this.onSave}
+                      onContextMenu={this.onContextMenu}
+                    />
+                  )
+                })
+              }
+            </TableBody>
+          </Table>
+          </TransitionGroup>
+          <Toolbar disableGutters className={classes.pagination}>
+            <IconButton onClick={evt => this.getNextPage('BACKWARD')}>
+              <KeyboardArrowLeft />
+            </IconButton>
+            <IconButton onClick={evt => this.getNextPage('FORWARD')}>
+              <KeyboardArrowRight />
+            </IconButton>
+          </Toolbar>
+        </Paper>
+      </div>
     )
   }
 }
@@ -581,7 +563,6 @@ const styles = (theme) => ({
     backgroundColor: theme.variables.cardBackground
   },
   table: {
-    // border: `1px solid ${theme.variables.borderColor}`,
     fontFamily: theme.variables.fontFamily
   },
   toolbar: {

@@ -14,6 +14,7 @@ function ContentKitEditor (props) {
     renderToolbar,
     keyBindings,
     save,
+    editorRef,
     classes
   } = props
   return (
@@ -22,6 +23,7 @@ function ContentKitEditor (props) {
       onChange={onChange}
       plugins={plugins}
       classes={classes}
+      ref={editorRef}
       keyBindings={{
         [Command.EDITOR_SAVE]: (_, editorState) => {
           save()

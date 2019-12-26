@@ -10,8 +10,6 @@ import {
 } from '../../graphql/queries'
 import { genKey, genDate } from '../../lib/util'
 import ProjectSelect from '../ProjectSelect'
-import withMutation from '../../lib/withMutation'
-import { compose } from 'react-apollo'
 import { makeStyles } from '@material-ui/styles'
 import {
   Dialog,
@@ -23,6 +21,7 @@ import {
 } from '@material-ui/core'
 import FormInput from '../FormInput'
 import Haikunator from 'haikunator'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 
 const haikunator = new Haikunator()
 
@@ -121,86 +120,160 @@ function CreatePostModal (props) {
   )
 }
 
-const mutations = [
-  withMutation({
-    name: 'createPost',
-    options: {
-      mutation: CREATE_POST
-    },
-    mutate: ({ ownProps, variables }) => ({
-      variables: variables,
-      optimisticResponse: {
-        __typename: 'Mutation',
-        insert_posts: {
-          __typename: 'posts_mutation_response',
-          returning: [{
-            __typename: 'Post',
-            id: genKey(),
-            created_at: genDate(),
-            title: variables.title,
-            slug: '',
-            published_at: genDate(),
-            excerpt: '',
-            status: 'DRAFT',
-            project: {
-              __typename: 'Project',
-              id: variables.projectId,
-              name: ''
-            },
-            posts_tags: []
-          }]
-        }
-      },
-      update: (store, { data: { insert_posts } }) => {
-        store.writeQuery({
-          query: POSTS_AGGREGATE_QUERY,
-          data: {
-            ...ownProps.posts.data,
-            posts_aggregate: {
-              ...ownProps.posts.data.posts_aggregate,
-              nodes: ownProps.posts.data.posts_aggregate.nodes.concat(insert_posts.returning)
-            }
-          },
-          variables: ownProps.posts.variables
-        })
-      }
-    })
-  }),
-  withMutation({
-    name: 'updatePost',
-    mutate: ({ variables }) => ({ variables }),
-    options: {
-      mutation: UPDATE_POST
-    }
-  }),
-  withMutation({
-    name: 'createProject',
-    options: {
-      mutation: CREATE_PROJECT
-    },
-    mutate: ({ variables, ownProps }) => ({
-      variables: variables,
-      optimisticResponse: {
-        __typename: 'Mutation',
-        insert_projects: {
-          returning: [{
-            __typename: 'Project',
-            id: genKey(),
-            name: variables.name
-          }]
-        }
-      },
-      update: (store, { data: { insert_projects } }) => {
-        const projects = [...ownProps.projects.data.projects]
-        projects.push(insert_projects.returning)
-        store.writeQuery({
-          query: PROJECTS_QUERY,
-          data: { projects },
-          variables: ownProps.projects.variables
-        })
-      }
-    })
-  })
-]
+// const mutations = [
+//   withMutation({
+//     name: 'createPost',
+//     options: {
+//       mutation: CREATE_POST
+//     },
+//     mutate: ({ ownProps, variables }) => ({
+//       variables: variables,
+//       optimisticResponse: {
+//         __typename: 'Mutation',
+//         insert_posts: {
+//           __typename: 'posts_mutation_response',
+//           returning: [{
+//             __typename: 'Post',
+//             id: genKey(),
+//             created_at: genDate(),
+//             title: variables.title,
+//             slug: '',
+//             published_at: genDate(),
+//             excerpt: '',
+//             status: 'DRAFT',
+//             project: {
+//               __typename: 'Project',
+//               id: variables.projectId,
+//               name: ''
+//             },
+//             posts_tags: []
+//           }]
+//         }
+//       },
+//       update: (store, { data: { insert_posts } }) => {
+//         store.writeQuery({
+//           query: POSTS_AGGREGATE_QUERY,
+//           data: {
+//             ...ownProps.posts.data,
+//             posts_aggregate: {
+//               ...ownProps.posts.data.posts_aggregate,
+//               nodes: ownProps.posts.data.posts_aggregate.nodes.concat(insert_posts.returning)
+//             }
+//           },
+//           variables: ownProps.posts.variables
+//         })
+//       }
+//     })
+//   }),
+//   withMutation({
+//     name: 'updatePost',
+//     mutate: ({ variables }) => ({ variables }),
+//     options: {
+//       mutation: UPDATE_POST
+//     }
+//   }),
+//   withMutation({
+//     name: 'createProject',
+//     options: {
+//       mutation: CREATE_PROJECT
+//     },
+//     mutate: ({ variables, ownProps }) => ({
+//       variables: variables,
+//       optimisticResponse: {
+//         __typename: 'Mutation',
+//         insert_projects: {
+//           returning: [{
+//             __typename: 'Project',
+//             id: genKey(),
+//             name: variables.name
+//           }]
+//         }
+//       },
+//       update: (store, { data: { insert_projects } }) => {
+//         const projects = [...ownProps.projects.data.projects]
+//         projects.push(insert_projects.returning)
+//         store.writeQuery({
+//           query: PROJECTS_QUERY,
+//           data: { projects },
+//           variables: ownProps.projects.variables
+//         })
+//       }
+//     })
+//   })
+// ]
 
-export default compose(...mutations)(CreatePostModal)
+function CreatePostModalMutations (props) {
+  const [createPostMutation, createPostData] = useMutation(CREATE_POST)
+  const [updatePostMutation, updatePostData] = useMutation(UPDATE_POST)
+  const [createProjectMutation, createProjectData] = useMutation(CREATE_PROJECT)
+
+  const createPost = (variables) => createPostMutation({
+    variables: variables,
+    optimisticResponse: {
+      __typename: 'Mutation',
+      insert_posts: {
+        __typename: 'posts_mutation_response',
+        returning: [{
+          __typename: 'Post',
+          id: genKey(),
+          created_at: genDate(),
+          title: variables.title,
+          slug: '',
+          published_at: genDate(),
+          excerpt: '',
+          status: 'DRAFT',
+          project: {
+            __typename: 'Project',
+            id: variables.projectId,
+            name: ''
+          },
+          posts_tags: []
+        }]
+      }
+    },
+    update: (store, { data: { insert_posts } }) => {
+      store.writeQuery({
+        query: POSTS_AGGREGATE_QUERY,
+        data: {
+          ...ownProps.posts.data,
+          posts_aggregate: {
+            ...ownProps.posts.data.posts_aggregate,
+            nodes: ownProps.posts.data.posts_aggregate.nodes.concat(insert_posts.returning)
+          }
+        },
+        variables: ownProps.posts.variables
+      })
+    }
+  })
+
+  const updatePost = ({ variables }) => updatePostMutation({ variables })
+
+  const createProject = variables => createProjectMutation({
+    variables: variables,
+    optimisticResponse: {
+      __typename: 'Mutation',
+      insert_projects: {
+        returning: [{
+          __typename: 'Project',
+          id: genKey(),
+          name: variables.name
+        }]
+      }
+    },
+    update: (store, { data: { insert_projects } }) => {
+      const projects = [...ownProps.projects.data.projects]
+      projects.push(insert_projects.returning)
+      store.writeQuery({
+        query: PROJECTS_QUERY,
+        data: { projects },
+        variables: ownProps.projects.variables
+      })
+    }
+  })
+
+  return (
+    <CreatePostModal {...props} createPost={createPost} updatePost={updatePost} createProject={createProject} />
+  )
+}
+
+export default CreatePostModalMutations

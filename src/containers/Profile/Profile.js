@@ -1,4 +1,3 @@
-// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
 import UserForm from '../../components/ProfileUserForm'
@@ -47,8 +46,11 @@ class Profile extends React.Component {
     if (users.loading) return null
     return (
       <AppWrapper
-        {...this.props}
-        loading={this.props.updateUser.loading}
+        sidebarProps={{
+          logged: this.props.logged,
+          client: this.props.client,
+          history: this.props.history
+        }}
       >
         <UserForm
           handleChange={this.handleChange}
@@ -95,11 +97,9 @@ export default withStyles(theme => ({
     maxWidth: 960,
     backgroundColor: '#fff',
     borderRadius: 0,
-    // boxShadow: $shadow-1;
   },
   code: {
     backgroundImage: 'linear-gradient(160deg, #121212 12.5%, #323232 85%)',
-    // box-shadow: $shadow-1;
     borderRadius: 0,
     margin: '2em auto 1em auto',
     padding: '40px',

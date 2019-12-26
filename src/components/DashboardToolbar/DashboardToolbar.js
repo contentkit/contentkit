@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Grid, Snackbar, Toolbar, IconButton, Menu, MenuItem, InputAdornment, Typography } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles'
-import { withApollo, compose } from 'react-apollo'
 import clsx from 'clsx'
 import keyBy from 'lodash.keyby'
 import { SearchOutlined } from '@material-ui/icons'
@@ -186,8 +185,8 @@ class DashboardToolbar extends React.Component {
         <div className={classes.flex}>
           <div className={classes.toolbar}>
             <SearchInput
-              onSearch={handleSearch}
               onChange={this.handleChange}
+              onSearch={handleSearch}
               value={query}
               className={classes.input}
               placeholder={'Search...'}
@@ -280,7 +279,4 @@ const styles = theme => ({
   }
 })
 
-export default compose(
-  withStyles(styles),
-  withApollo
-)(DashboardToolbar)
+export default withStyles(styles)(DashboardToolbar)

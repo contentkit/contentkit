@@ -2,14 +2,14 @@ import React from 'react'
 import propTypes from 'prop-types'
 import debounce from 'lodash.debounce'
 import { withRouter } from 'react-router-dom'
-import { compose, withApollo } from 'react-apollo'
+import { compose } from 'react-apollo'
+import { useQuery } from '@apollo/react-hooks'
 import { connect } from 'react-redux'
 import { EditorState } from 'draft-js'
 import { AppWrapper } from '@contentkit/components'
 
 import DashboardTable from '../../components/DashboardTable'
 import DashboardToolbar from '../../components/DashboardToolbar'
-import queries from './withData'
 import {
   selectProject,
   selectPosts,
@@ -20,6 +20,7 @@ import {
 } from '../../lib/redux'
 import CreatePostModal from '../../components/CreatePostModal'
 import { feedQueryShape } from '../../shapes'
+import { POSTS_AGGREGATE_QUERY, PROJECTS_QUERY } from '../../graphql/queries'
 
 class Dashboard extends React.Component {
   static defaultProps = {
@@ -97,9 +98,11 @@ class Dashboard extends React.Component {
   render () {
     return (
       <AppWrapper
-        history={this.props.history}
-        logged={this.props.logged}
-        client={this.props.client}
+        sidebarProps={{
+          history: this.props.history,
+          logged: this.props.logged,
+          client: this.props.client
+        }}
       >
         <CreatePostModal
           posts={this.props.posts}
@@ -127,9 +130,22 @@ class Dashboard extends React.Component {
   }
 }
 
+function DashboardWithQueries (props) {
+  const { postsAggregateVariables } = props
+  const variables = {
+    ...postsAggregateVariables,
+    query: postsAggregateVariables.query ? `%${postsAggregateVariables.query}%` : '%'
+  }
+  const posts = useQuery(POSTS_AGGREGATE_QUERY, { variables })
+  const projects = useQuery(PROJECTS_QUERY)
+  return (
+    <Dashboard {...props} posts={posts} projects={projects} />
+  )
+}
+
+
 export default compose(
   withRouter,
-  withApollo,
   connect(
     state => state.app,
     {
@@ -141,6 +157,5 @@ export default compose(
       updateFeedVariables
     }
   ),
-  queries
-  // ...queries
-)(Dashboard)
+)(DashboardWithQueries)
+

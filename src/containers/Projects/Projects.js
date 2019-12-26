@@ -1,10 +1,10 @@
 import React from 'react'
-import ProjectModal from '../../components/ProjectModal'
 import Haikunator from 'haikunator'
-import ProjectsList from '../../components/ProjectsList'
-import Button from '../../components/Button'
 import { withStyles } from '@material-ui/styles'
 import { AppWrapper } from '@contentkit/components'
+import ProjectModal from '../../components/ProjectModal'
+import ProjectsList from '../../components/ProjectsList'
+import Button from '../../components/Button'
 
 const haikunator = new Haikunator()
 
@@ -56,14 +56,17 @@ class Projects extends React.Component {
       client,
       createProject,
       projects,
-      classes
+      classes,
+      history,
+      logged
     } = this.props
     return (
       <AppWrapper
-        client={client}
-        loading={createProject.loading}
-        history={this.props.history}
-        logged={this.props.logged}
+        sidebarProps={{
+          client,
+          history,
+          logged
+        }}
       >
         <ProjectModal
           {...rest}

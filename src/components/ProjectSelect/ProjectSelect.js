@@ -40,7 +40,7 @@ function SelectProject (props) {
     <Select
       native
       labelId={'project-select'}
-      value={selectedProject}
+      value={selectedProject || ''}
       onChange={onChange}
       className={className}
       input={<Input name='project' id='project' />}

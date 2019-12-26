@@ -8,12 +8,13 @@ function SearchInput (props) {
     value,
     className,
     classes,
+    onSearch,
     ...rest
   } = props
 
   function onKeyDown (evt) {
     if (evt.which === 13) {
-      props.onSearch({ value })
+      onSearch({ value })
     }
   }
 
