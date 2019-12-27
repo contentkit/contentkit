@@ -13,7 +13,6 @@ import {
   toRaw,
 } from './util'
 import { setEditorState } from '../../lib/redux'
-import withData from './withData'
 import { UPLOAD_MUTATION } from '../../graphql/mutations'
 import PostEditorHistoryModal from '../../components/PostEditorHistoryModal'
 import PostMetaModal from '../../components/PostEditorMetaModal'
@@ -21,7 +20,10 @@ import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 import {
   CREATE_IMAGE,
   DELETE_IMAGE,
-  UPDATE_DOCUMENT
+  UPDATE_DOCUMENT,
+  useUpdateDocument,
+  useCreateImage,
+  useDeleteImage
 } from '../../graphql/mutations'
 import { POST_QUERY } from '../../graphql/queries'
 
@@ -202,100 +204,14 @@ const mapDispatchToProps = { setEditorState }
 
 function PostEditorMutations (props: any) {
   const { posts, client } = props
-  const [createImageMutation] = useMutation(CREATE_IMAGE, { client })
-  const [deleteImageMutation] = useMutation(DELETE_IMAGE, { client })
-  const [updateDocumentMutation, updateDocumentData] = useMutation(UPDATE_DOCUMENT, { client })
-
-  const createImage = variables => createImageMutation({
-    variables,
-    optimisticResponse: {
-      __typename: 'Mutation',
-      insert_images: {
-        __typename: 'images_mutation_response',
-        returning: [{
-          __typename: 'Image',
-          id: variables.url,
-          ...variables
-        }]
-      }
-    },
-    update: (store, { data: { insert_images } }) => {
-      store.writeQuery({
-        query: POST_QUERY,
-        data: {
-          posts: [{
-            ...posts.data.posts[0],
-            images: [...posts.data.posts[0].images].concat(insert_images.returning)
-          }]
-        },
-        variables: posts.variables
-      })
-    }
-  })
-
-  const deleteImage = variables => deleteImageMutation({
-    variables,
-    optimisticResponse: {
-      __typename: 'Mutation',
-      delete_images: {
-        __typename: 'images_mutation_response',
-        response: [{
-          __typename: 'Image',
-          ...variables
-        }]
-      }
-    },
-    update: (store, { data: { delete_images } }) => {
-      store.writeQuery({
-        query: POST_QUERY,
-        data: {
-          posts: [{
-            ...posts.data.posts[0],
-            images: posts.data.posts[0].images.filter(img => img.id !== variables.id)
-          }]
-        },
-        variables: posts.variables
-      })
-    }
-  })
-
-  const updateDocument = variables => updateDocumentMutation({
-    variables,
-    optimisticResponse: {
-      __typename: 'Mutation',
-      update_posts: {
-        __typename: 'posts_mutation_response',
-        returning: [{
-          __typename: 'Post',
-          ...posts.data.posts[0],
-          ...variables
-        }]
-      }
-    },
-    update: (store, { data: { update_posts } }) => {
-      const data = {
-        query: POST_QUERY,
-        variables: { id: posts.data.posts[0].id },
-        data: {
-          posts: [{
-            ...posts.data.posts[0],
-            ...update_posts.returning[0]
-          }]
-        }
-      }
-      store.writeQuery(data)
-    }
-  })
-
+  const createImage = useCreateImage()
+  const deleteImage = useDeleteImage()
+  const updateDocument = useUpdateDocument()
   const componentProps = {
-    ...props,
-
-    updateDocument: {
-      mutate: updateDocument,
-      ...updateDocumentData
-    },
     createImage,
-    deleteImage
+    deleteImage,
+    updateDocument,
+    ...props
   }
   return (<PostEditor {...componentProps} />)
 }

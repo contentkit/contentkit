@@ -10,7 +10,8 @@ import { DELETE_POST } from '../../graphql/mutations'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
 import ProjectSelect from '../ProjectSelect'
 import Button from '../Button'
-import { useApolloClient } from '@apollo/react-hooks'
+import { useApolloClient, useQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 
 const EditIcon = props => (
   <svg
@@ -79,12 +80,11 @@ function DashboardToolbar (props) {
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
   const [snackbarMessage, setSnackbarMessage] = React.useState('')
   const client = useApolloClient()
-
+  const users = useQuery(gql`query { users { id } }`)
   const {
     posts,
     projects,
     selected,
-    users,
     contextMenuAnchorEl,
     setContextMenuAnchorEl,
     contextMenuOnClose,
@@ -144,7 +144,6 @@ function DashboardToolbar (props) {
     }
 
     timer.current = window.setTimeout(async () => {
-      const { posts, selected, users } = props
       const userId = users.data.users[0].id
       await Promise.all(
         selected.map(id => posts.client.mutate({

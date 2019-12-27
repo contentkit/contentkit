@@ -18,15 +18,15 @@ const client = createClient()
 const UP_STAGE = process.env.UP_STAGE || undefined
 
 function App (props) {
-  const users = useQuery(USER_QUERY)
+  // const users = useQuery(USER_QUERY)
 
-  if (!users.loading) {
-    if (!users?.data?.users) {
-      if (!props.history.location.pathname.startsWith('/login')) {
-        return <Redirect to='/login' />
-      }
-    }
-  }
+  // if (!users.loading) {
+  //   if (!users?.data?.users) {
+  //     if (!props.history.location.pathname.startsWith('/login')) {
+  //       return <Redirect to='/login' />
+  //     }
+  //   }
+  // }
 
   return (
     <Provider store={store}>
@@ -38,8 +38,8 @@ function App (props) {
                 key={rest.path}
                 render={routeProps => (
                   <Component
-                    users={users}
-                    logged={Boolean(users?.data?.users)}
+                    // users={users}
+                    // logged={Boolean(users?.data?.users)}
                     {...routeProps}
                     {...props}
                   />

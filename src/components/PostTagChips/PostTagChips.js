@@ -66,8 +66,7 @@ CreateTagInput.propTypes = {
 
 function useDeleteTag () {
   const [deleteTagMutation, deleteTagData] = useMutation(DELETE_TAG)
-  const deleteTag = ({ mutate, variables, query }) =>
-  mutate({
+  const deleteTag = (variables) => deleteTagMutation({
     variables,
     optimisticResponse: {
       __typename: 'Mutation',
@@ -80,47 +79,28 @@ function useDeleteTag () {
       }
     },
     update: (store, { data: { delete_tags } }) => {
+      const query = store.readQuery({
+        query: TAG_QUERY,
+        variables: { id: variables.tagId }
+      })
       store.writeQuery({
         query: TAG_QUERY,
         data: {
-          posts_tags: query.data.posts_tags.filter(c => c.tag.id !== delete_tags.returning[0].id)
+          posts_tags: query.posts_tags.filter(c => c.tag.id !== delete_tags.returning[0].id)
         },
         variables: query.variables
       })
     }
   })
+
+  return deleteTag
 }
 
-
-function PostTagChips (props) {
-
-  const deleteTag = ({ mutate, variables, query }) =>
-    mutate({
-      variables,
-      optimisticResponse: {
-        __typename: 'Mutation',
-        delete_tags: {
-          __typename: 'tags_mutation_response',
-          returning: [{
-            __typename: 'Tag',
-            id: variables.tagId
-          }]
-        }
-      },
-      update: (store, { data: { delete_tags } }) => {
-        store.writeQuery({
-          query: TAG_QUERY,
-          data: {
-            posts_tags: query.data.posts_tags.filter(c => c.tag.id !== delete_tags.returning[0].id)
-          },
-          variables: query.variables
-        })
-      }
-    })
-
-  const createTag = ({ mutate, query }) => async (variables) => {
+function useCreateTag () {
+  const [createTagMutation, createTagData] = useMutation(CREATE_TAG)
+  const createTag = async (variables) => {
     const tagId = genKey()
-    const data = await mutate({
+    return mutate({
       variables,
       optimisticResponse: {
         __typename: 'Mutation',
@@ -145,23 +125,30 @@ function PostTagChips (props) {
         }
       },
       update: (store, { data: { insert_tags } }) => {
+        const { post_tags } = store.readQuery({
+          query: TAG_QUERY,
+          variables: { postId: variables.postId }
+        })
         store.writeQuery({
           query: TAG_QUERY,
           data: {
-            posts_tags: query.data.posts_tags.concat(insert_tags.returning.map(tag => ({ tag })))
+            posts_tags: posts_tags.concat(insert_tags.returning.map(tag => ({ tag })))
           },
-          variables: query.variables
+          variables: { postId: variables.postId }
         })
       }
     })
-    return data
   }
 
+  return createTag
+}
+
+function PostTagChips (props) {
   const { classes, post, users } = props
 
   const tagQuery = useQuery(TAG_QUERY, { variables: { postId: post.id } })
-  const [deleteTagMutation, deleteTagData] = useMutation(DELETE_TAG)
-  const [createTagMutation, createTagData] = useMutation(CREATE_TAG)
+  const createTag = useCreateTag()
+  const deleteTag = useDeleteTag()
 
   if (!post?.id) {
     return false

@@ -7,8 +7,8 @@ import ProjectsList from '../../components/ProjectsList'
 import Button from '../../components/Button'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
-import { PROJECTS_QUERY } from '../../graphql/queries'
-import { UPDATE_PROJECT, CREATE_PROJECT, DELETE_PROJECT } from '../../graphql/mutations'
+import { PROJECTS_QUERY, useUserQuery } from '../../graphql/queries'
+import { UPDATE_PROJECT, CREATE_PROJECT, DELETE_PROJECT, useCreateProjectMutation, useDeleteProjectMutation, useUpdateProjectMutation } from '../../graphql/mutations'
 
 const haikunator = new Haikunator()
 
@@ -102,83 +102,28 @@ class Projects extends React.Component {
 }
 
 function ProjectsMutations (props) {
+  const userQuery = useUserQuery()
+  const createProject= useCreateProjectMutation()
+  const deleteProject = useDeleteProjectMutation()
+  const updateProject = useUpdateProjectMutation()
   const projectsQuery = useQuery(PROJECTS_QUERY)
-  const [createProjectMutation, createProjectData] = useMutation(CREATE_PROJECT)
-  // const [deleteProjectMutation, deleteProjectData] = useMutation(DELETE_PROJECT)
-  const [updateProjectMutation, updateProjectData] = useMutation(UPDATE_PROJECT)
 
-  const createProject = variables => createProjectMutation({
-    variables,
-    optimisticResponse: {
-      __typename: 'Mutation',
-      insert_projects: {
-        __typename: 'projects_mutation_response',
-        returning: [{
-          __typename: 'Project',
-          ...variables,
-          id: Math.floor(Math.random(1e6)),
-          origins: []
-        }]
-      }
-    },
-    update: (store, { data: { insert_projects } }) => {
-      store.writeQuery({
-        query: PROJECTS_QUERY,
-        data: {
-          projects: [...projects.data.projects].concat(insert_projects.returning)
-        },
-        variables: projects.variables
-      })
-    }
-  })
-
-  const updateProject = variables => updateProjectMutation({
-    variables
-  })
-
-  const deleteProject = async ({ id }) => {
-    client.cache.writeQuery({
-      query: PROJECTS_QUERY,
-      variables: projects.variables,
-      data: {
-        projects: projects.data.projects.filter(project =>
-          project.id !== id
-        )
-      }
-    })
-    client.mutate({
-      mutation: gql`
-        mutation($id: String!) {
-          delete_projects(where: { id: { _eq: $id } }) {
-            returning {
-              id
-            }
-          }
-        }
-      `,
-      variables: { id }
-    })
+  if (userQuery.loading) {
+    return false
   }
-
     
   if (projectsQuery.loading) {
     return false
   }
 
   const componentProps = {
+    users: userQuery,
     projects: projectsQuery,
-    updateProject: {
-      mutate: updateProject,
-      ...updateProjectData
-    },
-    createProject: {
-      mutate: createProject,
-      ...createProjectData
-    },
-    deleteProject: {
-      mutate: deleteProject
-    }
+    updateProject,
+    createProject,
+    deleteProject
   }
+
   return (
     <Projects
       {...props}

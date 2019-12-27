@@ -97,9 +97,7 @@ function Dashboard (props) {
   }
 
   return (
-    <AppWrapper
-      sidebarProps={{ history, logged, client }}
-    >
+    <AppWrapper>
       <CreatePostModal
         posts={posts}
         selectedProject={postsAggregateVariables.projectId}
