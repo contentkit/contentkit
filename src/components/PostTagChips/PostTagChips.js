@@ -61,6 +61,37 @@ CreateTagInput.propTypes = {
   createTag: PropTypes.func.isRequired
 }
 
+
+
+
+function useDeleteTag () {
+  const [deleteTagMutation, deleteTagData] = useMutation(DELETE_TAG)
+  const deleteTag = ({ mutate, variables, query }) =>
+  mutate({
+    variables,
+    optimisticResponse: {
+      __typename: 'Mutation',
+      delete_tags: {
+        __typename: 'tags_mutation_response',
+        returning: [{
+          __typename: 'Tag',
+          id: variables.tagId
+        }]
+      }
+    },
+    update: (store, { data: { delete_tags } }) => {
+      store.writeQuery({
+        query: TAG_QUERY,
+        data: {
+          posts_tags: query.data.posts_tags.filter(c => c.tag.id !== delete_tags.returning[0].id)
+        },
+        variables: query.variables
+      })
+    }
+  })
+}
+
+
 function PostTagChips (props) {
 
   const deleteTag = ({ mutate, variables, query }) =>

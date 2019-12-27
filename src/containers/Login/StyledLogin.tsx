@@ -51,7 +51,6 @@ const useStyles = makeStyles(theme => ({
   },
   right: {
     backgroundColor: '#393939',
-    // borderTop: '3px solid #0f62fe',
     [theme.breakpoints.down('md')]: {
       display: 'none'
     },
@@ -59,12 +58,6 @@ const useStyles = makeStyles(theme => ({
       backgroundClip: 'border-box',
       width: 'calc(100% - 400px)',
       overflowY: 'hidden'
-      // backgroundColor: '#ECEDF9',
-      // 'img': {
-      //   objectFit: 'contain',
-      //   width: '100%',
-      //   height: '100%'
-      // }
     }
   },
   content: {
@@ -108,48 +101,43 @@ function SignInEmailTextField (props) {
       onChange={props.onChange}
       type={'email'}
       autoComplete={'username'}
-      size={'large'}
     />
   )
 }
 
-class PasswordField extends React.Component {
-  state = {
-    show: false
-  }
+function PasswordField (props) {
+  const [show, setShow] = React.useState(null)
 
-  toggleReveal = () => {
-    this.setState(prevState => ({
-      show: !prevState.show
-    }))
-  }
+  const toggleReveal = () => setShow(show => !show)
 
-  onMouseDown = evt => {
+  const onMouseDown = evt => {
     evt.preventDefault()
   }
 
-  render () {
-    const { show } = this.state
-    return (
-      <Input
-        placeholder={'Password'}
-        onChange={this.props.onChange}
-        value={this.props.value}
-        type={show ? 'text' : 'password'}
-        endAdornment={
-          <InputAdornment position='end'>
-            <IconButton
-              aria-label='toggle password visibility'
-              onClick={this.toggleReveal}
-              onMouseDown={this.onMouseDown}
-            >
-              {this.state.show ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </InputAdornment>
-        }
-      />
-    )
-  }
+  const {
+    onChange,
+    value
+  } = props
+  return (
+    <Input
+      placeholder={'Password'}
+      onChange={onChange}
+      value={value}
+      type={show ? 'text' : 'password'}
+      endAdornment={
+        <InputAdornment position='end'>
+          <IconButton
+            aria-label='toggle password visibility'
+            onClick={toggleReveal}
+            onMouseDown={onMouseDown}
+          >
+            {show ? <VisibilityOff /> : <Visibility />}
+          </IconButton>
+        </InputAdornment>
+      }
+    />
+  )
+
 }
 
 function noop () {
@@ -172,25 +160,6 @@ const LoginTabs = props => (
 )
 
 function Login (props) {
-  // static propTypes = {
-  //   renderLoading: PropTypes.func,
-  //   createAccount: PropTypes.func.isRequired,
-  //   login: PropTypes.func.isRequired,
-  //   resetPassword: PropTypes.func.isRequired,
-  //   redirectPathname: PropTypes.string.isRequired,
-  //   title: PropTypes.node
-  // }
-
-  // static defaultProps = {
-  //   renderLoading: noop,
-  //   createAccount: noopPromise,
-  //   login: noopPromise,
-  //   resetPassword: noopPromise,
-  //   redirect: noop,
-  //   redirectPathname: '/',
-  //   title: <div>Title</div>
-  // }
-
   const {
     user,
     history,
@@ -237,17 +206,6 @@ function Login (props) {
       password
     })
   }
-
-  // resetPassword = () => {
-  //   this.props.resetPassword(this.state)
-  //     .then(() => {
-  //       this.setState({
-  //         password: '',
-  //         emailAddress: '',
-  //         passwordResetSent: true
-  //       })
-  //   })
-  // }
 
   const resetPassword = () => {}
 
@@ -316,12 +274,11 @@ function Login (props) {
             </Grid>
           </div>
         </div>
-        <div className={classes.right}>
-          {/* <img src={backgroundImage} /> */}
-        </div>
+        <div className={classes.right} />
       </div>
     </div>
   )
 }
 
 export default Login
+

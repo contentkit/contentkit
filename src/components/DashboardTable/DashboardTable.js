@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { useApolloClient } from '@apollo/react-hooks'
 import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import gql from 'graphql-tag'
 import { SvgIcon,Select, Theme, TableSortLabel, Toolbar, Paper, TableHead, TableBody, TableCell, TableRow, Table, IconButton, InputAdornment } from '@material-ui/core'
@@ -16,6 +17,7 @@ import {
 import orderBy from 'lodash/orderBy'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
 import DashboardToolbar from '../DashboardToolbar'
+import { useOnSave } from './mutations'
 
 const EditIcon = props => (
   <svg width="16" height="16" aria-hidden="true" focusable="false" data-prefix="fal" data-icon="pen" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M493.25 56.26l-37.51-37.51C443.25 6.25 426.87 0 410.49 0s-32.76 6.25-45.26 18.74L12.85 371.12.15 485.34C-1.45 499.72 9.88 512 23.95 512c.89 0 1.78-.05 2.69-.15l114.14-12.61 352.48-352.48c24.99-24.99 24.99-65.51-.01-90.5zM126.09 468.68l-93.03 10.31 10.36-93.17 263.89-263.89 82.77 82.77-263.99 263.98zm344.54-344.54l-57.93 57.93-82.77-82.77 57.93-57.93c6.04-6.04 14.08-9.37 22.63-9.37 8.55 0 16.58 3.33 22.63 9.37l37.51 37.51c12.47 12.48 12.47 32.78 0 45.26z"></path></svg>
@@ -36,57 +38,6 @@ const SortDown = props => (
 const SortUp = props => (
   <svg widht="16" height="16" aria-hidden="true" focusable="false" data-prefix="fal" data-icon="sort-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-sort-up fa-w-10 fa-2x"><path fill="currentColor" d="M32.032 224h255.93c28.425 0 42.767-34.488 22.627-54.627l-127.962-128c-12.496-12.496-32.758-12.497-45.255 0l-127.968 128C-10.695 189.472 3.55 224 32.032 224zM160 64l128 128H32L160 64z"></path></svg>
 )
-
-export const UPDATE_POST_TITLE = gql`
-  mutation ($id: String!, $title: String!) {
-    update_posts(where: { id: { _eq: $ID } }, _set: { title: $title }) {
-      returning {
-        id
-        title
-      }
-    }
-  }
-`
-
-export const UPDATE_POST = gql`
-  mutation (
-    $id: String!
-    $title: String!
-    $status: post_status!
-    $publishedAt: String
-    $coverImageId: String
-    $projectId: String
-    $excerpt: String
-  ) {
-    insert_posts(object: {
-      id: $id
-      title: $title
-      status: $status
-      published_at: $publishedAt
-      cover_image_id: $coverImageId
-      project_id: $projetId
-      excerpt: $excerpt
-    }) {
-      id
-      created_at
-      published_at
-      title
-      slug
-      status
-      excerpt
-      project {
-        id
-        name
-      }
-      posts_tags {
-        tag {
-          id
-          name
-        }
-      }
-    }
-  }
-`
 
 const columns = [{
   title: 'Title',
@@ -302,51 +253,36 @@ function DashboardTableRow (props) {
 
 const formatDate = (str) => distanceInWordsToNow(new Date(str))
 
-class DashboardTable extends React.Component {
-  static propTypes = {
-    posts: PropTypes.object,
-    projects: PropTypes.object,
-    selectedPosts: PropTypes.array.isRequired,
-    selectPosts: PropTypes.func.isRequired
+function DashboardTable (props) {
+
+  const client = useApolloClient()
+  const onSave = useOnSave()
+  const [offset, setOffset] = React.useState(0)
+  const [sort, setSort] = React.useState({
+    direction: 'desc',
+    column: 'title'
+  })
+
+  const [anchorEl, setAnchorEl] = React.useState(null)
+
+  const {
+    posts,
+    selectedPosts,
+    selectPosts,
+    search,
+    classes,
+    getToolbarProps
+  } = props
+
+  const setContextMenuAnchorEl = evt => {
+    setAnchorEl(evt.target)
   }
 
-  state = {
-    offset: 0,
-    sortDirection: 'desc',
-    sortColumn: 'title',
-    contextMenuAnchorEl: null
+  const contextMenuOnClose = () => {
+    setAnchorEl(null)
   }
 
-  setContextMenuAnchorEl = evt => {
-    this.setState({
-      contextMenuAnchorEl: evt.target
-    })
-  }
-
-  contextMenuOnClose = () => {
-    this.setState({
-      contextMenuAnchorEl: null
-    })
-  }
-
-  handleSave = mutate => (post) => {
-    mutate({
-      variables: {
-        id: post.id,
-        title: post.title
-      },
-      optimisticResponse: {
-        __typename: 'Mutation',
-        updatePostTitle: {
-          __typename: 'Post',
-          ...post
-        }
-      }
-    })
-  }
-
-  selectRow = (value, shiftKey = true) => {
-    const { selectedPosts } = this.props
+  const selectRow = (value, shiftKey = true) => {
     const isSelected = selectedPosts.includes(value)
     const selection = isSelected
       ? selectedPosts.filter(key => key !== value)
@@ -354,27 +290,26 @@ class DashboardTable extends React.Component {
         ? selectedPosts.concat([value])
         : [value]
 
-    this.props.selectPosts(selection)
-    console.log({ selection, value })
+    selectPosts(selection)
   }
 
-  onContextMenu = (evt, row) => {
+  const onContextMenu = (evt, row) => {
     evt.preventDefault()
-    this.props.selectPosts([row.id])
-    this.setContextMenuAnchorEl(evt)
+    selectPosts([row.id])
+    setContextMenuAnchorEl(evt)
   }
 
-  load = (direction) => {
-    const { variables, data: { posts_aggregate } } = this.props.posts
+  const load = (direction) => {
+    const { variables, data: { posts_aggregate } } = posts
     const { nodes } = posts_aggregate
-    const offset = direction === 'FORWARD' ? this.state.offset + 10 : Math.max(0, this.state.offset - 10)
+    const offset = direction === 'FORWARD' ? offset + 10 : Math.max(0, offset - 10)
     const nextVariables = {
       ...variables,
       limit: 10,
       offset: offset
     }
 
-    return this.props.posts.fetchMore({
+    return posts.fetchMore({
       variables: nextVariables,
       updateQuery: (previousResult, nextResult) => {
         if (!nextResult) return previousResult
@@ -390,16 +325,16 @@ class DashboardTable extends React.Component {
       }
     })
     .then(() => {
-      this.setState({ offset })
+      setOffset(offset)
     })
   }
 
-  getNextPage = (direction) => {
-    this.load(direction)
+  const getNextPage = (direction) => {
+    load(direction)
   }
 
-  onChange = (post, propertyKey, propertyValue) => {
-    const { variables, posts: { data: { posts_aggregate } } } = this.props
+  const onChange = (post, propertyKey, propertyValue) => {
+    const { variables, posts: { data: { posts_aggregate } } } = props
     const nodes = [...posts_aggregate.nodes]
     const index = nodes.findIndex(c => c.id === post.id)
     nodes[index] = {
@@ -407,7 +342,7 @@ class DashboardTable extends React.Component {
       [propertyKey]: propertyValue
     }
 
-    this.props.client.writeQuery({
+    client.writeQuery({
       query: POSTS_AGGREGATE_QUERY,
       data: {
         posts_aggregate: {
@@ -419,135 +354,91 @@ class DashboardTable extends React.Component {
     })
   }
 
-  onSave = async (post) => {
-    const { client, posts } = this.props
-    await client.mutate({
-      mutation: gql`
-        mutation(
-          $id: String!
-          $title: String
-          $status: post_status!
-          $published_at: timestamp
-          $project_id: String
-        ) {
-          update_posts (
-            _set: {
-              id: $id
-              title: $title
-              status: $status
-              published_at: $published_at
-              project_id: $project_id
-            },
-            where: { id: { _eq: $id } }
-          ) {
-            returning { 
-              id
-            }
-          }
-        }
-      `,
-      variables: {
-        id: post.id,
-        title: post.title,
-        status: post.status,
-        published_at: post.published_at,
-        project_id: post.project.id 
-      }
+  const onSort = column => () => {
+    setSort({
+      column: column.key,
+      direction: sort.column === column.key && sort.direction === 'desc' ? 'asc' : 'desc' 
     })
   }
 
-  render () {
-    const {
-      posts,
-      search,
-      selectedPosts,
-      classes,
-      getToolbarProps
-    } = this.props
-    const { offset, sortColumn, sortDirection, contextMenuAnchorEl } = this.state
-
-    const dataSource = (posts?.data?.posts_aggregate?.nodes || [])
+  const dataSource = React.useMemo(() => {
+    return (posts?.data?.posts_aggregate?.nodes || [])
       .slice(offset, offset + 10)
       .map(row => ({ ...row, key: row.id }))
-
-    const toolbarProps = getToolbarProps()
-    return (
-      <div className={classes.wrapper}>
-        <div className={classes.toolbar}>
-          <DashboardToolbar
-            {...toolbarProps}
-            contextMenuAnchorEl={contextMenuAnchorEl}
-            setContextMenuAnchorEl={this.setContextMenuAnchorEl}
-            contextMenuOnClose={this.contextMenuOnClose}
-          />
-        </div>
-        <Paper elevation={0}>
-          <TransitionGroup>
-          <Table size='small' className={classes.table}>
-            <TableHead>
-              <TableCell key='checkbox' className={classes.tableHeadCell} padding='checkbox' />
-              {columns.map(column =>
-                <TableCell
-                  key={`tc_${column.key}`}
-                  className={classes.tableHeadCell}
-                  sortDirection={sortDirection}
-                >
-                  <TableSortLabel
-                    IconComponent={SortDown}
-                    active={this.state.sortColumn === column.key}
-                    direction={sortDirection}
-                    onClick={evt => {
-                      const { sortColumn, sortDirection } = this.state
-                      this.setState({
-                        sortColumn: column.key,
-                        sortDirection: sortColumn === column.key && sortDirection === 'desc' ? 'asc' : 'desc'
-                      })
-                    }}
-                  >
-                    {column.title}
-                  </TableSortLabel>
-                </TableCell>  
-              )}
-            </TableHead>
-            <TableBody>
-              {
-                orderBy(dataSource, [sortColumn], [sortDirection]).map(row => {
-                  const className = clsx({
-                    [classes.row]: true,
-                    [classes.selected]: this.props.selectedPosts.includes(row.id)
-                  })
-                  return (
-                    <DashboardTableRow
-                      key={row.id}
-                      row={row}
-                      className={className}
-                      selectRow={this.selectRow}
-                      selectedPosts={selectedPosts}
-                      columns={columns}
-                      classes={classes}
-                      onChange={this.onChange}
-                      onSave={this.onSave}
-                      onContextMenu={this.onContextMenu}
-                    />
-                  )
-                })
-              }
-            </TableBody>
-          </Table>
-          </TransitionGroup>
-          <Toolbar disableGutters className={classes.pagination}>
-            <IconButton onClick={evt => this.getNextPage('BACKWARD')}>
-              <KeyboardArrowLeft />
-            </IconButton>
-            <IconButton onClick={evt => this.getNextPage('FORWARD')}>
-              <KeyboardArrowRight />
-            </IconButton>
-          </Toolbar>
-        </Paper>
+  }, [offset, posts])
+ 
+  const toolbarProps = getToolbarProps()
+  return (
+    <div className={classes.wrapper}>
+      <div className={classes.toolbar}>
+        <DashboardToolbar
+          {...toolbarProps}
+          contextMenuAnchorEl={anchorEl}
+          setContextMenuAnchorEl={setContextMenuAnchorEl}
+          contextMenuOnClose={contextMenuOnClose}
+        />
       </div>
-    )
-  }
+      <Paper elevation={0}>
+        <TransitionGroup>
+        <Table size='small' className={classes.table}>
+          <TableHead>
+            <TableCell key='checkbox' className={classes.tableHeadCell} padding='checkbox' />
+            {columns.map(column =>
+              <TableCell
+                key={`tc_${column.key}`}
+                className={classes.tableHeadCell}
+                sortDirection={sort.direction}
+              >
+                <TableSortLabel
+                  IconComponent={SortDown}
+                  active={sort.column === column.key}
+                  direction={sort.direction}
+                  onClick={onSort(column)}
+                >
+                  {column.title}
+                </TableSortLabel>
+              </TableCell>  
+            )}
+          </TableHead>
+          <TableBody>
+            {
+              orderBy(dataSource, [sort.column], [sort.direction]).map(row => {
+                const className = clsx({
+                  [classes.row]: true,
+                  [classes.selected]: selectedPosts.includes(row.id)
+                })
+                return (
+                  <DashboardTableRow
+                    key={row.id}
+                    row={row}
+                    className={className}
+                    selectRow={selectRow}
+                    selectedPosts={selectedPosts}
+                    columns={columns}
+                    classes={classes}
+                    onChange={onChange}
+                    onSave={onSave}
+                    onContextMenu={onContextMenu}
+                  />
+                )
+              })
+            }
+          </TableBody>
+        </Table>
+        </TransitionGroup>
+        <Toolbar disableGutters className={classes.pagination}>
+          <IconButton onClick={evt => getNextPage('BACKWARD')}>
+            <KeyboardArrowLeft />
+          </IconButton>
+          <IconButton onClick={evt => getNextPage('FORWARD')}>
+            <KeyboardArrowRight />
+          </IconButton>
+        </Toolbar>
+      </Paper>
+    </div>
+  )
 }
+
 
 const styles = (theme) => ({
   checkboxTableCell: {

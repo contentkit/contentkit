@@ -10,7 +10,6 @@ import { store } from './lib/redux'
 import pages from './pages'
 import './css/style.scss'
 import Fallback from './components/Fallback'
-import AuthProvider from './components/AuthProvider'
 import { ThemeProvider } from './lib/theme'
 import { USER_QUERY } from './graphql/queries'
 
@@ -40,6 +39,7 @@ function App (props) {
                 render={routeProps => (
                   <Component
                     users={users}
+                    logged={Boolean(users?.data?.users)}
                     {...routeProps}
                     {...props}
                   />

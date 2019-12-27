@@ -10,6 +10,7 @@ import { DELETE_POST } from '../../graphql/mutations'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
 import ProjectSelect from '../ProjectSelect'
 import Button from '../Button'
+import { useApolloClient } from '@apollo/react-hooks'
 
 const EditIcon = props => (
   <svg
@@ -73,47 +74,52 @@ const Cog = props => (
   </svg>
 )
 
-class DashboardToolbar extends React.Component {
-  state = {
-    anchorEl: undefined,
-    snackbarOpen: false,
-    snackbarMessage: ''
+function DashboardToolbar (props) {
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
+  const [snackbarMessage, setSnackbarMessage] = React.useState('')
+  const client = useApolloClient()
+
+  const {
+    posts,
+    projects,
+    selected,
+    users,
+    contextMenuAnchorEl,
+    setContextMenuAnchorEl,
+    contextMenuOnClose,
+    handleSearch,
+    handleOpen,
+    setSearchQuery,
+    history,
+    selectedProject,
+    selectProject,
+    classes,
+    search: { query }
+  } = props
+
+  const timer = React.useRef(null)
+
+  const resetSnackbar = () => {
+    setSnackbarOpen(false)
+    setSnackbarMessage('')
   }
 
-  static propTypes = {
-    handleChange: PropTypes.func,
-    handleSearch: PropTypes.func
+  const undoAction = evt => {
+    cancel()
+    resetSnackbar()
   }
 
-  static defaultProps = {
-    selected: []
+  const onCloseSnackbar = evt => {
+    resetSnackbar()
   }
 
-  resetSnackbar = () => {
-    this.setState({
-      snackbarMessage: '',
-      snackbarOpen: false
-    })
-  }
-
-  undoAction = evt => {
-    this.cancel()
-    this.resetSnackbar()
-  }
-
-  onCloseSnackbar = async evt => {
-    this.resetSnackbar()
-  }
-
-  onDelete = async () => {
-    const { client, posts, selected, users } = this.props
+  const onDelete = async () => {
     const { data: { posts_aggregate: { nodes } } } = posts
     const lookup = keyBy(nodes, 'id')
 
-    this.setState({
-      snackbarOpen: true,
-      snackbarMessage: `Deleted ${selected.map(id => lookup[id].title).join(', ')}`
-    })
+    setSnackbarOpen(true)
+    setSnackbarMessage(`Deleted ${selected.map(id => lookup[id].title).join(', ')}`)
 
     const writeNodes = (nodes) => {
       return client.writeQuery({
@@ -132,13 +138,13 @@ class DashboardToolbar extends React.Component {
       nodes.filter((post) => !selected.includes(post.id))
     )
 
-    this.cancel = () => {
-      clearInterval(this.timerID)
+    const cancel = () => {
+      clearInterval(timer.current)
       writeNodes(nodes)
     }
 
-    this.timerID = window.setTimeout(async () => {
-      const { posts, selected, users } = this.props
+    timer.current = window.setTimeout(async () => {
+      const { posts, selected, users } = props
       const userId = users.data.users[0].id
       await Promise.all(
         selected.map(id => posts.client.mutate({
@@ -149,94 +155,78 @@ class DashboardToolbar extends React.Component {
     }, 4000)
   }
 
-  onEdit = async () => {
-    this.props.history.push('/posts/' + this.props.selected[0])
+  const onEdit = () => {
+    history.push('/posts/' + selected[0])
   }
 
-  handleChange = ({ currentTarget: { value } }) => {
-    this.props.setSearchQuery(value)
+  const handleChange = ({ currentTarget: { value } }) => {
+    setSearchQuery(value)
 
     if (value === '' || value.length >= 3) {
-      this.props.handleSearch({ query: value })
+      handleSearch({ query: value })
     }
   }
 
-  onMenuOpen = evt => {
-    this.props.setContextMenuAnchorEl(evt)
+  const onMenuOpen = evt => {
+    setContextMenuAnchorEl(evt)
   }
 
-  render () {
-    const {
-      handleSearch,
-      search: { query },
-      selected,
-      selectedProject,
-      projects,
-      selectProject,
-      classes,
-      contextMenuAnchorEl,
-      contextMenuOnClose
-    } = this.props
-    const open = selected.length > 0
-    const { snackbarMessage, snackbarOpen } = this.state
-    return (
-      <div className={classes.root}>
-        <Typography variant='subtitle2' style={{ padding: '10px 0px 0px 10px' }}>Posts</Typography>
-        <div className={classes.flex}>
-          <div className={classes.toolbar}>
-            <SearchInput
-              onChange={this.handleChange}
-              onSearch={handleSearch}
-              value={query}
-              className={classes.input}
-              placeholder={'Search...'}
-            />
-            <ProjectSelect
-              selectedProject={selectedProject}
-              allProjects={projects?.data?.projects}
-              selectProject={selectProject}
-              className={classes.select}
-            />
-          </div>
-          <div className={classes.actions}>
-            <Menu
-              anchorEl={contextMenuAnchorEl}
-              open={Boolean(contextMenuAnchorEl)}
-              onClose={contextMenuOnClose}
-            >
-              <MenuItem key='edit' onClick={this.onEdit}>Edit</MenuItem>
-              <MenuItem key='delete' onClick={this.onDelete}>Delete</MenuItem>
-            </Menu>
-            <IconButton onClick={this.onMenuOpen} disabled={!selected.length}>
-              <Cog />
-            </IconButton>
-            <Button onClick={this.props.handleOpen}>New Post</Button>
-          </div>
+  const open = selected.length > 0
+  return (
+    <div className={classes.root}>
+      <Typography variant='subtitle2' style={{ padding: '10px 0px 0px 10px' }}>Posts</Typography>
+      <div className={classes.flex}>
+        <div className={classes.toolbar}>
+          <SearchInput
+            onChange={handleChange}
+            onSearch={handleSearch}
+            value={query}
+            className={classes.input}
+            placeholder={'Search...'}
+          />
+          <ProjectSelect
+            selectedProject={selectedProject}
+            allProjects={projects?.data?.projects}
+            selectProject={selectProject}
+            className={classes.select}
+          />
         </div>
-        <Snackbar
-          open={snackbarOpen}
-          onClose={this.onCloseSnackbar}
-          autoHideDuration={4000}
-          ContentProps={{
-            'aria-describedby': 'snackbar-fab-message-id',
-          }}
-          message={<span id="snackbar-fab-message-id">{snackbarMessage}</span>}
-          action={
-            <Button color="inherit" size="small" onClick={this.undoAction}>
-              Undo
-            </Button>
-          }
-          className={classes.snackbar}
-        />
+        <div className={classes.actions}>
+          <Menu
+            anchorEl={contextMenuAnchorEl}
+            open={Boolean(contextMenuAnchorEl)}
+            onClose={contextMenuOnClose}
+          >
+            <MenuItem key='edit' onClick={onEdit}>Edit</MenuItem>
+            <MenuItem key='delete' onClick={onDelete}>Delete</MenuItem>
+          </Menu>
+          <IconButton onClick={onMenuOpen} disabled={!selected.length}>
+            <Cog />
+          </IconButton>
+          <Button onClick={handleOpen}>New Post</Button>
         </div>
-    )
-  }
+      </div>
+      <Snackbar
+        open={snackbarOpen}
+        onClose={onCloseSnackbar}
+        autoHideDuration={4000}
+        ContentProps={{
+          'aria-describedby': 'snackbar-fab-message-id',
+        }}
+        message={<span id="snackbar-fab-message-id">{snackbarMessage}</span>}
+        action={
+          <Button color="inherit" size="small" onClick={undoAction}>
+            Undo
+          </Button>
+        }
+        className={classes.snackbar}
+      />
+    </div>
+  )
 }
 
 const styles = theme => ({
-  input: {
-    // width: 500
-  },
+  input: {},
   actions: {
     display: 'flex',
     alignItems: 'center',
