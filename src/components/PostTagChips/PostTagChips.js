@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { DELETE_TAG, CREATE_TAG, CREATE_POST_TAG_CONNECTION } from '../../graphql/mutations'
 import { TAG_QUERY, POST_QUERY } from '../../graphql/queries'
-import { Mutation, Query } from 'react-apollo'
 import { genKey, genDate } from '../../lib/util'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import { Input, Chip } from '@contentkit/components'
 import { withStyles } from '@material-ui/styles'
 
@@ -62,10 +62,6 @@ CreateTagInput.propTypes = {
 }
 
 function PostTagChips (props) {
-
-  // static propTypes = {
-  //   post: PropTypes.object.isRequired
-  // }
 
   const deleteTag = ({ mutate, variables, query }) =>
     mutate({

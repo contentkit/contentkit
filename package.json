@@ -43,6 +43,7 @@
     "graphql-tag": "^2.10.0",
     "haikunator": "^2.0.0",
     "immutable": "~3.7.4",
+    "lodash.chunk": "^4.2.0",
     "lodash.debounce": "^4.0.8",
     "lodash.escape": "^4.0.1",
     "lodash.get": "^4.4.2",

@@ -1,12 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import UserForm from '../../components/ProfileUserForm'
-import { USER_QUERY } from '../../graphql/queries'
 import CodeSnippet from '../../components/CodeSnippet'
 import Button from '../../components/Button'
 import { Dialog, DialogContent, DialogHeader, DialogActions } from '@material-ui/core'
 import { AppWrapper } from '@contentkit/components'
 import { withStyles } from '@material-ui/styles'
+
+import { USER_QUERY } from '../../graphql/queries'
+import { GENERATE_TOKEN, UPDATE_USER, DELETE_USER } from '../../graphql/mutations'
+
+import { useMutation } from '@apollo/react-hooks'
+import { withRouter } from 'react-router-dom'
 
 class Profile extends React.Component {
   static propTypes = {
@@ -90,6 +95,62 @@ class Profile extends React.Component {
   }
 }
 
+
+function ProfileWithData (props) {
+  const [generateTokenMutation, generateTokenData] = useMutation(GENERATE_TOKEN)
+  const [updateUserMutation, updateUserData] = useMutation(UPDATE_USER)
+  const [deleteUserMUtation, deleteUserData] = useMutation(DELETE_USER)
+
+  const { client, history } = props
+
+  const generateToken = variables => mutate({
+    variables,
+    optimisticResponse: {
+      __typename: 'Mutation',
+      generateToken: {
+        __typename: 'User',
+        ...this.props.users.data.users[0],
+        secret: 'pending...'
+      }
+    },
+    update: (store, { data: { generateToken } }) => {
+      const user = {
+        ...this.props.users.data.users[0],
+        secret: generateToken.secret
+      }
+
+      store.writeQuery({
+        query: USER_QUERY,
+        data: { user }
+      })
+    }
+  })
+
+  const profileProps = {
+    updateUser: {
+      mutate: variables => updateUser({ variables }),
+      ...updateUserData
+    },
+    generateToken: {
+      mutate: generateToken,
+      ...generateTokenData
+    },
+    deleteUser: {
+      mutate: variables => {
+        return deleteUser().then(() => {
+          window.localStorage.removeItem('token')
+          client.resetStore()
+          history.replace('/login')
+        })
+      }
+    }
+  }
+
+  return (
+    <Profile {...props} {...profileProps} />
+  )
+}
+
 export default withStyles(theme => ({
   container: {
     margin: '2em auto 1em auto',
@@ -105,4 +166,4 @@ export default withStyles(theme => ({
     padding: '40px',
     maxWidth: '960px'
   }
-}))(Profile)
+}))(ProfileWithData)

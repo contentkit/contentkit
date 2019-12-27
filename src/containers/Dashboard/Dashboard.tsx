@@ -36,6 +36,7 @@ function Dashboard (props) {
     setSearchLoadingState,
     setSearchQuery,
     selectProject,
+    selectPosts,
     postsAggregateVariables,
     projects,
     users,

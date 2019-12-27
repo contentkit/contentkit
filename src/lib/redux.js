@@ -31,7 +31,6 @@ export const UPDATE_FEED_VARIABLES = 'UPDATE_FEED_VARIABLES'
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_EDITOR_STATE:
-      console.log(action.payload.editorState.toJS())
       return { ...state, ...action.payload }
     case SELECT_POST:
       return { ...state, ...action.payload }

@@ -355,6 +355,7 @@ class DashboardTable extends React.Component {
         : [value]
 
     this.props.selectPosts(selection)
+    console.log({ selection, value })
   }
 
   onContextMenu = (evt, row) => {
