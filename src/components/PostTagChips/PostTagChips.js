@@ -6,7 +6,6 @@ import { Mutation, Query } from 'react-apollo'
 import { genKey, genDate } from '../../lib/util'
 import { Input, Chip } from '@contentkit/components'
 import { withStyles } from '@material-ui/styles'
-import { withApollo, compose } from 'react-apollo'
 
 const styles = theme => ({
   tags: {
@@ -62,12 +61,13 @@ CreateTagInput.propTypes = {
   createTag: PropTypes.func.isRequired
 }
 
-class PostTagChips extends React.Component {
-  static propTypes = {
-    post: PropTypes.object.isRequired
-  }
+function PostTagChips (props) {
 
-  deleteTag = ({ mutate, variables, query }) =>
+  // static propTypes = {
+  //   post: PropTypes.object.isRequired
+  // }
+
+  const deleteTag = ({ mutate, variables, query }) =>
     mutate({
       variables,
       optimisticResponse: {
@@ -91,7 +91,7 @@ class PostTagChips extends React.Component {
       }
     })
 
-  createTag = ({ mutate, query }) => async (variables) => {
+  const createTag = ({ mutate, query }) => async (variables) => {
     const tagId = genKey()
     const data = await mutate({
       variables,
@@ -128,93 +128,49 @@ class PostTagChips extends React.Component {
       }
     })
     return data
-
-    // this.props.client.mutate({
-    //   mutation: CREATE_POST_TAG_CONNECTION,
-    //   variables: {
-    //     post_id: postId,
-    //     tag_id: data.insert_tags.returning[0].id
-    //   },
-    //   optimisticResponse: {
-    //     __typename: 'Mutation',
-    //     insert_posts_tags: {
-    //       __typename: 'posts_tags_mutation_response',
-    //       returning: [{
-    //         __typename: 'PostsTags',
-    //         post_id: postId,
-    //         tag_id: data.insert_tags.returning[0].id
-    //       }]
-    //     }
-    //   },
-    //   update: (store, { data: { insert_posts_tags } }) => {
-    //     const { variables: params, data: { posts } } = this.props.post
-    //     store.writeQuery({
-    //       query: POST_QUERY,
-    //       variables: params,
-    //       data: {
-    //         posts: [{
-    //           ...posts[0],
-    //           posts_tags: posts[0].post_tags.concat([{ tag: data.insert_tags.returning[0] }])
-    //         }]
-    //       }
-    //     })
-    //   }
-    // })
   }
 
-  render () {
-    const { classes, post, users } = this.props
-    if (!post?.id) {
-      return false
-    }
-    return (
-      <Query query={TAG_QUERY} variables={{ postId: post.id }}>
-        {tagQuery => (
-          <Mutation mutation={DELETE_TAG}>
-            {deleteTag => (
-              <Mutation mutation={CREATE_TAG}>
-                {createTag => {
-                  if (tagQuery.loading) return false
-                  return (
-                    <div>
+  const { classes, post, users } = props
 
-                      <div className={styles.tags}>
-                        {tagQuery.data.posts_tags.map(({ tag }) => (
-                          <Chip
-                            key={tag.id}
-                            onDelete={() => this.deleteTag({
-                              query: tagQuery,
-                              mutate: deleteTag,
-                              variables: {
-                                tagId: tag.id,
-                                postId: post.id
-                              }
-                            })}
-                            className={styles.chip}
-                            label={tag.name}
-                          />
-                        ))}
-                      </div>
-                      <CreateTagInput
-                        users={users}
-                        post={post}
-                        classes={classes}
-                        createTag={this.createTag({ mutate: createTag, query: tagQuery })}
-                      />
-                    </div>
-                  )
-                }}
-              </Mutation>
-            )}
-          </Mutation>
-        )}
-      </Query>
-    )
+  const tagQuery = useQuery(TAG_QUERY, { variables: { postId: post.id } })
+  const [deleteTagMutation, deleteTagData] = useMutation(DELETE_TAG)
+  const [createTagMutation, createTagData] = useMutation(CREATE_TAG)
+
+  if (!post?.id) {
+    return false
   }
+
+  if (tagQuery.loading) {
+    return false
+  }
+
+  return (
+    <div>
+      <div className={styles.tags}>
+        {tagQuery.data.posts_tags.map(({ tag }) => (
+          <Chip
+            key={tag.id}
+            onDelete={() => deleteTag({
+              query: tagQuery,
+              mutate: deleteTag,
+              variables: {
+                tagId: tag.id,
+                postId: post.id
+              }
+            })}
+            className={styles.chip}
+            label={tag.name}
+          />
+        ))}
+      </div>
+      <CreateTagInput
+        users={users}
+        post={post}
+        classes={classes}
+        createTag={createTag}
+      />
+    </div>
+  )
 }
 
-export default compose(
-  withApollo,
-  withStyles(styles)
-)(PostTagChips)
-
+export default withStyles(styles)(PostTagChips)

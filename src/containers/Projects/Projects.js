@@ -5,6 +5,10 @@ import { AppWrapper } from '@contentkit/components'
 import ProjectModal from '../../components/ProjectModal'
 import ProjectsList from '../../components/ProjectsList'
 import Button from '../../components/Button'
+import { useMutation, useQuery } from '@apollo/react-hooks'
+
+import { PROJECTS_QUERY } from '../../graphql/queries'
+import { UPDATE_PROJECT, CREATE_PROJECT, DELETE_PROJECT } from '../../graphql/mutations'
 
 const haikunator = new Haikunator()
 
@@ -97,6 +101,92 @@ class Projects extends React.Component {
   }
 }
 
+function ProjectsMutations (props) {
+  const projectsQuery = useQuery(PROJECTS_QUERY)
+  const [createProjectMutation, createProjectData] = useMutation(CREATE_PROJECT)
+  // const [deleteProjectMutation, deleteProjectData] = useMutation(DELETE_PROJECT)
+  const [updateProjectMutation, updateProjectData] = useMutation(UPDATE_PROJECT)
+
+  const createProject = variables => createProjectMutation({
+    variables,
+    optimisticResponse: {
+      __typename: 'Mutation',
+      insert_projects: {
+        __typename: 'projects_mutation_response',
+        returning: [{
+          __typename: 'Project',
+          ...variables,
+          id: Math.floor(Math.random(1e6)),
+          origins: []
+        }]
+      }
+    },
+    update: (store, { data: { insert_projects } }) => {
+      store.writeQuery({
+        query: PROJECTS_QUERY,
+        data: {
+          projects: [...projects.data.projects].concat(insert_projects.returning)
+        },
+        variables: projects.variables
+      })
+    }
+  })
+
+  const updateProject = variables => updateProjectMutation({
+    variables
+  })
+
+  const deleteProject = async ({ id }) => {
+    client.cache.writeQuery({
+      query: PROJECTS_QUERY,
+      variables: projects.variables,
+      data: {
+        projects: projects.data.projects.filter(project =>
+          project.id !== id
+        )
+      }
+    })
+    client.mutate({
+      mutation: gql`
+        mutation($id: String!) {
+          delete_projects(where: { id: { _eq: $id } }) {
+            returning {
+              id
+            }
+          }
+        }
+      `,
+      variables: { id }
+    })
+  }
+
+    
+  if (projectsQuery.loading) {
+    return false
+  }
+
+  const componentProps = {
+    projects: projectsQuery,
+    updateProject: {
+      mutate: updateProject,
+      ...updateProjectData
+    },
+    createProject: {
+      mutate: createProject,
+      ...createProjectData
+    },
+    deleteProject: {
+      mutate: deleteProject
+    }
+  }
+  return (
+    <Projects
+      {...props}
+      {...componentProps}
+    />
+  )
+}
+
 export default withStyles(theme => ({
   container: {
     width: '660px',
@@ -105,5 +195,5 @@ export default withStyles(theme => ({
   inner: {
     margin: '2em 0'
   }
-}))(Projects)
+}))(ProjectsMutations)
 

@@ -100,13 +100,12 @@ ProjectModal.propTypes = {
   open: PropTypes.bool.isRequired,
   updateProject: PropTypes.object,
   handleDelete: PropTypes.func.isRequired,
-  handleClose: PropTypes.func.isRequired,
-  client: PropTypes.object.isRequired
+  handleClose: PropTypes.func.isRequired
 }
 
 
 function ProjectsModalWithData (props) {
-  const projects = useQuery(PROJECT_QUERY, { variables: { id: props.activeProject }, skip: !ownProps.activeProject })
+  const projects = useQuery(PROJECT_QUERY, { variables: { id: props.activeProject }, skip: !props.activeProject })
   const [createOriginMutation, createOriginData] = useMutation(CREATE_ORIGIN)
   const [deleteOriginMutation, deleteOriginData] = useMutation(DELETE_ORIGIN)
 
@@ -175,7 +174,7 @@ function ProjectsModalWithData (props) {
   })
 
   return (
-    <ProjectModal {...props} projects={projects} createOrigin={createOrigin} deleteOrigin={deleteOrigin} />
+    <ProjectModal {...props} project={projects} createOrigin={createOrigin} deleteOrigin={deleteOrigin} />
   )
 }
 
