@@ -143,8 +143,7 @@ function PostEditor (props) {
   const renderToolbar = () => (
     <Toolbar
       onClick={onClick}
-      // uploads={this.props.posts?.data?.posts[0]?.images}
-      uploads={[]}
+      uploads={posts[0]?.images}
       getEditorState={getEditorState}
       setEditorState={setEditorState}
       client={client}
@@ -158,11 +157,7 @@ function PostEditor (props) {
     insertImage: addImage
   }
 
-  const sidebarProps = {
-    history,
-    client,
-    logged
-  }
+  const sidebarProps = {}
   return (
     <AppWrapper
       renderToolbar={renderToolbar}

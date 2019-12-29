@@ -2,6 +2,7 @@ import React from 'react'
 import { CSSTransition } from 'react-transition-group'
 
 import { Editor } from '@contentkit/editor'
+import { HANDLED, NOT_HANDLED, Command } from '@contentkit/util'
 import clsx from 'clsx'
 
 import '@contentkit/editor/src/css/Draft.css'
@@ -11,7 +12,6 @@ import '@contentkit/code/src/style.scss'
 import '../../css/editor/toolbar.scss'
 
 import LinearProgress from '@material-ui/core/LinearProgress'
-import ContentKitEditor from '../ContentKitEditor'
 import gql from 'graphql-tag'
 import * as config from '../../lib/config'
 import BaseDropzone from '../BaseDropzone'
@@ -94,7 +94,6 @@ function PostEditorComponent(props) {
     users
   } = props
 
-  // const [uploadMutation, uploadData] = useMutation(UPLOAD_MUTATION)
   const handleClick = () => {}
 
   const onDrop = async (files, event) => {
@@ -124,6 +123,13 @@ function PostEditorComponent(props) {
     insertImage(`https://s3.amazonaws.com/contentkit/${key}`)
   }
 
+  const keyBindings = {
+    [Command.EDITOR_SAVE]: (_, editorState) => {
+      save()
+      return HANDLED
+    }
+  }
+
   return (
     <BaseDropzone className={classes.root} onDrop={onDrop} setDrag={setDrag}>
       <CSSTransition
@@ -137,12 +143,12 @@ function PostEditorComponent(props) {
         )}
       </CSSTransition>
       <div className={clsx(classes.editor, { [classes.drag]: isDragging })}>
-        <ContentKitEditor
+        <Editor
           editorState={editorState}
           onChange={onChange}
           plugins={plugins}
-          save={save}
           editorRef={editorRef}
+          keyBindings={keyBindings}
         />
       </div>
     </BaseDropzone>

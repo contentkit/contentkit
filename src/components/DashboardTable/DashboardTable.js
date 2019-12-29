@@ -217,7 +217,7 @@ function DashboardTableRow (props) {
   function toggleEditing (row, column) {
     if (columnKey === column.key) {
       setColumnKey(null)
-      onSave(row)
+      onSave({ ...row, project_id: row.project.id })
     } else {
       setColumnKey(column.key)
     }
@@ -449,10 +449,12 @@ const styles = (theme) => ({
     backgroundColor: '#e0e0e0'
   },
   wrapper: {
-    margin: '1em 0',
-    padding: 30,
-    boxShadow: theme.variables.shadow1,
-    backgroundColor: theme.variables.cardBackground
+    [theme.breakpoints.up('md')]: {
+      margin: '1em 0',
+      padding: 30,
+      boxShadow: theme.variables.shadow1,
+      backgroundColor: theme.variables.cardBackground
+    }
   },
   table: {
     fontFamily: theme.variables.fontFamily

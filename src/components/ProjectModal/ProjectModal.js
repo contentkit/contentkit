@@ -8,7 +8,8 @@ import {
 } from '../../graphql/queries'
 import {
   CREATE_ORIGIN,
-  DELETE_ORIGIN
+  DELETE_ORIGIN,
+  useCreateOriginMutation
 } from '../../graphql/mutations'
 
 import Button from '../Button'
@@ -106,45 +107,8 @@ ProjectModal.propTypes = {
 
 function ProjectsModalWithData (props) {
   const projects = useQuery(PROJECT_QUERY, { variables: { id: props.activeProject }, skip: !props.activeProject })
-  const [createOriginMutation, createOriginData] = useMutation(CREATE_ORIGIN)
+  const createOrigin = useCreateOriginMutation()
   const [deleteOriginMutation, deleteOriginData] = useMutation(DELETE_ORIGIN)
-
-  const createOrigin = variables => createOriginMutation({
-    optimisticResponse: {
-      __typename: 'Mutation',
-      insert_origins: {
-        __typename: 'origins_mutation_response',
-        returning: [{
-          __typename: 'Origin',
-          id: genKey(),
-          name: variables.name,
-          project: {
-            __typename: 'Project',
-            id: variables.projectId
-          }
-        }]
-      }
-    },
-    update: (store, { data: { insert_origins } }) => {
-      const query = store.readQuery({
-        query: PROJECT_QUERY,
-        variables: ownProps.project.variables
-      })
-      const { projects } = query
-      const [project] = projects
-      const origins = [...project.origins].concat(insert_origins.returning)
-      store.writeQuery({
-        query: PROJECT_QUERY,
-        data: {
-          projects: [{
-            ...project,
-            origins
-          }]
-        },
-        variables: query.variables
-      })
-    }
-  })
 
   const deleteOrigin = variables => deleteOriginMutation({
     variables,

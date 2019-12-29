@@ -1,6 +1,7 @@
 import gql from 'graphql-tag'
-import { POST_QUERY, USER_QUERY, PROJECTS_QUERY } from './queries'
+import { POST_QUERY, USER_QUERY, PROJECTS_QUERY, PROJECT_QUERY, TAG_QUERY } from './queries'
 import { useMutation, useApolloClient } from '@apollo/react-hooks'
+import { genKey, genDate } from '../lib/util'
 
 export const DELETE_POST = gql`
   mutation ($id: String!, $userId: String!) {
@@ -388,7 +389,6 @@ export function useUpdateDocument () {
   const client = useApolloClient()
   const [updateDocumentMutation, data] = useMutation(UPDATE_DOCUMENT)
   const mutate = variables => {
-    console.log({ variables })
     const { posts } : { posts: any[] } = client.cache.readQuery({
       query: POST_QUERY,
       variables: { id: variables.id }
@@ -575,9 +575,134 @@ export function useDeleteProjectMutation () {
 
 export function useUpdateProjectMutation () {
   const [updateProjectMutation, updateProjectData] = useMutation(UPDATE_PROJECT)
-  const mutate = variables => useUpdateProjectMutation({ variables })
+  const mutate = variables => updateProjectMutation({ variables })
   return {
     mutate,
     ...updateProjectData
   }
+}
+
+export function useCreateOriginMutation () {
+  const [createOriginMutation, createOriginData] = useMutation(CREATE_ORIGIN)
+  const createOrigin = variables => createOriginMutation({
+    optimisticResponse: {
+      __typename: 'Mutation',
+      insert_origins: {
+        __typename: 'origins_mutation_response',
+        returning: [{
+          __typename: 'Origin',
+          id: genKey(),
+          name: variables.name,
+          project: {
+            __typename: 'Project',
+            id: variables.projectId
+          }
+        }]
+      }
+    },
+    update: (store, { data: { insert_origins } }) => {
+      const query = store.readQuery({
+        query: PROJECT_QUERY,
+        variables: { id: variables.projectId }
+      })
+      const { projects } = query
+      const [project] = projects
+      const origins = [...project.origins].concat(insert_origins.returning)
+      store.writeQuery({
+        query: PROJECT_QUERY,
+        data: {
+          projects: [{
+            ...project,
+            origins
+          }]
+        },
+        variables: { id: variables.projectId }
+      })
+    }
+  })
+
+  return {
+    mutation: createOrigin,
+    ...createOriginData
+  }
+}
+
+export function useCreateTagMutation () {
+  const [createTagMutation, createTagData] = useMutation(CREATE_TAG)
+  const createTag = async (variables) => {
+    const tagId = genKey()
+    return createTagMutation({
+      variables,
+      optimisticResponse: {
+        __typename: 'Mutation',
+        insert_tags: {
+          __typename: 'tags_mutation_response',
+          returning: [{
+            __typename: 'tags',
+            id: tagId,
+            name: variables.name,
+            description: null,
+            created_at: genDate(),
+            slug: null
+          }]
+        },
+        insert_posts_tags: {
+          __typename: 'posts_tags_mutation_response',
+          returning: [{
+            __typename: 'posts_tags',
+            post_id: variables.postId,
+            tag_id: tagId
+          }]
+        }
+      },
+      update: (store, { data: { insert_tags } }) => {
+        const { post_tags } = store.readQuery({
+          query: TAG_QUERY,
+          variables: { postId: variables.postId }
+        })
+        store.writeQuery({
+          query: TAG_QUERY,
+          data: {
+            // @ts-ignore
+            posts_tags: posts_tags.concat(insert_tags.returning.map(tag => ({ tag })))
+          },
+          variables: { postId: variables.postId }
+        })
+      }
+    })
+  }
+
+  return createTag
+}
+
+export function useDeleteTagMutation () {
+  const [deleteTagMutation, deleteTagData] = useMutation(DELETE_TAG)
+  const deleteTag = (variables) => deleteTagMutation({
+    variables,
+    optimisticResponse: {
+      __typename: 'Mutation',
+      delete_tags: {
+        __typename: 'tags_mutation_response',
+        returning: [{
+          __typename: 'Tag',
+          id: variables.tagId
+        }]
+      }
+    },
+    update: (store, { data: { delete_tags } }) => {
+      const { posts_tags } : { posts_tags: any[] } = store.readQuery({
+        query: TAG_QUERY,
+        variables: { id: variables.tagId }
+      })
+      store.writeQuery({
+        query: TAG_QUERY,
+        data: {
+          posts_tags: posts_tags.filter(c => c.tag.id !== delete_tags.returning[0].id)
+        },
+        variables: { id: variables.tagId }
+      })
+    }
+  })
+
+  return deleteTag
 }
