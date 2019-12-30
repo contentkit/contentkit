@@ -6,7 +6,8 @@ import {
 } from '../../graphql/mutations'
 import {
   POSTS_AGGREGATE_QUERY,
-  PROJECTS_QUERY
+  PROJECTS_QUERY,
+  USER_QUERY
 } from '../../graphql/queries'
 import { genKey, genDate } from '../../lib/util'
 import ProjectSelect from '../ProjectSelect'
@@ -21,7 +22,7 @@ import {
 } from '@material-ui/core'
 import FormInput from '../FormInput'
 import Haikunator from 'haikunator'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 
 const haikunator = new Haikunator()
 
@@ -41,7 +42,7 @@ function CreatePostModal (props) {
     let { handleClose, createPost } = props
     handleClose()
 
-    const selectedProject =  await getProjectId()
+    const selectedProject = await getProjectId()
     createPost.mutate({
       title: title,
       projectId: selectedProject,
@@ -120,46 +121,53 @@ function CreatePostModal (props) {
   )
 }
 
-function useCreatePost () {
+function useCreatePost (postsAggregateVariables) {
+  const client = useApolloClient()
   const [createPostMutation, createPostData] = useMutation(CREATE_POST)
-  const mutate = (variables) => createPostMutation({
-    variables: variables,
-    optimisticResponse: {
-      __typename: 'Mutation',
-      insert_posts: {
-        __typename: 'posts_mutation_response',
-        returning: [{
-          __typename: 'Post',
-          id: genKey(),
-          created_at: genDate(),
-          title: variables.title,
-          slug: '',
-          published_at: genDate(),
-          excerpt: '',
-          status: 'DRAFT',
-          project: {
-            __typename: 'Project',
-            id: variables.projectId,
-            name: ''
+  const mutate = (variables) => {
+    const { posts_aggregate } = client.cache.readQuery({
+      query: POSTS_AGGREGATE_QUERY,
+      variables: postsAggregateVariables
+    })
+  
+    createPostMutation({
+      variables: variables,
+      optimisticResponse: {
+        __typename: 'Mutation',
+        insert_posts: {
+          __typename: 'posts_mutation_response',
+          returning: [{
+            __typename: 'Post',
+            id: genKey(),
+            created_at: genDate(),
+            title: variables.title,
+            slug: '',
+            published_at: genDate(),
+            excerpt: '',
+            status: 'DRAFT',
+            project: {
+              __typename: 'Project',
+              id: variables.projectId,
+              name: ''
+            },
+            posts_tags: []
+          }]
+        }
+      },
+      update: (store, { data: { insert_posts } }) => {
+        store.writeQuery({
+          query: POSTS_AGGREGATE_QUERY,
+          data: {
+            posts_aggregate: {
+              ...posts_aggregate,
+              nodes: posts_aggregate.nodes.concat(insert_posts.returning)
+            }
           },
-          posts_tags: []
-        }]
+          variables: postsAggregateVariables
+        })
       }
-    },
-    update: (store, { data: { insert_posts } }) => {
-      store.writeQuery({
-        query: POSTS_AGGREGATE_QUERY,
-        data: {
-          ...ownProps.posts.data,
-          posts_aggregate: {
-            ...ownProps.posts.data.posts_aggregate,
-            nodes: ownProps.posts.data.posts_aggregate.nodes.concat(insert_posts.returning)
-          }
-        },
-        variables: ownProps.posts.variables
-      })
-    }
-  })
+    })
+  }
 
   return {
     mutate,
@@ -168,7 +176,8 @@ function useCreatePost () {
 }
 
 function CreatePostModalMutations (props) {
-  const createPost = useCreatePost()
+  const users = useQuery(USER_QUERY)
+  const createPost = useCreatePost(props.posts.variables)
 
   const [updatePostMutation, updatePostData] = useMutation(UPDATE_POST)
   const [createProjectMutation, createProjectData] = useMutation(CREATE_PROJECT)
@@ -199,7 +208,13 @@ function CreatePostModalMutations (props) {
   })
 
   return (
-    <CreatePostModal {...props} createPost={createPost} updatePost={updatePost} createProject={createProject} />
+    <CreatePostModal
+      {...props}
+      users={users}
+      createPost={createPost}
+      updatePost={updatePost}
+      createProject={createProject}
+    />
   )
 }
 

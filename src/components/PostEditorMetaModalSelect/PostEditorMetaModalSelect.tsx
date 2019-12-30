@@ -4,9 +4,9 @@ import { Select } from '@material-ui/core'
 import { Input } from '@contentkit/components'
 
 const PostEditorMetaModalSelect = (props) => {
-  const { value, handleChange } = props
+  const { value, onChange } = props
 
-  const onChange = ({ currentTarget }) => handleChange(currentTarget.value, 'status')
+  const onSelectChange = ({ currentTarget }) => onChange(currentTarget.value, 'status')
   const options = [{
     value: 'DRAFT',
     label: 'Draft'
@@ -18,7 +18,7 @@ const PostEditorMetaModalSelect = (props) => {
   return (
     <Select
       native
-      onChange={onChange}
+      onChange={onSelectChange}
       options={options}
       label={'Status'}
       value={value}
@@ -30,5 +30,7 @@ const PostEditorMetaModalSelect = (props) => {
     </Select>
   )
 }
+
+PostEditorMetaModalSelect.propTypes = {}
 
 export default PostEditorMetaModalSelect

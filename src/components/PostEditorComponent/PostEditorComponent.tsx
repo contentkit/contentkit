@@ -2,7 +2,7 @@ import React from 'react'
 import { CSSTransition } from 'react-transition-group'
 
 import { Editor } from '@contentkit/editor'
-import { HANDLED, NOT_HANDLED, Command } from '@contentkit/util'
+import { HANDLED, NOT_HANDLED, Command, insertAtomic, Block } from '@contentkit/util'
 import clsx from 'clsx'
 
 import '@contentkit/editor/src/css/Draft.css'
@@ -18,6 +18,7 @@ import BaseDropzone from '../BaseDropzone'
 import { CREATE_IMAGE } from '../../graphql/mutations'
 import { plugins } from './plugins'
 import { makeStyles } from '@material-ui/styles'
+import { useApolloClient } from '@apollo/react-hooks'
 
 const UPLOAD_MUTATION = gql`
   mutation($userId: String!, $key: String!) {
@@ -78,12 +79,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function PostEditorComponent(props) {
+  const client = useApolloClient()
   const [isDragging, setDrag] = React.useState(false)
   const classes = useStyles(props)
 
   const {
     getFormData,
-    client,
     insertImage,
     loading,
     editorState,
@@ -95,6 +96,11 @@ function PostEditorComponent(props) {
   } = props
 
   const handleClick = () => {}
+
+  const addImage = (src) => {
+    const nextEditorState = insertAtomic(editorState, Block.IMAGE, { src })
+    onChange(nextEditorState)
+  }
 
   const onDrop = async (files, event) => {
     setDrag(false)
@@ -120,7 +126,7 @@ function PostEditorComponent(props) {
       }
     })
 
-    insertImage(`https://s3.amazonaws.com/contentkit/${key}`)
+    addImage(`https://s3.amazonaws.com/contentkit/${key}`)
   }
 
   const keyBindings = {

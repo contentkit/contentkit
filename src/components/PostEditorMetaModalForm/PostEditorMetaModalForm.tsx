@@ -1,32 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import PostStatusSelect from '../PostEditorMetaModalSelect'
-import ProjectSelect from '../ProjectSelect'
 import gql from 'graphql-tag'
-import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
-import PostTagChips from '../PostTagChips'
 import clsx from 'clsx'
-import * as config from '../../lib/config'
-import AWS from 'aws-sdk'
 import safeKey from 'safe-s3-key'
 import { useQuery } from '@apollo/react-hooks'
-// import ThumbnailUpload from '../ThumbnailUpload'
 import { Input, ThumbnailUpload } from '@contentkit/components'
-import FormInput from '../FormInput'
-
 import { Grid, FormControl, InputLabel } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/styles'
 import chunk from 'lodash.chunk'
 
-// AWS.config.region = config.AWS_REGION
-// AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-//   IdentityPoolId: config.IDENTITY_POOL_ID
-// })
+import PostStatusSelect from '../PostEditorMetaModalSelect'
+import ProjectSelect from '../ProjectSelect'
+import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
+import PostTagChips from '../PostTagChips'
+import * as config from '../../lib/config'
+import FormInput from '../FormInput'
 
-// const s3 = new AWS.S3()
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: any) => ({
   thumbnail: {
     width: '100%',
     height: '100%'
@@ -59,74 +51,67 @@ enum FieldType {
 function PostEditorMetaModalForm (props) {
   const classes = useStyles(props)
   const {
-    handleChange,
-    handleCoverImageChange,
+    onChange,
+    onCoverImageChange,
     post,
     users,
     projects,
     selectProject,
-    deleteImage
+    deleteImage,
+    mediaProvider
   } = props
-  const {
-    title,
-    slug,
-    excerpt,
-    cover_image,
-    published_at,
-    images,
-    project,
-    status
-  } = { ...defaultPost, ...post }
 
-  const [fileList, setFileList] = React.useState([])
+  const { images, project } = post
 
   const selectedProject = project?.id
   const allProjects = projects?.data?.projects || []
 
-  React.useEffect(() => {
-    const fileList = images.map(({ id, url }) => ({
-      id: id,
-      url: `${config.AWS_BUCKET_URL}/${url}`,
-      status: 'done'
-    }))
-    setFileList(fileList)
-  }, [images])
-
-  async function action (file) {
+  const getUploadMediaOptions = (file) => {
     const key = safeKey(`static/${post.id}/${file.name}`)
-    const params = {
-      Bucket: config.AWS_BUCKET_NAME,
-      Fields: {
-        key: key,
-        'Content-Type': file.type
-      }
-    }
-
-    const userId = users.data.users[0].id
-
-    await props.createImage({
+    return {
+      key: key,
       url: key,
-      postId: props.post.id,
-      userId: userId
-    })
-
-    return props.getFormData({
-      key, userId
-    })
+      postId: post.id,
+      userId: users.data.users[0].id
+    }
   }
+  // const onUpload = async (file) => {
+  //   const key = safeKey(`static/${post.id}/${file.name}`)
+  //   const params = {
+  //     Bucket: config.AWS_BUCKET_NAME,
+  //     Fields: {
+  //       key: key,
+  //       'Content-Type': file.type
+  //     }
+  //   }
 
-  const customRequest = async ({ headers, file, action, onSuccess }) => {
+  //   const userId = users.data.users[0].id
+
+  //   try {
+  //     await props.createImage({
+  //       url: key,
+  //       postId: props.post.id,
+  //       userId: userId
+  //     })
+  //   } catch (err) {
+  //     console.error(err)
+  //     return
+  //   }
+
+  //   const data = await props.getFormData({ key, userId })
+  //   await customRequest(file, data)
+  // }
+
+  const customRequest = (file, action) => {
     const formData = new window.FormData()
     for (let field in action.fields) {
       formData.append(field, action.fields[field])
     }
     formData.append('file', file)
-    const resp = await fetch(action.url, {
+    return fetch(action.url, {
       method: 'POST',
       body: formData,
-      headers: headers
     })
-    onSuccess(resp)
   }
 
   const fields = [
@@ -143,7 +128,7 @@ function PostEditorMetaModalForm (props) {
       Component: PostStatusSelect,
       size: 6,
       getComponentProps: () => ({
-        handleChange,
+        onChange,
         value: post.status
       })
     },
@@ -175,7 +160,7 @@ function PostEditorMetaModalForm (props) {
       type: FieldType.FORM_SELECT,
       Component: PostMetaDatePicker,
       getComponentProps: () => ({
-        handleChange: (value) => handleChange(value, 'published_at'),
+        onChange: (value) => onChange(value, 'published_at'),
         value: post.published_at
       }),
       size: 6
@@ -195,12 +180,16 @@ function PostEditorMetaModalForm (props) {
     // }
   ]
 
+  const thumbnailUploadSelection = post?.cover_image_id
+    ? [post.cover_image_id]
+    : []
+
   const children = fields.map(({ label, key, type, Component, getComponentProps }) => {
     if (type === FieldType.FORM_INPUT) {
       return (
         <FormInput
           label={label}
-          onChange={e => handleChange(e.target.value, key)}
+          onChange={e => onChange(e.target.value, key)}
           value={post[key]}
           fullWidth
         />
@@ -239,16 +228,11 @@ function PostEditorMetaModalForm (props) {
       <Grid container spacing={4} className={classes.gutter}>
          <Grid item xs={12}>
            <ThumbnailUpload
-             customRequest={customRequest}
-             action={action}
-             fileList={fileList}
-             coverImage={post?.cover_image_id}
-             deleteImage={deleteImage}
-             onSelect={
-               fileId => {
-                 handleCoverImageChange(fileId)
-               }
-             }
+             getUploadMediaOptions={getUploadMediaOptions}
+             images={images}
+             onClick={onCoverImageChange}
+             mediaProvider={mediaProvider}
+             selection={thumbnailUploadSelection}
            >
              <div>
                <Add />
@@ -269,7 +253,7 @@ function PostEditorMetaModalForm (props) {
 PostEditorMetaModalForm.propTypes = {
   projects: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
-  handleChange: PropTypes.func,
+  onChange: PropTypes.func,
   createImage: PropTypes.func.isRequired
 }
 

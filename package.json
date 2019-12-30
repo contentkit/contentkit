@@ -62,7 +62,19 @@
     "redux-thunk": "^2.3.0",
     "refractor": "^2.9.0",
     "s3-dropzone": "^0.0.57",
-    "safe-s3-key": "^0.0.4"
+    "safe-s3-key": "^0.0.4",
+    "prosemirror-inputrules": "^1.1.2",
+    "prosemirror-schema-list": "^1.1.2",
+    "prosemirror-keymap": "^1.1.2",
+    "prosemirror-history": "^1.1.2",
+    "prosemirror-commands": "^1.1.2",
+    "prosemirror-state": "^1.1.2",
+    "prosemirror-menu": "^1.1.2",
+    "prosemirror-dropcursor": "^1.1.2",
+    "prosemirror-gapcursor": "^1.1.2",
+    "prosemirror-schema-basic": "^1.1.2",
+    "prosemirror-view": "^1.1.2",
+    "prosemirror-model": "^1.1.2"
   },
   "standard": {
     "parser": "babel-eslint",

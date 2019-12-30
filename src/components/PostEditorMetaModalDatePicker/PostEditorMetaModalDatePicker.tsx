@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styles from './styles.scss'
 import { Input } from '@contentkit/components'
 import { FormControl, InputLabel } from '@material-ui/core'
 
 function PostMetaDatePicker (props) {
-  const onChange = (evt) => {
-    props.handleChange(evt.target.value)
+  const { onChange, value } = props
+  const onInputChange = (evt) => {
+    onChange(evt.target.value)
   }
 
   return (
@@ -14,9 +14,8 @@ function PostMetaDatePicker (props) {
       <FormControl fullWidth>
         <Input
           type='text'
-          onChange={onChange}
-          className={styles.input}
-          value={props.value}
+          onChange={onInputChange}
+          value={value}
           fullWidth
           label='Date'
         />
@@ -26,7 +25,7 @@ function PostMetaDatePicker (props) {
 }
 
 PostMetaDatePicker.propTypes = {
-  handleChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired
 }
 

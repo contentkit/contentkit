@@ -656,7 +656,7 @@ export function useCreateTagMutation () {
         }
       },
       update: (store, { data: { insert_tags } }) => {
-        const { post_tags } = store.readQuery({
+        const { posts_tags } = store.readQuery({
           query: TAG_QUERY,
           variables: { postId: variables.postId }
         })
@@ -677,32 +677,42 @@ export function useCreateTagMutation () {
 
 export function useDeleteTagMutation () {
   const [deleteTagMutation, deleteTagData] = useMutation(DELETE_TAG)
-  const deleteTag = (variables) => deleteTagMutation({
-    variables,
-    optimisticResponse: {
-      __typename: 'Mutation',
-      delete_tags: {
-        __typename: 'tags_mutation_response',
-        returning: [{
-          __typename: 'Tag',
-          id: variables.tagId
-        }]
-      }
-    },
-    update: (store, { data: { delete_tags } }) => {
-      const { posts_tags } : { posts_tags: any[] } = store.readQuery({
-        query: TAG_QUERY,
-        variables: { id: variables.tagId }
-      })
-      store.writeQuery({
-        query: TAG_QUERY,
-        data: {
-          posts_tags: posts_tags.filter(c => c.tag.id !== delete_tags.returning[0].id)
+  const deleteTag = (variables) => {
+    console.log({ variables })
+    return deleteTagMutation({
+      variables,
+      optimisticResponse: {
+        __typename: 'Mutation',
+        delete_tags: {
+          __typename: 'tags_mutation_response',
+          returning: [{
+            __typename: 'Tag',
+            id: variables.tagId
+          }]
         },
-        variables: { id: variables.tagId }
-      })
-    }
-  })
+        delete_posts_tags: {
+          __typename: 'posts_tags_mutation_response',
+          returning: [{
+            __typename: 'posts_tags',
+            post_id: variables.postId
+          }]
+        }
+      },
+      update: (store, { data: { delete_tags } }) => {
+        const { posts_tags } : { posts_tags: any[] } = store.readQuery({
+          query: TAG_QUERY,
+          variables: { id: variables.tagId }
+        })
+        store.writeQuery({
+          query: TAG_QUERY,
+          data: {
+            posts_tags: posts_tags.filter(c => c.tag.id !== delete_tags.returning[0].id)
+          },
+          variables: { id: variables.tagId }
+        })
+      }
+    })
+  }
 
   return deleteTag
 }

@@ -39,7 +39,6 @@ function Dashboard (props) {
     selectPosts,
     postsAggregateVariables,
     projects,
-    users,
     logged,
     renderToolbar
   } = props
@@ -91,8 +90,7 @@ function Dashboard (props) {
       selectedProject: postsAggregateVariables.projectId,
       projects: projects,
       selectProject: selectProject,
-      handleOpen: handleModalOpen,
-      users: users
+      handleOpen: handleModalOpen
     }
   }
 
@@ -100,12 +98,11 @@ function Dashboard (props) {
     <AppWrapper>
       <CreatePostModal
         posts={posts}
-        selectedProject={postsAggregateVariables.projectId}
         projects={projects}
+        selectedProject={postsAggregateVariables.projectId}
         selectProject={selectProject}
         open={open}
         handleClose={handleModalClose}
-        users={users}
       />
       <DashboardTable
         posts={posts}
