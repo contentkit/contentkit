@@ -14,16 +14,24 @@ const useStyles = makeStyles({
   chip: {}
 })
 
-function WhitelistChips (props) {
-  const classes = useStyles()
-  const { domains } = props
+type WhitelistChipsProps = {
+  domains: {
+    id: string,
+    name: string
+  }[],
+  onDelete: (id: string) => void
+}
+
+function WhitelistChips (props: WhitelistChipsProps) {
+  const classes = useStyles(props)
+  const { domains, onDelete } = props
   return (
     <div className={classes.root}>
       {
         domains.map(domain =>
           <Chip
             key={domain.id}
-            onDelete={() => props.onDelete(domain.id)}
+            onDelete={() => onDelete(domain.id)}
             className={classes.chip}
             color='primary'
             closable
@@ -40,11 +48,27 @@ WhitelistChips.propTypes = {
   domains: PropTypes.array
 }
 
-function WhitelistDomains (props) {
+type WhitelistDomainsProps = {
+  deleteOrigin: {
+    mutate: ({ id: string }) => void
+  },
+  createOrigin: {
+    mutate: ({ name: string, projectId: string, userId: string }) => void
+  },
+  project: any,
+  users: any
+}
+
+function WhitelistDomains (props: WhitelistDomainsProps) {
   const [value, setValue] = React.useState('')
 
+  const {
+    deleteOrigin,
+    createOrigin,
+    project
+  } = props
   const onDelete = (id) => {
-    props.deleteOrigin.mutate({ id })
+    deleteOrigin.mutate({ id })
   }
 
   const onChange = evt => {
@@ -57,7 +81,7 @@ function WhitelistDomains (props) {
     const userId = props.users.data.users[0].id
     if (e.key === 'Enter') {
       setValue('')
-      props.createOrigin.mutate({ name, projectId, userId })
+      createOrigin.mutate({ name, projectId, userId })
     }
   }
 

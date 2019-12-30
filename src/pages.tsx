@@ -1,6 +1,6 @@
 import React from 'react'
-import Spinner from './components/Spinner'
 import Fallback from './components/Fallback'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const styles = {
   width: '100%',
@@ -20,7 +20,7 @@ export const LoadingOverlay = ({ loading, children }) => (
       {children}
     </div>
     <div style={{ ...styles }} className={loading ? '' : 'fadeOut'}>
-      <Spinner />
+      <CircularProgress />
     </div>
   </React.Fragment>
 )

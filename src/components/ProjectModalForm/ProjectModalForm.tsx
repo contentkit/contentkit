@@ -2,7 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Input } from '@contentkit/components'
 
-function ProjectModalForm ({ classes, project, onChange }) {
+type ProjectModalFormProps = {
+
+}
+
+function ProjectModalForm (props) {
+  const { classes, project, onChange } = props
   return (
     <div
       className={classes.formControl}

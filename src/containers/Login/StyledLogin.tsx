@@ -140,14 +140,6 @@ function PasswordField (props) {
 
 }
 
-function noop () {
-  return null
-}
-
-function noopPromise () {
-  return Promise.resolve(undefined)
-}
-
 const LoginTabs = props => (
   <Tabs
     value={props.value}
