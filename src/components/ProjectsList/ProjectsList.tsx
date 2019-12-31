@@ -4,7 +4,7 @@ import ProjectsListItem from '../ProjectsListItem'
 import { List } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: any) => ({
   paper: {
     borderRadius: 0,
     boxShadow: theme.variables.shadow1,
@@ -12,13 +12,17 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function ProjectsList ({
-  allProjects,
-  handleClick,
-  onMouseEnter,
-  onMouseLeave
-}) {
-  const classes = useStyles()
+type ProjectListProps = {
+  allProjects: any[],
+  onClick: (id: string) => void
+}
+
+function ProjectsList (props: ProjectListProps) {
+  const {
+    allProjects,
+    onClick,
+  } = props
+  const classes = useStyles(props)
   return (
     <div className={classes.paper}>
       <List>
@@ -27,9 +31,7 @@ function ProjectsList ({
             <ProjectsListItem
               project={project}
               key={project.id}
-              handleClick={handleClick}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
+              onClick={onClick}
             />
           )
         })}
@@ -44,9 +46,7 @@ ProjectsList.defaultProps = {
 
 ProjectsList.propTypes = {
   allProjects: PropTypes.array,
-  handleClick: PropTypes.func.isRequired,
-  onMouseEnter: PropTypes.func.isRequired,
-  onMouseLeave: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
 }
 
 export default ProjectsList

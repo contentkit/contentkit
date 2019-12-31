@@ -65,6 +65,7 @@ const theme = createMuiTheme({
       '"Segoe UI Symbol"'
     ].join(',')
   },
+  // @ts-ignore
   variables: variables
 })
 

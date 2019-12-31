@@ -2,7 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Input } from '@contentkit/components'
 
-function SearchInput (props) {
+type SearchInputProps = {
+  onChange: (evt: any) => void,
+  value: string,
+  className: string,
+  classes: any,
+  onSearch: ({ value: string }) => void
+}
+
+function SearchInput (props: SearchInputProps) {
   const {
     onChange,
     value,

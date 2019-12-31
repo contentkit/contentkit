@@ -7,7 +7,11 @@ const useStyles = makeStyles(theme => ({
   snackbar: {}
 }))
 
-function CreatePostSnackbar (props) {
+type CreatePostSnackbarProps = {
+  open: boolean
+}
+
+function CreatePostSnackbar (props: CreatePostSnackbarProps) {
   const classes = useStyles(props)
   const { open } = props
 

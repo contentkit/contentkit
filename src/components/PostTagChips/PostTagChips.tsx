@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { DELETE_TAG, CREATE_TAG, CREATE_POST_TAG_CONNECTION, useDeleteTagMutation, useCreateTagMutation } from '../../graphql/mutations'
-import { TAG_QUERY, POST_QUERY } from '../../graphql/queries'
+import { useDeleteTagMutation, useCreateTagMutation } from '../../graphql/mutations'
+import { useTagQuery } from '../../graphql/queries'
 import { genKey, genDate } from '../../lib/util'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { Input, Chip } from '@contentkit/components'
-import { withStyles } from '@material-ui/styles'
+import { makeStyles } from '@material-ui/styles'
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   tags: {
     width: '100%',
     display: 'flex',
@@ -21,25 +21,37 @@ const styles = theme => ({
   },
   inputWrapper: {
     width: '100%'
-  }
-})
+  },
+  chip: {}
+}))
 
-function CreateTagInput (props) {
-  const { classes } = props
+type CreateTagInputProps = {
+  users: any,
+  classes: any,
+  post: any,
+  createTag: any
+}
+
+function CreateTagInput (props: CreateTagInputProps) {
+  const {
+    classes,
+    post,
+    users,
+    createTag
+  } = props
   const [value, setValue] = React.useState('')
 
-  const handleChange = evt => {
+  const onChange = evt => {
     setValue(evt.target.value)
   }
 
   const onKeyDown = evt => {
     if (evt.key === 'Enter') {
-      const { post, createTag } = props
       createTag({
         name: value,
         projectId: post.project.id,
         postId: post.id,
-        userId: props.users.data.users[0].id,
+        userId: users.data.users[0].id,
         tagId: [...Array(20)].map(i=>(~~(Math.random()*36)).toString(36)).join('')
       })
     }
@@ -50,7 +62,7 @@ function CreateTagInput (props) {
       <Input
         value={value}
         placeholder={'Create tag'}
-        onChange={handleChange}
+        onChange={onChange}
         onKeyDown={onKeyDown}
       />
     </div>
@@ -62,9 +74,9 @@ CreateTagInput.propTypes = {
 }
 
 function PostTagChips (props) {
-  const { classes, post, users } = props
-
-  const tagQuery = useQuery(TAG_QUERY, { variables: { postId: post.id } })
+  const { post, users } = props
+  const classes = useStyles(props)
+  const tagQuery = useTagQuery({ variables: { postId: post.id } })
   const createTag = useCreateTagMutation()
   const deleteTag = useDeleteTagMutation()
 
@@ -76,18 +88,23 @@ function PostTagChips (props) {
     return false
   }
 
+  const createDeleteHandler = (tag) => () => {
+    deleteTag({
+      tagId: tag.id,
+      postId: post.id
+    })
+  }
+
   return (
     <div>
-      <div className={styles.tags}>
+      <div className={classes.tags}>
         {tagQuery.data.posts_tags.map(({ tag }) => (
           <Chip
             key={tag.id}
-            onDelete={() => deleteTag({
-              tagId: tag.id,
-              postId: post.id
-            })}
-            className={styles.chip}
+            onDelete={createDeleteHandler(tag)}
+            className={classes.chip}
             label={tag.name}
+            classes={classes}
           />
         ))}
       </div>
@@ -101,4 +118,4 @@ function PostTagChips (props) {
   )
 }
 
-export default withStyles(styles)(PostTagChips)
+export default PostTagChips

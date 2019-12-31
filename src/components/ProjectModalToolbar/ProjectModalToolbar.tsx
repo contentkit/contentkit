@@ -7,7 +7,8 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     justifyContent: 'space-between'
-  }
+  },
+  button: {}
 }))
 
 function ProjectModalToolbar (props) {
@@ -21,15 +22,16 @@ function ProjectModalToolbar (props) {
     <Toolbar className={classes.root}>
       <Button
         className={classes.button}
-        onClick={handleDelete}>
-          Delete
+        onClick={handleDelete}
+      >
+        Delete
       </Button>
       <div>
         <Button
           className={classes.button}
           onClick={() => handleClose()}
         >
-            Close
+          Close
         </Button>
         <Button onClick={handleSave}>
           Save

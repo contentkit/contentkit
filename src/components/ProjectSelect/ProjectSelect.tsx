@@ -2,19 +2,24 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Select, FormControl, InputLabel } from '@material-ui/core'
 import { Input } from '@contentkit/components'
-// type Project = {
-//   id: string,
-//   name: string
-// }
 
-// type SelectProjectProps = {
-//   allProjects: Project[],
-//   selectedProject: string,
-//   selectProject: (value: string) => void
-//   className: string
-// }
+type SelectProjectProps = {
+  selectedProject: string,
+  selectProject: (value: string) => void,
+  allProjects: any[],
+  className: string,
+  hideLabel?: boolean
+}
 
 function SelectProject (props) {
+  const {
+    selectedProject,
+    allProjects,
+    className,
+    hideLabel,
+    selectProject
+  } = props
+
   React.useEffect(() => {
     const { allProjects, selectedProject, selectProject } = props
     if (!selectedProject) {
@@ -23,19 +28,13 @@ function SelectProject (props) {
         selectProject(project.id)
       }
     }
-  }, [props.allProjects])
+  }, [allProjects])
 
   const onChange = ({ currentTarget: { value } }) => {
-    props.selectProject(value)
+    selectProject(value)
   }
 
-  const {
-    selectedProject,
-    allProjects,
-    className,
-    hideLabel
-  } = props
-
+  const input = (<Input name='project' id='project' />)
   const select = (
     <Select
       native
@@ -43,7 +42,7 @@ function SelectProject (props) {
       value={selectedProject || ''}
       onChange={onChange}
       className={className}
-      input={<Input name='project' id='project' />}
+      input={input}
     >
       {
         allProjects.map(project => <option key={project.id} value={project.id}>{project.name}</option>)
@@ -66,9 +65,11 @@ function SelectProject (props) {
 }
 
 SelectProject.propTypes = {
+  selectProject: PropTypes.func.isRequired,
   selectedProject: PropTypes.string,
   allProjects: PropTypes.array,
-  selectProject: PropTypes.func.isRequired
+
+  hideLabel: PropTypes.bool
 }
 
 SelectProject.defaultProps = {

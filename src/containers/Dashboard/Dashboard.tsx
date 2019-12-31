@@ -20,13 +20,32 @@ import {
 } from '../../lib/redux'
 import CreatePostModal from '../../components/CreatePostModal'
 import { feedQueryShape } from '../../shapes'
-import { POSTS_AGGREGATE_QUERY, PROJECTS_QUERY } from '../../graphql/queries'
+import { usePostsAggregateQuery, useProjectsQuery } from '../../graphql/queries'
+import { GraphQL } from '../../types'
 
-function Dashboard (props) {
+type DashboardProps = {
+  posts: GraphQL.PostsAggregateQueryResult,
+  projects: GraphQL.ProjectsQueryResult,
+  selectedPosts: any,
+  search: any,
+  client: any,
+  history: any,
+  editorState: EditorState,
+  setEditorState: (editorState: EditorState) => void,
+  setSearchLoadingState: (value: boolean) => void,
+  setSearchQuery: () => void,
+  selectProject: () => void,
+  selectPosts: () => void,
+  postsAggregateVariables: GraphQL.PostsAggregateQueryVariables
+  renderToolbar: () => any
+}
+
+function Dashboard (props: DashboardProps) {
   const [open, setOpen] = React.useState(false)
 
   const {
     posts,
+    projects,
     selectedPosts,
     search,
     client,
@@ -38,12 +57,10 @@ function Dashboard (props) {
     selectProject,
     selectPosts,
     postsAggregateVariables,
-    projects,
-    logged,
     renderToolbar
   } = props
 
-  const updateVariables = (variables) => {
+  const updateVariables = (variables: any) => {
     const query = variables.query || ''
     posts.fetchMore({
       variables: {
@@ -124,8 +141,8 @@ function DashboardWithQueries (props) {
     ...postsAggregateVariables,
     query: postsAggregateVariables.query ? `%${postsAggregateVariables.query}%` : '%'
   }
-  const posts = useQuery(POSTS_AGGREGATE_QUERY, { variables })
-  const projects = useQuery(PROJECTS_QUERY)
+  const posts = usePostsAggregateQuery({ variables })
+  const projects = useProjectsQuery()
   return (
     <Dashboard {...props} posts={posts} projects={projects} />
   )

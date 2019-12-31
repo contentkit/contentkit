@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 // @ts-ignore
-import Spinner from '../Spinner'
+import { CircularProgress } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
@@ -28,7 +28,7 @@ function Fallback (props) {
   return (
     <div className={classes.root}>
       <div>
-        <Spinner />
+        <CircularProgress />
       </div>
     </div>
   )

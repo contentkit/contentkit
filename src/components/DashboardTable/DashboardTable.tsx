@@ -2,279 +2,57 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { useApolloClient } from '@apollo/react-hooks'
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
 import gql from 'graphql-tag'
-import { SvgIcon,Select, Theme, TableSortLabel, Toolbar, Paper, TableHead, TableBody, TableCell, TableRow, Table, IconButton, InputAdornment } from '@material-ui/core'
+import { Theme, Paper, TableBody, Table } from '@material-ui/core'
 import { SortDirection } from '@material-ui/core/TableCell'
 import { KeyboardArrowLeft, KeyboardArrowRight, Edit } from '@material-ui/icons'
-import { Input, Chip, Checkbox } from '@contentkit/components'
-import { withStyles, makeStyles } from '@material-ui/styles'
 import clsx from 'clsx'
-import {
-  CSSTransition,
-  TransitionGroup,
-} from 'react-transition-group'
+import { TransitionGroup } from 'react-transition-group'
 import orderBy from 'lodash/orderBy'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
 import DashboardToolbar from '../DashboardToolbar'
 import { useOnSave } from './mutations'
+import columns from './columns'
+import DashboardTableRow from './components/TableRow'
+import DashboardPagination from './components/DashboardPagination'
+import DashboardTableHead from './components/TableHead'
+import { GraphQL } from '../../types'
+import useStyles from './styles'
 
-const EditIcon = props => (
-  <svg width="16" height="16" aria-hidden="true" focusable="false" data-prefix="fal" data-icon="pen" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M493.25 56.26l-37.51-37.51C443.25 6.25 426.87 0 410.49 0s-32.76 6.25-45.26 18.74L12.85 371.12.15 485.34C-1.45 499.72 9.88 512 23.95 512c.89 0 1.78-.05 2.69-.15l114.14-12.61 352.48-352.48c24.99-24.99 24.99-65.51-.01-90.5zM126.09 468.68l-93.03 10.31 10.36-93.17 263.89-263.89 82.77 82.77-263.99 263.98zm344.54-344.54l-57.93 57.93-82.77-82.77 57.93-57.93c6.04-6.04 14.08-9.37 22.63-9.37 8.55 0 16.58 3.33 22.63 9.37l37.51 37.51c12.47 12.48 12.47 32.78 0 45.26z"></path></svg>
-)
-
-const SaveIcon = props => (
-  <svg width="16" height="16" aria-hidden="true" focusable="false" data-prefix="fal" data-icon="save" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M433.941 129.941l-83.882-83.882A48 48 0 0 0 316.118 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V163.882a48 48 0 0 0-14.059-33.941zM288 64v96H96V64h192zm128 368c0 8.822-7.178 16-16 16H48c-8.822 0-16-7.178-16-16V80c0-8.822 7.178-16 16-16h16v104c0 13.255 10.745 24 24 24h208c13.255 0 24-10.745 24-24V64.491a15.888 15.888 0 0 1 7.432 4.195l83.882 83.882A15.895 15.895 0 0 1 416 163.882V432zM224 232c-48.523 0-88 39.477-88 88s39.477 88 88 88 88-39.477 88-88-39.477-88-88-88zm0 144c-30.879 0-56-25.121-56-56s25.121-56 56-56 56 25.121 56 56-25.121 56-56 56z"></path></svg>
-)
-
-const ChevronDown = props => (
-  <svg {...props} width="16" height="16" aria-hidden="true" focusable="false" data-prefix="fal" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M443.5 162.6l-7.1-7.1c-4.7-4.7-12.3-4.7-17 0L224 351 28.5 155.5c-4.7-4.7-12.3-4.7-17 0l-7.1 7.1c-4.7 4.7-4.7 12.3 0 17l211 211.1c4.7 4.7 12.3 4.7 17 0l211-211.1c4.8-4.7 4.8-12.3.1-17z"></path></svg>
-)
-
-const SortDown = props => (
-  <svg {...props} width="16" height="16" aria-hidden="true" focusable="false" data-prefix="fal" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path fill="currentColor" d="M252.485 343.03l-7.07-7.071c-4.686-4.686-12.284-4.686-16.971 0L145 419.887V44c0-6.627-5.373-12-12-12h-10c-6.627 0-12 5.373-12 12v375.887l-83.444-83.928c-4.686-4.686-12.284-4.686-16.971 0l-7.07 7.071c-4.686 4.686-4.686 12.284 0 16.97l116 116.485c4.686 4.686 12.284 4.686 16.971 0l116-116.485c4.686-4.686 4.686-12.284-.001-16.97z"></path></svg>
-)
-
-const SortUp = props => (
-  <svg widht="16" height="16" aria-hidden="true" focusable="false" data-prefix="fal" data-icon="sort-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-sort-up fa-w-10 fa-2x"><path fill="currentColor" d="M32.032 224h255.93c28.425 0 42.767-34.488 22.627-54.627l-127.962-128c-12.496-12.496-32.758-12.497-45.255 0l-127.968 128C-10.695 189.472 3.55 224 32.032 224zM160 64l128 128H32L160 64z"></path></svg>
-)
-
-const columns = [{
-  title: 'Title',
-  key: 'title',
-  dataIndex: 'title',
-  editable: true,
-  render: x => x,
-  Component: TableCellInput
-}, {
-  title: 'Status',
-  key: 'status',
-  dataIndex: 'status',
-  editable: true,
-  render: x => x,
-  Component: TableCellSelect,
-  getOptions: () => ([
-    { key: 'DRAFT', label: 'DRAFT' },
-    { key: 'PUBLISHED', label: 'PUBLISHED' }
-  ])
-}, {
-  title: 'Project',
-  key: 'project',
-  dataIndex: 'project',
-  render: (project) => project.name,
-  editable: false
-}, {
-  title: 'Date',
-  key: 'created_at',
-  dataIndex: 'createdAt',
-  editable: false,
-  render: (date) => formatDate(date)
-}, {
-  title: 'Tags',
-  key: 'posts_tags',
-  dataIndex: 'tags',
-  editable: false,
-  render: (posts_tags) => {
-    return posts_tags.map(({ tag }) => (
-      <Chip key={tag.id} label={tag.name} style={{ marginRight: 8 }} />
-    ))
-  }
-}]
-
-function TableCellInput (props) {
-  const ref = React.useRef(null)
-  const { onBlur, isEditing, value, onChange, onClick, isHovering, classes } = props
-
-  React.useEffect(() => {
-    if (isEditing) {
-      ref.current.focus()
-    }
-  }, [isEditing])
-
-  function toggleClick (evt) {
-    onClick(evt)
-  }
-
-  return (
-    <Input
-      inputRef={ref}
-      autoFocus={isEditing}      
-      disabled={!isEditing}
-      value={value}
-      onChange={onChange}
-      onBlur={onBlur}
-      endAdornment={
-        <InputAdornment position='end' className={classes.adornment}>
-          <IconButton onClick={toggleClick}>
-            {isEditing ? <SaveIcon /> : <EditIcon />}
-          </IconButton>
-        </InputAdornment>
-      }
-    />
-  )
+enum PaginationDirection {
+  FORWARD = 'forward',
+  BACKWARD = 'backward'
 }
 
-function TableCellSelect (props) {
-  const { onBlur, isEditing, classes, value, onChange, onClick, getOptions } = props
-  const options = getOptions(props)
-  return (
-    <Select
-      native
-      value={value}
-      onChange={onChange}
-      IconComponent={props => {
-        return (<ChevronDown className={classes.icon} />)
-      }}
-      input={
-        <Input
-          onBlur={onBlur}
-          endAdornment={
-            <InputAdornment position='end' className={classes.adornment}>
-              <IconButton onClick={onClick}>
-                {isEditing ? <SaveIcon /> : <EditIcon />}
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      }
-      disabled={!isEditing}
-    >
-      {
-        options.map(option => (<option key={option.key} value={option.key}>{option.label}</option>))
-      }
-    </Select>
-  )
+type Direction = 'asc' | 'desc'
+
+type SortState = {
+  direction: SortDirection,
+  column: string
 }
 
-const useEditableCellStyles = makeStyles(theme => ({
-  adornment: {
-    // @ts-ignore
-    visibility: props => props.isEditing ? 'visible' : 'hidden'
-  },
-  tableCell: {
-    backgroundColor: '#f4f4f4',
-    borderBottom: '1px solid #e0e0e0',
-    '&:hover $button': {
-      visibility: 'visible'
-    }
-  },
-  icon: {
-    color: 'rgba(0, 0, 0, 0.54)',
-    position: 'absolute',
-    pointerEvents: 'none',
-    right: 50
-  }
-}))
-
-function EditableCell (props) {
-  const classes = useEditableCellStyles(props)
-  const {
-    row,
-    column,
-    onChange,
-    toggleEditing,
-    isEditing,
-    onSave
-  } = props
-  const value = column.render(row[column.key])
-  const { Component } = column
-  const content = column.editable
-    ? <Component
-      raw={row[column.key]}
-      value={value}
-      onChange={({ target }) => onChange(row, column.key, target.value)}
-      isEditing={isEditing}
-      onClick={evt => toggleEditing(row, column)}
-      getOptions={column.getOptions}
-      classes={classes}
-     // onBlur={evt => onSave(row)}
-    />
-    : value
-  return (
-    <TableCell
-      key={column.key}
-      className={classes.tableCell}
-    >
-      {content}
-    </TableCell>
-  )
+const initialSortState : SortState = {
+  direction: 'desc',
+  column: 'title'
 }
-
-function DashboardTableRow (props) {
-  const {
-    row,
-    className,
-    selectRow,
-    selectedPosts,
-    columns,
-    classes,
-    onChange,
-    onContextMenu,
-    onSave
-  } = props
-  const [columnKey, setColumnKey] = React.useState(null)
-
-  function toggleEditing (row, column) {
-    if (columnKey === column.key) {
-      setColumnKey(null)
-      onSave({ ...row, project_id: row.project.id })
-    } else {
-      setColumnKey(column.key)
-    }
-  }
-
-  return (
-    <TableRow
-      className={className}
-      onContextMenu={evt => onContextMenu(evt, row)}
-    >
-      <TableCell className={classes.checkboxTableCell}>
-        <Checkbox
-          value={row.id}
-          checked={selectedPosts.includes(row.id)}
-          id={`checkbox_${row.id}`}
-          onChange={evt => selectRow(row.id)}
-        />
-      </TableCell>
-      {columns.map(column => (
-        <EditableCell
-          key={`${row.id}-${column.key}`}
-          toggleEditing={toggleEditing}
-          isEditing={column.key === columnKey}
-          column={column}
-          row={row}
-          onChange={onChange}
-          onSave={onSave}
-        />
-      ))}
-    </TableRow>
-  )
-}
-
-const formatDate = (str) => distanceInWordsToNow(new Date(str))
 
 function DashboardTable (props) {
-
-  const client = useApolloClient()
-  const onSave = useOnSave()
-  const [offset, setOffset] = React.useState(0)
-  const [sort, setSort] = React.useState({
-    direction: 'desc',
-    column: 'title'
-  })
-
-  const [anchorEl, setAnchorEl] = React.useState(null)
-
   const {
     posts,
     selectedPosts,
     selectPosts,
     search,
-    classes,
     getToolbarProps
   } = props
+  const classes = useStyles(props)
+  const client = useApolloClient()
+  const onSave = useOnSave()
+  const [offset, setOffset] = React.useState(0)
+  const [sort, setSort] = React.useState(initialSortState)
 
-  const setContextMenuAnchorEl = evt => {
+  const [anchorEl, setAnchorEl] = React.useState(null)
+
+  const setContextMenuAnchorEl = (evt: any) => {
     setAnchorEl(evt.target)
   }
 
@@ -299,14 +77,14 @@ function DashboardTable (props) {
     setContextMenuAnchorEl(evt)
   }
 
-  const load = (direction) => {
+  const load = (direction: PaginationDirection) => {
     const { variables, data: { posts_aggregate } } = posts
     const { nodes } = posts_aggregate
-    const offset = direction === 'FORWARD' ? offset + 10 : Math.max(0, offset - 10)
+    const nextOffset = direction === PaginationDirection.FORWARD ? offset + 10 : Math.max(0, offset - 10)
     const nextVariables = {
       ...variables,
       limit: 10,
-      offset: offset
+      offset: nextOffset
     }
 
     return posts.fetchMore({
@@ -329,11 +107,11 @@ function DashboardTable (props) {
     })
   }
 
-  const getNextPage = (direction) => {
+  const getNextPage = (direction: PaginationDirection) => {
     load(direction)
   }
 
-  const onChange = (post, propertyKey, propertyValue) => {
+  const onChange = (post: GraphQL.Post, propertyKey: string, propertyValue: any) => {
     const { variables, posts: { data: { posts_aggregate } } } = props
     const nodes = [...posts_aggregate.nodes]
     const index = nodes.findIndex(c => c.id === post.id)
@@ -380,95 +158,38 @@ function DashboardTable (props) {
       </div>
       <Paper elevation={0}>
         <TransitionGroup>
-        <Table size='small' className={classes.table}>
-          <TableHead>
-            <TableCell key='checkbox' className={classes.tableHeadCell} padding='checkbox' />
-            {columns.map(column =>
-              <TableCell
-                key={`tc_${column.key}`}
-                className={classes.tableHeadCell}
-                sortDirection={sort.direction}
-              >
-                <TableSortLabel
-                  IconComponent={SortDown}
-                  active={sort.column === column.key}
-                  direction={sort.direction}
-                  onClick={onSort(column)}
-                >
-                  {column.title}
-                </TableSortLabel>
-              </TableCell>  
-            )}
-          </TableHead>
-          <TableBody>
-            {
-              orderBy(dataSource, [sort.column], [sort.direction]).map(row => {
-                const className = clsx({
-                  [classes.row]: true,
-                  [classes.selected]: selectedPosts.includes(row.id)
+          <Table size='small' className={classes.table}>
+            <DashboardTableHead sort={sort} onSort={onSort} columns={columns} />
+            <TableBody>
+              {
+                orderBy(dataSource, [sort.column], [sort.direction]).map(row => {
+                  const className = clsx({
+                    [classes.row]: true,
+                    [classes.selected]: selectedPosts.includes(row.id)
+                  })
+                  return (
+                    <DashboardTableRow
+                      key={row.id}
+                      row={row}
+                      className={className}
+                      selectRow={selectRow}
+                      selectedPosts={selectedPosts}
+                      columns={columns}
+                      classes={classes}
+                      onChange={onChange}
+                      onSave={onSave}
+                      onContextMenu={onContextMenu}
+                    />
+                  )
                 })
-                return (
-                  <DashboardTableRow
-                    key={row.id}
-                    row={row}
-                    className={className}
-                    selectRow={selectRow}
-                    selectedPosts={selectedPosts}
-                    columns={columns}
-                    classes={classes}
-                    onChange={onChange}
-                    onSave={onSave}
-                    onContextMenu={onContextMenu}
-                  />
-                )
-              })
-            }
-          </TableBody>
-        </Table>
+              }
+            </TableBody>
+          </Table>
         </TransitionGroup>
-        <Toolbar disableGutters className={classes.pagination}>
-          <IconButton onClick={evt => getNextPage('BACKWARD')}>
-            <KeyboardArrowLeft />
-          </IconButton>
-          <IconButton onClick={evt => getNextPage('FORWARD')}>
-            <KeyboardArrowRight />
-          </IconButton>
-        </Toolbar>
+        <DashboardPagination getNextPage={getNextPage} />
       </Paper>
     </div>
   )
 }
 
-
-const styles = (theme) => ({
-  checkboxTableCell: {
-    backgroundColor: '#f4f4f4',
-    borderBottom: '1px solid #e0e0e0'
-  },
-  tableHeadCell: {
-    backgroundColor: '#e0e0e0'
-  },
-  wrapper: {
-    [theme.breakpoints.up('md')]: {
-      margin: '1em 0',
-      padding: 30,
-      boxShadow: theme.variables.shadow1,
-      backgroundColor: theme.variables.cardBackground
-    }
-  },
-  table: {
-    fontFamily: theme.variables.fontFamily
-  },
-  toolbar: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  pagination: {
-    justifyContent: 'flex-end'
-  },
-  selected: {},
-  row: {}
-})
-
-export default withStyles(styles)(DashboardTable)
+export default DashboardTable

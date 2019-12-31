@@ -10,7 +10,6 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     marginBottom: 15
   },
-  button: {},
   input: {
     marginBottom: 15
   },
@@ -24,14 +23,11 @@ const useStyles = makeStyles(theme => ({
 
 function ProjectModalContent (props) {
   const classes = useStyles(props)
-  const ref = React.useRef()
-
-  function setRef (instance) {
-    ref.current = ref
-  }
+  const projectIdRef = React.useRef()
 
   const onCopy = () => {
-    ref.current.select()
+    // @ts-ignore
+    projectIdRef.current.select()
     document.execCommand('copy')
   }
 
@@ -51,9 +47,8 @@ function ProjectModalContent (props) {
       />
       <ProjectIdInput
         value={project?.data?.projects[0]?.id}
-        setRef={setRef}
+        ref={projectIdRef}
         onCopy={onCopy}
-        classes={classes}
       />
       <WhitelistDomains
         deleteOrigin={props.deleteOrigin}

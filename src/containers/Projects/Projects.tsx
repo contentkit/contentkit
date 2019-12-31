@@ -1,6 +1,6 @@
 import React from 'react'
 import Haikunator from 'haikunator'
-import { withStyles } from '@material-ui/styles'
+import { makeStyles } from '@material-ui/styles'
 import { AppWrapper } from '@contentkit/components'
 import ProjectModal from '../../components/ProjectModal'
 import ProjectsList from '../../components/ProjectsList'
@@ -8,97 +8,80 @@ import Button from '../../components/Button'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
 import { PROJECTS_QUERY, useUserQuery } from '../../graphql/queries'
-import { UPDATE_PROJECT, CREATE_PROJECT, DELETE_PROJECT, useCreateProjectMutation, useDeleteProjectMutation, useUpdateProjectMutation } from '../../graphql/mutations'
+import { useCreateProjectMutation, useDeleteProjectMutation, useUpdateProjectMutation } from '../../graphql/mutations'
 
 const haikunator = new Haikunator()
 
-class Projects extends React.Component {
-  static defaultProps = {}
+const useStyles = makeStyles(theme => ({
+  container: {
+    width: '660px',
+    margin: '2em auto',
+  },
+  inner: {
+    margin: '2em 0'
+  }
+}))
 
-  state = {
-    activeProject: undefined,
-    open: false
+function Projects (props) {
+  const classes = useStyles(props)
+  const [activeProject, setActiveProject] = React.useState(null)
+  const [open, setOpen] = React.useState(false)
+
+  const {
+    deleteProject,
+    createProject,
+    users,
+    projects
+  } = props
+
+  const onClick = activeProject => {
+    setActiveProject(activeProject)
+    setOpen(true)
   }
 
-  handleClick = activeProject => this.setState({
-    activeProject,
-    open: true
-  })
-
-  handleClose = () => {
-    this.setState({
-      activeProject: null,
-      open: false
-    })
+  const onClose = () => {
+    setActiveProject(null)
+    setOpen(false)
   }
 
-  handleDelete = (id) => {
-    this.props.deleteProject.mutate({
-      id: this.state.activeProject
-    })
+  const onDelete = (id: string) => {
+    deleteProject.mutate({ id: activeProject })
   }
 
-  onMouseEnter = activeProject => {
-    this.setState({
-      activeProject,
-      open: false
-    })
-  }
-
-  onMouseLeave = () => {}
-
-  createProject = () => {
-    this.props.createProject.mutate({
+  const onCreateProject = () => {
+    createProject.mutate({
       name: haikunator.haikunate(),
-      userId: this.props.users.data.users[0].id
+      userId: users.data.users[0].id
     })
   }
 
-  render () {
-    const { ...rest } = this.props
-    const {
-      client,
-      createProject,
-      projects,
-      classes,
-      history,
-      logged
-    } = this.props
-    return (
-      <AppWrapper
-        sidebarProps={{
-          client,
-          history,
-          logged
-        }}
-      >
-        <ProjectModal
-          {...rest}
-          activeProject={this.state.activeProject}
-          open={this.state.open}
-          handleClose={this.handleClose}
-          handleDelete={this.handleDelete}
-        />
-        <div className={classes.container}>
-          <div className={classes.inner}>
-            <ProjectsList
-              allProjects={projects?.data?.projects}
-              handleClick={this.handleClick}
-              onMouseEnter={this.onMouseEnter}
-              onMouseLeave={this.onMouseLeave}
-              handleDelete={this.handleDelete}
-              handleClose={this.handleClose}
-            />
-          </div>
-          <Button
-            onClick={this.createProject}
-          >
-            New Project
-          </Button>
+  return (
+    <AppWrapper
+      sidebarProps={{}}
+    >
+      <ProjectModal
+        {...props}
+        activeProject={activeProject}
+        open={open}
+        handleClose={onClose}
+        handleDelete={onDelete}
+      />
+      <div className={classes.container}>
+        <div className={classes.inner}>
+          <ProjectsList
+            allProjects={projects?.data?.projects}
+            onClick={onClick}
+            onClose={onClose}
+          />
         </div>
-      </AppWrapper>
-    )
-  }
+        <Button
+          onClick={onCreateProject}
+        >
+          New Project
+        </Button>
+      </div>
+    </AppWrapper>
+  )
 }
 
 function ProjectsMutations (props) {
@@ -132,13 +115,5 @@ function ProjectsMutations (props) {
   )
 }
 
-export default withStyles(theme => ({
-  container: {
-    width: '660px',
-    margin: '2em auto',
-  },
-  inner: {
-    margin: '2em 0'
-  }
-}))(ProjectsMutations)
+export default ProjectsMutations
 

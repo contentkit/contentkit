@@ -12,7 +12,7 @@ import {
   hydrate,
   toRaw,
 } from './util'
-import { setEditorState } from '../../lib/redux'
+import { setEditorState, saveEditorState } from '../../lib/redux'
 import { UPLOAD_MUTATION } from '../../graphql/mutations'
 import PostEditorHistoryModal from '../../components/PostEditorHistoryModal'
 import PostMetaModal from '../../components/PostEditorMetaModal'
@@ -71,6 +71,7 @@ export const modals : ModalItem[] = [
 ]
 
 function PostEditor (props) {
+  const client = useApolloClient()
   const editorRef = React.createRef()
   const [loading, setLoading] = React.useState(false)
   const [open, setOpen] = React.useState({
@@ -81,9 +82,8 @@ function PostEditor (props) {
   const {
     editorState,
     setEditorState,
-    client,
+    saveEditorState,
     history,
-    updateDocument,
     createImage,
     deleteImage,
     mediaProviderActions,
@@ -95,6 +95,7 @@ function PostEditor (props) {
       }
     }
   } = props
+  console.log(editorState.toJS())
   const mediaProvider : React.RefObject<any> = React.useRef(null)
 
   React.useEffect(() => {
@@ -111,23 +112,15 @@ function PostEditor (props) {
 
   const getEditorState = () => editorState
 
-  const saveDocument = async ({ editorState }) => {
-    const raw = toRaw(editorState)
-    const html = encode(convertToHTML(editorState))
-    const data = await updateDocument.mutate({
-      id: posts[0].id,
-      raw: raw,
-      encodedHtml: html
-    })
-
+  const saveDocument = async () => {
+    const id = posts[0].id
+    await saveEditorState(client, { id })
     setLoading(false)
-
-    return data
   }
 
   const manualSave = async () => {
     setLoading(true)
-    await saveDocument({ editorState })
+    await saveDocument()
   }
 
   const getHtml = (editorState) => {
@@ -191,7 +184,7 @@ function PostEditor (props) {
     >
       {modals.map(({ Component, getComponentProps, name }) => {
         return (
-          <Component {...getComponentProps(modalProps)} open={open[name]} onClose={onClose} />
+          <Component key={name} {...getComponentProps(modalProps)} open={open[name]} onClose={onClose} />
         )
       })}
       <PostEditorComponent
@@ -214,23 +207,19 @@ PostEditor.propTypes = {
   setEditorState: PropTypes.func,
   hydrated: PropTypes.bool,
   logged: PropTypes.bool,
-  updateDocument: PropTypes.object,
   updatePost: PropTypes.func
 }
 
 const mapStateToProps = state => state.app
 
-const mapDispatchToProps = { setEditorState }
+const mapDispatchToProps = { setEditorState, saveEditorState }
 
 function PostEditorMutations (props: any) {
-  const { posts, client } = props
   const createImage = useCreateImage()
   const deleteImage = useDeleteImage()
-  const updateDocument = useUpdateDocument()
   const componentProps = {
     createImage,
     deleteImage,
-    updateDocument,
     mediaProviderActions: {
       onDelete: deleteImage,
       onCreate: createImage

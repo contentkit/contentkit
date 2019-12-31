@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { projectQueryShape } from '../../shapes'
 import { Chip, Input } from '@contentkit/components'
 import { makeStyles } from '@material-ui/styles'
+import { GraphQL } from '../../types'
 
 const useStyles = makeStyles({
   root: {
@@ -53,7 +54,7 @@ type WhitelistDomainsProps = {
     mutate: ({ id: string }) => void
   },
   createOrigin: {
-    mutate: ({ name: string, projectId: string, userId: string }) => void
+    mutate: (variables: GraphQL.CreateOriginMutationVariables) => void
   },
   project: any,
   users: any
@@ -85,7 +86,6 @@ function WhitelistDomains (props: WhitelistDomainsProps) {
     }
   }
 
-  const { project } = props
   const domains = project?.data?.projects[0]?.origins || []
   return (
     <div>
@@ -103,8 +103,8 @@ function WhitelistDomains (props: WhitelistDomainsProps) {
 }
 
 WhitelistDomains.propTypes = {
-  createOrigin: PropTypes.func.isRequired,
-  deleteOrigin: PropTypes.func.isRequired,
+  createOrigin: PropTypes.shape({ mutate: PropTypes.func }).isRequired,
+  deleteOrigin: PropTypes.shape({ mutate: PropTypes.func }).isRequired,
   project: projectQueryShape
 }
 

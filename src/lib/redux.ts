@@ -1,8 +1,12 @@
 import * as redux from 'redux'
-import { EditorState } from 'draft-js'
+import { EditorState, convertFromRaw, convertToRaw, genKey } from 'draft-js'
+import { expand, compress } from 'draft-js-compact'
 import { connectRouter } from 'connected-react-router'
 import { createBrowserHistory } from 'history'
 import thunk from 'redux-thunk'
+import { encode } from './utf8'
+import { convertToHTML } from '@contentkit/convert'
+import { getUpdateDocumentMutationOptions } from '../graphql/mutations'
 
 const history = createBrowserHistory()
 const initialState = {
@@ -102,8 +106,31 @@ export const setSearchLoadingState = payload => ({
   payload
 })
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+export const toRaw = (editorState: EditorState) => {
+  return compress(convertToRaw(editorState.getCurrentContent()))
+}
+
+export const fromRaw = (raw: any): EditorState => {
+  return EditorState.createWithContent(
+    convertFromRaw(expand(raw))
+  )
+}
+
+export const saveEditorState = (client, { id }) => async (dispatch, getState) => {
+  const state = getState()
+  const raw = toRaw(state.app.editorState)
+  const html = encode(convertToHTML(state.app.editorState))
+  const variables = {
+    id: id,
+    raw: raw,
+    encodedHtml: html
+  }
+  const options = getUpdateDocumentMutationOptions(client, variables)
+  await client.mutate(options)
+}
+
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
   : redux.compose
 
 const middleware = [thunk]

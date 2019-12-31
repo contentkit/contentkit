@@ -13,10 +13,14 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function ProjectModalIdInput (props) {
+type ProjectModalIdInputProps = {
+  onCopy: (evt: any) => void,
+  value: string
+}
+
+const ProjectModalIdInput = React.forwardRef((props: ProjectModalIdInputProps, ref) => {
   const {
     onCopy,
-    setRef,
     value
   } = props
   const classes = useStyles(props)
@@ -24,7 +28,7 @@ function ProjectModalIdInput (props) {
     <Input
       className={classes.input}
       value={value}
-      inputRef={setRef}
+      inputRef={ref}
       endAdornment={
         <InputAdornment position='end'>
           <IconButton
@@ -41,6 +45,6 @@ function ProjectModalIdInput (props) {
       }
     />
   )
-}
+})
 
 export default ProjectModalIdInput

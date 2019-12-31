@@ -9,12 +9,14 @@ import {
 import {
   CREATE_ORIGIN,
   DELETE_ORIGIN,
-  useCreateOriginMutation
+  useCreateOriginMutation,
+  useDeleteOriginMutation
 } from '../../graphql/mutations'
 
 import Button from '../Button'
 
 import { makeStyles } from '@material-ui/styles'
+import { GraphQL } from '../../types'
 
 const useStyles = makeStyles(theme => ({
   modal: {},
@@ -25,8 +27,33 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+type ProjectModalProps = {
+  users: GraphQL.UserQueryResult,
+  project: GraphQL.ProjectQueryResult,
+  open: boolean,
+  updateProject: () => void,
+  handleDelete: () => void,
+  handleClose: () => void
+}
+
 function ProjectModal (props) {
+  const { 
+    users,
+    project,
+    open,
+    updateProject,
+    handleDelete,
+    handleClose,
+    createOrigin,
+    deleteOrigin
+  } = props
+  if (project.loading) return null
+
+  const userId = users.data.users[0].id
+  const projectId = project.data.projects[0].id
+  const projectName = project.data.projects[0].name
   const classes = useStyles(props)
+
   const onChange = data => {
     const { client, project } = props
     return client.writeQuery({
@@ -41,45 +68,37 @@ function ProjectModal (props) {
     })
   }
 
-  const handleSave = () => {
-    const { project, updateProject } = props
+  const onSave = () => {
     handleClose()
-    const { name, id } = project.data.projects[0]
-    const userId = props.users.data.users[0].id
-    updateProject.mutate({ name, id, userId })
+    updateProject.mutate({ name: projectName, id: projectId, userId })
   }
 
-  const handleDelete = () => {
-    const { handleDelete, project: { data: { projects } } } = props
+  const onDelete = () => {
     handleClose()
-    const userId = props.users.data.users[0].id
-    handleDelete({ id: projects[0].id, userId })
+    handleDelete({ id: projectId, userId })
   }
-
-  const handleClose = () => props.handleClose()
-  if (props.project.loading) return null
+  
   return (
     <Dialog
-      open={props.open}
+      open={open}
       onClose={handleClose}
       className={classes.modal}
-      size='md'
       fullWidth
       PaperProps={{
         square: true
       }}
     >
-      <DialogTitle>{props?.project?.data?.projects[0]?.name}</DialogTitle>
+      <DialogTitle>{project?.data?.projects[0]?.name}</DialogTitle>
       <DialogContent>
         <ProjectModalContent
           onChange={onChange}
-          handleSave={handleSave}
-          handleDelete={handleDelete}
-          handleClose={props.handleClose}
-          project={props.project}
-          deleteOrigin={props.deleteOrigin}
-          createOrigin={props.createOrigin}
-          users={props.users}
+          handleSave={onSave}
+          handleDelete={onDelete}
+          handleClose={handleClose}
+          project={project}
+          deleteOrigin={deleteOrigin}
+          createOrigin={createOrigin}
+          users={users}
         />
       </DialogContent>
       <DialogActions>
@@ -89,7 +108,7 @@ function ProjectModal (props) {
           </Grid>
           <Grid item xs={6} justify='flex-end' style={{ justifyContent: 'flex-end', display: 'flex' }}>
             <Button key={'cancel'} onClick={handleClose} style={{ marginRight: 10 }}>Cancel</Button>
-            <Button key={'update'} onClick={handleSave}>Update</Button>
+            <Button key={'update'} onClick={onSave}>Update</Button>
           </Grid>
         </Grid>
       </DialogActions>
@@ -106,39 +125,15 @@ ProjectModal.propTypes = {
 
 
 function ProjectsModalWithData (props) {
-  const projects = useQuery(PROJECT_QUERY, { variables: { id: props.activeProject }, skip: !props.activeProject })
+  if (!props.open) {
+    return false
+  }
+  const project = useQuery(PROJECT_QUERY, { variables: { id: props.activeProject }, skip: !props.activeProject })
   const createOrigin = useCreateOriginMutation()
-  const [deleteOriginMutation, deleteOriginData] = useMutation(DELETE_ORIGIN)
-
-  const deleteOrigin = variables => deleteOriginMutation({
-    variables,
-    optimisticResponse: {
-      __typename: 'Mutation',
-      deleteOrigin: {
-        __typename: 'Origin',
-        id: variables.id
-      }
-    },
-    update: (store, { data: { deleteOrigin } }) => {
-      const { id } = deleteOrigin
-      const { project } = ownProps
-      const origins = [...project.data.project.origins]
-        .filter(origin => origin.id !== id)
-      store.writeQuery({
-        query: PROJECT_QUERY,
-        data: {
-          project: {
-            ...project.data.project,
-            origins
-          }
-        },
-        variables: project.variables
-      })
-    }
-  })
+  const deleteOrigin = useDeleteOriginMutation()
 
   return (
-    <ProjectModal {...props} project={projects} createOrigin={createOrigin} deleteOrigin={deleteOrigin} />
+    <ProjectModal {...props} project={project} createOrigin={createOrigin} deleteOrigin={deleteOrigin} />
   )
 }
 

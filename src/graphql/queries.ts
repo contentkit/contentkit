@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, QueryHookOptions } from '@apollo/react-hooks'
+import { GraphQL } from '../types'
 
 export const PROJECTS_QUERY = gql`
   query {
@@ -123,10 +124,18 @@ export const TAG_QUERY = gql`
   }
 `
 
-export function useUserQuery (options = {}) {
+export function useUserQuery (options = {}): GraphQL.UserQueryResult {
   return useQuery(USER_QUERY, options)
 }
 
-export function useProjectsQuery () {
+export function useProjectsQuery (): GraphQL.ProjectsQueryResult {
   return useQuery(PROJECTS_QUERY)
+}
+
+export function usePostsAggregateQuery (options): GraphQL.PostsAggregateQueryResult {
+  return useQuery(POSTS_AGGREGATE_QUERY, options)
+}
+
+export function useTagQuery (options): GraphQL.TagQueryResult {
+  return useQuery(TAG_QUERY, options)
 }

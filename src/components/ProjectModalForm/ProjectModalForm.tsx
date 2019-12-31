@@ -3,10 +3,15 @@ import PropTypes from 'prop-types'
 import { Input } from '@contentkit/components'
 
 type ProjectModalFormProps = {
-
+  onChange: ({ name: string }) => void,
+  project: { name: string },
+  classes: {
+    formControl: string,
+    input: string
+  }
 }
 
-function ProjectModalForm (props) {
+function ProjectModalForm (props: ProjectModalFormProps) {
   const { classes, project, onChange } = props
   return (
     <div

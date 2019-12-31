@@ -4,45 +4,45 @@ import ProjectAvatar from '../ProjectsListItemAvatar'
 import { ListItem, ListItemText, ListItemAvatar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: any) => ({
   root: {
     padding: theme.spacing(2)
   }
 }))
 
+type ProjectListItemProps = {
+  project: { id: string, name: string },
+  onClick: (id: string) => void
+}
+
 function ProjectsListItem (props) {
   const classes = useStyles(props)
-  const { project, handleClick } = props
+  const {
+    project,
+    onClick
+  } = props
 
-  const onMouseEnter = evt => {
-    props.onMouseEnter(project.id)
-  }
-
-  const onMouseLeave = evt => {
-    props.onMouseLeave(project.id)
+  const handleClick = evt => {
+    onClick(project.id)
   }
 
   return (
     <ListItem
-      onClick={() => handleClick(props.project.id)}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      onClick={handleClick}
       className={classes.root}
     >
       <ListItemAvatar>
-        <ProjectAvatar id={project.id} />
+        <ProjectAvatar />
       </ListItemAvatar>
       <ListItemText
-        primary={<span>{project.name}</span>}
-        secondary={<span>Posts</span>}
+        primary={project.name}
+        secondary={'Posts'}
       />
     </ListItem>
   )
 }
 
 ProjectsListItem.propTypes = {
-  onMouseEnter: PropTypes.func.isRequired,
-  onMouseLeave: PropTypes.func.isRequired,
   project: PropTypes.object
 }
 

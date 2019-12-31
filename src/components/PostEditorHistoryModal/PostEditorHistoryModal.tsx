@@ -4,110 +4,113 @@ import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import { expand } from 'draft-js-compact'
 import distanceInWords from 'date-fns/distance_in_words'
 
-import classes from './styles.scss'
 import clsx from 'clsx'
 
 import { Dialog, DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
+
 import Button from '../Button'
+
+const useStyles = makeStyles(theme => ({
+  row: {
+    display: 'flex'
+  },
+  sidebar: {
+    marginRight: 30,
+    flexBasis: '30%',
+  },
+  column: {
+    display: 'flex',
+    flexDirection: 'column'
+  }
+}))
 
 const formatDate = (timestamp) =>
   distanceInWords(new Date(timestamp), new Date())
 
-class PostEditorHistoryModal extends React.Component {
-  state = {
-    editorState: EditorState.createEmpty()
-  }
+function PostEditorHistoryModal (props) {
+  const { 
+    onClose,
+    open,
+    posts
+  } = props
+  const classes = useStyles(props)
+  const [editorState, setEditorState] = React.useState(EditorState.createEmpty())
 
-  static propTypes = {
-    open: PropTypes.bool.isRequired,
-    posts: PropTypes.object.isRequired
-  }
-
-  handleClick = version => {
+  const handleClick = version => {
     const { raw } = version
     const contentState = convertFromRaw(expand(raw))
 
-    this.setState({
-      editorState: EditorState.push(
-        this.state.editorState,
-        contentState,
-        'insert-fragment'
-      )
-    })
-  }
-
-  handleRestore = () => {
-    this.props.onClose()
-    this.props.setEditorState(
-      EditorState.push(
-        this.props.editorState,
-        this.state.editorState.getCurrentContent(),
-        'insert-fragment'
-      )
+    setEditorState(
+      EditorState.push(editorState, contentState, 'insert-fragment')
     )
   }
 
-  render () {
-    const { post, open } = this.props
-    const versions = post?.data?.post?.versions || []
-    return (
-      <Dialog
-        fullWidth
-        size='md'
-        onClose={this.props.onClose}
-        open={open}
-        PaperProps={{
-          square: true
-        }}
-      >
-        <DialogTitle>History</DialogTitle>
-        <DialogContent>
-          <div className={classes.row}>
-            <div className={clsx(classes.column, classes.sidebar)}>
-              {/* <Timeline>
-                {
-                  versions.map(version => {
-                    return (
-                      <Timeline.Item onClick={evt => this.handleClick(version)} key={version.id}>
-                        <div>
-                          {formatDate(version.createdAt)}
-                        </div>
-                        <div>
-                          {version?.raw?.blocks[0]?.text || ''}
-                        </div>
-                      </Timeline.Item>
-                    )
-                  })
-                }
-              </Timeline> */}
-            </div>
-            <div className={classes.column}>
-              <Editor
-                editorState={this.state.editorState}
-                readOnly
-              />
-            </div>
+  const handleRestore = () => {
+    onClose()
+    props.setEditorState(
+      EditorState.push(props.editorState, editorState.getCurrentContent(), 'insert-fragment')
+    )
+  }
+
+  const versions = []
+
+  return (
+    <Dialog
+      fullWidth
+      onClose={onClose}
+      open={open}
+      PaperProps={{
+        square: true
+      }}
+    >
+      <DialogTitle>History</DialogTitle>
+      <DialogContent>
+        <div className={classes.row}>
+          <div className={clsx(classes.column, classes.sidebar)}>
+            {/* <Timeline>
+              {
+                versions.map(version => {
+                  return (
+                    <Timeline.Item onClick={evt => this.handleClick(version)} key={version.id}>
+                      <div>
+                        {formatDate(version.createdAt)}
+                      </div>
+                      <div>
+                        {version?.raw?.blocks[0]?.text || ''}
+                      </div>
+                    </Timeline.Item>
+                  )
+                })
+              }
+            </Timeline> */}
           </div>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant='text'
-            onClick={this.props.onClose}
-            color={'secondary'}
-          >
-            Close
-          </Button>
-          <Button
-            variant='text'
-            onClick={this.handleRestore}
-            color={'primary'}
-          >
-            Restore
-          </Button>
-        </DialogActions>
-      </Dialog>
-    )
-  }
+          <div className={classes.column}>
+            <Editor
+              editorState={editorState}
+              readOnly
+            />
+          </div>
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          variant='text'
+          onClick={onClose}
+          color={'secondary'}
+        >
+          Close
+        </Button>
+        <Button
+          variant='text'
+          onClick={handleRestore}
+          color={'primary'}
+        >
+          Restore
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
 }
 
 export default PostEditorHistoryModal

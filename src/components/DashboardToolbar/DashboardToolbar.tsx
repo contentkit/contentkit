@@ -76,11 +76,6 @@ const Cog = props => (
 )
 
 function DashboardToolbar (props) {
-  const [anchorEl, setAnchorEl] = React.useState(null)
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
-  const [snackbarMessage, setSnackbarMessage] = React.useState('')
-  const client = useApolloClient()
-  const users = useQuery(gql`query { users { id } }`)
   const {
     posts,
     projects,
@@ -98,6 +93,12 @@ function DashboardToolbar (props) {
     search: { query }
   } = props
 
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
+  const [snackbarMessage, setSnackbarMessage] = React.useState('')
+  const client = useApolloClient()
+  const users = useQuery(gql`query { users { id } }`)
+
   const timer = React.useRef(null)
 
   const resetSnackbar = () => {
@@ -106,7 +107,7 @@ function DashboardToolbar (props) {
   }
 
   const undoAction = evt => {
-    cancel()
+    // cancel()
     resetSnackbar()
   }
 
