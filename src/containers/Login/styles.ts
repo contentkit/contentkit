@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: any) => ({
     fontFamily: '-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol',
     fontSize: '14px',
     lineHeight: 1.5,
-    [theme.breakpoints.up('sm')]: {
+    [`${theme.breakpoints.up('md')} and (-webkit-max-device-pixel-ratio: 2)`]: {
       padding: '8%'
     }
   },
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: any) => ({
     [theme.breakpoints.down('md')]: {
       width: '100%'
     },
-    [theme.breakpoints.up('md')]: {
+    [`${theme.breakpoints.up('md')} and (-webkit-max-device-pixel-ratio: 2)`]: {
       width: 400
     }
   },
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: any) => ({
     [theme.breakpoints.down('md')]: {
       display: 'none'
     },
-    [theme.breakpoints.up('md')]: {
+    [`${theme.breakpoints.up('md')} and (-webkit-max-device-pixel-ratio: 2)`]: {
       backgroundClip: 'border-box',
       width: 'calc(100% - 400px)',
       overflowY: 'hidden'

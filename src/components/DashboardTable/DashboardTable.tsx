@@ -103,7 +103,7 @@ function DashboardTable (props) {
       }
     })
     .then(() => {
-      setOffset(offset)
+      setOffset(nextOffset)
     })
   }
 

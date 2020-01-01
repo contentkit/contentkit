@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/styles'
+import { MediaQueries } from '../../lib/media'
 
 const styles = makeStyles((theme: any) => ({
   checkboxTableCell: {
@@ -9,6 +10,11 @@ const styles = makeStyles((theme: any) => ({
     backgroundColor: '#e0e0e0'
   },
   wrapper: {
+    [MediaQueries.MOBILE]: {
+      margin: '1em 0',
+      boxShadow: theme.variables.shadow1,
+      backgroundColor: theme.variables.cardBackground
+    },
     [theme.breakpoints.up('md')]: {
       margin: '1em 0',
       boxShadow: theme.variables.shadow1,

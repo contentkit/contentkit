@@ -1,6 +1,7 @@
 import React from 'react'
-import { IconButton, Input, InputAdornment } from '@material-ui/core'
+import { IconButton, InputAdornment } from '@material-ui/core'
 import { VisibilityOff, Visibility } from '@material-ui/icons'
+import { Input } from '@contentkit/components'
 
 function PasswordField (props) {
   const [show, setShow] = React.useState(null)

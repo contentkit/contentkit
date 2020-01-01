@@ -30,6 +30,7 @@ function Projects (props) {
   const {
     deleteProject,
     createProject,
+    updateProject,
     users,
     projects
   } = props
@@ -40,11 +41,19 @@ function Projects (props) {
   }
 
   const onClose = () => {
+    console.log('onClose')
     setActiveProject(null)
     setOpen(false)
   }
 
-  const onDelete = (id: string) => {
+
+  const onSaveProject = (variables) => {
+    onClose()
+    updateProject.mutate(variables)
+  }
+
+  const onDeleteProject = () => {
+    onClose()
     deleteProject.mutate({ id: activeProject })
   }
 
@@ -63,15 +72,15 @@ function Projects (props) {
         {...props}
         activeProject={activeProject}
         open={open}
-        handleClose={onClose}
-        handleDelete={onDelete}
+        onClose={onClose}
+        onDeleteProject={onDeleteProject}
+        onSaveProject={onSaveProject}
       />
       <div className={classes.container}>
         <div className={classes.inner}>
           <ProjectsList
             allProjects={projects?.data?.projects}
             onClick={onClick}
-            onClose={onClose}
           />
         </div>
         <Button

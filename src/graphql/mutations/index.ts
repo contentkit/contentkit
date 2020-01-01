@@ -433,7 +433,7 @@ export function useDeleteTagMutation () {
         delete_tags: {
           __typename: Typename.TAGS_MUTATION_RESPONSE,
           returning: [{
-            __typename: Typename.TAG,
+            __typename: Typename.TAGS,
             id: variables.tagId
           }]
         },
@@ -448,14 +448,14 @@ export function useDeleteTagMutation () {
       update: (store, { data: { delete_tags } }) => {
         const { posts_tags } : { posts_tags: any[] } = store.readQuery({
           query: TAG_QUERY,
-          variables: { id: variables.tagId }
+          variables: { postId: variables.postId }
         })
         store.writeQuery({
           query: TAG_QUERY,
           data: {
             posts_tags: posts_tags.filter(c => c.tag.id !== delete_tags.returning[0].id)
           },
-          variables: { id: variables.tagId }
+          variables: { postId: variables.postId }
         })
       }
     })

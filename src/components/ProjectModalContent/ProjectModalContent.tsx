@@ -33,8 +33,8 @@ function ProjectModalContent (props) {
 
   const {
     project,
-    handleDelete,
-    handleSave
+    users,
+    onChange
   } = props
 
   if (!project?.data) return null
@@ -43,7 +43,7 @@ function ProjectModalContent (props) {
       <ProjectModalForm
         classes={classes}
         project={project?.data?.projects[0]}
-        onChange={props.onChange}
+        onChange={onChange}
       />
       <ProjectIdInput
         value={project?.data?.projects[0]?.id}
@@ -53,8 +53,8 @@ function ProjectModalContent (props) {
       <WhitelistDomains
         deleteOrigin={props.deleteOrigin}
         createOrigin={props.createOrigin}
-        project={props.project}
-        users={props.users}
+        project={project}
+        users={users}
       />
     </div>
   )

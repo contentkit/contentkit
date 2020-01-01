@@ -95,7 +95,6 @@ function PostEditor (props) {
       }
     }
   } = props
-  console.log(editorState.toJS())
   const mediaProvider : React.RefObject<any> = React.useRef(null)
 
   React.useEffect(() => {

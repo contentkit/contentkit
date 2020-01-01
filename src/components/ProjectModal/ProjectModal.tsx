@@ -2,7 +2,7 @@ import React from 'react'
 import ProjectModalContent from '../ProjectModalContent'
 import PropTypes from 'prop-types'
 import { Grid, Dialog, DialogContent, DialogActions, DialogTitle } from '@material-ui/core'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 import {
   PROJECT_QUERY
 } from '../../graphql/queries'
@@ -42,20 +42,19 @@ function ProjectModal (props) {
     project,
     open,
     updateProject,
-    handleDelete,
-    handleClose,
+    onDeleteProject,
+    onSaveProject,
+    onClose,
     createOrigin,
     deleteOrigin
   } = props
-  if (project.loading) return null
-
-  const userId = users.data.users[0].id
-  const projectId = project.data.projects[0].id
-  const projectName = project.data.projects[0].name
+  const client = useApolloClient()
+  const userId = users?.data?.users[0]?.id
+  const projectId = project?.data?.projects[0]?.id
+  const projectName = project?.data?.projects[0]?.name
   const classes = useStyles(props)
 
   const onChange = data => {
-    const { client, project } = props
     return client.writeQuery({
       query: PROJECT_QUERY,
       data: {
@@ -69,19 +68,15 @@ function ProjectModal (props) {
   }
 
   const onSave = () => {
-    handleClose()
-    updateProject.mutate({ name: projectName, id: projectId, userId })
+    onSaveProject({ name: projectName, id: projectId, userId })
   }
 
-  const onDelete = () => {
-    handleClose()
-    handleDelete({ id: projectId, userId })
-  }
+  if (project.loading) return null
   
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      onClose={onClose}
       className={classes.modal}
       fullWidth
       PaperProps={{
@@ -92,9 +87,6 @@ function ProjectModal (props) {
       <DialogContent>
         <ProjectModalContent
           onChange={onChange}
-          handleSave={onSave}
-          handleDelete={onDelete}
-          handleClose={handleClose}
           project={project}
           deleteOrigin={deleteOrigin}
           createOrigin={createOrigin}
@@ -104,10 +96,10 @@ function ProjectModal (props) {
       <DialogActions>
         <Grid container className={classes.actions}>
           <Grid item xs={6}>
-            <Button key={'delete'} onClick={handleDelete} color='danger'>Delete</Button>
+            <Button key={'delete'} onClick={onDeleteProject} color='danger'>Delete</Button>
           </Grid>
           <Grid item xs={6} justify='flex-end' style={{ justifyContent: 'flex-end', display: 'flex' }}>
-            <Button key={'cancel'} onClick={handleClose} style={{ marginRight: 10 }}>Cancel</Button>
+            <Button key={'cancel'} onClick={onClose} style={{ marginRight: 10 }}>Cancel</Button>
             <Button key={'update'} onClick={onSave}>Update</Button>
           </Grid>
         </Grid>
@@ -125,9 +117,6 @@ ProjectModal.propTypes = {
 
 
 function ProjectsModalWithData (props) {
-  if (!props.open) {
-    return false
-  }
   const project = useQuery(PROJECT_QUERY, { variables: { id: props.activeProject }, skip: !props.activeProject })
   const createOrigin = useCreateOriginMutation()
   const deleteOrigin = useDeleteOriginMutation()

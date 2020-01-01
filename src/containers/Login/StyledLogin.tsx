@@ -12,14 +12,29 @@ import { Visibility, VisibilityOff } from '@material-ui/icons'
 import Button from '../../components/Button'
 import { Input } from '@contentkit/components'
 import { useAuthenticateUser, useRegisterUser } from './mutations'
+import { useUserQuery } from '../../graphql/queries'
 import useStyles from './styles'
 import PasswordField from './components/PasswordField'
+import { withRouter } from 'react-router-dom'
+
+const useLoginStyles = makeStyles(theme => ({
+  root: {
+    [`${theme.breakpoints.up('md')} and (-webkit-max-device-pixel-ratio: 2)`]: {
+      fontSize: 14
+    },
+    [`${theme.breakpoints.down('md')}`]: {
+      fontSize: 20
+    },
+    ['@media (pointer: coarse)']: {
+      fontSize: 20
+    }
+  }
+}))
 
 function SignInEmailTextField (props) {
   const { value, onChange } = props
   return (
     <Input
-      className={'input'}
       id='email'
       placeholder='Email'
       value={value}
@@ -45,11 +60,8 @@ function LoginTabs (props) {
 }
 
 function Login (props) {
-  const {
-    user,
-    history,
-    renderLoading,
-  } = props
+  const { history } = props
+  const user = useUserQuery()
   const classes = useStyles(props)
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -64,16 +76,15 @@ function Login (props) {
     setTab(value)
   }
 
-
   const redirect = () => {
     history.push('/')
   }
 
   React.useEffect(() => {
-    if (user) {
+    if (user?.data?.users?.length) {
       redirect()
     }
-  }, [])
+  }, [user])
 
   const login = async () => {
     setLoading(true)
@@ -139,7 +150,7 @@ function Login (props) {
                       size={'large'}
                       type={'primary'}
                     >
-                      Login {loading ? renderLoading({}) : ''}
+                      Login
                     </Button>
                   </Grid>
                   <Grid item xs={4}>
@@ -165,5 +176,5 @@ function Login (props) {
   )
 }
 
-export default Login
+export default withRouter(Login)
 
