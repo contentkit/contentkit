@@ -1,0 +1,164 @@
+
+
+:global(.DraftEditor-root) {
+  font-size: 16px;
+  color: #111;
+
+  h1:before,
+  h2:before,
+  h3:before,
+  h4:before {
+    position: absolute;
+    color: #999;
+    left: 0px;
+  }
+
+  h1:before {
+    content: "#";
+  }
+
+  h2:before {
+    content: "##";
+  }
+
+  h3:before {
+    content: "###"
+  }
+
+  h4:before {
+    content: "####"
+  }
+
+  h1 {
+    margin: 0px 0px 0px 30px;
+  }
+
+  h2 {
+    margin: 0px 0px 0px 42px;
+  }
+
+  h3 {
+    margin: 0px 0px 0px 48px;
+  }
+
+  h4 {
+    margin: 0px 0px 0px 50px;
+  }
+
+  ul li.public-DraftStyleDefault-depth0 {
+    margin-left: 18px;
+  }
+    
+  ul li.public-DraftStyleDefault-depth1 {
+    margin-left: 36px;
+  }
+
+  table {
+    padding-bottom: 1em;
+    margin-bottom: 0;
+  }
+
+  pre {
+    margin-bottom: 1em;
+    padding: 8px;
+  }
+
+  blockquote {
+    padding: 16px;
+    background-color: #fafafa;
+    border-left: 1px solid #f5f5f5;
+    margin-left: 20px;
+  }
+
+  pre, figure, img {
+    margin: 0;
+  }
+  
+  img {
+    max-width: 100%;
+    margin: 10px auto;
+  }
+
+  code > .public-DraftStyleDefault-block {
+    padding-bottom: 0;
+  }
+}
+
+:global(.public-DraftStyleDefault-block) {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+:global(.DraftEditor-editorContainer figure) {
+  margin: 0px 0px 12px 0px;
+  padding: 0;
+  max-width: 660px;
+}
+
+:global(.DraftEditor-editorContainer blockquote) {
+  background-color: #fff;
+  padding: 12px;
+}
+
+:global(.cke-code-container) {
+  margin: 0px 0px 12px 0px;
+  border: 0px;
+  background: none;
+  box-sizing: inherit;
+  display: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-variant-ligatures: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  tab-size: inherit;
+  text-indent: inherit;
+  text-rendering: inherit;
+  text-transform: inherit;
+  white-space: pre-wrap;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  position: relative;
+  pointer-events: none;
+  padding: 16px;
+
+  position: relative;
+  text-align: left;
+  box-sizing: border-box;
+  overflow: auto hidden;
+  white-space: pre;
+  font-family: monospace;
+  background-color: rgb(22, 22, 22);
+  color: rgb(255, 255, 255);
+
+  & > pre {
+    padding: 0;
+    margin: 0;
+  }
+
+  :global(.public-DraftStyleDefault-block.public-DraftStyleDefault-ltr) {
+    margin-bottom: 0;
+  }
+}
+
+:global(.unfocused iframe) {
+  pointer-events: none;
+}
+
+:global(.unfocused:hover) {
+  cursor: default;
+  border-radius: 2px;
+  box-shadow: 0 0 0 3px #D2E3F7;
+}
+
+:global(.focused) {
+  cursor: default;
+  border-radius: 2px;
+  box-shadow: 0 0 0 3px #ACCEF7;
+}
+
+:global(.focused iframe) {
+  pointer-events: auto;
+}

@@ -4,21 +4,18 @@ import { CSSTransition } from 'react-transition-group'
 import { Editor } from '@contentkit/editor'
 import { HANDLED, NOT_HANDLED, Command, insertAtomic, Block } from '@contentkit/util'
 import clsx from 'clsx'
+import { makeStyles } from '@material-ui/styles'
+import { useApolloClient } from '@apollo/react-hooks'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import gql from 'graphql-tag'
 
 import '@contentkit/editor/src/css/Draft.css'
 import '@contentkit/editor/src/css/prism.css'
 import '@contentkit/editor/src/css/CheckableListItem.css'
-import '@contentkit/code/src/style.scss'
-import '../../css/editor/toolbar.scss'
 
-import LinearProgress from '@material-ui/core/LinearProgress'
-import gql from 'graphql-tag'
 import * as config from '../../lib/config'
 import BaseDropzone from '../BaseDropzone'
 import { CREATE_IMAGE } from '../../graphql/mutations'
-import { plugins } from './plugins'
-import { makeStyles } from '@material-ui/styles'
-import { useApolloClient } from '@apollo/react-hooks'
 
 const UPLOAD_MUTATION = gql`
   mutation($userId: String!, $key: String!) {
@@ -55,7 +52,8 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     width: '100%',
     height: '100%',
-    flexBasis: '100%'
+    flexBasis: '100%',
+    marginTop: 48
   },
   progress: {
     position: 'absolute',
@@ -90,7 +88,6 @@ function PostEditorComponent(props) {
     editorState,
     onChange,
     save,
-    editorRef,
     posts,
     users
   } = props
@@ -152,8 +149,6 @@ function PostEditorComponent(props) {
         <Editor
           editorState={editorState}
           onChange={onChange}
-          plugins={plugins}
-          editorRef={editorRef}
           keyBindings={keyBindings}
         />
       </div>

@@ -72,7 +72,6 @@ export const modals : ModalItem[] = [
 
 function PostEditor (props) {
   const client = useApolloClient()
-  const editorRef = React.createRef()
   const [loading, setLoading] = React.useState(false)
   const [open, setOpen] = React.useState({
     [ModalType.HISTORY]: false,
@@ -192,7 +191,6 @@ function PostEditor (props) {
         save={manualSave}
         loading={loading}
         getFormData={getFormData}
-        editorRef={editorRef}
         posts={posts}
         users={users}
       />

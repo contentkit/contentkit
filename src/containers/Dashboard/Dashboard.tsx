@@ -66,7 +66,7 @@ function Dashboard (props: DashboardProps) {
       variables: {
         ...posts.variables,
         ...variables,
-        query: query ? `%${query}%` : '%'
+        query: query ? `%${query}%` : null
       },
       updateQuery: (_, { fetchMoreResult }) => {
         return fetchMoreResult
@@ -139,9 +139,9 @@ function DashboardWithQueries (props) {
   const { postsAggregateVariables } = props
   const variables = {
     ...postsAggregateVariables,
-    query: postsAggregateVariables.query ? `%${postsAggregateVariables.query}%` : '%'
+    query: postsAggregateVariables.query ? `%${postsAggregateVariables.query}%` : null
   }
-  const posts = usePostsAggregateQuery({ variables })
+  const posts = usePostsAggregateQuery({ variables, skip: !variables.projectId })
   const projects = useProjectsQuery()
   return (
     <Dashboard {...props} posts={posts} projects={projects} />

@@ -25,7 +25,8 @@ const variables = {
     warning: '#ffc53d'
   },
   fontFamily: 'IBM Plex Sans',
-  textColor: '#595959',
+  // textColor: '#595959',
+  textColor: '#000000',
   errorColor: '#e4567b',
   borderColor: '#f5f5f5',
   backgroundColor: '#f0f5ff',
