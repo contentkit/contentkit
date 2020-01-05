@@ -25,21 +25,11 @@ export const LoadingOverlay = ({ loading, children }) => (
   </React.Fragment>
 )
 
-export const Dashboard = React.lazy(
-  () => import('./containers/Dashboard')
-)
-
-export const SignIn = React.lazy(
-  () => import('./containers/Login')
-)
-
+export const Dashboard = React.lazy(() => import('./containers/Dashboard'))
+export const SignIn = React.lazy(() => import('./containers/Login'))
 export const PostEditor = React.lazy(() => import('./containers/PostEditor'))
-
 export const Projects = React.lazy(() => import('./containers/Projects'))
-
 export const Profile = React.lazy(() => import('./containers/Profile'))
-
-export const Playground = React.lazy(() => import('./containers/Playground'))
 
 export default [{
   component: Dashboard,
@@ -64,9 +54,5 @@ export default [{
 }, {
   component: Fallback,
   path: '/fallback',
-  exact: true
-}, {
-  component: Playground,
-  path: '/playground',
   exact: true
 }]

@@ -8,8 +8,6 @@
 |*|
 \ */
 
-/* Array of bytes to base64 string decoding */
-
 function b64ToUint6 (nChr) {
   return nChr > 64 && nChr < 91
     ? nChr - 65
@@ -53,8 +51,6 @@ function base64DecToArr (sBase64, nBlockSize) {
   return aBytes
 }
 
-/* Base64 string to array encoding */
-
 function uint6ToB64 (nUint6) {
   return nUint6 < 26
     ? nUint6 + 65
@@ -80,10 +76,6 @@ function base64EncArr (aBytes) {
     nIdx++
   ) {
     nMod3 = nIdx % 3
-    /* Uncomment the following line in order to split the output in lines 76-character long: */
-    /*
-    if (nIdx > 0 && (nIdx * 4 / 3) % 76 === 0) { sB64Enc += "\r\n"; }
-    */
     nUint24 |= aBytes[nIdx] << ((16 >>> nMod3) & 24)
     if (nMod3 === 2 || aBytes.length - nIdx === 1) {
       sB64Enc += String.fromCharCode(
@@ -101,45 +93,37 @@ function base64EncArr (aBytes) {
     : sB64Enc.substring(0, sB64Enc.length - eqLen) + (eqLen === 1 ? '=' : '==')
 }
 
-/* UTF-8 array to DOMString and vice versa */
-
 function UTF8ArrToStr (aBytes) {
   var sView = ''
 
   for (var nPart, nLen = aBytes.length, nIdx = 0; nIdx < nLen; nIdx++) {
     nPart = aBytes[nIdx]
     sView += String.fromCharCode(
-      nPart > 251 && nPart < 254 && nIdx + 5 < nLen /* six bytes */
-        ? /* (nPart - 252 << 30) may be not so safe in ECMAScript! So...: */
-        (nPart - 252) * 1073741824 +
+      nPart > 251 && nPart < 254 && nIdx + 5 < nLen
+        ? (nPart - 252) * 1073741824 +
             ((aBytes[++nIdx] - 128) << 24) +
             ((aBytes[++nIdx] - 128) << 18) +
             ((aBytes[++nIdx] - 128) << 12) +
             ((aBytes[++nIdx] - 128) << 6) +
-            aBytes[++nIdx] -
-            128
-        : nPart > 247 && nPart < 252 && nIdx + 4 < nLen /* five bytes */
+            aBytes[++nIdx] - 128
+        : nPart > 247 && nPart < 252 && nIdx + 4 < nLen
           ? ((nPart - 248) << 24) +
           ((aBytes[++nIdx] - 128) << 18) +
           ((aBytes[++nIdx] - 128) << 12) +
           ((aBytes[++nIdx] - 128) << 6) +
-          aBytes[++nIdx] -
-          128
-          : nPart > 239 && nPart < 248 && nIdx + 3 < nLen /* four bytes */
+          aBytes[++nIdx] - 128
+          : nPart > 239 && nPart < 248 && nIdx + 3 < nLen
             ? ((nPart - 240) << 18) +
           ((aBytes[++nIdx] - 128) << 12) +
           ((aBytes[++nIdx] - 128) << 6) +
-          aBytes[++nIdx] -
-          128
-            : nPart > 223 && nPart < 240 && nIdx + 2 < nLen /* three bytes */
+          aBytes[++nIdx] - 128
+            : nPart > 223 && nPart < 240 && nIdx + 2 < nLen
               ? ((nPart - 224) << 12) +
           ((aBytes[++nIdx] - 128) << 6) +
-          aBytes[++nIdx] -
-          128
-              : nPart > 191 && nPart < 224 && nIdx + 1 < nLen /* two bytes */
-                ? ((nPart - 192) << 6) + aBytes[++nIdx] - 128 /* nPart < 127 ? */
-                : /* one byte */
-                nPart
+          aBytes[++nIdx] - 128
+              : nPart > 191 && nPart < 224 && nIdx + 1 < nLen
+                ? ((nPart - 192) << 6) + aBytes[++nIdx] - 128
+                : nPart
     )
   }
 
@@ -148,14 +132,9 @@ function UTF8ArrToStr (aBytes) {
 
 function strToUTF8Arr (sDOMStr) {
   var aBytes
-
   var nChr
-
   var nStrLen = sDOMStr.length
-
   var nArrLen = 0
-
-  /* mapping... */
 
   for (var nMapIdx = 0; nMapIdx < nStrLen; nMapIdx++) {
     nChr = sDOMStr.charCodeAt(nMapIdx)
@@ -175,37 +154,29 @@ function strToUTF8Arr (sDOMStr) {
 
   aBytes = new Uint8Array(nArrLen)
 
-  /* transcription... */
-
   for (var nIdx = 0, nChrIdx = 0; nIdx < nArrLen; nChrIdx++) {
     nChr = sDOMStr.charCodeAt(nChrIdx)
     if (nChr < 128) {
-      /* one byte */
       aBytes[nIdx++] = nChr
     } else if (nChr < 0x800) {
-      /* two bytes */
       aBytes[nIdx++] = 192 + (nChr >>> 6)
       aBytes[nIdx++] = 128 + (nChr & 63)
     } else if (nChr < 0x10000) {
-      /* three bytes */
       aBytes[nIdx++] = 224 + (nChr >>> 12)
       aBytes[nIdx++] = 128 + ((nChr >>> 6) & 63)
       aBytes[nIdx++] = 128 + (nChr & 63)
     } else if (nChr < 0x200000) {
-      /* four bytes */
       aBytes[nIdx++] = 240 + (nChr >>> 18)
       aBytes[nIdx++] = 128 + ((nChr >>> 12) & 63)
       aBytes[nIdx++] = 128 + ((nChr >>> 6) & 63)
       aBytes[nIdx++] = 128 + (nChr & 63)
     } else if (nChr < 0x4000000) {
-      /* five bytes */
       aBytes[nIdx++] = 248 + (nChr >>> 24)
       aBytes[nIdx++] = 128 + ((nChr >>> 18) & 63)
       aBytes[nIdx++] = 128 + ((nChr >>> 12) & 63)
       aBytes[nIdx++] = 128 + ((nChr >>> 6) & 63)
       aBytes[nIdx++] = 128 + (nChr & 63)
-    } /* if (nChr <= 0x7fffffff) */ else {
-      /* six bytes */
+    } else {
       aBytes[nIdx++] = 252 + (nChr >>> 30)
       aBytes[nIdx++] = 128 + ((nChr >>> 24) & 63)
       aBytes[nIdx++] = 128 + ((nChr >>> 18) & 63)
@@ -218,22 +189,6 @@ function strToUTF8Arr (sDOMStr) {
   return aBytes
 }
 
-// export default str => {
-//   const aUTF16CodeUnits = new Uint16Array(str.length)
-
-//   Array.prototype.forEach.call(aUTF16CodeUnits, function (el, i, arr) {
-//     arr[i] = str.charCodeAt(i)
-//   })
-//   const sUTF16Base64 = base64EncArr(new Uint8Array(aUTF16CodeUnits.buffer))
-//   const ret = String.fromCharCode.apply(
-//     null,
-//     new Uint16Array(base64DecToArr(sUTF16Base64, 2).buffer)
-//   )
-
-//   return ret
-// }
-
-
 export function encode (str) {
   const utf8Arr = strToUTF8Arr(str)
   return base64EncArr(utf8Arr)
@@ -241,6 +196,5 @@ export function encode (str) {
 
 export function decode (str) {
   const utf8Output = base64DecToArr(str)
-
   return UTF8ArrToStr(utf8Output)
 }
