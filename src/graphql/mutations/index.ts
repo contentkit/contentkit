@@ -175,8 +175,13 @@ export function useGenerateToken () {
 
 export function useUpdateUser () {
   const [updateUserMutation, updateUserData] = useMutation(Mutations.UPDATE_USER)
-  return (variables) => {
+  const mutate = (variables) => {
     return updateUserMutation({ variables })
+  }
+
+  return {
+    mutate,
+    ...updateUserData
   }
 }
 

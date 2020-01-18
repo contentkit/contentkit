@@ -161,7 +161,7 @@ function PostEditorMetaModalForm (props) {
       Component: PostMetaDatePicker,
       getComponentProps: () => ({
         onChange: (value) => onChange(value, 'published_at'),
-        value: post.published_at
+        value: post.published_at || post.created_at
       }),
       size: 6
     },

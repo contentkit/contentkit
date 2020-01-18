@@ -4,7 +4,7 @@ import { expand, compress } from 'draft-js-compact'
 import { connectRouter } from 'connected-react-router'
 import { createBrowserHistory } from 'history'
 import thunk from 'redux-thunk'
-import { encode } from './utf8'
+import { encode } from 'base64-unicode'
 import { convertToHTML } from '@contentkit/convert'
 import { getUpdateDocumentMutationOptions } from '../graphql/mutations'
 

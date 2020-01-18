@@ -73,6 +73,7 @@ function EditPostMetaModal (props) {
       excerpt,
       cover_image_id,
       published_at,
+      created_at,
       project: {
         id: projectId
       }
@@ -81,7 +82,7 @@ function EditPostMetaModal (props) {
       id,
       title,
       status,
-      publishedAt: published_at,
+      publishedAt: published_at || created_at,
       projectId: projectId,
       excerpt: excerpt,
       coverImageId: cover_image_id

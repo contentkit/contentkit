@@ -8,7 +8,7 @@ import {
 import { makeStyles } from '@material-ui/styles'
 import Button from '../Button'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: any) => ({
   container: {
     margin: '2em auto 1em auto',
     padding: 40,
@@ -31,28 +31,58 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function UserForm (props) {
+type UpdateUserVariables = {
+  name: string,
+  email: string,
+  id: string
+}
+
+type UserFormProps = {
+  onCopy: (evt: any) => void,
+  generateToken: (evt: any) => void,
+  onChange: (key: string, value: any) => void,
+  updateUser: { mutate: (user: UpdateUserVariables) => void }
+  className: string,
+  users: any
+}
+
+const UserForm = React.forwardRef((props: UserFormProps, ref) => {
   const classes = useStyles(props)
   const {
     onCopy,
-    setRef,
-    generateToken
+    generateToken,
+    onChange,
+    updateUser,
+    className,
+    users
   } = props
-  const [user] = props?.users?.data?.users || []
+  const [user] = users?.data?.users || []
   const {
     secret = '',
     email = '',
     name = '',
     id
   } = user
+
+  const onNameChange = evt => onChange('name', evt.target.value)
+  const onEmailChange = evt => onChange('email', evt.target.value)
+
+  const onSave = () => {
+    updateUser.mutate({
+      name: name,
+      email: email,
+      id: id
+    })
+  }
+
   return (
-    <div className={props.className}>
+    <div className={className}>
       <Grid container spacing={4} className={classes.gutter}>
         <Grid item xs={6}>
           <FormInput
             placeholder='Name'
             value={name}
-            onChange={(e) => props.handleChange(e, 'name')}
+            onChange={onNameChange}
             label='Name'
             fullWidth
           />
@@ -61,7 +91,7 @@ function UserForm (props) {
           <FormInput
             placeholder='Email'
             value={email}
-            onChange={(e) => props.handleChange(e, 'email')}
+            onChange={onEmailChange}
             label='Email'
             fullWidth
           />
@@ -70,7 +100,7 @@ function UserForm (props) {
       <div className={classes.gutter}>
         <ProfileUserFormKeyInput
           onCopy={onCopy}
-          setRef={setRef}
+          ref={ref}
           generateToken={generateToken}
           value={secret}
         />
@@ -79,29 +109,24 @@ function UserForm (props) {
         <Button
           className={classes.button}
           color='default'
-          // loading={props.updateUser.loading}
-          onClick={() => {
-            props.updateUser.mutate({
-              name: name,
-              email: email,
-              id: id
-            })
-          }}
+          onClick={onSave}
         >
           Update
         </Button>
       </div>
     </div>
   )
-}
+})
 
 UserForm.defaultProps = {}
 
 UserForm.propTypes = {
+  // @ts-ignore
   user: propTypes.object,
   updateUser: propTypes.object.isRequired,
-  handleChange: propTypes.func.isRequired,
+  onChange: propTypes.func.isRequired,
   generateToken: propTypes.func.isRequired
+
 }
 
 export default UserForm

@@ -1,98 +1,108 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Dialog, DialogContent, DialogActions } from '@material-ui/core'
+import { AppWrapper } from '@contentkit/components'
+import { makeStyles } from '@material-ui/styles'
+import { useMutation, useApolloClient } from '@apollo/react-hooks'
+import { withRouter } from 'react-router-dom'
+
 import UserForm from '../../components/ProfileUserForm'
 import CodeSnippet from '../../components/CodeSnippet'
 import Button from '../../components/Button'
-import { Dialog, DialogContent, DialogHeader, DialogActions } from '@material-ui/core'
-import { AppWrapper } from '@contentkit/components'
-import { withStyles } from '@material-ui/styles'
 
 import { USER_QUERY, useUserQuery } from '../../graphql/queries'
 import { GENERATE_TOKEN, UPDATE_USER, DELETE_USER, useGenerateToken, useDeleteUser, useUpdateUser } from '../../graphql/mutations'
 
-import { useMutation } from '@apollo/react-hooks'
-import { withRouter } from 'react-router-dom'
-
-class Profile extends React.Component {
-  static propTypes = {
-    history: PropTypes.object,
-    logged: PropTypes.bool,
-    user: PropTypes.object
+const useStyles = makeStyles(theme => ({
+  container: {
+    margin: '2em auto 1em auto',
+    padding: 40,
+    maxWidth: 960,
+    backgroundColor: '#fff',
+    borderRadius: 0,
+  },
+  code: {
+    backgroundImage: 'linear-gradient(160deg, #121212 12.5%, #323232 85%)',
+    borderRadius: 0,
+    margin: '2em auto 1em auto',
+    padding: '40px',
+    maxWidth: '960px'
   }
+}))
 
-  state = {
-    open: false
-  }
+function Profile (props) {
+  const client = useApolloClient()
+  const classes = useStyles(props)
+  const [open, setOpen] = React.useState(false)
+  const ref = React.useRef()
+  const {
+    users,
+    deleteUser,
+    updateUser,
+    generateToken
+  } = props
 
-  handleChange = (e, key) => {
-    this.props.client.writeQuery({
+  const onChange = (key, value) => {
+    client.writeQuery({
       query: USER_QUERY,
       data: {
         users: [{
-          ...this.props.users.data.users[0],
-          [key]: e.target.value
+          ...users.data.users[0],
+          [key]: value
         }]
       }
     })
   }
 
-  onCopy = () => {
-    this.ref.select()
+  const onCopy = () => {
+    // @ts-ignore
+    ref.current.select()
     document.execCommand('copy')
   }
 
-  onConfirm = () => {
-    const { deleteUser, users: { data: { users } } } = this.props
-    deleteUser.mutate(users[0].id)
+  const onConfirm = () => {
+    deleteUser.mutate(users.data.users[0].id)
   }
 
-  render () {
-    const { users, classes } = this.props
-    if (users.loading) return null
-    return (
-      <AppWrapper
-        sidebarProps={{
-          logged: this.props.logged,
-          client: this.props.client,
-          history: this.props.history
-        }}
+  const onClose = () => setOpen(false)
+
+  if (users.loading) return null
+  return (
+    <AppWrapper>
+      <UserForm
+        onChange={onChange}
+        updateUser={updateUser}
+        generateToken={generateToken.mutate}
+        onCopy={onCopy}
+        users={users}
+        className={classes.container}
+      />
+      <div className={classes.container}>
+        <Button color='danger' onClick={evt => setOpen(true)}>
+          Delete Account
+        </Button>
+      </div>
+      <Dialog
+        open={open}
+        onClose={onClose}
       >
-        <UserForm
-          handleChange={this.handleChange}
-          updateUser={this.props.updateUser}
-          generateToken={this.props.generateToken.mutate}
-          onCopy={this.onCopy}
-          setRef={ref => { this.ref = ref }}
-          users={users}
-          className={classes.container}
-        />
-        <div className={classes.container}>
-          <Button color='danger' onClick={evt => this.setState({ open: true })}>
+        <DialogContent>
+          Are you sure?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>
+            Cancel
+          </Button>
+          <Button color='danger' onClick={onConfirm}>
             Delete Account
           </Button>
-        </div>
-        <Dialog
-          open={this.state.open}
-          onClose={evt => this.setState({ open: false })}
-        >
-          <DialogContent>
-            Are you sure?
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={evt => this.setState({ open: false })}>
-              Cancel
-            </Button>
-            <Button color='danger' onClick={this.onConfirm}>
-              Delete Account
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <div className={classes.code}>
-          <CodeSnippet {...this.props} />
-        </div>
-      </AppWrapper>
-    )
-  }
+        </DialogActions>
+      </Dialog>
+      <div className={classes.code}>
+        <CodeSnippet {...props} />
+      </div>
+    </AppWrapper>
+  )
 }
 
 
@@ -121,19 +131,4 @@ function ProfileWithData (props) {
   )
 }
 
-export default withStyles(theme => ({
-  container: {
-    margin: '2em auto 1em auto',
-    padding: 40,
-    maxWidth: 960,
-    backgroundColor: '#fff',
-    borderRadius: 0,
-  },
-  code: {
-    backgroundImage: 'linear-gradient(160deg, #121212 12.5%, #323232 85%)',
-    borderRadius: 0,
-    margin: '2em auto 1em auto',
-    padding: '40px',
-    maxWidth: '960px'
-  }
-}))(ProfileWithData)
+export default ProfileWithData

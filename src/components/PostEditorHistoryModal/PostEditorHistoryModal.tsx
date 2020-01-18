@@ -95,16 +95,14 @@ function PostEditorHistoryModal (props) {
       </DialogContent>
       <DialogActions>
         <Button
-          variant='text'
           onClick={onClose}
           color={'secondary'}
         >
           Close
         </Button>
         <Button
-          variant='text'
           onClick={handleRestore}
-          color={'primary'}
+          color={'default'}
         >
           Restore
         </Button>

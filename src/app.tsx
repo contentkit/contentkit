@@ -4,7 +4,7 @@ import { ApolloProvider, useQuery } from '@apollo/react-hooks'
 import { BrowserRouter, Route, Redirect } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
-import withConnectivity from './lib/withConnectivity'
+import { OfflineNotification } from './lib/withConnectivity'
 import createClient from './lib/client'
 import { store } from './lib/redux'
 import pages from './pages'
@@ -18,16 +18,6 @@ const client = createClient()
 const UP_STAGE = process.env.UP_STAGE || undefined
 
 function App (props) {
-  // const users = useQuery(USER_QUERY)
-
-  // if (!users.loading) {
-  //   if (!users?.data?.users) {
-  //     if (!props.history.location.pathname.startsWith('/login')) {
-  //       return <Redirect to='/login' />
-  //     }
-  //   }
-  // }
-
   return (
     <Provider store={store}>
       <BrowserRouter basename={UP_STAGE}>
@@ -38,8 +28,6 @@ function App (props) {
                 key={rest.path}
                 render={routeProps => (
                   <Component
-                    // users={users}
-                    // logged={Boolean(users?.data?.users)}
                     {...routeProps}
                     {...props}
                   />
@@ -54,16 +42,14 @@ function App (props) {
   )
 }
 
-// const ConnectedApp = compose(
-//   withApollo,
-//   withConnectivity
-// )(App)
 
 ;(async () => {
   ReactDOM.render(
     <ApolloProvider client={client}>
       <ThemeProvider>
-        <App />
+        <OfflineNotification>
+          <App />
+        </OfflineNotification>
       </ThemeProvider>
     </ApolloProvider>,
     document.getElementById('root')

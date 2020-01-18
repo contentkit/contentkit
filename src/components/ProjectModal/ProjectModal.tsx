@@ -98,7 +98,7 @@ function ProjectModal (props) {
           <Grid item xs={6}>
             <Button key={'delete'} onClick={onDeleteProject} color='danger'>Delete</Button>
           </Grid>
-          <Grid item xs={6} justify='flex-end' style={{ justifyContent: 'flex-end', display: 'flex' }}>
+          <Grid item xs={6} style={{ justifyContent: 'flex-end', display: 'flex' }}>
             <Button key={'cancel'} onClick={onClose} style={{ marginRight: 10 }}>Cancel</Button>
             <Button key={'update'} onClick={onSave}>Update</Button>
           </Grid>

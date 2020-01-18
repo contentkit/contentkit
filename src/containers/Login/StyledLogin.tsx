@@ -5,7 +5,8 @@ import {
   Tabs,
   Tab,
   InputAdornment,
-  IconButton
+  IconButton,
+  Snackbar
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { Visibility, VisibilityOff } from '@material-ui/icons'
@@ -30,6 +31,17 @@ const useLoginStyles = makeStyles(theme => ({
     }
   }
 }))
+
+function LoginContainer (props) {
+  const { children, classes } = props
+  return (
+    <div className={classes.container}>
+      <div className={classes.inset}>
+        {children}
+      </div>
+    </div>
+  )
+}
 
 function SignInEmailTextField (props) {
   const { value, onChange } = props
@@ -68,10 +80,14 @@ function Login (props) {
   const [tab, setTab] = React.useState(0)
   const [passwordResetSent, setPasswordResetSent] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
+  const [errors, setErrors] = React.useState([])
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
 
   const authenticateUser = useAuthenticateUser()
   const registerUser = useRegisterUser()
 
+  const onCloseSnackbar = () => setSnackbarOpen(false)
+  
   const handleTabChange = (evt, value) => {
     setTab(value)
   }
@@ -81,6 +97,13 @@ function Login (props) {
   }
 
   React.useEffect(() => {
+    console.log(errors)
+    if (errors.length) {
+      setSnackbarOpen(true)
+    }
+  }, [errors])
+
+  React.useEffect(() => {
     if (user?.data?.users?.length) {
       redirect()
     }
@@ -88,19 +111,27 @@ function Login (props) {
 
   const login = async () => {
     setLoading(true)
-    await authenticateUser({
-      email,
-      password
-    })
+    try {
+      await authenticateUser({
+        email,
+        password
+      })
+    } catch (err) {
+      setErrors(err.graphQLErrors)
+    }
   }
 
 
   const createAccount = async () => {
     setLoading(true)
-    await registerUser({
-      email,
-      password
-    })
+    try {
+      await registerUser({
+        email,
+        password
+      })
+    } catch (err) {
+      setErrors(err.graphQLErrors)
+    }
   }
 
   const resetPassword = () => {}
@@ -112,67 +143,75 @@ function Login (props) {
   const { title, backgroundImage } = props
   const showLogin = tab === 0
   return (
-    <div className={classes.container}>
-      <div className={classes.inset}>
-        <div className={classes.left}>
-          <div className={classes.content}>
-            <div className={classes.title}>
-              {title}
-            </div>
-            <LoginTabs className={classes['gutter-40']} value={tab} onChange={handleTabChange} />
-            {passwordResetSent && (
-              <Grid>
-                Password reset email sent!
+    <LoginContainer classes={classes}>
+      <Snackbar
+        open={snackbarOpen}
+        message={errors.length ? errors[0].message : null}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        autoHideDuration={6000}
+        onClose={onCloseSnackbar}
+      />
+      <div className={classes.left}>
+        <div className={classes.content}>
+          <div className={classes.title}>
+            {title}
+          </div>
+          <LoginTabs className={classes['gutter-40']} value={tab} onChange={handleTabChange} />
+          {passwordResetSent && (
+            <Grid>
+              Password reset email sent!
+            </Grid>
+          )}
+          <div className={classes['gutter-20']}>
+            <SignInEmailTextField
+              value={email}
+              onChange={emailOnChange}
+            />
+          </div>
+          
+          <div className={classes['gutter-40']}>
+            {showLogin
+              ? <PasswordField
+                  value={password}
+                  onChange={passwordOnChange}
+                />
+              : <div className={classes.spacer} />
+            }
+          </div>
+          <Grid container>
+            {showLogin ? (
+              <React.Fragment>
+                <Grid item xs={4}>
+                  <Button
+                    onClick={login}
+                    size={'large'}
+                    type={'primary'}
+                  >
+                    Login
+                  </Button>
+                </Grid>
+                <Grid item xs={4}>
+                  <Button
+                    size={'large'}
+                    onClick={createAccount}
+                  >
+                    Sign Up
+                  </Button>
+                </Grid>
+              </React.Fragment>
+            ) : (
+              <Grid item>
+                <Button onClick={resetPassword} type={'primary'} size={'large'}>Reset</Button>
               </Grid>
             )}
-            <div className={classes['gutter-20']}>
-              <SignInEmailTextField
-                value={email}
-                onChange={emailOnChange}
-              />
-            </div>
-            
-            <div className={classes['gutter-40']}>
-              {showLogin
-                ? <PasswordField
-                    value={password}
-                    onChange={passwordOnChange}
-                  />
-                : <div className={classes.spacer} />
-              }
-            </div>
-            <Grid container>
-              {showLogin ? (
-                <React.Fragment>
-                  <Grid item xs={4}>
-                    <Button
-                      onClick={login}
-                      size={'large'}
-                      type={'primary'}
-                    >
-                      Login
-                    </Button>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Button
-                      size={'large'}
-                      onClick={createAccount}
-                    >
-                      Sign Up
-                    </Button>
-                  </Grid>
-                </React.Fragment>
-              ) : (
-                <Grid item>
-                  <Button onClick={resetPassword} type={'primary'} size={'large'}>Reset</Button>
-                </Grid>
-              )}
-            </Grid>
-          </div>
+          </Grid>
         </div>
-        <div className={classes.right} />
       </div>
-    </div>
+      <div className={classes.right} />
+    </LoginContainer>
   )
 }
 

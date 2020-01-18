@@ -7,19 +7,16 @@ import { Refresh } from '@material-ui/icons'
 import { Input } from '@contentkit/components'
 
 const useStyles = makeStyles(theme => ({
-  input: {
-  },
-  button: {
-  },
+  input: {},
+  button: {},
   adornment: {
     marginRight: 8
   }
 }))
 
-function ProfileUserFormKeyInput (props) {
+const ProfileUserFormKeyInput = React.forwardRef((props, ref) => {
   const {
     onCopy,
-    setRef,
     generateToken,
     value
   } = props
@@ -28,7 +25,7 @@ function ProfileUserFormKeyInput (props) {
     <Input
       className={classes.input}
       value={value}
-      ref={setRef}
+      ref={ref}
       placeholder={'API key'}
       endAdornment={
         <InputAdornment position='end' className={classes.adornment}>
@@ -36,7 +33,7 @@ function ProfileUserFormKeyInput (props) {
             edge='end'
             size='small'
             className={classes.button}
-            onClick={() => generateToken()}>
+            onClick={generateToken}>
             <Refresh />
           </IconButton>
         </InputAdornment>
@@ -44,12 +41,12 @@ function ProfileUserFormKeyInput (props) {
       onFocus={onCopy}
     />
   )
-}
+})
 
 ProfileUserFormKeyInput.propTypes = {
+  // @ts-ignore
   value: PropTypes.string,
   onCopy: PropTypes.func.isRequired,
-  setRef: PropTypes.func.isRequired,
   generateToken: PropTypes.func.isRequired
 }
 

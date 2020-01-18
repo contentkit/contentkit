@@ -61,9 +61,6 @@ function ProjectModalContent (props) {
 }
 
 ProjectModalContent.propTypes = {
-  handleDelete: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired,
-  handleClose: PropTypes.func.isRequired,
   project: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired
 }

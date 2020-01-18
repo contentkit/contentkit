@@ -4,7 +4,7 @@ import { expand, compress } from 'draft-js-compact'
 import { Block } from '@contentkit/util'
 import transform from '@contentkit/util/lib/utils/transform'
 
-import { encode } from '../../lib/utf8'
+import { encode } from 'base64-unicode'
 
 export const toRaw = (editorState: EditorState) => {
   return compress(convertToRaw(editorState.getCurrentContent()))

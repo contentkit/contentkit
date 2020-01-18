@@ -16,6 +16,10 @@ import '@contentkit/editor/src/css/CheckableListItem.css'
 import * as config from '../../lib/config'
 import BaseDropzone from '../BaseDropzone'
 import { CREATE_IMAGE } from '../../graphql/mutations'
+import useStyles from './styles'
+import { AWS_BUCKET_URL } from '../../lib/config'
+import { Dropzone } from '@contentkit/components'
+import { DropzoneVariant } from '@contentkit/components/lib/types'
 
 const UPLOAD_MUTATION = gql`
   mutation($userId: String!, $key: String!) {
@@ -46,36 +50,6 @@ export async function uploadDocument (file, filename, payload) {
   })
 }
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    height: '100%',
-    flexBasis: '100%',
-    marginTop: 48
-  },
-  progress: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    width: '100%',
-    height: 5,
-    top: 48
-  },
-  editor: {
-    width: '100%',
-    height: '100%'
-  },
-  drag: {
-    borderColor: '#ccc',
-    background: '#dbdbdb',
-    backgroundImage: 'linear-gradient(-45deg,#d2d2d2 25%,transparent 25%,transparent 50%,#d2d2d2 50%,#d2d2d2 75%,transparent 75%,transparent)',
-    backgroundSize: '40px 40px',
-  }
-}))
-
 function PostEditorComponent(props) {
   const client = useApolloClient()
   const [isDragging, setDrag] = React.useState(false)
@@ -91,8 +65,6 @@ function PostEditorComponent(props) {
     posts,
     users
   } = props
-
-  const handleClick = () => {}
 
   const addImage = (src) => {
     const nextEditorState = insertAtomic(editorState, Block.IMAGE, { src })
@@ -123,7 +95,7 @@ function PostEditorComponent(props) {
       }
     })
 
-    addImage(`https://s3.amazonaws.com/contentkit/${key}`)
+    addImage(`${AWS_BUCKET_URL}/${key}`)
   }
 
   const keyBindings = {
@@ -134,7 +106,7 @@ function PostEditorComponent(props) {
   }
 
   return (
-    <BaseDropzone className={classes.root} onDrop={onDrop} setDrag={setDrag}>
+    <>
       <CSSTransition
         classNames={'transition'}
         unmountOnExit
@@ -145,14 +117,22 @@ function PostEditorComponent(props) {
           <LinearProgress className={classes.progress} />
         )}
       </CSSTransition>
-      <div className={clsx(classes.editor, { [classes.drag]: isDragging })}>
-        <Editor
-          editorState={editorState}
-          onChange={onChange}
-          keyBindings={keyBindings}
-        />
-      </div>
-    </BaseDropzone>
+      <Dropzone
+        className={classes.root}
+        onUpload={file => {
+          console.log(file)
+        }}
+        variant={DropzoneVariant.FULL_WIDTH}
+      >
+        <div className={classes.editor}>
+          <Editor
+            editorState={editorState}
+            onChange={onChange}
+            keyBindings={keyBindings}
+          />
+        </div>
+      </Dropzone>
+    </>
   )
 }
 

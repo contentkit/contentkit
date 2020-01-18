@@ -1,11 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { Dialog, DialogContent } from '@material-ui/core'
 import { AppWrapper, Toolbar, MediaProvider } from '@contentkit/components'
 import { convertToHTML } from '@contentkit/convert'
-import insertImage from '@contentkit/editor/lib/modifiers/insertImage'
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
+import { makeStyles } from '@material-ui/styles'
+import { JsonEditorModal } from '@contentkit/json-editor'
 
-import { encode } from '../../lib/utf8'
+import { encode } from 'base64-unicode'
 import PostEditorToolbar from '../../components/PostEditorToolbar'
 import PostEditorComponent from '../../components/PostEditorComponent'
 import {
@@ -16,7 +19,6 @@ import { setEditorState, saveEditorState } from '../../lib/redux'
 import { UPLOAD_MUTATION } from '../../graphql/mutations'
 import PostEditorHistoryModal from '../../components/PostEditorHistoryModal'
 import PostMetaModal from '../../components/PostEditorMetaModal'
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 import {
   CREATE_IMAGE,
   DELETE_IMAGE,
@@ -26,7 +28,6 @@ import {
   useDeleteImage
 } from '../../graphql/mutations'
 import { POST_QUERY, USER_QUERY } from '../../graphql/queries'
-import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -36,7 +37,8 @@ const useStyles = makeStyles(theme => ({
 
 export enum ModalType {
   HISTORY = 'history',
-  POSTMETA = 'postmeta'
+  POSTMETA = 'postmeta',
+  JSON_EDITOR = 'json-editor'
 }
 
 type ModalItem = {
@@ -67,6 +69,14 @@ export const modals : ModalItem[] = [
       getFormData,
       mediaProvider
     })
+  },
+  {
+    name: ModalType.JSON_EDITOR,
+    Component: JsonEditorModal,
+    getComponentProps: ({ editorState, onSaveRawEditor }) => ({
+      editorState,
+      onSave: onSaveRawEditor
+    })
   }
 ]
 
@@ -75,7 +85,8 @@ function PostEditor (props) {
   const [loading, setLoading] = React.useState(false)
   const [open, setOpen] = React.useState({
     [ModalType.HISTORY]: false,
-    [ModalType.POSTMETA]: false
+    [ModalType.POSTMETA]: false,
+    [ModalType.JSON_EDITOR]: false
   })
 
   const {
@@ -138,7 +149,8 @@ function PostEditor (props) {
   const onClose = () => {
     setOpen({
       [ModalType.HISTORY]: false,
-      [ModalType.POSTMETA]: false
+      [ModalType.POSTMETA]: false,
+      [ModalType.JSON_EDITOR]: false
     })
   }
 
@@ -148,6 +160,10 @@ function PostEditor (props) {
       variables
     })
     return createPresignedPost
+  }
+
+  const onSaveRawEditor = (raw) => {
+    setEditorState(hydrate(editorState, raw))
   }
 
   const renderToolbar = () => (
@@ -166,7 +182,8 @@ function PostEditor (props) {
     ...props,
     getFormData,
     saveDocument,
-    mediaProvider: mediaProvider.current
+    onSaveRawEditor,
+    mediaProvider: mediaProvider.current,
   }
 
   const sidebarProps = {}
