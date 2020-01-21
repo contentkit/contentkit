@@ -196,6 +196,7 @@ function PostEditor (props) {
       classes={{
         content: classes.content
       }}
+      disablePadding
     >
       {modals.map(({ Component, getComponentProps, name }) => {
         return (

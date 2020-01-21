@@ -6,7 +6,8 @@ import {
   Tab,
   InputAdornment,
   IconButton,
-  Snackbar
+  Snackbar,
+  Box
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { Visibility, VisibilityOff } from '@material-ui/icons'
@@ -165,37 +166,37 @@ function Login (props) {
               Password reset email sent!
             </Grid>
           )}
-          <div className={classes['gutter-20']}>
-            <SignInEmailTextField
-              value={email}
-              onChange={emailOnChange}
-            />
-          </div>
-          
-          <div className={classes['gutter-40']}>
-            {showLogin
-              ? <PasswordField
-                  value={password}
-                  onChange={passwordOnChange}
-                />
-              : <div className={classes.spacer} />
-            }
-          </div>
+          <form>
+            <Box mb={20}>
+              <SignInEmailTextField
+                value={email}
+                onChange={emailOnChange}
+              />
+            </Box>
+            <Box mb={20}>
+              {showLogin
+                ? <PasswordField
+                    value={password}
+                    onChange={passwordOnChange}
+                  />
+                : <div className={classes.spacer} />
+              }
+            </Box>
+          </form>
           <Grid container>
             {showLogin ? (
               <React.Fragment>
                 <Grid item xs={4}>
                   <Button
                     onClick={login}
-                    size={'large'}
-                    type={'primary'}
+                    size='large'
                   >
                     Login
                   </Button>
                 </Grid>
                 <Grid item xs={4}>
                   <Button
-                    size={'large'}
+                    size='large'
                     onClick={createAccount}
                   >
                     Sign Up
@@ -204,7 +205,7 @@ function Login (props) {
               </React.Fragment>
             ) : (
               <Grid item>
-                <Button onClick={resetPassword} type={'primary'} size={'large'}>Reset</Button>
+                <Button onClick={resetPassword} size={'large'}>Reset</Button>
               </Grid>
             )}
           </Grid>

@@ -8,8 +8,18 @@ export enum Status {
 
 export function useConnectivity () {
   const [status, setStatus] = React.useState(Status.ONLINE)
-  const setOnline = () => setStatus(Status.ONLINE)
-  const setOffline = () => setStatus(Status.OFFLINE)
+  const setOnline = () => {
+    if (status === Status.ONLINE) {
+      return
+    }
+    setStatus(Status.ONLINE)
+  }
+  const setOffline = () => {
+    if (status === Status.OFFLINE) {
+      return
+    }
+    setStatus(Status.OFFLINE)
+  }
 
   React.useEffect(() => {
     window.addEventListener('online', setOnline)

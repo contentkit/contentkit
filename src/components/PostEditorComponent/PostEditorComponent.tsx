@@ -14,7 +14,6 @@ import '@contentkit/editor/src/css/prism.css'
 import '@contentkit/editor/src/css/CheckableListItem.css'
 
 import * as config from '../../lib/config'
-import BaseDropzone from '../BaseDropzone'
 import { CREATE_IMAGE } from '../../graphql/mutations'
 import useStyles from './styles'
 import { AWS_BUCKET_URL } from '../../lib/config'
@@ -52,7 +51,6 @@ export async function uploadDocument (file, filename, payload) {
 
 function PostEditorComponent(props) {
   const client = useApolloClient()
-  const [isDragging, setDrag] = React.useState(false)
   const classes = useStyles(props)
 
   const {
@@ -71,11 +69,9 @@ function PostEditorComponent(props) {
     onChange(nextEditorState)
   }
 
-  const onDrop = async (files, event) => {
-    setDrag(false)
+  const onUpload = async (file: File): Promise<void> => {
     const postId = posts[0].id
     const userId = users.data.users[0].id
-    const [file] = files
     const { name, type, size } = file
     const filename = sanitizeFileName(name)
     const key = `static/${postId}/${filename}`
@@ -119,9 +115,7 @@ function PostEditorComponent(props) {
       </CSSTransition>
       <Dropzone
         className={classes.root}
-        onUpload={file => {
-          console.log(file)
-        }}
+        onUpload={onUpload}
         variant={DropzoneVariant.FULL_WIDTH}
       >
         <div className={classes.editor}>

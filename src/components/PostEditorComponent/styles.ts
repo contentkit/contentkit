@@ -2,12 +2,15 @@ import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    position: 'absolute',
-    top: 48,
-    left: 60,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#f5f5f5'
+    // position: 'absolute',
+    // top: 48,
+    // left: 60,
+    // right: 0,
+    // bottom: 0,
+    // backgroundColor: '#f5f5f5'
+    minHeight: '100vh',
+    paddingTop: 48,
+    boxSizing: 'border-box'
   },
   progress: {
     position: 'absolute',
@@ -21,8 +24,7 @@ const useStyles = makeStyles(theme => ({
   editor: {
     width: '100%',
     padding: '40px',
-    boxSizing: 'border-box',
-    backgroundColor: '#f5f5f5'
+    boxSizing: 'border-box'
   },
   drag: {
     borderColor: '#ccc',

@@ -1,5 +1,5 @@
 import React from 'react'
-import { TableHead, TableCell, TableSortLabel } from '@material-ui/core'
+import { TableHead, TableRow, TableCell, TableSortLabel } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { SortUp, SortDown } from './Icons'
 
@@ -17,23 +17,25 @@ function DashboardTableHead (props) {
 
   return (
     <TableHead>
-      <TableCell key='checkbox' className={classes.tableHeadCell} padding='checkbox' />
-      {columns.map(column =>
-        <TableCell
-          key={`tc_${column.key}`}
-          className={classes.tableHeadCell}
-          sortDirection={sort.direction}
-        >
-          <TableSortLabel
-            IconComponent={SortDown}
-            active={sort.column === column.key}
-            direction={sort.direction as Direction}
-            onClick={onSort(column)}
+      <TableRow>
+        <TableCell key='checkbox' className={classes.tableHeadCell} padding='checkbox' />
+        {columns.map(column =>
+          <TableCell
+            key={`tc_${column.key}`}
+            className={classes.tableHeadCell}
+            sortDirection={sort.direction}
           >
-            {column.title}
-          </TableSortLabel>
-        </TableCell>  
-      )}
+            <TableSortLabel
+              IconComponent={SortDown}
+              active={sort.column === column.key}
+              direction={sort.direction as Direction}
+              onClick={onSort(column)}
+            >
+              {column.title}
+            </TableSortLabel>
+          </TableCell>  
+        )}
+      </TableRow>
     </TableHead>
   )
 }

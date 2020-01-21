@@ -7,7 +7,6 @@ import { Theme, Paper, TableBody, Table } from '@material-ui/core'
 import { SortDirection } from '@material-ui/core/TableCell'
 import { KeyboardArrowLeft, KeyboardArrowRight, Edit } from '@material-ui/icons'
 import clsx from 'clsx'
-import { TransitionGroup } from 'react-transition-group'
 import orderBy from 'lodash/orderBy'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
 import DashboardToolbar from '../DashboardToolbar'
@@ -157,35 +156,33 @@ function DashboardTable (props) {
         />
       </div>
       <Paper elevation={0}>
-        <TransitionGroup>
-          <Table size='small' className={classes.table}>
-            <DashboardTableHead sort={sort} onSort={onSort} columns={columns} />
-            <TableBody>
-              {
-                orderBy(dataSource, [sort.column], [sort.direction]).map(row => {
-                  const className = clsx({
-                    [classes.row]: true,
-                    [classes.selected]: selectedPosts.includes(row.id)
-                  })
-                  return (
-                    <DashboardTableRow
-                      key={row.id}
-                      row={row}
-                      className={className}
-                      selectRow={selectRow}
-                      selectedPosts={selectedPosts}
-                      columns={columns}
-                      classes={classes}
-                      onChange={onChange}
-                      onSave={onSave}
-                      onContextMenu={onContextMenu}
-                    />
-                  )
+        <Table size='small' className={classes.table}>
+          <DashboardTableHead sort={sort} onSort={onSort} columns={columns} />
+          <TableBody>
+            {
+              orderBy(dataSource, [sort.column], [sort.direction]).map(row => {
+                const className = clsx({
+                  [classes.row]: true,
+                  [classes.selected]: selectedPosts.includes(row.id)
                 })
-              }
-            </TableBody>
-          </Table>
-        </TransitionGroup>
+                return (
+                  <DashboardTableRow
+                    key={row.id}
+                    row={row}
+                    className={className}
+                    selectRow={selectRow}
+                    selectedPosts={selectedPosts}
+                    columns={columns}
+                    classes={classes}
+                    onChange={onChange}
+                    onSave={onSave}
+                    onContextMenu={onContextMenu}
+                  />
+                )
+              })
+            }
+          </TableBody>
+        </Table>
         <DashboardPagination getNextPage={getNextPage} />
       </Paper>
     </div>
