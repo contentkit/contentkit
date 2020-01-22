@@ -9,7 +9,6 @@ import { KeyboardArrowLeft, KeyboardArrowRight, Edit } from '@material-ui/icons'
 import clsx from 'clsx'
 import orderBy from 'lodash/orderBy'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
-import DashboardToolbar from '../DashboardToolbar'
 import { useOnSave } from './mutations'
 import columns from './columns'
 import DashboardTableRow from './components/TableRow'
@@ -38,10 +37,11 @@ const initialSortState : SortState = {
 function DashboardTable (props) {
   const {
     posts,
-    selectedPosts,
-    selectPosts,
+    selectedPostIds,
+    setSelectedPostIds,
     search,
-    getToolbarProps
+    getToolbarProps,
+    settings
   } = props
   const classes = useStyles(props)
   const client = useApolloClient()
@@ -60,19 +60,19 @@ function DashboardTable (props) {
   }
 
   const selectRow = (value, shiftKey = true) => {
-    const isSelected = selectedPosts.includes(value)
+    const isSelected = selectedPostIds.includes(value)
     const selection = isSelected
-      ? selectedPosts.filter(key => key !== value)
+      ? selectedPostIds.filter(key => key !== value)
       : shiftKey
-        ? selectedPosts.concat([value])
+        ? selectedPostIds.concat([value])
         : [value]
 
-    selectPosts(selection)
+    setSelectedPostIds(selection)
   }
 
   const onContextMenu = (evt, row) => {
     evt.preventDefault()
-    selectPosts([row.id])
+    setSelectedPostIds([row.id])
     setContextMenuAnchorEl(evt)
   }
 
@@ -102,6 +102,7 @@ function DashboardTable (props) {
       }
     })
     .then(() => {
+      setSelectedPostIds([])
       setOffset(nextOffset)
     })
   }
@@ -147,14 +148,6 @@ function DashboardTable (props) {
   const toolbarProps = getToolbarProps()
   return (
     <div className={classes.wrapper}>
-      <div className={classes.toolbar}>
-        <DashboardToolbar
-          {...toolbarProps}
-          contextMenuAnchorEl={anchorEl}
-          setContextMenuAnchorEl={setContextMenuAnchorEl}
-          contextMenuOnClose={contextMenuOnClose}
-        />
-      </div>
       <Paper elevation={0}>
         <Table size='small' className={classes.table}>
           <DashboardTableHead sort={sort} onSort={onSort} columns={columns} />
@@ -163,7 +156,7 @@ function DashboardTable (props) {
               orderBy(dataSource, [sort.column], [sort.direction]).map(row => {
                 const className = clsx({
                   [classes.row]: true,
-                  [classes.selected]: selectedPosts.includes(row.id)
+                  [classes.selected]: selectedPostIds.includes(row.id)
                 })
                 return (
                   <DashboardTableRow
@@ -171,7 +164,7 @@ function DashboardTable (props) {
                     row={row}
                     className={className}
                     selectRow={selectRow}
-                    selectedPosts={selectedPosts}
+                    selectedPostIds={selectedPostIds}
                     columns={columns}
                     classes={classes}
                     onChange={onChange}
@@ -187,6 +180,10 @@ function DashboardTable (props) {
       </Paper>
     </div>
   )
+}
+
+DashboardTable.defaultProps = {
+  selectedPostIds: []
 }
 
 export default DashboardTable

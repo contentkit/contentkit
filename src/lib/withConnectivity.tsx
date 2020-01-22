@@ -9,15 +9,9 @@ export enum Status {
 export function useConnectivity () {
   const [status, setStatus] = React.useState(Status.ONLINE)
   const setOnline = () => {
-    if (status === Status.ONLINE) {
-      return
-    }
     setStatus(Status.ONLINE)
   }
   const setOffline = () => {
-    if (status === Status.OFFLINE) {
-      return
-    }
     setStatus(Status.OFFLINE)
   }
 
@@ -36,10 +30,14 @@ export function useConnectivity () {
 
 export function OfflineNotification (props) {
   const [open, setOpen] = React.useState(false)
+  const ref = React.useRef(Status.ONLINE)
   const status = useConnectivity()
   const onClose = () => setOpen(false)
   React.useEffect(() => {
-    setOpen(true)
+    if (ref.current !== status) {
+      ref.current = status
+      setOpen(true)
+    }
   }, [status])
 
   const { children } = props

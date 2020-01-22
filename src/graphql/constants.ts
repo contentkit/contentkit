@@ -7,6 +7,7 @@ export enum Typename {
   ORIGINS_MUTATION_RESPONSE = 'origins_mutation_response',
   TAGS_MUTATION_RESPONSE = 'tags_mutation_response',
   POSTS_TAGS_MUTATION_RESPONSE = 'posts_tags_mutation_response',
+  SETTINGS_MUTATION_RESPONSE = 'settings_mutation_response',
   POSTS_TAGS = 'posts_tags',
   TAGS = 'tags',
 
@@ -15,5 +16,6 @@ export enum Typename {
   POST = 'Post',
   USER = 'User',
   PROJECT = 'Project',
-  ORIGIN = 'Origin'
+  ORIGIN = 'Origin',
+  SETTING = 'Setting'
 }

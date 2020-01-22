@@ -101,3 +101,12 @@ export type PostsAggregateVariables = {
 
 export type SelectProject = (projectId: string) => void
 export type SetSearchLoadingState = (isLoading: boolean) => void
+
+
+export type ModalItem = {
+  name: ModalType,
+  Component: any,
+  getComponentProps: (props: any) => any
+}
+
+

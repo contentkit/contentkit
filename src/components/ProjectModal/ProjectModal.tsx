@@ -31,9 +31,7 @@ type ProjectModalProps = {
   users: GraphQL.UserQueryResult,
   project: GraphQL.ProjectQueryResult,
   open: boolean,
-  updateProject: () => void,
-  handleDelete: () => void,
-  handleClose: () => void
+  updateProject: () => void
 }
 
 function ProjectModal (props) {
@@ -110,9 +108,7 @@ function ProjectModal (props) {
 
 ProjectModal.propTypes = {
   open: PropTypes.bool.isRequired,
-  updateProject: PropTypes.object,
-  handleDelete: PropTypes.func.isRequired,
-  handleClose: PropTypes.func.isRequired
+  updateProject: PropTypes.object
 }
 
 

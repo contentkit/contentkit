@@ -12,11 +12,12 @@ import ProjectSelect from '../ProjectSelect'
 import Button from '../Button'
 import { useApolloClient, useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
+import { ModalType } from '../../fixtures'
 
 const EditIcon = props => (
   <svg
-    width='24'
-    height='24'
+    width='18'
+    height='18'
     aria-hidden='true'
     focusable='false'
     role='img'
@@ -60,7 +61,7 @@ const FilePlus = props => (
 )
 
 
-const Cog = props => (
+const CogIcon = props => (
   <svg 
     focusable="false" 
     preserveAspectRatio="xMidYMid meet"
@@ -79,18 +80,16 @@ function DashboardToolbar (props) {
   const {
     posts,
     projects,
-    selected,
-    contextMenuAnchorEl,
-    setContextMenuAnchorEl,
-    contextMenuOnClose,
+    selectedPostIds,
     handleSearch,
-    handleOpen,
     setSearchQuery,
     history,
-    selectedProject,
-    selectProject,
+    selectedProjectId,
+    setSelectedProjectId,,
+    settings,
     classes,
-    search: { query }
+    search: { query },
+    onOpen
   } = props
 
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -120,7 +119,7 @@ function DashboardToolbar (props) {
     const lookup = keyBy(nodes, 'id')
 
     setSnackbarOpen(true)
-    setSnackbarMessage(`Deleted ${selected.map(id => lookup[id].title).join(', ')}`)
+    setSnackbarMessage(`Deleted ${selectedPostIds.map(id => lookup[id].title).join(', ')}`)
 
     const writeNodes = (nodes) => {
       return client.writeQuery({
@@ -136,7 +135,7 @@ function DashboardToolbar (props) {
     }
 
     writeNodes(
-      nodes.filter((post) => !selected.includes(post.id))
+      nodes.filter((post) => !selectedPostIds.includes(post.id))
     )
 
     const cancel = () => {
@@ -147,7 +146,7 @@ function DashboardToolbar (props) {
     timer.current = window.setTimeout(async () => {
       const userId = users.data.users[0].id
       await Promise.all(
-        selected.map(id => posts.client.mutate({
+        selectedPostIds.map(id => posts.client.mutate({
           mutation: DELETE_POST,
           variables: { id, userId }
         }))
@@ -156,7 +155,7 @@ function DashboardToolbar (props) {
   }
 
   const onEdit = () => {
-    history.push('/posts/' + selected[0])
+    history.push('/posts/' + selectedPostIds[0])
   }
 
   const handleChange = ({ currentTarget: { value } }) => {
@@ -168,13 +167,24 @@ function DashboardToolbar (props) {
   }
 
   const onMenuOpen = evt => {
-    setContextMenuAnchorEl(evt)
+    setAnchorEl(evt.target)
+  }
+  
+  const onMenuClose = () => {
+    setAnchorEl(null)
+  }
+  
+  const onOpenSettingsModal = () => {
+    onOpen(ModalType.DASHBOARD_SETTINGS)
   }
 
-  const open = selected.length > 0
+  const onOpenCreatePostModal = () => {
+    onOpen(ModalType.CREATE_POST)
+  }
+
+  const open = selectedPostIds.length > 0
   return (
     <div className={classes.root}>
-      <Typography variant='subtitle2' style={{ padding: '10px 0px 0px 10px' }}>Posts</Typography>
       <div className={classes.flex}>
         <div className={classes.toolbar}>
           <SearchInput
@@ -185,25 +195,27 @@ function DashboardToolbar (props) {
             placeholder={'Search...'}
           />
           <ProjectSelect
-            selectedProject={selectedProject}
+            selectedProjectId={settings.dashboard.selected_project_id}
             allProjects={projects?.data?.projects}
-            selectProject={selectProject}
-            className={classes.select}
+            setSelectedProjectId={setSelectedProjectId}
           />
         </div>
         <div className={classes.actions}>
           <Menu
-            anchorEl={contextMenuAnchorEl}
-            open={Boolean(contextMenuAnchorEl)}
-            onClose={contextMenuOnClose}
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={onMenuClose}
           >
             <MenuItem key='edit' onClick={onEdit}>Edit</MenuItem>
             <MenuItem key='delete' onClick={onDelete}>Delete</MenuItem>
           </Menu>
-          <IconButton onClick={onMenuOpen} disabled={!selected.length}>
-            <Cog />
+          <IconButton onClick={onMenuOpen} disabled={!selectedPostIds.length}>
+            <EditIcon />
           </IconButton>
-          <Button onClick={handleOpen}>New Post</Button>
+          <IconButton onClick={onOpenSettingsModal}>
+            <CogIcon />
+          </IconButton>
+          <Button onClick={onOpenCreatePostModal}>New Post</Button>
         </div>
       </div>
       <Snackbar
@@ -223,6 +235,10 @@ function DashboardToolbar (props) {
       />
     </div>
   )
+}
+
+DashboardToolbar.defaultProps = {
+  selectedPostIds: []
 }
 
 const styles = theme => ({

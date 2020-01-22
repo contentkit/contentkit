@@ -7,7 +7,8 @@ type SearchInputProps = {
   value: string,
   className: string,
   classes: any,
-  onSearch: ({ value: string }) => void
+  onSearch: ({ value: string }) => void,
+  placeholder?: string
 }
 
 function SearchInput (props: SearchInputProps) {

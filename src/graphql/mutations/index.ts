@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { POST_QUERY, USER_QUERY, PROJECTS_QUERY, PROJECT_QUERY, TAG_QUERY } from '../queries'
+import { POST_QUERY, USER_QUERY, PROJECTS_QUERY, PROJECT_QUERY, TAG_QUERY, SETTINGS_QUERY } from '../queries'
 import { useMutation, useApolloClient } from '@apollo/react-hooks'
 import { genKey, genDate } from '../../lib/util'
 import ApolloClient from 'apollo-client'
@@ -467,4 +467,40 @@ export function useDeleteTagMutation () {
   }
 
   return deleteTag
+}
+
+export function useSetSettingMutation () {
+  const [mutate, data] = useMutation(Mutations.UPSERT_SETTINGS_MUTATION)
+  
+  const setSetting = variables => mutate({
+    variables,
+    optimisticResponse: {
+      __typename: Typename.MUTATION,
+      insert_settings: {
+        __typename: Typename.SETTINGS_MUTATION_RESPONSE,
+        returning: [{
+          __typename: Typename.SETTING,
+          user_id: variables.userId,
+          property_name: variables.propertyName,
+          property_value: variables.propertyValue
+        }]
+      }
+    },
+    update: (store, { data: { insert_settings } }) => {
+      const { settings } = store.readQuery({
+        query: SETTINGS_QUERY,
+        variables: {}
+      })
+
+      store.writeQuery({
+        query: SETTINGS_QUERY,
+        data: {
+          settings: settings.filter(({ property_name }) => property_name !== variables.propertyName)
+            .concat(insert_settings.returning)
+        }
+      })
+    }
+  })
+
+  return setSetting
 }

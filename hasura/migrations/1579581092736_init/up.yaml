@@ -1,0 +1,629 @@
+- args:
+    allowlist: []
+    functions: []
+    query_collections: []
+    remote_schemas:
+    - comment: null
+      definition:
+        forward_client_headers: true
+        headers:
+        - name: Authorization
+          value: "" 
+        timeout_seconds: 60
+        url: https://69yn96e9ll.execute-api.us-east-1.amazonaws.com/prod/graphql
+        url_from_env: null
+      name: contentkit-auth
+    tables:
+    - array_relationships:
+      - comment: null
+        name: posts
+        using:
+          foreign_key_constraint_on:
+            column: cover_image_id
+            table: posts
+      computed_fields: []
+      configuration:
+        custom_column_names: {}
+        custom_root_fields:
+          delete: null
+          insert: null
+          select: null
+          select_aggregate: null
+          select_by_pk: null
+          update: null
+      delete_permissions:
+      - comment: null
+        permission:
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+        role: user
+      event_triggers: []
+      insert_permissions:
+      - comment: null
+        permission:
+          check:
+            user_id:
+              _eq: X-Hasura-User-Id
+          columns:
+          - id
+          - url
+          - post_id
+          - user_id
+          set: {}
+        role: user
+      is_enum: false
+      object_relationships:
+      - comment: null
+        name: post
+        using:
+          foreign_key_constraint_on: post_id
+      - comment: null
+        name: user
+        using:
+          foreign_key_constraint_on: user_id
+      select_permissions:
+      - comment: null
+        permission:
+          allow_aggregations: true
+          columns:
+          - id
+          - post_id
+          - url
+          - user_id
+          computed_fields: []
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+        role: user
+      table: images
+      update_permissions:
+      - comment: null
+        permission:
+          columns:
+          - id
+          - post_id
+          - url
+          - user_id
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+          set: {}
+        role: user
+    - array_relationships: []
+      computed_fields: []
+      configuration:
+        custom_column_names: {}
+        custom_root_fields:
+          delete: null
+          insert: null
+          select: null
+          select_aggregate: null
+          select_by_pk: null
+          update: null
+      delete_permissions:
+      - comment: null
+        permission:
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+        role: user
+      event_triggers: []
+      insert_permissions:
+      - comment: null
+        permission:
+          check:
+            user_id:
+              _eq: X-Hasura-User-Id
+          columns:
+          - id
+          - name
+          - project_id
+          - origin_type
+          - user_id
+          set: {}
+        role: user
+      is_enum: false
+      object_relationships:
+      - comment: null
+        name: project
+        using:
+          foreign_key_constraint_on: project_id
+      - comment: null
+        name: user
+        using:
+          foreign_key_constraint_on: user_id
+      select_permissions:
+      - comment: null
+        permission:
+          allow_aggregations: true
+          columns:
+          - origin_type
+          - id
+          - project_id
+          - user_id
+          - name
+          computed_fields: []
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+        role: user
+      table: origins
+      update_permissions:
+      - comment: null
+        permission:
+          columns:
+          - origin_type
+          - id
+          - project_id
+          - user_id
+          - name
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+          set: {}
+        role: user
+    - array_relationships:
+      - comment: null
+        name: images
+        using:
+          foreign_key_constraint_on:
+            column: post_id
+            table: images
+      - comment: null
+        name: posts_tags
+        using:
+          foreign_key_constraint_on:
+            column: post_id
+            table: posts_tags
+      computed_fields: []
+      configuration:
+        custom_column_names: {}
+        custom_root_fields:
+          delete: null
+          insert: null
+          select: null
+          select_aggregate: null
+          select_by_pk: null
+          update: null
+      delete_permissions:
+      - comment: null
+        permission:
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+        role: user
+      event_triggers:
+      - definition:
+          enable_manual: false
+          insert:
+            columns: '*'
+        headers: []
+        name: RequestBin
+        retry_conf:
+          interval_sec: 10
+          num_retries: 0
+          timeout_sec: 60
+        webhook: http://requestbin.net/r/13920ce1
+      insert_permissions:
+      - comment: null
+        permission:
+          check:
+            user_id:
+              _eq: X-Hasura-User-Id
+          columns:
+          - created_at
+          - updated_at
+          - project_id
+          - title
+          - slug
+          - status
+          - excerpt
+          - published_at
+          - id
+          - source
+          - raw
+          - encoded_html
+          - cover_image_id
+          - user_id
+          set: {}
+        role: user
+      is_enum: false
+      object_relationships:
+      - comment: null
+        name: image
+        using:
+          foreign_key_constraint_on: cover_image_id
+      - comment: null
+        name: project
+        using:
+          foreign_key_constraint_on: project_id
+      - comment: null
+        name: user
+        using:
+          foreign_key_constraint_on: user_id
+      select_permissions:
+      - comment: null
+        permission:
+          allow_aggregations: true
+          columns:
+          - raw
+          - status
+          - cover_image_id
+          - encoded_html
+          - excerpt
+          - id
+          - project_id
+          - slug
+          - source
+          - title
+          - user_id
+          - created_at
+          - published_at
+          - updated_at
+          computed_fields: []
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+        role: user
+      table: posts
+      update_permissions:
+      - comment: null
+        permission:
+          columns:
+          - raw
+          - status
+          - cover_image_id
+          - encoded_html
+          - excerpt
+          - id
+          - project_id
+          - slug
+          - source
+          - title
+          - user_id
+          - created_at
+          - published_at
+          - updated_at
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+          set: {}
+        role: user
+    - array_relationships: []
+      computed_fields: []
+      configuration:
+        custom_column_names: {}
+        custom_root_fields:
+          delete: null
+          insert: null
+          select: null
+          select_aggregate: null
+          select_by_pk: null
+          update: null
+      delete_permissions:
+      - comment: null
+        permission:
+          filter: {}
+        role: user
+      event_triggers: []
+      insert_permissions:
+      - comment: null
+        permission:
+          check: {}
+          columns:
+          - post_id
+          - tag_id
+          set: {}
+        role: user
+      is_enum: false
+      object_relationships:
+      - comment: null
+        name: post
+        using:
+          foreign_key_constraint_on: post_id
+      - comment: null
+        name: tag
+        using:
+          foreign_key_constraint_on: tag_id
+      select_permissions:
+      - comment: null
+        permission:
+          allow_aggregations: true
+          columns:
+          - post_id
+          - tag_id
+          computed_fields: []
+          filter: {}
+        role: user
+      table: posts_tags
+      update_permissions:
+      - comment: null
+        permission:
+          columns:
+          - post_id
+          - tag_id
+          filter: {}
+          set: {}
+        role: user
+    - array_relationships:
+      - comment: null
+        name: origins
+        using:
+          foreign_key_constraint_on:
+            column: project_id
+            table: origins
+      - comment: null
+        name: posts
+        using:
+          foreign_key_constraint_on:
+            column: project_id
+            table: posts
+      - comment: null
+        name: tags
+        using:
+          foreign_key_constraint_on:
+            column: project_id
+            table: tags
+      computed_fields: []
+      configuration:
+        custom_column_names: {}
+        custom_root_fields:
+          delete: null
+          insert: null
+          select: null
+          select_aggregate: null
+          select_by_pk: null
+          update: null
+      delete_permissions:
+      - comment: null
+        permission:
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+        role: user
+      event_triggers: []
+      insert_permissions:
+      - comment: null
+        permission:
+          check:
+            user_id:
+              _eq: X-Hasura-User-Id
+          columns:
+          - id
+          - created_at
+          - updated_at
+          - name
+          - user_id
+          set: {}
+        role: user
+      is_enum: false
+      object_relationships:
+      - comment: null
+        name: user
+        using:
+          foreign_key_constraint_on: user_id
+      select_permissions:
+      - comment: null
+        permission:
+          allow_aggregations: true
+          columns:
+          - id
+          - user_id
+          - created_at
+          - updated_at
+          - name
+          computed_fields: []
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+        role: user
+      table: projects
+      update_permissions:
+      - comment: null
+        permission:
+          columns:
+          - id
+          - user_id
+          - created_at
+          - updated_at
+          - name
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+          set: {}
+        role: user
+    - array_relationships:
+      - comment: null
+        name: posts_tags
+        using:
+          foreign_key_constraint_on:
+            column: tag_id
+            table: posts_tags
+      computed_fields: []
+      configuration:
+        custom_column_names: {}
+        custom_root_fields:
+          delete: null
+          insert: null
+          select: null
+          select_aggregate: null
+          select_by_pk: null
+          update: null
+      delete_permissions:
+      - comment: null
+        permission:
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+        role: user
+      event_triggers: []
+      insert_permissions:
+      - comment: null
+        permission:
+          check:
+            user_id:
+              _eq: X-Hasura-User-Id
+          columns:
+          - id
+          - created_at
+          - updated_at
+          - name
+          - description
+          - slug
+          - project_id
+          - user_id
+          set: {}
+        role: user
+      is_enum: false
+      object_relationships:
+      - comment: null
+        name: project
+        using:
+          foreign_key_constraint_on: project_id
+      - comment: null
+        name: user
+        using:
+          foreign_key_constraint_on: user_id
+      select_permissions:
+      - comment: null
+        permission:
+          allow_aggregations: true
+          columns:
+          - description
+          - id
+          - name
+          - project_id
+          - slug
+          - user_id
+          - created_at
+          - updated_at
+          computed_fields: []
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+        role: user
+      table: tags
+      update_permissions:
+      - comment: null
+        permission:
+          columns:
+          - description
+          - id
+          - name
+          - project_id
+          - slug
+          - user_id
+          - created_at
+          - updated_at
+          filter:
+            user_id:
+              _eq: X-Hasura-User-Id
+          set: {}
+        role: user
+    - array_relationships:
+      - comment: null
+        name: images
+        using:
+          foreign_key_constraint_on:
+            column: user_id
+            table: images
+      - comment: null
+        name: origins
+        using:
+          foreign_key_constraint_on:
+            column: user_id
+            table: origins
+      - comment: null
+        name: posts
+        using:
+          foreign_key_constraint_on:
+            column: user_id
+            table: posts
+      - comment: null
+        name: projects
+        using:
+          foreign_key_constraint_on:
+            column: user_id
+            table: projects
+      - comment: null
+        name: tags
+        using:
+          foreign_key_constraint_on:
+            column: user_id
+            table: tags
+      computed_fields: []
+      configuration:
+        custom_column_names: {}
+        custom_root_fields:
+          delete: null
+          insert: null
+          select: null
+          select_aggregate: null
+          select_by_pk: null
+          update: null
+      delete_permissions:
+      - comment: null
+        permission:
+          filter:
+            id:
+              _eq: X-Hasura-User-Id
+        role: user
+      event_triggers: []
+      insert_permissions:
+      - comment: null
+        permission:
+          check:
+            id:
+              _eq: X-Hasura-User-Id
+          columns:
+          - id
+          - created_at
+          - updated_at
+          - role
+          - email
+          - name
+          - password
+          - secret
+          set: {}
+        role: user
+      is_enum: false
+      object_relationships: []
+      select_permissions:
+      - comment: null
+        permission:
+          allow_aggregations: true
+          columns:
+          - email
+          - id
+          - name
+          - password
+          - secret
+          - created_at
+          - updated_at
+          - role
+          computed_fields: []
+          filter:
+            id:
+              _eq: X-Hasura-User-Id
+        role: user
+      table: users
+      update_permissions:
+      - comment: null
+        permission:
+          columns:
+          - email
+          - id
+          - name
+          - password
+          - secret
+          - created_at
+          - updated_at
+          - role
+          filter:
+            id:
+              _eq: X-Hasura-User-Id
+          set: {}
+        role: user
+    version: 2
+  type: replace_metadata

@@ -31,11 +31,11 @@ const useStyles = makeStyles((theme) => ({
 function CreatePostModal (props) {
   const {
     projects,
-    selectProject,
+    settings,
+    setSelectedProjectId,
     open,
     createPost,
-    handleClose,
-    selectedProject
+    onClose
   } = props
   const classes = useStyles(props)
   const [title, setTitle] = React.useState('')
@@ -43,23 +43,19 @@ function CreatePostModal (props) {
   const handleInputChange = evt => setTitle(evt.target.value)
 
   const onSubmit = async (evt) => {
-    handleClose()
+    onClose()
 
     const selectedProject = await getProjectId()
     createPost.mutate({
       title: title,
-      projectId: selectedProject,
+      projectId: settings.dashboard.selected_project_id,
       userId: props.users.data.users[0].id
     })
   }
 
-  const onCancel = () => {
-    props.handleClose()
-  }
-
   const getProjectId = () => {
-    if (selectedProject) {
-      return selectedProject
+    if (settings.dashboard.selected_project_id) {
+      return settings.dashboard.selected_project_id
     }
 
     return createProject()
@@ -100,16 +96,16 @@ function CreatePostModal (props) {
           </Grid>
           <Grid item xs={6}>
             <ProjectSelect
-              selectedProject={selectedProject}
+              selectedProjectId={settings.dashboard.selected_project_id}
               allProjects={projects?.data?.projects}
-              selectProject={selectProject}
               hideLabel={false}
+              setSelectedProjectId={setSelectedProjectId}
             />
           </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onCancel}>Cancel</Button>
+        <Button onClick={onClose}>Cancel</Button>
         <Button onClick={onSubmit}>Create</Button>
       </DialogActions>
     </Dialog>
@@ -117,7 +113,6 @@ function CreatePostModal (props) {
 }
 
 function CreatePostModalMutations (props) {
-  const users = useQuery(USER_QUERY)
   const createPost = useCreatePostMutation(props.posts.variables)
   const createProject = useCreateProjectMutation()
 
@@ -127,7 +122,6 @@ function CreatePostModalMutations (props) {
   return (
     <CreatePostModal
       {...props}
-      users={users}
       createPost={createPost}
       updatePost={updatePost}
       createProject={createProject}

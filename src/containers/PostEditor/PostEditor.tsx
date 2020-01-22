@@ -1,24 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Dialog, DialogContent } from '@material-ui/core'
+import { EditorState } from 'draft-js'
+import { Dialog, DialogContent, Snackbar, Button, CircularProgress, Fade } from '@material-ui/core'
+import { DeleteForever } from '@material-ui/icons'
 import { AppWrapper, Toolbar, MediaProvider } from '@contentkit/components'
 import { convertToHTML } from '@contentkit/convert'
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 import { makeStyles } from '@material-ui/styles'
-import { JsonEditorModal } from '@contentkit/json-editor'
+import Alert from '@material-ui/lab/Alert'
 
 import { encode } from 'base64-unicode'
 import PostEditorToolbar from '../../components/PostEditorToolbar'
 import PostEditorComponent from '../../components/PostEditorComponent'
 import {
-  hydrate,
-  toRaw,
+  expandCompressedRawContentBlocks,
+  sha256,
+  debouncedSaveEditorStateToLocalStorage,
+  getCacheKey
 } from './util'
 import { setEditorState, saveEditorState } from '../../lib/redux'
 import { UPLOAD_MUTATION } from '../../graphql/mutations'
-import PostEditorHistoryModal from '../../components/PostEditorHistoryModal'
-import PostMetaModal from '../../components/PostEditorMetaModal'
+
 import {
   CREATE_IMAGE,
   DELETE_IMAGE,
@@ -28,61 +31,19 @@ import {
   useDeleteImage
 } from '../../graphql/mutations'
 import { POST_QUERY, USER_QUERY } from '../../graphql/queries'
-
-const useStyles = makeStyles(theme => ({
-  content: {
-    backgroundColor: '#f5f5f5'
-  }
-}))
-
-export enum ModalType {
-  HISTORY = 'history',
-  POSTMETA = 'postmeta',
-  JSON_EDITOR = 'json-editor'
-}
-
-type ModalItem = {
-  name: ModalType,
-  Component: any,
-  getComponentProps: (props: any) => any
-}
-
-export const modals : ModalItem[] = [
-  {
-    name: ModalType.HISTORY,
-    Component: PostEditorHistoryModal,
-    getComponentProps: ({ posts, saveDocument, editorState, setEditorState }) => ({
-      posts,
-      saveDocument,
-      editorState,
-      setEditorState
-    })
-  },
-  {
-    name: ModalType.POSTMETA,
-    Component: PostMetaModal,
-    getComponentProps: ({ users, client, posts, createImage, deleteImage, getFormData, mediaProvider }) => ({
-      users,
-      posts,
-      createImage,
-      deleteImage,
-      getFormData,
-      mediaProvider
-    })
-  },
-  {
-    name: ModalType.JSON_EDITOR,
-    Component: JsonEditorModal,
-    getComponentProps: ({ editorState, onSaveRawEditor }) => ({
-      editorState,
-      onSave: onSaveRawEditor
-    })
-  }
-]
+import debounce from 'lodash.debounce'
+import invariant from 'fbjs/lib/invariant'
+import useStyles from './styles'
+import { ModalItem } from '../../types'
+import modals from './modals'
+import { ModalType } from '../../fixtures'
 
 function PostEditor (props) {
   const client = useApolloClient()
   const [loading, setLoading] = React.useState(false)
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
+  const [isSavingLocally, setIsSavingLocally] = React.useState(false)
+
   const [open, setOpen] = React.useState({
     [ModalType.HISTORY]: false,
     [ModalType.POSTMETA]: false,
@@ -105,10 +66,41 @@ function PostEditor (props) {
       }
     }
   } = props
+
+  const postId = posts[0]?.id
+
+  const onSaveRawEditor = (raw: any) => {
+    setEditorState(expandCompressedRawContentBlocks(editorState, raw))
+  }
+
+  const setLoadingOnLocalSave = () => {
+    setIsSavingLocally(true)
+  }
+
+  const onChange = editorState => {
+    setEditorState(editorState)
+    debouncedSaveEditorStateToLocalStorage(editorState, postId, setLoadingOnLocalSave)
+  }
+
   const mediaProvider : React.RefObject<any> = React.useRef(null)
+  const rawEditorStateRef = React.useRef(null)
 
   React.useEffect(() => {
-    setEditorState(hydrate(editorState, posts[0]?.raw))
+    let rawEditorState = posts[0]?.raw
+    rawEditorStateRef.current = rawEditorState
+    const localEditorState = window.localStorage.getItem(getCacheKey(postId))
+
+    if (localEditorState) {
+      try {
+        rawEditorState = JSON.parse(localEditorState)
+        setSnackbarOpen(true)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    // onSaveRawEditor(editorState, rawEditorState)
+    setEditorState(expandCompressedRawContentBlocks(editorState, rawEditorState))
   }, [])
 
   React.useEffect(() => {
@@ -136,10 +128,6 @@ function PostEditor (props) {
     return encode(convertToHTML(editorState))
   }
 
-  const onChange = editorState => {
-    setEditorState(editorState)
-  }
-
   const onClick = (key: ModalType) => {
     if (!open[key]) {
       setOpen({ ...open, [key]: true })
@@ -162,10 +150,6 @@ function PostEditor (props) {
     return createPresignedPost
   }
 
-  const onSaveRawEditor = (raw) => {
-    setEditorState(hydrate(editorState, raw))
-  }
-
   const renderToolbar = () => (
     <Toolbar
       onClick={onClick}
@@ -177,6 +161,37 @@ function PostEditor (props) {
       client={client}
     />
   )
+
+  const onCloseSnackbar = () => {
+    setSnackbarOpen(false)
+  }
+
+  const onCloseLocalSaveSnackbar = () => {
+    setIsSavingLocally(false)
+  }
+  
+  const onClickDiscardChanges = () => {
+    window.localStorage.removeItem(getCacheKey(postId, 'state'))
+    window.localStorage.removeItem(getCacheKey(postId, 'hash'))
+    setEditorState(expandCompressedRawContentBlocks(editorState, rawEditorStateRef.current))
+    onCloseSnackbar()
+  }
+
+  const getSnackbarProps = () => ({
+    open: snackbarOpen,
+    message: 'Loading unsaved changes backed up in your browser.',
+    autoHideDuration: 6000,
+    onClose: onCloseSnackbar,
+    action: (
+      <Button
+        variant='contained'
+        startIcon={<DeleteForever />}
+        onClick={onClickDiscardChanges}
+      >
+        Discard Changes
+      </Button>
+    )
+  })
 
   const modalProps = {
     ...props,
@@ -198,6 +213,8 @@ function PostEditor (props) {
       }}
       disablePadding
     >
+      <Snackbar {...getSnackbarProps()} />
+        
       {modals.map(({ Component, getComponentProps, name }) => {
         return (
           <Component key={name} {...getComponentProps(modalProps)} open={open[name]} onClose={onClose} />
@@ -212,6 +229,13 @@ function PostEditor (props) {
         posts={posts}
         users={users}
       />
+
+      <Snackbar open={isSavingLocally} autoHideDuration={2000} onClose={onCloseLocalSaveSnackbar}>
+        <Alert onClose={onCloseLocalSaveSnackbar} severity="success">
+          This is a success message!
+        </Alert>
+      </Snackbar>
+      
     </AppWrapper>
   )
 }
@@ -220,7 +244,6 @@ PostEditor.propTypes = {
   history: PropTypes.object.isRequired,
   editorState: PropTypes.object,
   setEditorState: PropTypes.func,
-  hydrated: PropTypes.bool,
   logged: PropTypes.bool,
   updatePost: PropTypes.func
 }

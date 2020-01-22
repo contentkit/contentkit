@@ -144,7 +144,9 @@ function PostEditorMetaModalForm (props) {
       type: FieldType.FORM_SELECT,
       Component: ProjectSelect,
       getComponentProps: () => ({
-        allProjects, selectedProject, selectProject
+        allProjects,
+        selectedProjectId: selectedProject,
+        setSelectedProjectId: selectProject
       }),
       size: 6
     },
@@ -188,6 +190,7 @@ function PostEditorMetaModalForm (props) {
     if (type === FieldType.FORM_INPUT) {
       return (
         <FormInput
+          key={key}
           label={label}
           onChange={e => onChange(e.target.value, key)}
           value={post[key]}
@@ -198,7 +201,7 @@ function PostEditorMetaModalForm (props) {
 
     if (type === FieldType.FORM_SELECT) {
       return (
-        <FormControl fullWidth>
+        <FormControl fullWidth key={key}>
           <InputLabel shrink>{label}</InputLabel>
           <Component {...getComponentProps()} />
         </FormControl>

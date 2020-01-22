@@ -18,7 +18,7 @@ type DashboardTableRowProps = {
   row: GraphQL.Post,
   className: string,
   selectRow: (id: string) => void,
-  selectedPosts: string[],
+  selectedPostIds: string[],
   columns: Column[],
   classes: any,
   onChange: (post: GraphQL.Post, key: string, value: string) => void,
@@ -31,7 +31,7 @@ function DashboardTableRow (props: DashboardTableRowProps) {
     row,
     className,
     selectRow,
-    selectedPosts,
+    selectedPostIds,
     columns,
     classes,
     onChange,
@@ -69,7 +69,7 @@ function DashboardTableRow (props: DashboardTableRowProps) {
       <TableCell className={classes.checkboxTableCell}>
         <Checkbox
           value={row.id}
-          checked={selectedPosts.includes(row.id)}
+          checked={selectedPostIds.includes(row.id)}
           id={`checkbox_${row.id}`}
           onChange={handleSelectRow}
         />

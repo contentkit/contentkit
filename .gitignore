@@ -73,3 +73,5 @@ typings/
 
 # Serverless directories
 .serverless
+
+hasura/config.yml

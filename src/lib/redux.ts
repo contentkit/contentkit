@@ -21,8 +21,8 @@ const initialState = {
     projectId: undefined
   },
   editorState: EditorState.createEmpty(),
-  selectedProject: undefined,
-  selectedPosts: []
+  selectedProjectId: null,
+  selectedPostIds: []
 }
 
 export const SET_EDITOR_STATE = 'SET_EDITOR_STATE'
@@ -82,17 +82,17 @@ export const setEditorState = (editorState) => ({
   type: SET_EDITOR_STATE
 })
 
-export const selectProject = (projectId) => ({
+export const setSelectedProjectId = (projectId) => ({
   payload: {
     projectId
   },
   type: UPDATE_FEED_VARIABLES
 })
 
-export const selectPosts = (selectedPosts) => ({
+export const setSelectedPostIds = (selectedPostIds) => ({
   type: SELECT_POST,
   payload: {
-    selectedPosts
+    selectedPostIds
   }
 })
 
@@ -127,6 +127,16 @@ export const saveEditorState = (client, { id }) => async (dispatch, getState) =>
   }
   const options = getUpdateDocumentMutationOptions(client, variables)
   await client.mutate(options)
+}
+
+export const actions = {
+  updateFeedVariables,
+  setEditorState,
+  setSelectedProjectId,
+  setSelectedPostIds,
+  setSearchQuery,
+  setSearchLoadingState,
+  saveEditorState
 }
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

@@ -1,6 +1,8 @@
+import React from 'react'
 import gql from 'graphql-tag'
 import { useQuery, QueryHookOptions } from '@apollo/react-hooks'
 import { GraphQL } from '../types'
+import set from 'lodash.set'
 
 export const PROJECTS_QUERY = gql`
   query {
@@ -123,6 +125,38 @@ export const TAG_QUERY = gql`
     }
   }
 `
+
+export const SETTINGS_QUERY = gql`
+  query {
+    settings {
+      user_id
+      property_name,
+      property_value
+    }
+  }
+`
+
+export function useSettingsQuery () {
+  const ref = React.useRef()
+
+  const query = useQuery(SETTINGS_QUERY)
+  const settings = React.useMemo(() => {
+    if (query.loading) {
+      return {
+        dashboard: {
+          selected_project_id: null
+        }
+      }
+    }
+
+    return query.data.settings.reduce((acc, { property_name, property_value }) => {
+      set(acc, property_name, property_value)
+      return acc
+    }, {}) 
+  }, [query])
+
+  return settings
+}
 
 export function useUserQuery (options = {}): GraphQL.UserQueryResult {
   return useQuery(USER_QUERY, options)

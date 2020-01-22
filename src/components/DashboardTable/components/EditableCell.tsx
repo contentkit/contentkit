@@ -21,7 +21,8 @@ const useEditableCellStyles = makeStyles(theme => ({
     position: 'absolute',
     pointerEvents: 'none',
     right: 50
-  }
+  },
+  button: {}
 }))
 
 type EditableCellProps = {

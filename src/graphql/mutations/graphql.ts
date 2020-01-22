@@ -310,3 +310,21 @@ export const UPLOAD_MUTATION = gql`
     }
   }
 `
+
+export const UPSERT_SETTINGS_MUTATION = gql`
+  mutation($userId: String!, $propertyName: String!, $propertyValue: String) {
+    insert_settings(
+      objects: { user_id: $userId, property_name: $propertyName, property_value: $propertyValue },
+      on_conflict: {
+        constraint: settings_pkey,
+        update_columns: [property_name, property_value]
+      }
+    ) {
+      returning {
+        user_id,
+        property_name,
+        property_value
+      }
+    }
+  }
+`

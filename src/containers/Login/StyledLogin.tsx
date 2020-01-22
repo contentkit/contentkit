@@ -167,13 +167,13 @@ function Login (props) {
             </Grid>
           )}
           <form>
-            <Box mb={20}>
+            <Box mb={2}>
               <SignInEmailTextField
                 value={email}
                 onChange={emailOnChange}
               />
             </Box>
-            <Box mb={20}>
+            <Box mb={2}>
               {showLogin
                 ? <PasswordField
                     value={password}
