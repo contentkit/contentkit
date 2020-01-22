@@ -232,7 +232,7 @@ function PostEditor (props) {
 
       <Snackbar open={isSavingLocally} autoHideDuration={2000} onClose={onCloseLocalSaveSnackbar}>
         <Alert onClose={onCloseLocalSaveSnackbar} severity="success">
-          This is a success message!
+          Saved locally
         </Alert>
       </Snackbar>
       

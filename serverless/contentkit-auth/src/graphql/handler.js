@@ -61,12 +61,21 @@ async function resetPassword (_, { email, password }, ctx) {
   }
 }
 
+function throwAuthenticationError () {
+  throw new AuthenticationError('Invalid password or account does not exist.')
+}
+
 async function login (_, { email, password }, ctx) {
   const user = await getUserByEmail(ctx.client, email)
+
+  if (!user) {
+    return throwAuthenticationError()
+  }
+
   const result = await bcrypt.compare(password, user.password)
 
   if (!result) {
-    throw new AuthenticationError('Incorrect password.')
+    return throwAuthenticationError()
   }
 
   const token = await sign({

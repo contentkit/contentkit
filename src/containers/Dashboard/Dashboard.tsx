@@ -89,7 +89,6 @@ function Dashboard (props: DashboardProps) {
     setSetting,
     selectedPostIds,
     setSelectedPostIds,
-    // setSelectedProjectId,
     search,
     client,
     history,
@@ -208,6 +207,7 @@ function Dashboard (props: DashboardProps) {
 
 function DashboardWithQueries (props) {
   const { postsAggregateVariables } = props
+  const projects = useProjectsQuery()
   const settings = useSettingsQuery()
 
   const variables = {
@@ -219,7 +219,6 @@ function DashboardWithQueries (props) {
 
   const users = useUserQuery()
   const posts = usePostsAggregateQuery({ variables, skip: !variables.projectId })
-  const projects = useProjectsQuery()
   const setSetting = useSetSettingMutation()
   return (
     <Dashboard

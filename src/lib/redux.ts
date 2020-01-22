@@ -127,6 +127,8 @@ export const saveEditorState = (client, { id }) => async (dispatch, getState) =>
   }
   const options = getUpdateDocumentMutationOptions(client, variables)
   await client.mutate(options)
+  window.localStorage.removeItem(`editor.${id}.state`)
+  window.localStorage.removeItem(`editor.${id}.hash`)
 }
 
 export const actions = {

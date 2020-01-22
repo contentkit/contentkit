@@ -1,6 +1,6 @@
 import React from 'react'
 import gql from 'graphql-tag'
-import { useQuery, QueryHookOptions } from '@apollo/react-hooks'
+import { useQuery, QueryHookOptions, useApolloClient } from '@apollo/react-hooks'
 import { GraphQL } from '../types'
 import set from 'lodash.set'
 
@@ -138,24 +138,34 @@ export const SETTINGS_QUERY = gql`
 
 export function useSettingsQuery () {
   const ref = React.useRef()
+  const client = useApolloClient()
 
   const query = useQuery(SETTINGS_QUERY)
-  const settings = React.useMemo(() => {
-    if (query.loading) {
-      return {
-        dashboard: {
-          selected_project_id: null
-        }
+  return React.useMemo(() => {
+    const setting = {
+      dashboard: {
+        selected_project_id: null
       }
     }
+    if (query.loading) {
+      return setting
+    }
 
-    return query.data.settings.reduce((acc, { property_name, property_value }) => {
+    const settings = query?.data?.settings || []
+
+    if (!settings.length) {
+      const { projects } = client.cache.readQuery({
+        query: PROJECTS_QUERY
+      })
+      console.log({ projects })
+      setting.dashboard.selected_project_id = projects[0]?.id
+    }
+
+    return settings.reduce((acc, { property_name, property_value }) => {
       set(acc, property_name, property_value)
       return acc
-    }, {}) 
+    }, setting) 
   }, [query])
-
-  return settings
 }
 
 export function useUserQuery (options = {}): GraphQL.UserQueryResult {

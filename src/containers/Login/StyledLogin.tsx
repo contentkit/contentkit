@@ -113,13 +113,12 @@ function Login (props) {
   const login = async () => {
     setLoading(true)
     try {
-      await authenticateUser({
-        email,
-        password
-      })
+      await authenticateUser({ email, password })
     } catch (err) {
       setErrors(err.graphQLErrors)
     }
+
+    redirect()
   }
 
 
@@ -133,6 +132,8 @@ function Login (props) {
     } catch (err) {
       setErrors(err.graphQLErrors)
     }
+
+    redirect()
   }
 
   const resetPassword = () => {}

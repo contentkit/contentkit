@@ -12,13 +12,14 @@ export function useAuthenticateUser () {
     let response
     try {
       response = await mutate({ variables })
+      console.log(response)
       const { data: { login: { token } } } = response
       if (response.errors && response.errors.length) {
         throw response.errors
       }
       if (token) {
         window.localStorage.setItem('token', token)
-        await client.resetStore()
+        await client.clearStore()
       }
     } catch (err) {
       throw err
@@ -36,13 +37,14 @@ export function useRegisterUser () {
     let response
     try {
       response = await mutate({ variables })
-      const { data: { login: { token } } } = response
+      console.log(response)
+      const { data: { register: { token } } } = response
       if (response.errors && response.errors.length) {
         throw response.errors
       }
       if (token) {
         window.localStorage.setItem('token', token)
-        await client.resetStore()
+        await client.clearStore()
       }
     } catch (err) {
       throw err
