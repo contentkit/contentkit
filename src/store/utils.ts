@@ -6,7 +6,6 @@ import transform from '@contentkit/util/lib/utils/transform'
 import invariant from 'fbjs/lib/invariant'
 import { debounce } from 'lodash'
 import { encode } from 'base64-unicode'
-import jdp from 'json-diff-patch'
 
 export const convertFromEditorStateToRaw = (editorState: EditorState) => {
   return compress(convertToRaw(editorState.getCurrentContent()))
@@ -38,8 +37,6 @@ export const expandCompressedRawContentBlocks = (editorState: EditorState, compr
     return a
   }, [])
 
-
-  console.log(jdp.diff(blocks, raw.blocks))
   return EditorState.createWithContent(convertFromRaw({
     ...raw,
     blocks
@@ -59,7 +56,7 @@ export const debouncedSaveEditorStateToLocalStorage = debounce(
   async (
     editorState: EditorState,
     postId: string,
-    callback: () => void
+    callback?: () => void
   ) => {
   invariant(postId, 'No current postId')
   const prevHash = window.localStorage.getItem(getCacheKey(postId, 'hash'))
@@ -88,5 +85,5 @@ export const debouncedSaveEditorStateToLocalStorage = debounce(
     return
   }
 
-  callback()
+  if (callback) callback()
 }, 1000)

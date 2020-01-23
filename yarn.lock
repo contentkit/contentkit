@@ -1075,6 +1075,14 @@
     prismjs "^1.17.1"
     prop-types "^15.6.1"
 
+"@contentkit/json-editor@^0.0.50":
+  version "0.0.50"
+  resolved "https://registry.npmjs.org/@contentkit/json-editor/-/json-editor-0.0.50.tgz#3c2cfefb67bd8b02b779c8c0e1ae10b304c3a2f1"
+  integrity sha512-TLuHwWzyrZxtV6qQ2J48r0WYenLxnGd2ciAagHB+QuG+pcbEtvrIXdBaTZfLu/xFuaAfLyLQDoXnxa8QyXG9Zw==
+  dependencies:
+    "@contentkit/util" "^0.0.50"
+    "@types/draft-js" "^0.10.35"
+
 "@contentkit/sidebar@^0.0.50":
   version "0.0.50"
   resolved "https://registry.npmjs.org/@contentkit/sidebar/-/sidebar-0.0.50.tgz#bd766de133f40a66039a05c6760c50bec2dd891e"
@@ -1453,6 +1461,14 @@
   integrity sha512-CeBpmX1J8kWLcDEnI3Cl2Eo6RfbGvzUctA+CjZUhOKDFbLfcr7fc4usEqLNWetrlJd7RhAkyYe2czXop4fICpw==
   dependencies:
     "@babel/types" "^7.3.0"
+
+"@types/draft-js@^0.10.35", "@types/draft-js@^0.10.38":
+  version "0.10.38"
+  resolved "https://registry.npmjs.org/@types/draft-js/-/draft-js-0.10.38.tgz#19a37d97e696df5749754f8bbd7761a4d56b16b0"
+  integrity sha512-iDg8fJATjGVfQVv/dysAMMcPwORyJix2AyAm8OdwseteYh1jV+Xwlz+1HddoCWxQWqzWf/MDkNQH5sLYG47e0w==
+  dependencies:
+    "@types/react" "*"
+    immutable "~3.7.4"
 
 "@types/history@*":
   version "4.7.4"
@@ -5305,6 +5321,11 @@ jsesc@~0.5.0:
   resolved "https://registry.npmjs.org/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
   integrity sha1-597mbjXW/Bb3EP6R1c9p9w8IkR0=
 
+json-diff-patch@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.npmjs.org/json-diff-patch/-/json-diff-patch-0.0.1.tgz#e8615ee40d6a6f52e3ec7837799bf7682a5324ec"
+  integrity sha1-6GFe5A1qb1Lj7Hg3eZv3aCpTJOw=
+
 json-parse-better-errors@^1.0.1:
   version "1.0.2"
   resolved "https://registry.npmjs.org/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
@@ -7765,6 +7786,11 @@ require-main-filename@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/require-main-filename/-/require-main-filename-2.0.0.tgz#d0b329ecc7cc0f61649f62215be69af54aa8989b"
   integrity sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==
+
+reselect@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/reselect/-/reselect-4.0.0.tgz#f2529830e5d3d0e021408b246a206ef4ea4437f7"
+  integrity sha512-qUgANli03jjAyGlnbYVAV5vvnOmJnODyABz51RdBN7M4WaVu8mecZWgyQNkG8Yqe3KRGRt0l4K4B3XVEULC4CA==
 
 resolve-cwd@^2.0.0:
   version "2.0.0"

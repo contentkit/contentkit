@@ -9,19 +9,14 @@ import { convertToHTML } from '@contentkit/convert'
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 import { makeStyles } from '@material-ui/styles'
 import Alert from '@material-ui/lab/Alert'
-
+import { expand } from 'draft-js-compact'
 import { encode } from 'base64-unicode'
 import PostEditorToolbar from '../../components/PostEditorToolbar'
 import PostEditorComponent from '../../components/PostEditorComponent'
 import {
-  expandCompressedRawContentBlocks,
-  sha256,
-  debouncedSaveEditorStateToLocalStorage,
-  getCacheKey
+  expandCompressedRawContentBlocks
 } from './util'
-import { setEditorState, saveEditorState } from '../../lib/redux'
 import { UPLOAD_MUTATION } from '../../graphql/mutations'
-
 import {
   CREATE_IMAGE,
   DELETE_IMAGE,
@@ -37,12 +32,12 @@ import useStyles from './styles'
 import { ModalItem } from '../../types'
 import modals from './modals'
 import { ModalType } from '../../fixtures'
+import EditorCache from '../../store/EditorCache'
 
 function PostEditor (props) {
   const client = useApolloClient()
   const [loading, setLoading] = React.useState(false)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
-  const [isSavingLocally, setIsSavingLocally] = React.useState(false)
 
   const [open, setOpen] = React.useState({
     [ModalType.HISTORY]: false,
@@ -52,55 +47,50 @@ function PostEditor (props) {
 
   const {
     editorState,
+    localRawEditorState,
     setEditorState,
+    setStatus,
     saveEditorState,
     history,
     createImage,
     deleteImage,
     mediaProviderActions,
+    discardLocalEditorState,
     logged,
     users,
     posts: {
       data: {
         posts
       }
-    }
+    },
+    status
   } = props
 
   const postId = posts[0]?.id
 
   const onSaveRawEditor = (raw: any) => {
-    setEditorState(expandCompressedRawContentBlocks(editorState, raw))
-  }
-
-  const setLoadingOnLocalSave = () => {
-    setIsSavingLocally(true)
+    onChange(expandCompressedRawContentBlocks(editorState, raw))
   }
 
   const onChange = editorState => {
     setEditorState(editorState)
-    debouncedSaveEditorStateToLocalStorage(editorState, postId, setLoadingOnLocalSave)
   }
 
   const mediaProvider : React.RefObject<any> = React.useRef(null)
   const rawEditorStateRef = React.useRef(null)
 
   React.useEffect(() => {
-    let rawEditorState = posts[0]?.raw
+    let rawEditorState = expand(posts[0]?.raw)
+    const editorCache = new EditorCache({ id: postId })
+    const hash = EditorCache.hash(JSON.stringify(rawEditorState))
     rawEditorStateRef.current = rawEditorState
-    const localEditorState = window.localStorage.getItem(getCacheKey(postId))
 
-    if (localEditorState) {
-      try {
-        rawEditorState = JSON.parse(localEditorState)
-        setSnackbarOpen(true)
-      } catch (err) {
-        console.error(err)
-      }
+    if (localRawEditorState && editorCache.getHash() !== hash) {
+      rawEditorState = localRawEditorState
+      setSnackbarOpen(true)
     }
 
-    // onSaveRawEditor(editorState, rawEditorState)
-    setEditorState(expandCompressedRawContentBlocks(editorState, rawEditorState))
+    onChange(expandCompressedRawContentBlocks(editorState, rawEditorState))
   }, [])
 
   React.useEffect(() => {
@@ -122,10 +112,6 @@ function PostEditor (props) {
   const manualSave = async () => {
     setLoading(true)
     await saveDocument()
-  }
-
-  const getHtml = (editorState) => {
-    return encode(convertToHTML(editorState))
   }
 
   const onClick = (key: ModalType) => {
@@ -156,7 +142,7 @@ function PostEditor (props) {
       documentId={posts[0]?.id}
       uploads={posts[0]?.images}
       getEditorState={getEditorState}
-      setEditorState={setEditorState}
+      setEditorState={onChange}
       mediaProvider={mediaProvider.current}
       client={client}
     />
@@ -167,13 +153,14 @@ function PostEditor (props) {
   }
 
   const onCloseLocalSaveSnackbar = () => {
-    setIsSavingLocally(false)
+    setStatus({ isSavingLocally: false })
   }
   
   const onClickDiscardChanges = () => {
-    window.localStorage.removeItem(getCacheKey(postId, 'state'))
-    window.localStorage.removeItem(getCacheKey(postId, 'hash'))
-    setEditorState(expandCompressedRawContentBlocks(editorState, rawEditorStateRef.current))
+    // window.localStorage.removeItem(getCacheKey(postId, 'state'))
+    // window.localStorage.removeItem(getCacheKey(postId, 'hash'))
+    discardLocalEditorState(expandCompressedRawContentBlocks(editorState, rawEditorStateRef.current))
+    // setEditorState(expandCompressedRawContentBlocks(editorState, rawEditorStateRef.current))
     onCloseSnackbar()
   }
 
@@ -230,7 +217,15 @@ function PostEditor (props) {
         users={users}
       />
 
-      <Snackbar open={isSavingLocally} autoHideDuration={2000} onClose={onCloseLocalSaveSnackbar}>
+      <Snackbar
+        open={status.isSavingLocally}
+        autoHideDuration={2000}
+        onClose={onCloseLocalSaveSnackbar}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right'
+        }}
+      >
         <Alert onClose={onCloseLocalSaveSnackbar} severity="success">
           Saved locally
         </Alert>
@@ -247,10 +242,6 @@ PostEditor.propTypes = {
   logged: PropTypes.bool,
   updatePost: PropTypes.func
 }
-
-const mapStateToProps = state => state.app
-
-const mapDispatchToProps = { setEditorState, saveEditorState }
 
 function PostEditorMutations (props: any) {
   const createImage = useCreateImage()
@@ -282,4 +273,4 @@ function EditorWithData (props) {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditorWithData)
+export default EditorWithData

@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 
 import { OfflineNotification } from './lib/withConnectivity'
 import createClient from './lib/client'
-import { store } from './lib/redux'
+import { store } from './store'
 import pages from './pages'
 import './css/style.scss'
 import Fallback from './components/Fallback'

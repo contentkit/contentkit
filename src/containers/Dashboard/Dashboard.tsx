@@ -13,7 +13,7 @@ import DashboardTable from '../../components/DashboardTable'
 import DashboardToolbar from '../../components/DashboardToolbar'
 import {
   actions
-} from '../../lib/redux'
+} from '../../store/actions'
 import CreatePostModal from '../../components/CreatePostModal'
 import { feedQueryShape } from '../../shapes'
 import { usePostsAggregateQuery, useProjectsQuery, useSettingsQuery, useUserQuery } from '../../graphql/queries'
