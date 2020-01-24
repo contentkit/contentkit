@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/styles'
 import Alert from '@material-ui/lab/Alert'
 import { expand } from 'draft-js-compact'
 import { encode } from 'base64-unicode'
+
 import PostEditorToolbar from '../../components/PostEditorToolbar'
 import PostEditorComponent from '../../components/PostEditorComponent'
 import {
@@ -33,6 +34,7 @@ import { ModalItem } from '../../types'
 import modals from './modals'
 import { ModalType } from '../../fixtures'
 import EditorCache from '../../store/EditorCache'
+import { AWS_BUCKET_URL } from '../../lib/config'
 
 function PostEditor (props) {
   const client = useApolloClient()
@@ -78,24 +80,32 @@ function PostEditor (props) {
 
   const mediaProvider : React.RefObject<any> = React.useRef(null)
   const rawEditorStateRef = React.useRef(null)
+  const raw = posts[0]?.raw
 
   React.useEffect(() => {
+    if (!raw) {
+      return
+    }
+    if (rawEditorStateRef.current) {
+      return
+    }
     let rawEditorState = expand(posts[0]?.raw)
     const editorCache = new EditorCache({ id: postId })
-    const hash = EditorCache.hash(JSON.stringify(rawEditorState))
-    rawEditorStateRef.current = rawEditorState
+    EditorCache.hash(JSON.stringify(rawEditorState)).then(hash => {
+      rawEditorStateRef.current = rawEditorState
+    
+      if (localRawEditorState && hash !== editorCache.getHash()) {
+        rawEditorState = localRawEditorState
+        setSnackbarOpen(true
+      }
 
-    if (localRawEditorState && editorCache.getHash() !== hash) {
-      rawEditorState = localRawEditorState
-      setSnackbarOpen(true)
-    }
-
-    onChange(expandCompressedRawContentBlocks(editorState, rawEditorState))
-  }, [])
+      onChange(expandCompressedRawContentBlocks(editorState, rawEditorState))
+    })
+  }, [raw])
 
   React.useEffect(() => {
     const config = {
-      baseUrl: 'https://s3.amazonaws.com/contentkit/'
+      baseUrl: `${AWS_BUCKET_URL}/`
     }
     // @ts-ignore
     mediaProvider.current = new MediaProvider(config, client)
@@ -157,10 +167,7 @@ function PostEditor (props) {
   }
   
   const onClickDiscardChanges = () => {
-    // window.localStorage.removeItem(getCacheKey(postId, 'state'))
-    // window.localStorage.removeItem(getCacheKey(postId, 'hash'))
     discardLocalEditorState(expandCompressedRawContentBlocks(editorState, rawEditorStateRef.current))
-    // setEditorState(expandCompressedRawContentBlocks(editorState, rawEditorStateRef.current))
     onCloseSnackbar()
   }
 
@@ -218,7 +225,7 @@ function PostEditor (props) {
       />
 
       <Snackbar
-        open={status.isSavingLocally}
+        open={status.isSavingLocally && !snackbarOpen}
         autoHideDuration={2000}
         onClose={onCloseLocalSaveSnackbar}
         anchorOrigin={{
@@ -243,10 +250,16 @@ PostEditor.propTypes = {
   updatePost: PropTypes.func
 }
 
-function PostEditorMutations (props: any) {
+function EditorWithData (props) {
+  const client = useApolloClient()
+  const { children, match: { params: { id } } } = props
+  const posts = useQuery(POST_QUERY, { variables: { id }, client })
+  const users = useQuery(USER_QUERY)
   const createImage = useCreateImage()
   const deleteImage = useDeleteImage()
   const componentProps = {
+    posts,
+    users,
     createImage,
     deleteImage,
     mediaProviderActions: {
@@ -255,21 +268,13 @@ function PostEditorMutations (props: any) {
     },
     ...props
   }
-  return (<PostEditor {...componentProps} />)
-}
-
-function EditorWithData (props) {
-  const client = useApolloClient()
-  const { children, match: { params: { id } } } = props
-  const posts = useQuery(POST_QUERY, { variables: { id }, client })
-  const users = useQuery(USER_QUERY)
 
   if (posts.loading) {
     return null
   }
 
   return (
-    <PostEditorMutations {...props} posts={posts} users={users} client={client} />
+    <PostEditor {...componentProps} />
   )
 }
 
