@@ -4,7 +4,7 @@
   "main": "src/handler.js",
   "license": "MIT",
   "dependencies": {
-    "apollo-server": "^2.6.3",
+    "apollo-server": "^2.14.2",
     "apollo-server-lambda": "~2.6.3",
     "aws4": "^1.8.0",
     "bcryptjs": "^2.4.3",
