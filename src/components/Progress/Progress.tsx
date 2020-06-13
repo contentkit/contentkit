@@ -15,16 +15,9 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function Fallback (props) {
+function Progress (props) {
   const classes = useStyles(props)
-  React.useEffect(() => {
-    let start = Date.now()
 
-    return () => {
-      let end = Date.now()
-      console.log(`Spend ${(end - start) / 1000}s in fallback`)
-    }
-  })
   return (
     <div className={classes.root}>
       <div>
@@ -34,8 +27,8 @@ function Fallback (props) {
   )
 }
 
-Fallback.propTypes = {}
+Progress.propTypes = {}
 
-Fallback.defaultProps = {}
+Progress.defaultProps = {}
 
-export default Fallback
+export default Progress

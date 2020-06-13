@@ -2,5 +2,6 @@
   "problems.autoReveal": true,
   "javascript.validate.enable": false,
   "standard.enable": true,
-  "standard.usePackageJson": true
+  "standard.usePackageJson": true,
+  "editor.tabSize": 2
 }

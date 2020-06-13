@@ -1,29 +1,4 @@
 import React from 'react'
-import Fallback from './components/Fallback'
-import CircularProgress from '@material-ui/core/CircularProgress'
-
-const styles = {
-  width: '100%',
-  minHeight: '100vh',
-  backgroundColor: '#f4f9fd',
-  position: 'absolute',
-  padding: '40vh',
-  boxSizing: 'border-box',
-  top: 0,
-  zIndex: 0,
-  pointerEvents: 'none'
-}
-
-export const LoadingOverlay = ({ loading, children }) => (
-  <React.Fragment>
-    <div className={loading ? '' : 'fadeIn'}>
-      {children}
-    </div>
-    <div style={{ ...styles }} className={loading ? '' : 'fadeOut'}>
-      <CircularProgress />
-    </div>
-  </React.Fragment>
-)
 
 export const Dashboard = React.lazy(() => import('./containers/Dashboard'))
 export const SignIn = React.lazy(() => import('./containers/Login'))
@@ -33,7 +8,7 @@ export const Profile = React.lazy(() => import('./containers/Profile'))
 
 export default [{
   component: Dashboard,
-  path: '/',
+  path: '/dashboard',
   exact: true
 }, {
   component: Profile,
@@ -50,9 +25,5 @@ export default [{
 }, {
   component: Projects,
   path: '/projects',
-  exact: true
-}, {
-  component: Fallback,
-  path: '/fallback',
   exact: true
 }]

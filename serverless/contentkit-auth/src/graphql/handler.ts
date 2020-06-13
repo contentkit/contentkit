@@ -80,14 +80,12 @@ function throwAuthenticationError () {
 
 async function login (_, { email, password }: LoginVariables, ctx: Context) {
   const user = await getUserByEmail(ctx.client, email)
-  console.log(user)
 
   if (!user) {
     return throwAuthenticationError()
   }
 
   const result = await bcrypt.compare(password, user.password)
-  console.log(result)
 
   if (!result) {
     return throwAuthenticationError()
@@ -235,15 +233,25 @@ const typeDefs = gql`
   }
 `
 
+let pgClient : pg.Client
+
+async function getClient () {
+  if (!pgClient) {
+    const pool = new Pool({})
+    pgClient = await pool.connect()
+  }
+
+  return pgClient
+}
+
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   introspection: true,
   context: async (ctx: Context) => {
     ctx.context.callbackWaitsForEmptyEventLoop = false
-    const pool = new Pool({})
-    const client : pg.Client = await pool.connect()
-    ctx.client = client
+    ctx.client = await getClient()
     const auth = ctx.event.headers.Authorization
     const token = auth && auth.replace(/\s*[Bb]earer\s/, '')
     ctx.token = token

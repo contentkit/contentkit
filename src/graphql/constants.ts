@@ -19,3 +19,8 @@ export enum Typename {
   ORIGIN = 'Origin',
   SETTING = 'Setting'
 }
+
+export const GraphQLContexts = {
+  HASURA: { target: 'hasura' },
+  AUTH: { target: 'auth' }
+}

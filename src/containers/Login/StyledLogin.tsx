@@ -74,7 +74,9 @@ function LoginTabs (props) {
 
 function Login (props) {
   const { history } = props
-  const user = useUserQuery()
+  const user = useUserQuery({
+    skip: !window.localStorage.getItem('token')
+  })
   const classes = useStyles(props)
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -94,28 +96,21 @@ function Login (props) {
   }
 
   const redirect = () => {
-    history.push('/')
+    history.push('/dashboard')
   }
 
   React.useEffect(() => {
-    console.log(errors)
     if (errors.length) {
       setSnackbarOpen(true)
     }
   }, [errors])
-
-  React.useEffect(() => {
-    if (user?.data?.users?.length) {
-      redirect()
-    }
-  }, [user])
 
   const login = async () => {
     setLoading(true)
     try {
       await authenticateUser({ email, password })
     } catch (err) {
-      setErrors(err.graphQLErrors)
+      return setErrors(err.graphQLErrors)
     }
 
     redirect()
@@ -130,7 +125,7 @@ function Login (props) {
         password
       })
     } catch (err) {
-      setErrors(err.graphQLErrors)
+      return setErrors(err.graphQLErrors)
     }
 
     redirect()
@@ -167,7 +162,7 @@ function Login (props) {
               Password reset email sent!
             </Grid>
           )}
-          <form>
+          <div>
             <Box mb={2}>
               <SignInEmailTextField
                 value={email}
@@ -183,7 +178,7 @@ function Login (props) {
                 : <div className={classes.spacer} />
               }
             </Box>
-          </form>
+          </div>
           <Grid container>
             {showLogin ? (
               <React.Fragment>

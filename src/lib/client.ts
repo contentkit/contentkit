@@ -1,4 +1,4 @@
-import { GRAPHQL_ENDPOINT } from './config'
+import { HASURA_GRAPHQL_ENDPOINT, AUTH_GRAPHQL_ENDPOINT } from './config'
 import { ApolloClient } from 'apollo-client'
 import { ApolloLink } from 'apollo-link'
 import { HttpLink } from 'apollo-link-http'
@@ -22,13 +22,27 @@ export default () => {
     console.log(networkError)
   })
 
-  const httpLink = new HttpLink({ uri: GRAPHQL_ENDPOINT })
+  // const httpLink = new HttpLink({ uri: GRAPHQL_ENDPOINT })
+  const hasuraLink = ApolloLink.split(
+    (operation) => !operation.getContext().target || operation.getContext().target === 'hasura',
+    new HttpLink({
+      uri: HASURA_GRAPHQL_ENDPOINT
+    })
+  )
+
+  const authLink = ApolloLink.split(
+    (operation) => operation.getContext().target === 'auth',
+    new HttpLink({
+      uri: AUTH_GRAPHQL_ENDPOINT
+    })
+  )
 
   return new ApolloClient({
     link: ApolloLink.from([
       middlewareLink,
-      errorLink,
-      httpLink
+      // errorLink,
+      authLink,
+      hasuraLink
     ]),
     // @ts-ignore
     cache: new InMemoryCache().restore(window.__APOLLO_STATE__),

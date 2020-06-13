@@ -113,6 +113,15 @@ export const USER_QUERY = gql`
   }
 `
 
+export const USER_AUTH_QUERY = gql`
+  query {
+    users {
+      id
+    }
+  }
+`
+
+
 export const TAG_QUERY = gql`
   query($postId: String!) {
     posts_tags(where: { post_id: { _eq: $postId } }) {

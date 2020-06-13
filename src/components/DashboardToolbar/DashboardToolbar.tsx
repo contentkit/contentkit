@@ -215,7 +215,7 @@ function DashboardToolbar (props) {
           <IconButton onClick={onOpenSettingsModal}>
             <CogIcon />
           </IconButton>
-          <Button onClick={onOpenCreatePostModal}>New Post</Button>
+          <Button onClick={onOpenCreatePostModal} className={classes.newPostButton}>New Post</Button>
         </div>
       </div>
       <Snackbar
@@ -275,6 +275,9 @@ const styles = theme => ({
   button: {
     borderRadius: 0,
     color: '#000'
+  },
+  newPostButton: {
+    height: 42
   },
   active: {
     color: theme.variables.iconColorActive,
