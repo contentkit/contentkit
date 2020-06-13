@@ -5,18 +5,18 @@ import { Grid, Dialog, DialogContent, DialogActions, DialogTitle } from '@materi
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
 import {
   PROJECT_QUERY
-} from '../../graphql/queries'
+} from '../../../../graphql/queries'
 import {
   CREATE_ORIGIN,
   DELETE_ORIGIN,
   useCreateOriginMutation,
   useDeleteOriginMutation
-} from '../../graphql/mutations'
+} from '../../../../graphql/mutations'
 
-import Button from '../Button'
+import Button from '../../../../components/Button'
 
 import { makeStyles } from '@material-ui/styles'
-import { GraphQL } from '../../types'
+import { GraphQL } from '../../../../types'
 
 const useStyles = makeStyles(theme => ({
   modal: {},

@@ -1,7 +1,8 @@
-service: contentkit-auth
+service: ck-auth
 
 plugins:
-  # - serverless-domain-manager
+  - serverless-plugin-typescript
+  #- serverless-domain-manager
 
 custom:
   stage: prod
@@ -16,9 +17,11 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs12.x
   stage: ${self:custom.stage}
   region: us-east-1
+  disableLogs: false
+  logRetentionInDays: 7
   deploymentBucket:
     name: ${self:custom.deploymentBucket}
   environment:
@@ -55,13 +58,13 @@ functions:
     events:
       - http:
           path: graphql
-          method: post
+          method: any
           integration: lambda-proxy
           authorizer: auth
           cors: true
       - http:
           path: graphql
-          method: get
+          method: any
           integration: lambda-proxy
           authorizer: auth
           cors: true
@@ -69,5 +72,8 @@ functions:
 resources:
   Resources:
     HandlerLogGroup:
+      Properties:
+        RetentionInDays: 7
+    AuthLogGroup:
       Properties:
         RetentionInDays: 7

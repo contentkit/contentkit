@@ -20,7 +20,15 @@ class CodeSnippet extends React.Component {
       `curl 'https://api.contentkit.co/graphql' \\`,
       `-H 'authorization: Bearer ${user?.secret || ''}' \\`,
       `-H 'content-type: application/json' \\`,
-      `--data-binary '{ 'variables': { 'id': '${projectId}' }, 'query': 'query ($id: ID!) { project(id: $id) { name } }' }'`
+      `--data-binary @- << EOF`,
+      `{`,
+      `  "variables": {`,
+      `    "id": "projectId"`,
+      `  },`,
+      `  "query": "query($id: String!) { project(id: $id) { name } }"`,
+      `}`,
+      `EOF`
+      // `--data-binary '{ 'variables': { 'id': '${projectId}' }, 'query': 'query ($id: ID!) { project(id: $id) { name } }' }'`
     ].join('\n')
     return (
       <div className={classes.root}>
@@ -67,9 +75,9 @@ class CodeSnippet extends React.Component {
 const styles = theme => ({
   root: {
     marginBottom: 16,
-    borderRadius: 8,
+    // borderRadius: 8,
     background: '#121212',
-    padding: '24px 24px 0px'
+    // padding: '24px 24px 0px'
   }
 })
 

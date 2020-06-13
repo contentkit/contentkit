@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { projectQueryShape } from '../../shapes'
 import { Chip, Input } from '@contentkit/components'
 import { makeStyles } from '@material-ui/styles'
-import { GraphQL } from '../../types'
+import { GraphQL } from '../../../../types'
+import { projectQueryShape } from '../../../../shapes'
+
 
 const useStyles = makeStyles({
   root: {

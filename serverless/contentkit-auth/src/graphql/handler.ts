@@ -1,22 +1,35 @@
-const jwt = require('jsonwebtoken')
-const { ApolloServer, AuthenticationError } = require('apollo-server-lambda')
-const bcrypt = require('bcryptjs')
-const Pool = require('pg-pool')
-const fs = require('fs')
-const path = require('path')
-const GraphQLJSON = require('graphql-type-json')
+import * as jwt from 'jsonwebtoken'
+import { ApolloServer, AuthenticationError, gql } from 'apollo-server-lambda'
+import * as bcrypt from 'bcryptjs'
+import * as Pool from 'pg-pool'
+import * as pg from 'pg'
+import { Context as LambdaContext, APIGatewayProxyEvent } from 'aws-lambda'
+import GraphQLJSON from 'graphql-type-json'
 
-const { createPresignedPost } = require('./upload')
+import { createPresignedPost } from './upload'
+
+export type ApolloContext =  {
+  context: LambdaContext,
+  event: APIGatewayProxyEvent 
+}
+
+export type Context = ApolloContext & {
+  client?: pg.Client,
+  token?: string
+}
+
+export type LoginVariables = {
+  email: string,
+  password: string
+}
 
 const { CLIENT_SESSION_SECRET, CLIENT_SESSION_ID } = process.env
 
-const typeDefs = fs.readFileSync(path.join(__dirname, './schema.graphql'), { encoding: 'utf8' })
-
-function sign (payload, expires) {
+function sign (payload, expires): Promise<string> {
   return new Promise((resolve, reject) =>
     jwt.sign(
       payload,
-      CLIENT_SESSION_SECRET, {
+      CLIENT_SESSION_SECRET as string, {
         expiresIn: expires,
         audience: CLIENT_SESSION_ID
       },
@@ -65,14 +78,16 @@ function throwAuthenticationError () {
   throw new AuthenticationError('Invalid password or account does not exist.')
 }
 
-async function login (_, { email, password }, ctx) {
+async function login (_, { email, password }: LoginVariables, ctx: Context) {
   const user = await getUserByEmail(ctx.client, email)
+  console.log(user)
 
   if (!user) {
     return throwAuthenticationError()
   }
 
   const result = await bcrypt.compare(password, user.password)
+  console.log(result)
 
   if (!result) {
     return throwAuthenticationError()
@@ -191,13 +206,44 @@ const resolvers = {
   JSON: GraphQLJSON
 }
 
+const typeDefs = gql`
+  scalar JSON
+
+  type PresignedPayload {
+    url: String!
+    fields: JSON
+  }
+
+  type Payload {
+    token: String!
+  }
+
+  type ResetPasswordPayload {
+    success: Boolean!
+  }
+
+  type Mutation {
+    register(email: String!, password: String!): Payload
+    login(email: String!, password: String!): Payload
+    resetPassword(email: String!, password: String!): ResetPasswordPayload
+    getSecret(id: String!): Payload
+    createPresignedPost(userId: String!, key: String!): PresignedPayload
+  }
+
+  type Query {
+    getToken: Payload
+  }
+`
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: async (ctx) => {
+  introspection: true,
+  context: async (ctx: Context) => {
     ctx.context.callbackWaitsForEmptyEventLoop = false
     const pool = new Pool({})
-    ctx.client = await pool.connect()
+    const client : pg.Client = await pool.connect()
+    ctx.client = client
     const auth = ctx.event.headers.Authorization
     const token = auth && auth.replace(/\s*[Bb]earer\s/, '')
     ctx.token = token
@@ -205,7 +251,7 @@ const server = new ApolloServer({
   }
 })
 
-module.exports.handler = server.createHandler({
+export const handler = server.createHandler({
   cors: {
     origin: '*',
     credentials: true,

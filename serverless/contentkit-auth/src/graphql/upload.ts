@@ -1,7 +1,9 @@
 
-const AWS = require('aws-sdk')
-const aws4 = require('aws4')
-const path = require('path')
+import * as AWS from 'aws-sdk'
+import aws4 from 'aws4'
+import * as path from 'path'
+import * as querystring from 'querystring'
+import mime from 'mime-types'
 
 const { AWS_BUCKET, AWS_REGION } = process.env
 
@@ -25,8 +27,8 @@ const parseXAmzDate = (string) => {
 
 const isExpired = (url) => {
   let parsed = querystring.parse(url)
-  let expires = parsed['X-Amz-Expires']
-  let date = parseXAmzDate(parsed['X-Amz-Date'])
+  let expires : number = Number(parsed['X-Amz-Expires'])
+  let date : number = parseXAmzDate(parsed['X-Amz-Date'])
   return (expires + date) > (Date.now() / 1000)
 }
 
@@ -61,7 +63,7 @@ function createTagSet (data) {
   return `<Tagging><TagSet>${tags}</TagSet></Tagging>`
 }
 
-function createPresignedPost (parent, { userId, key }, ctx) {
+export function createPresignedPost (parent, { userId, key }, ctx) {
   const tagging = createTagSet({ sub: userId })
 
   return new Promise((resolve, reject) => {
@@ -78,5 +80,3 @@ function createPresignedPost (parent, { userId, key }, ctx) {
     })
   })
 }
-
-module.exports.createPresignedPost = createPresignedPost

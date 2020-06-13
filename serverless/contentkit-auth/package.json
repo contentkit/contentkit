@@ -4,17 +4,25 @@
   "main": "src/handler.js",
   "license": "MIT",
   "dependencies": {
-    "apollo-server": "^2.6.3",
-    "apollo-server-lambda": "~2.6.3",
-    "aws4": "^1.8.0",
+    "@types/pg-pool": "^2.0.2",
+    "apollo-server": "^2.14.3",
+    "apollo-server-lambda": "~2.14.4",
+    "aws4": "^1.10.0",
     "bcryptjs": "^2.4.3",
-    "graphql": "~14.3.1",
-    "graphql-type-json": "^0.3.0",
+    "graphql": "~15.1.0",
+    "graphql-type-json": "^0.3.2",
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.12.1",
     "pg-pool": "^2.0.7"
   },
   "devDependencies": {
-    "serverless-domain-manager": "^3.2.2"
+    "@types/aws-lambda": "^8.10.56",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/node": "^14.0.13",
+    "@types/pg": "^7.14.3",
+    "serverless-domain-manager": "^4.1.1",
+    "serverless-plugin-typescript": "^1.1.9",
+    "typescript": "^3.9.5"
   }
 }

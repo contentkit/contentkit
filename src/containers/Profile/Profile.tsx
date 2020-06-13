@@ -14,21 +14,30 @@ import { USER_QUERY, useUserQuery } from '../../graphql/queries'
 import { GENERATE_TOKEN, UPDATE_USER, DELETE_USER, useGenerateToken, useDeleteUser, useUpdateUser } from '../../graphql/mutations'
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    margin: '2em auto 1em auto',
+  userForm: {
+    margin: '0 auto 2em auto',
     padding: 40,
     maxWidth: 960,
     backgroundColor: '#fff',
     borderRadius: 0,
   },
   code: {
-    backgroundImage: 'linear-gradient(160deg, #121212 12.5%, #323232 85%)',
-    borderRadius: 0,
+    // background: '#121212',
+    // borderRadius: 0,
     margin: '2em auto 1em auto',
     padding: '40px',
     maxWidth: '960px'
+  },
+  container: {
+    backgroundColor: '#f5f5f5'
   }
 }))
+
+type ProfileProps = {
+  deleteUser: { mutate: (id: string) => void },
+  updateUser: { mutate: (id: string) => void },
+  generateToken: { mutate: (variables: { id: string, name: string, email: string }) => void }
+}
 
 function Profile (props) {
   const client = useApolloClient()
@@ -42,7 +51,7 @@ function Profile (props) {
     generateToken
   } = props
 
-  const onChange = (key, value) => {
+  const onChange = (key: string, value: any) => {
     client.writeQuery({
       query: USER_QUERY,
       data: {
@@ -68,16 +77,20 @@ function Profile (props) {
 
   if (users.loading) return null
   return (
-    <AppWrapper>
+    <AppWrapper
+      classes={{
+        container: classes.container
+      }}
+    >
       <UserForm
         onChange={onChange}
         updateUser={updateUser}
         generateToken={generateToken.mutate}
         onCopy={onCopy}
         users={users}
-        className={classes.container}
+        className={classes.userForm}
       />
-      <div className={classes.container}>
+      <div className={classes.userForm}>
         <Button color='danger' onClick={evt => setOpen(true)}>
           Delete Account
         </Button>
