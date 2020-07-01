@@ -21,8 +21,11 @@ function TableCellInput (props) {
     }
   }, [isEditing])
 
-  function toggleClick (evt) {
-    onClick(evt)
+  const onKeyDown = (evt) => {
+    switch (evt.key) {
+      case 'Enter':
+        onClick(evt)
+    }
   }
 
   return (
@@ -33,9 +36,10 @@ function TableCellInput (props) {
       value={value}
       onChange={onChange}
       onBlur={onBlur}
+      onKeyDown={onKeyDown}
       endAdornment={
         <InputAdornment position='end' className={classes.adornment}>
-          <IconButton onClick={toggleClick}>
+          <IconButton onClick={onClick}>
             {isEditing ? <SaveIcon /> : <EditIcon />}
           </IconButton>
         </InputAdornment>

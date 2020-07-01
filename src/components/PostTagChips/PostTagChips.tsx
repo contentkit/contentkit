@@ -1,15 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import keyBy from 'lodash.keyby'
 import { useQuery } from '@apollo/client'
-import { useDeletePostTagConnectionMutation, useCreateTagMutation, useCreatePostTagConnectionMutation } from '../../graphql/mutations'
-
-import { useTagQuery, ALL_TAGS_QUERY } from '../../graphql/queries'
 import { TextField, Fade } from '@material-ui/core'
-import { Chip } from '@contentkit/components'
 import { Autocomplete } from '@material-ui/lab'
 import { makeStyles } from '@material-ui/styles'
 import { createFilterOptions } from '@material-ui/lab/Autocomplete'
+
+import { useDeletePostTagConnectionMutation, useCreateTagMutation, useCreatePostTagConnectionMutation } from '../../graphql/mutations'
+import { useTagQuery, ALL_TAGS_QUERY } from '../../graphql/queries'
 import { genId } from '../../lib/util'
 
 const useStyles = makeStyles(theme => ({

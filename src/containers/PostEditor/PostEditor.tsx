@@ -12,7 +12,7 @@ import { useDebounce } from 'react-use'
 import PostEditorComponent from '../../components/PostEditorComponent'
 import {
   expandCompressedRawContentBlocks
-} from './util'
+} from '../../store/utils'
 import { UPLOAD_MUTATION } from '../../graphql/mutations'
 import {
   useCreateImage,
@@ -187,6 +187,8 @@ function PostEditor (props) {
 
   const modalProps = {
     ...props,
+    editorState,
+    setEditorState,
     getFormData,
     saveDocument,
     onSaveRawEditor,
@@ -206,7 +208,6 @@ function PostEditor (props) {
       disablePadding
     >
       <Snackbar {...getSnackbarProps()} />
-        
       {modals.map(({ Component, getComponentProps, name }) => {
         return (
           <Component key={name} {...getComponentProps(modalProps)} open={open[name]} onClose={onClose} />
@@ -234,7 +235,6 @@ function PostEditor (props) {
           Saved locally
         </Alert>
       </Snackbar>
-      
     </AppWrapper>
   )
 }

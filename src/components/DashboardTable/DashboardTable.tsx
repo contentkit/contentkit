@@ -1,11 +1,9 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import { useApolloClient } from '@apollo/client'
 import gql from 'graphql-tag'
 import { Theme, Paper, TableBody, Table } from '@material-ui/core'
 import { SortDirection } from '@material-ui/core/TableCell'
-import { KeyboardArrowLeft, KeyboardArrowRight, Edit } from '@material-ui/icons'
 import clsx from 'clsx'
 import orderBy from 'lodash/orderBy'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
@@ -43,6 +41,7 @@ function DashboardTable (props) {
     getToolbarProps,
     settings
   } = props
+
   const classes = useStyles(props)
   const client = useApolloClient()
   const onSave = useOnSave()

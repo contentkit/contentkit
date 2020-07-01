@@ -3,11 +3,12 @@ import * as ReactDOM from 'react-dom'
 import { CircularProgress } from '@material-ui/core'
 import { ApolloProvider, useQuery } from '@apollo/client'
 import { BrowserRouter, Route, Redirect } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import { Provider, ReactReduxContext } from 'react-redux'
+import { ConnectedRouter } from 'connected-react-router'
 
 import { OfflineNotification } from './lib/withConnectivity'
 import client from './lib/client'
-import { store } from './store'
+import { store, history } from './store'
 import pages from './pages'
 import './css/style.scss'
 import Progress from './components/Progress'
@@ -40,9 +41,9 @@ function AuthProvider (props)  {
 
 function App (props) {
   return (
-    <Provider store={store}>
-      <BrowserRouter basename={UP_STAGE}>
-        <React.Suspense fallback={<Progress />}>
+    <Provider store={store} context={ReactReduxContext}>
+      <ConnectedRouter history={history} context={ReactReduxContext}>
+        <BrowserRouter basename={UP_STAGE}>
           <Route component={AuthProvider} path='/' exact />
           {
             pages.map(({ component: Component, ...rest }) =>
@@ -58,8 +59,8 @@ function App (props) {
               />
             )
           }
-        </React.Suspense>
-      </BrowserRouter>
+        </BrowserRouter>
+      </ConnectedRouter>
     </Provider>
   )
 }

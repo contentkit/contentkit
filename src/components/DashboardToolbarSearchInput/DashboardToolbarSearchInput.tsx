@@ -6,7 +6,7 @@ type SearchInputProps = {
   onChange: (evt: any) => void,
   value: string,
   className: string,
-  classes: any,
+  classes?: { [key: string]: string },
   onSearch: ({ value: string }) => void,
   placeholder?: string
 }
@@ -16,7 +16,6 @@ function SearchInput (props: SearchInputProps) {
     onChange,
     value,
     className,
-    classes,
     onSearch,
     ...rest
   } = props
@@ -33,7 +32,6 @@ function SearchInput (props: SearchInputProps) {
       value={value}
       className={className}
       onKeyDown={onKeyDown}
-      classes={classes}
       {...rest}
     />
   )

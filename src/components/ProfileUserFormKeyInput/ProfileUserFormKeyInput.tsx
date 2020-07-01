@@ -14,7 +14,13 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const ProfileUserFormKeyInput = React.forwardRef((props, ref) => {
+type ProfileUserFormKeyInputProps = {
+  onCopy: (evt: any) => void,
+  generateToken: (evt: any) => void,
+  value: string
+}
+
+const ProfileUserFormKeyInput = React.forwardRef((props: ProfileUserFormKeyInputProps, ref) => {
   const {
     onCopy,
     generateToken,

@@ -28,6 +28,11 @@ const createClient = () => {
     })
   )
 
+  const keyArgs = (_args, context) => {
+    console.log({ _args, context })
+    return context.fieldName
+  }
+
   return new ApolloClient({
     link: ApolloLink.from([
       middlewareLink,
@@ -36,7 +41,51 @@ const createClient = () => {
       hasuraLink
     ]),
     // @ts-ignore
-    cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
+    cache: new InMemoryCache({
+      typePolicies: {
+        posts_aggregate_fields: {
+          fields: {
+            count: {
+              merge: (existing, incoming, { variables, storage, ...rest }) => {
+                return (existing || 0) + incoming
+              }
+            }
+          }
+        },
+        posts: {
+          keyFields: ['id']
+        },
+        // posts_aggregate: {
+        //   fields: {
+        //     nodes: {
+              // keyArgs: ['where'],
+              // merge: (existing, incoming, context) => {
+              //   return (existing || []).concat(incoming)
+              // },
+              // read(existing: any[], { variables, ...rest }) {
+              //   console.log({
+              //     existing, rest, variables
+              //   })
+              //   // If we read the field before any data has been written to the
+              //   // cache, this function will return undefined, which correctly
+              //   // indicates that the field is missing.
+              //   const page = existing && existing.slice(
+              //     variables.offset,
+              //     variables.offset + variables.limit,
+              //   );
+              //   // If we ask for a page outside the bounds of the existing array,
+              //   // page.length will be 0, and we should return undefined instead of
+              //   // the empty array.
+              //   if (page && page.length > 0) {
+              //     return page;
+              //   }
+              //   // return existing
+              // }
+          //   }
+          // }
+        // }
+      }
+    }).restore(window.__APOLLO_STATE__),
     // @ts-ignore
     dataIdFromObject: object => object.id,
     shouldBatch: true,

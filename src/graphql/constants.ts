@@ -11,13 +11,13 @@ export enum Typename {
   POSTS_TAGS = 'posts_tags',
   TAGS = 'tags',
 
-  TAG = 'Tag',
-  IMAGE = 'Image',
-  POST = 'Post',
-  USER = 'User',
-  PROJECT = 'Project',
-  ORIGIN = 'Origin',
-  SETTING = 'Setting'
+  TAG = 'tags',
+  IMAGE = 'images',
+  POST = 'posts',
+  USER = 'users',
+  PROJECT = 'projects',
+  ORIGIN = 'origins',
+  SETTING = 'settings'
 }
 
 export const GraphQLContexts = {

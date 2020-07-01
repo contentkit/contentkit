@@ -1,18 +1,17 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { Grid, Snackbar, Toolbar, IconButton, Menu, MenuItem, InputAdornment, Typography } from '@material-ui/core'
+import { Snackbar, IconButton, Menu, MenuItem } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles'
-import clsx from 'clsx'
 import keyBy from 'lodash.keyby'
-import { SearchOutlined } from '@material-ui/icons'
+import { useApolloClient, useQuery } from '@apollo/client'
+import gql from 'graphql-tag'
+
 import SearchInput from '../DashboardToolbarSearchInput'
 import { DELETE_POST } from '../../graphql/mutations'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
 import ProjectSelect from '../ProjectSelect'
 import Button from '../Button'
-import { useApolloClient, useQuery } from '@apollo/client'
-import gql from 'graphql-tag'
 import { ModalType } from '../../fixtures'
+import { useStyles } from './styles'
 
 const EditIcon = props => (
   <svg
@@ -28,38 +27,6 @@ const EditIcon = props => (
     </path>
   </svg>
 )
-
-const DeleteIcon = props => (
-  <svg
-    width='22'
-    height='22'
-    aria-hidden='true'
-    focusable='false'
-    data-prefix='fal'
-    data-icon='trash'
-    role='img'
-    xmlns='http://www.w3.org/2000/svg'
-    viewBox='0 0 448 512'
-  >
-    <path fill='currentColor' d='M440 64H336l-33.6-44.8A48 48 0 0 0 264 0h-80a48 48 0 0 0-38.4 19.2L112 64H8a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h18.9l33.2 372.3a48 48 0 0 0 47.8 43.7h232.2a48 48 0 0 0 47.8-43.7L421.1 96H440a8 8 0 0 0 8-8V72a8 8 0 0 0-8-8zM171.2 38.4A16.1 16.1 0 0 1 184 32h80a16.1 16.1 0 0 1 12.8 6.4L296 64H152zm184.8 427a15.91 15.91 0 0 1-15.9 14.6H107.9A15.91 15.91 0 0 1 92 465.4L59 96h330z'></path>
-  </svg>
-)
-
-const FilePlus = props => (
-  <svg
-    width='22'
-    height='22'
-    aria-hidden="true"
-    focusable="false"
-    role="img"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 384 512"
-  >
-    <path fill="currentColor" d="M369.9 97.9L286 14C277 5 264.8-.1 252.1-.1H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48V131.9c0-12.7-5.1-25-14.1-34zm-22.6 22.7c2.1 2.1 3.5 4.6 4.2 7.4H256V32.5c2.8.7 5.3 2.1 7.4 4.2l83.9 83.9zM336 480H48c-8.8 0-16-7.2-16-16V48c0-8.8 7.2-16 16-16h176v104c0 13.3 10.7 24 24 24h104v304c0 8.8-7.2 16-16 16zm-48-180v8c0 6.6-5.4 12-12 12h-68v68c0 6.6-5.4 12-12 12h-8c-6.6 0-12-5.4-12-12v-68h-68c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h68v-68c0-6.6 5.4-12 12-12h8c6.6 0 12 5.4 12 12v68h68c6.6 0 12 5.4 12 12z">
-    </path>
-  </svg>
-)
-
 
 const CogIcon = props => (
   <svg 
@@ -85,13 +52,12 @@ function DashboardToolbar (props) {
     setSearchQuery,
     history,
     selectedProjectId,
-    setSelectedProjectId,,
+    setSelectedProjectId,
     settings,
-    classes,
     search: { query },
     onOpen
   } = props
-
+  const classes = useStyles(props)
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
   const [snackbarMessage, setSnackbarMessage] = React.useState('')
@@ -106,7 +72,6 @@ function DashboardToolbar (props) {
   }
 
   const undoAction = evt => {
-    // cancel()
     resetSnackbar()
   }
 
@@ -155,7 +120,8 @@ function DashboardToolbar (props) {
   }
 
   const onEdit = () => {
-    history.push('/posts/' + selectedPostIds[0])
+    const uri = `/posts/${selectedPostIds[0]}`
+    history.push(uri)
   }
 
   const handleChange = ({ currentTarget: { value } }) => {
@@ -226,11 +192,11 @@ function DashboardToolbar (props) {
           'aria-describedby': 'snackbar-fab-message-id',
         }}
         message={<span id="snackbar-fab-message-id">{snackbarMessage}</span>}
-        action={
+        action={(
           <Button color="inherit" size="small" onClick={undoAction}>
             Undo
           </Button>
-        }
+        )}
         className={classes.snackbar}
       />
     </div>
@@ -241,51 +207,4 @@ DashboardToolbar.defaultProps = {
   selectedPostIds: []
 }
 
-const styles = theme => ({
-  input: {},
-  actions: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    flexBasis: '45%'
-  },
-  select: {
-    width: '100%',
-    marginRight: 15
-  },
-  root: {
-    width: '100%',
-    backgroundColor: '#f4f4f4',
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  flex: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    backgroundColor: '#f4f4f4'
-  },
-  toolbar: {
-    display: 'flex',
-    '& > div': {
-      flexBasis: '50%'
-    }
-  },
-  button: {
-    borderRadius: 0,
-    color: '#000'
-  },
-  newPostButton: {
-    height: 42
-  },
-  active: {
-    color: theme.variables.iconColorActive,
-    '&:hover': {
-      color: theme.variables.iconColorHover,
-      cursor: 'pointer'
-    }
-  }
-})
-
-export default withStyles(styles)(DashboardToolbar)
+export default DashboardToolbar

@@ -93,8 +93,6 @@ function Dashboard (props: DashboardProps) {
     search,
     client,
     history,
-    // editorState,
-    // setEditorState,
     setSearchLoadingState,
     setSearchQuery,
     postsAggregateVariables
@@ -118,11 +116,6 @@ function Dashboard (props: DashboardProps) {
   }
 
   const handleSearch = ({ query }) => {
-    // setSetting({
-    //   userId: users.data.users[0].id,
-    //   propertyName: DashboardSettingPropertyNames.SEARCH_QUERY,
-    //   propertyValue: query ? `%${query}%` : null
-    // })
     updateVariables({ query })
   }
 
@@ -223,7 +216,11 @@ function DashboardWithQueries (props) {
   }
 
   const users = useUserQuery()
-  const posts = usePostsAggregateQuery({ variables, skip: !variables.projectId })
+  const posts = usePostsAggregateQuery({
+    variables,
+    skip: !variables.projectId,
+    fetchPolicy: 'cache-and-network'
+  })
   const setSetting = useSetSettingMutation()
   return (
     <Dashboard

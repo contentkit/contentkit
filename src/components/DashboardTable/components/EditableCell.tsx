@@ -7,7 +7,7 @@ import { Column } from '../types'
 const useEditableCellStyles = makeStyles(theme => ({
   adornment: {
     // @ts-ignore
-    visibility: props => props.isEditing ? 'visible' : 'hidden'
+    visibility: props => props.isEditing ? 'visible' : 'visible'
   },
   tableCell: {
     backgroundColor: '#f4f4f4',

@@ -34,7 +34,7 @@ export const POSTS_AGGREGATE_QUERY = gql`
       order_by: {
         published_at: desc_nulls_last
       }
-    ) {
+    ) @connection(key: "posts_aggregate", filter: ["where"]) {
       aggregate {
         count
       }

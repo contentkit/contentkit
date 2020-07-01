@@ -50,6 +50,7 @@ function DashboardTableRow (props: DashboardTableRowProps) {
   }
 
   const handleContextMenu = (evt: any) => {
+    evt.preventDefault()
     onContextMenu(evt, row)
   }
 

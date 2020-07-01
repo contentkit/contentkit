@@ -1,10 +1,7 @@
 import React from 'react'
 import {
-  CREATE_POST,
-  CREATE_PROJECT,
   UPDATE_POST
 } from '../../graphql/mutations'
-import { USER_QUERY } from '../../graphql/queries'
 import ProjectSelect from '../ProjectSelect'
 import { makeStyles } from '@material-ui/styles'
 import {
@@ -17,7 +14,7 @@ import {
 } from '@material-ui/core'
 import FormInput from '../FormInput'
 import Haikunator from 'haikunator'
-import { useQuery, useMutation, useApolloClient } from '@apollo/client'
+import { useMutation, useApolloClient } from '@apollo/client'
 import { useCreatePostMutation, useCreateProjectMutation } from './mutations'
 
 const haikunator = new Haikunator()
@@ -116,7 +113,7 @@ function CreatePostModalMutations (props) {
   const createPost = useCreatePostMutation(props.posts.variables)
   const createProject = useCreateProjectMutation()
 
-  const [updatePostMutation, updatePostData] = useMutation(UPDATE_POST)
+  const [updatePostMutation] = useMutation(UPDATE_POST)
   const updatePost = ({ variables }) => updatePostMutation({ variables })
 
   return (
