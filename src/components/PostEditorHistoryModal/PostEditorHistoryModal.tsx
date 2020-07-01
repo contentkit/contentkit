@@ -1,8 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Editor, EditorState, convertFromRaw } from 'draft-js'
 import { expand } from 'draft-js-compact'
-import distanceInWords from 'date-fns/distance_in_words'
+import formatDistance from 'date-fns/formatDistance'
 
 import clsx from 'clsx'
 
@@ -26,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const formatDate = (timestamp) =>
-  distanceInWords(new Date(timestamp), new Date())
+formatDistance(new Date(timestamp), new Date())
 
 function PostEditorHistoryModal (props) {
   const { 

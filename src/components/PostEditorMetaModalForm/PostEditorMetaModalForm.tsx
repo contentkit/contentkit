@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
-import clsx from 'clsx'
 import safeKey from 'safe-s3-key'
-import { useQuery } from '@apollo/react-hooks'
-import { Input, ThumbnailUpload } from '@contentkit/components'
+import { useQuery } from '@apollo/client'
+import { ThumbnailUpload } from '@contentkit/components'
 import { Grid, FormControl, InputLabel } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/styles'
@@ -14,7 +13,6 @@ import PostStatusSelect from '../PostEditorMetaModalSelect'
 import ProjectSelect from '../ProjectSelect'
 import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
 import PostTagChips from '../PostTagChips'
-import * as config from '../../lib/config'
 import FormInput from '../FormInput'
 
 
@@ -31,17 +29,6 @@ const useStyles = makeStyles((theme: any) => ({
   }
 }))
 
-const defaultPost = {
-  title: '',
-  slug: '',
-  excerpt: '',
-  coverImage: {},
-  publishedAt: '',
-  images: [],
-  project: {},
-  status: null
-}
-
 enum FieldType {
   FORM_INPUT = 'form_input',
   FORM_SELECT = 'form_select',
@@ -57,7 +44,6 @@ function PostEditorMetaModalForm (props) {
     users,
     projects,
     selectProject,
-    deleteImage,
     mediaProvider
   } = props
 
@@ -74,44 +60,6 @@ function PostEditorMetaModalForm (props) {
       postId: post.id,
       userId: users.data.users[0].id
     }
-  }
-  // const onUpload = async (file) => {
-  //   const key = safeKey(`static/${post.id}/${file.name}`)
-  //   const params = {
-  //     Bucket: config.AWS_BUCKET_NAME,
-  //     Fields: {
-  //       key: key,
-  //       'Content-Type': file.type
-  //     }
-  //   }
-
-  //   const userId = users.data.users[0].id
-
-  //   try {
-  //     await props.createImage({
-  //       url: key,
-  //       postId: props.post.id,
-  //       userId: userId
-  //     })
-  //   } catch (err) {
-  //     console.error(err)
-  //     return
-  //   }
-
-  //   const data = await props.getFormData({ key, userId })
-  //   await customRequest(file, data)
-  // }
-
-  const customRequest = (file, action) => {
-    const formData = new window.FormData()
-    for (let field in action.fields) {
-      formData.append(field, action.fields[field])
-    }
-    formData.append('file', file)
-    return fetch(action.url, {
-      method: 'POST',
-      body: formData,
-    })
   }
 
   const fields = [
@@ -166,20 +114,7 @@ function PostEditorMetaModalForm (props) {
         value: post.published_at || post.created_at
       }),
       size: 6
-    },
-    // {
-    //   key: 'images',
-    //   label: 'Upload',
-    //   type: FieldType.CUSTOM,
-    //   Component: ThumbnailUpload,
-    //   size: 12
-    // },
-    // {
-    //   key: 'tags',
-    //   label: 'Tags',
-    //   Component: PostTagChips,
-    //   size: 12
-    // }
+    }
   ]
 
   const thumbnailUploadSelection = post?.cover_image_id

@@ -6,12 +6,6 @@
     "@babel/preset-react"
   ],
   "plugins": [
-    ["@babel/plugin-transform-runtime"],
-    ["@babel/plugin-proposal-class-properties"],
-    ["@babel/plugin-proposal-optional-chaining"],
-    ["import", {
-      "libraryName": "antd",
-      "libraryDirectory": "es"
-    }]
+    ["@babel/plugin-transform-runtime"]
   ]
 }

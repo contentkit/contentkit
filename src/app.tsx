@@ -1,20 +1,18 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { CircularProgress } from '@material-ui/core'
-import { ApolloProvider, useQuery } from '@apollo/react-hooks'
+import { ApolloProvider, useQuery } from '@apollo/client'
 import { BrowserRouter, Route, Redirect } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
 import { OfflineNotification } from './lib/withConnectivity'
-import createClient from './lib/client'
+import client from './lib/client'
 import { store } from './store'
 import pages from './pages'
 import './css/style.scss'
 import Progress from './components/Progress'
 import { ThemeProvider } from './lib/theme'
 import { USER_QUERY, USER_AUTH_QUERY } from './graphql/queries'
-
-const client = createClient()
 
 const UP_STAGE = process.env.UP_STAGE || undefined
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Dialog, DialogContent, DialogActions } from '@material-ui/core'
 import { AppWrapper } from '@contentkit/components'
 import { makeStyles } from '@material-ui/styles'
-import { useMutation, useApolloClient } from '@apollo/react-hooks'
+import { useMutation, useApolloClient } from '@apollo/client'
 import { withRouter } from 'react-router-dom'
 
 import UserForm from '../../components/ProfileUserForm'

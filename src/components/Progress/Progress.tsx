@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 // @ts-ignore
 import { CircularProgress } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'

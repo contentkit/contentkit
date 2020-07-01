@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { useApolloClient } from '@apollo/react-hooks'
+import { useApolloClient } from '@apollo/client'
 import gql from 'graphql-tag'
 import { Theme, Paper, TableBody, Table } from '@material-ui/core'
 import { SortDirection } from '@material-ui/core/TableCell'

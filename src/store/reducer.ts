@@ -1,14 +1,12 @@
-import { EditorState } from 'draft-js'
 import { 
-  SET_EDITOR_STATE,
   SELECT_POST,
   SELECT_PROJECT,
   SET_SEARCH_QUERY,
   SET_SEARCH_LOADING_STATE,
   UPDATE_FEED_VARIABLES,
   SET_STATUS,
-
 } from './fixtures'
+import { LOCATION_CHANGE } from 'connected-react-router'
 
 export const initialState = {
   search: {
@@ -21,7 +19,6 @@ export const initialState = {
     query: '',
     projectId: undefined
   },
-  editorState: EditorState.createEmpty(),
   selectedProjectId: null,
   selectedPostIds: [],
   status: {
@@ -33,11 +30,6 @@ export const initialState = {
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_EDITOR_STATE:
-      return {
-        ...state,
-        editorState: action.payload.editorState
-      }
     case SELECT_POST:
       return { ...state, ...action.payload }
     case SELECT_PROJECT:

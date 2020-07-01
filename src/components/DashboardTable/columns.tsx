@@ -1,12 +1,12 @@
 
 import React from 'react'
-import distanceInWordsToNow from 'date-fns/distance_in_words_to_now'
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import TableCellInput from './components/TableCellInput'
 import TableCellSelect from './components/TableCellSelect'
 import { Chip } from '@contentkit/components'
 import { Column } from './types'
 
-const formatDate = (str) => distanceInWordsToNow(new Date(str))
+const formatDate = (str) => formatDistanceToNow(new Date(str))
 
 const columns : Column[] = [{
   title: 'Title',

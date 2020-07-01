@@ -1,27 +1,24 @@
 import React from 'react'
-import propTypes from 'prop-types'
 import debounce from 'lodash.debounce'
-import keyBy from 'lodash.keyby'
+import flowRight from 'lodash.flowright'
 import { withRouter } from 'react-router-dom'
-import { compose } from 'react-apollo'
-import { useQuery } from '@apollo/react-hooks'
 import { connect } from 'react-redux'
 import { EditorState } from 'draft-js'
 import { AppWrapper } from '@contentkit/components'
-import { Toolbar } from '@material-ui/core'
 import DashboardTable from '../../components/DashboardTable'
 import DashboardToolbar from '../../components/DashboardToolbar'
 import {
   actions
 } from '../../store/actions'
 import CreatePostModal from '../../components/CreatePostModal'
-import { feedQueryShape } from '../../shapes'
+
 import { usePostsAggregateQuery, useProjectsQuery, useSettingsQuery, useUserQuery } from '../../graphql/queries'
 import { GraphQL } from '../../types'
-import { ModalItem, DashboardSettings } from './types'
+
 import { ModalType, DashboardSettingPropertyNames } from '../../fixtures'
 import DashboardSettingsModal from '../../components/DashboardSettingsModal'
-import { useSetSettingMutation } from '~graphql/mutations'
+import { useSetSettingMutation } from '../../graphql/mutations'
+import usePersistentState from '../../hooks/usePersistentState'
 
 const modals = [
   {
@@ -80,7 +77,11 @@ type DashboardProps = {
 
 function Dashboard (props: DashboardProps) {
   const [open, setOpen] = React.useState(null)
+  const [state, setState] = usePersistentState('editorState', { editorState: EditorState.createEmpty() })
+  
+  const setEditorState = editorState => setState({ editorState })
 
+  const { editorState } = state
   const {
     posts,
     projects,
@@ -92,8 +93,8 @@ function Dashboard (props: DashboardProps) {
     search,
     client,
     history,
-    editorState,
-    setEditorState,
+    // editorState,
+    // setEditorState,
     setSearchLoadingState,
     setSearchQuery,
     postsAggregateVariables
@@ -188,7 +189,12 @@ function Dashboard (props: DashboardProps) {
     <AppWrapper renderToolbar={renderToolbar}>
        {modals.map(({ Component, getComponentProps, name }) => {
         return (
-          <Component key={name} {...getComponentProps(modalProps)} open={open === name} onClose={onClose} />
+          <Component
+            key={name}
+            {...getComponentProps(modalProps)}
+            open={open === name}
+            onClose={onClose}
+          />
         )
       })}
       <DashboardTable
@@ -213,7 +219,6 @@ function DashboardWithQueries (props) {
   const variables = {
     ...postsAggregateVariables,
     projectId: settings.dashboard.selected_project_id,
-    // query: settings.dashboard.search_query || null
     query: postsAggregateVariables.query ? `%${postsAggregateVariables.query}%` : null
   }
 
@@ -233,11 +238,11 @@ function DashboardWithQueries (props) {
 }
 
 
-export default compose(
+export default flowRight([
   withRouter,
   connect(
     state => state.app,
     actions
   ),
-)(DashboardWithQueries)
+])(DashboardWithQueries)
 
