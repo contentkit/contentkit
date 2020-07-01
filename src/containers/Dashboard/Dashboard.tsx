@@ -18,6 +18,7 @@ import { GraphQL } from '../../types'
 import { ModalType, DashboardSettingPropertyNames } from '../../fixtures'
 import DashboardSettingsModal from '../../components/DashboardSettingsModal'
 import { useSetSettingMutation } from '../../graphql/mutations'
+import usePersistentState from '../../hooks/usePersistentState'
 
 const modals = [
   {
@@ -76,7 +77,11 @@ type DashboardProps = {
 
 function Dashboard (props: DashboardProps) {
   const [open, setOpen] = React.useState(null)
+  const [state, setState] = usePersistentState('editorState', { editorState: EditorState.createEmpty() })
+  
+  const setEditorState = editorState => setState({ editorState })
 
+  const { editorState } = state
   const {
     posts,
     projects,
@@ -88,8 +93,8 @@ function Dashboard (props: DashboardProps) {
     search,
     client,
     history,
-    editorState,
-    setEditorState,
+    // editorState,
+    // setEditorState,
     setSearchLoadingState,
     setSearchQuery,
     postsAggregateVariables

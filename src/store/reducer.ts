@@ -1,6 +1,4 @@
-import { EditorState } from 'draft-js'
 import { 
-  SET_EDITOR_STATE,
   SELECT_POST,
   SELECT_PROJECT,
   SET_SEARCH_QUERY,
@@ -21,7 +19,6 @@ export const initialState = {
     query: '',
     projectId: undefined
   },
-  editorState: EditorState.createEmpty(),
   selectedProjectId: null,
   selectedPostIds: [],
   status: {
@@ -33,11 +30,6 @@ export const initialState = {
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_EDITOR_STATE:
-      return {
-        ...state,
-        editorState: action.payload.editorState
-      }
     case SELECT_POST:
       return { ...state, ...action.payload }
     case SELECT_PROJECT:
@@ -75,8 +67,6 @@ export const reducer = (state = initialState, action) => {
             ...action.payload
           }
         }
-    case LOCATION_CHANGE:
-      return { ...state, editorState: EditorState.createEmpty() }
     default:
       return state
   }

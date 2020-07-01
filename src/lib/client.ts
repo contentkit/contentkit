@@ -3,7 +3,7 @@ import { InMemoryCache, ApolloClient, ApolloLink, HttpLink } from '@apollo/clien
 
 const ANONYMOUS_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMDAwMDAwMDAiLCJodHRwczovL2hhc3VyYS5pby9qd3QvY2xhaW1zIjp7IngtaGFzdXJhLWRlZmF1bHQtcm9sZSI6ImFub255bW91cyIsIngtaGFzdXJhLWFsbG93ZWQtcm9sZXMiOlsiYW5vbnltb3VzIl0sIngtaGFzdXJhLXVzZXItaWQiOiIwMDAwMDAwMDAifSwiaWF0IjoxNTcyMTYzMjA2LCJleHAiOjE3MzU2ODk2MDAsImF1ZCI6IjkyMTI4NjkyNmEzY2EyYmFiZjI2ZWI5MjdjNDZlOTkwNTVmYyJ9.cd-OTV_RNop4eDN8SK3p3XFA3ImzZMomsHOxUOKPKus'
 
-export default () => {
+const createClient = () => {
   const middlewareLink = new ApolloLink((operation, forward) => {
     const token = window.localStorage.getItem('token') || ANONYMOUS_TOKEN
     operation.setContext({
@@ -49,3 +49,6 @@ export default () => {
     // version
   })
 }
+
+
+export default createClient()

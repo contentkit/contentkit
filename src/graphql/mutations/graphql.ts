@@ -233,6 +233,17 @@ export const DELETE_TAG = gql`
   }
 `
 
+export const DELETE_POST_TAG_CONNECTION = gql`
+  mutation ($tagId: String!, $postId: String!) {
+    delete_posts_tags(where: { tag_id: { _eq: $tagId }, post_id: { _eq: $postId } }) {
+      returning {
+        post_id
+        tag_id
+      }
+    }
+  }
+`
+
 export const CREATE_ORIGIN = gql`
   mutation ($projectId: String!, $name: String!, $userId: String!) {
     insert_origins (

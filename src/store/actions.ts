@@ -1,10 +1,8 @@
 import {
   UPDATE_FEED_VARIABLES,
-  SET_EDITOR_STATE,
   SELECT_POST,
   SET_SEARCH_QUERY,
   SET_SEARCH_LOADING_STATE,
-  SAVE_EDITOR_SATE,
   SET_STATUS
 } from './fixtures'
 import { convertFromRaw, convertToRaw, EditorState } from 'draft-js'
@@ -14,17 +12,11 @@ import { convertToHTML } from '@contentkit/convert'
 import { encode } from 'base64-unicode'
 import EditorCache from './EditorCache'
 import { getCurrentPostId } from './selectors'
+import apolloClient from '../lib/client'
 
 export const updateFeedVariables = payload => ({
   type: UPDATE_FEED_VARIABLES,
   payload
-})
-
-export const setEditorState = (editorState) => ({
-  payload: {
-    editorState,
-  },
-  type: SET_EDITOR_STATE
 })
 
 export const setSelectedProjectId = (projectId) => ({
@@ -61,31 +53,29 @@ export const fromRaw = (raw: any): EditorState => {
   )
 }
 
-export const saveEditorState = (client, { id }) => async (dispatch, getState) => {
-  const state = getState()
-  const raw = toRaw(state.app.editorState)
-  const html = encode(convertToHTML(state.app.editorState))
-  const options = getUpdateDocumentMutationOptions(client, {
+export const saveEditorState = ({ editorState, id }) => async (dispatch, getState) => {
+  const raw = toRaw(editorState)
+  const html = encode(convertToHTML(editorState))
+  const options = getUpdateDocumentMutationOptions(apolloClient, {
     id: id,
     raw: raw,
     encodedHtml: html
   })
-  await client.mutate(options)
+  await apolloClient.mutate(options)
   EditorCache.create(id).clear()
 }
 
-export const saveEditorStateLocally = () => (dispatch, getState) => {
+export const saveEditorStateLocally = (editorState) => (dispatch, getState) => {
   const state = getState()
   const id = getCurrentPostId(state)
-  EditorCache.create(id).save(state.app.editorState)
+  EditorCache.create(id).save(editorState)
   dispatch(setStatus({ isSavingLocally: true }))
 }
 
-export const discardLocalEditorState = (editorState) => (dispatch, getState) => {
+export const discardLocalEditorState = () => (dispatch, getState) => {
   const state = getState()
   const id = getCurrentPostId(state)
   EditorCache.create(id).clear()
-  dispatch(setEditorState(editorState))
 }
 
 export const setStatus = payload => ({
@@ -100,7 +90,6 @@ export const actions = {
   setSearchQuery,
   setSearchLoadingState,
   
-  setEditorState,
   saveEditorState,
   saveEditorStateLocally,
   discardLocalEditorState,

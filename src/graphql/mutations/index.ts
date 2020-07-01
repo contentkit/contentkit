@@ -429,6 +429,28 @@ export function useCreateTagMutation () {
   return createTag
 }
 
+export function useCreatePostTagConnectionMutation () {
+  const [mutate] = useMutation(Mutations.CREATE_POST_TAG_CONNECTION)
+
+
+  return (variables) => {
+    return mutate({
+      variables,
+      optimisticResponse: {
+        __typename: Typename.MUTATION,
+        insert_posts_tags: {
+          __typename: Typename.POSTS_TAGS_MUTATION_RESPONSE,
+          returning: [{
+            __typename: Typename.POSTS_TAGS,
+            post_id: variables.postId,
+            tag_id: variables.tagId
+          }]
+        }
+      }
+    })
+  }
+}
+
 export function useDeleteTagMutation () {
   const [deleteTagMutation, deleteTagData] = useMutation(Mutations.DELETE_TAG)
   const deleteTag = (variables) => {
@@ -468,6 +490,40 @@ export function useDeleteTagMutation () {
   }
 
   return deleteTag
+}
+
+export function useDeletePostTagConnectionMutation () {
+  const [deleteTagMutation] = useMutation(Mutations.DELETE_POST_TAG_CONNECTION)
+
+  return (variables) => {
+    return deleteTagMutation({
+      variables,
+      optimisticResponse: {
+        __typename: Typename.MUTATION,
+        delete_posts_tags: {
+          __typename: Typename.POSTS_TAGS_MUTATION_RESPONSE,
+          returning: [{
+            __typename: Typename.POSTS_TAGS,
+            post_id: variables.postId,
+            tag_id: variables.tagId
+          }]
+        }
+      },
+      update: (store, { data: { delete_posts_tags } }) => {
+        const { posts_tags } : { posts_tags: any[] } = store.readQuery({
+          query: TAG_QUERY,
+          variables: { postId: variables.postId }
+        })
+        store.writeQuery({
+          query: TAG_QUERY,
+          data: {
+            posts_tags: posts_tags.filter(c => c.tag.id !== delete_posts_tags.returning[0].tag_id)
+          },
+          variables: { postId: variables.postId }
+        })
+      }
+    })
+  }
 }
 
 export function useSetSettingMutation () {

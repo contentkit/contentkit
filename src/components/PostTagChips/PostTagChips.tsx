@@ -1,15 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
+import keyBy from 'lodash.keyby'
 import { useQuery } from '@apollo/client'
-import { useDeleteTagMutation, useCreateTagMutation } from '../../graphql/mutations'
+import { useDeletePostTagConnectionMutation, useCreateTagMutation, useCreatePostTagConnectionMutation } from '../../graphql/mutations'
 
 import { useTagQuery, ALL_TAGS_QUERY } from '../../graphql/queries'
-import { TextField } from '@material-ui/core'
-import { Input, Chip } from '@contentkit/components'
+import { TextField, Fade } from '@material-ui/core'
+import { Chip } from '@contentkit/components'
 import { Autocomplete } from '@material-ui/lab'
 import { makeStyles } from '@material-ui/styles'
 import { createFilterOptions } from '@material-ui/lab/Autocomplete'
+import { genId } from '../../lib/util'
 
 const useStyles = makeStyles(theme => ({
   tags: {
@@ -31,15 +32,17 @@ const useStyles = makeStyles(theme => ({
 
 type Option = {
   value: string,
-  label: string
+  label: string,
+  dirty?: boolean
 }
 
 type CreateTagInputProps = {
-  users: any,
   classes: any,
   post: any,
-  createTag: any,
+  onDeleteTag: any
+  onCreateTag: any,
   options: Option[]
+  tags: any[],
 }
 
 const filterOptions = createFilterOptions({
@@ -52,27 +55,51 @@ function CreateTagInput (props: CreateTagInputProps) {
   const {
     classes,
     post,
-    users,
-    createTag,
+    onCreateTag,
+    onDeleteTag,
     options,
+    tags,
   } = props
-  const [value, setValue] = React.useState([])
+  const [selection, setSelection] = React.useState([])
+  
+  const format = (option: string | Option): Option => {
+    if (typeof option === 'string') {
+      return { value: genId(), label: option, dirty: true }
+    }
 
-  const onChange = (evt, values) => {
-    setValue(values)
-  }
-
-  const onKeyDown = evt => {
-    if (evt.key === 'Enter') {
-      createTag({
-        name: value,
-        projectId: post.project.id,
-        postId: post.id,
-        userId: users.data.users[0].id,
-        tagId: [...Array(20)].map(i=>(~~(Math.random()*36)).toString(36)).join('')
-      })
+    return {
+      ...option,
+      dirty: false
     }
   }
+
+  const onChange = async (evt, values) => {
+    const formattedValues : Option[] = values.map(format)
+
+    const newTags = formattedValues.map(v => v.value)
+    const oldTags = selection.map(v => v.value)
+    const added : Option[] = formattedValues.filter(v => !oldTags.includes(v.value))
+    const removed : Option[] = selection.filter(v => !newTags.includes(v.value))
+  
+    setSelection(formattedValues)
+
+    if (added.length) {
+      await Promise.all(
+        added.map(({ value, label, dirty }) => onCreateTag({ name: label, tagId: value }, dirty))
+      )
+    }
+
+    if (removed.length) {
+      await Promise.all(
+        removed.map(({ value }) => onDeleteTag({ postId: post.id, tagId: value }))
+      )
+    }
+  }
+
+  React.useEffect(() => {
+    const value = tags.map(({ tag }) => ({ value: tag.id, label: tag.name, dirty: false }))
+    setSelection(value)
+  }, [])
 
   const renderInput = params => (
     <TextField
@@ -96,18 +123,16 @@ function CreateTagInput (props: CreateTagInputProps) {
         filterOptions={filterOptions}
         options={options}
         onChange={onChange}
-        value={value}
-        // value={value}
-        // placeholder={'Create tag'}
-        // onChange={onChange}
-        // onKeyDown={onKeyDown}
+        value={selection}
+        freeSolo
       />
     </div>
   )
 }
 
 CreateTagInput.defaultProps = {
-  options: []
+  options: [],
+  tags: []
 }
 
 CreateTagInput.propTypes = {
@@ -118,50 +143,55 @@ function PostTagChips (props) {
   const { post, users } = props
   const classes = useStyles(props)
   const tagQuery = useTagQuery({ variables: { postId: post.id } })
-  const allTagsQuery = useQuery(ALL_TAGS_QUERY)
-  console.log(allTagsQuery)
+  const allTagsQuery = useQuery(ALL_TAGS_QUERY, {
+    variables: {
+      userId: users.data.users[0].id
+    }
+  })
   const createTag = useCreateTagMutation()
-  const deleteTag = useDeleteTagMutation()
+  const deleteTag = useDeletePostTagConnectionMutation()
+  const createPostTagConnection = useCreatePostTagConnectionMutation()
 
-  if (!post?.id) {
-    return null
-  }
+  const onCreateTag = (variables: { name: string, tagId: string }, dirty: boolean) => {
+    if (!dirty) {
+      return createPostTagConnection({
+        postId: post.id,
+        tagId: variables.tagId
+      })
+    }
 
-  const createDeleteHandler = (tag) => () => {
-    deleteTag({
-      tagId: tag.id,
-      postId: post.id
+    return createTag({
+      ...variables,
+      projectId: post.project.id,
+      postId: post.id,
+      userId: users.data.users[0].id
     })
   }
 
   const tags = tagQuery?.data?.posts_tags || []
+
   const options = React.useMemo(() => {
     return (allTagsQuery?.data?.tags || []).map(tag => ({
       value: tag.id,
       label: tag.name
     }))
   }, [allTagsQuery])
+
+  if (!post?.id) {
+    return null
+  }
+
   return (
-    <div>
-      <div className={classes.tags}>
-        {tags.map(({ tag }) => (
-          <Chip
-            key={tag.id}
-            onDelete={createDeleteHandler(tag)}
-            className={classes.chip}
-            label={tag.name}
-            classes={classes}
-          />
-        ))}
-      </div>
+    <Fade in={!tagQuery.loading} mountOnEnter unmountOnExit>
       <CreateTagInput
-        users={users}
         post={post}
-        classes={classes}
-        createTag={createTag}
+        classes={{ inputWrapper: classes.inputWrapper }}
         options={options}
+        tags={tags}
+        onCreateTag={onCreateTag}
+        onDeleteTag={deleteTag}
       />
-    </div>
+    </Fade>
   )
 }
 
