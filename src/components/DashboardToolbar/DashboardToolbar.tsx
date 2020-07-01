@@ -10,7 +10,7 @@ import { DELETE_POST } from '../../graphql/mutations'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
 import ProjectSelect from '../ProjectSelect'
 import Button from '../Button'
-import { useApolloClient, useQuery } from '@apollo/react-hooks'
+import { useApolloClient, useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
 import { ModalType } from '../../fixtures'
 

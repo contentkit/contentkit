@@ -5,7 +5,7 @@ import { AppWrapper } from '@contentkit/components'
 import ProjectModal from './components/ProjectModal'
 import ProjectsList from './components/ProjectsList'
 import Button from '../../components/Button'
-import { useMutation, useQuery } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/client'
 
 import { PROJECTS_QUERY, useUserQuery } from '../../graphql/queries'
 import { useCreateProjectMutation, useDeleteProjectMutation, useUpdateProjectMutation } from '../../graphql/mutations'

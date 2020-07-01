@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core'
 import FormInput from '../FormInput'
 import Haikunator from 'haikunator'
-import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks'
+import { useQuery, useMutation, useApolloClient } from '@apollo/client'
 import { useCreatePostMutation, useCreateProjectMutation } from './mutations'
 
 const haikunator = new Haikunator()

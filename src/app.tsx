@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { CircularProgress } from '@material-ui/core'
-import { ApolloProvider, useQuery } from '@apollo/react-hooks'
+import { ApolloProvider, useQuery } from '@apollo/client'
 import { BrowserRouter, Route, Redirect } from 'react-router-dom'
 import { Provider } from 'react-redux'
 

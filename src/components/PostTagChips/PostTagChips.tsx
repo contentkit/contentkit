@@ -1,11 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
+import { useQuery } from '@apollo/client'
 import { useDeleteTagMutation, useCreateTagMutation } from '../../graphql/mutations'
-import { useTagQuery } from '../../graphql/queries'
-import { genKey, genDate } from '../../lib/util'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+
+import { useTagQuery, ALL_TAGS_QUERY } from '../../graphql/queries'
+import { TextField } from '@material-ui/core'
 import { Input, Chip } from '@contentkit/components'
+import { Autocomplete } from '@material-ui/lab'
 import { makeStyles } from '@material-ui/styles'
+import { createFilterOptions } from '@material-ui/lab/Autocomplete'
 
 const useStyles = makeStyles(theme => ({
   tags: {
@@ -25,24 +29,37 @@ const useStyles = makeStyles(theme => ({
   chip: {}
 }))
 
+type Option = {
+  value: string,
+  label: string
+}
+
 type CreateTagInputProps = {
   users: any,
   classes: any,
   post: any,
-  createTag: any
+  createTag: any,
+  options: Option[]
 }
+
+const filterOptions = createFilterOptions({
+  matchFrom: 'start',
+  stringify: (option: Option | string) => typeof option === 'string' ? option : option.value
+})
+
 
 function CreateTagInput (props: CreateTagInputProps) {
   const {
     classes,
     post,
     users,
-    createTag
+    createTag,
+    options,
   } = props
-  const [value, setValue] = React.useState('')
+  const [value, setValue] = React.useState([])
 
-  const onChange = evt => {
-    setValue(evt.target.value)
+  const onChange = (evt, values) => {
+    setValue(values)
   }
 
   const onKeyDown = evt => {
@@ -57,16 +74,40 @@ function CreateTagInput (props: CreateTagInputProps) {
     }
   }
 
+  const renderInput = params => (
+    <TextField
+      {...params}
+      variant='outlined'
+      label={'Tag'}
+      placeholder=''
+      margin='dense'
+    />
+  )
+
+  const getOptionLabel = (option: Option | string) => typeof option === 'string' ? option : option.label
+
   return (
     <div className={classes.inputWrapper}>
-      <Input
-        value={value}
-        placeholder={'Create tag'}
+      <Autocomplete
+        renderInput={renderInput}
+        multiple
+        getOptionLabel={getOptionLabel}
+        filterSelectedOptions
+        filterOptions={filterOptions}
+        options={options}
         onChange={onChange}
-        onKeyDown={onKeyDown}
+        value={value}
+        // value={value}
+        // placeholder={'Create tag'}
+        // onChange={onChange}
+        // onKeyDown={onKeyDown}
       />
     </div>
   )
+}
+
+CreateTagInput.defaultProps = {
+  options: []
 }
 
 CreateTagInput.propTypes = {
@@ -77,15 +118,13 @@ function PostTagChips (props) {
   const { post, users } = props
   const classes = useStyles(props)
   const tagQuery = useTagQuery({ variables: { postId: post.id } })
+  const allTagsQuery = useQuery(ALL_TAGS_QUERY)
+  console.log(allTagsQuery)
   const createTag = useCreateTagMutation()
   const deleteTag = useDeleteTagMutation()
 
   if (!post?.id) {
-    return false
-  }
-
-  if (tagQuery.loading) {
-    return false
+    return null
   }
 
   const createDeleteHandler = (tag) => () => {
@@ -95,10 +134,17 @@ function PostTagChips (props) {
     })
   }
 
+  const tags = tagQuery?.data?.posts_tags || []
+  const options = React.useMemo(() => {
+    return (allTagsQuery?.data?.tags || []).map(tag => ({
+      value: tag.id,
+      label: tag.name
+    }))
+  }, [allTagsQuery])
   return (
     <div>
       <div className={classes.tags}>
-        {tagQuery.data.posts_tags.map(({ tag }) => (
+        {tags.map(({ tag }) => (
           <Chip
             key={tag.id}
             onDelete={createDeleteHandler(tag)}
@@ -113,6 +159,7 @@ function PostTagChips (props) {
         post={post}
         classes={classes}
         createTag={createTag}
+        options={options}
       />
     </div>
   )

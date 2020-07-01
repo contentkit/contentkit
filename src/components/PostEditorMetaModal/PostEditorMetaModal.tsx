@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Dialog, DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
-import { useApolloClient } from '@apollo/react-hooks'
+import { useApolloClient } from '@apollo/client'
 import gql from 'graphql-tag'
 
 import PostMetaForm from '../PostEditorMetaModalForm'
@@ -47,7 +47,6 @@ const getDate = ({ posts }) => {
 function EditPostMetaModal (props) {
   const client = useApolloClient()
   const [dateInputState, setDateInput] = React.useState(getDate(props))
-  const [projectId, setProjectId] = React.useState(props.posts?.data?.posts[0]?.project?.id)
   const {
     onClose,
     open,

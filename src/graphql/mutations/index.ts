@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 import { POST_QUERY, USER_QUERY, PROJECTS_QUERY, PROJECT_QUERY, TAG_QUERY, SETTINGS_QUERY } from '../queries'
-import { useMutation, useApolloClient } from '@apollo/react-hooks'
+import { useMutation, useApolloClient } from '@apollo/client'
 import { genKey, genDate } from '../../lib/util'
-import ApolloClient from 'apollo-client'
+import ApolloClient from '@apollo/client'
 import { GraphQL } from '../../types'
 import { Typename } from '../constants'
 import * as Mutations from './graphql'
@@ -413,6 +413,7 @@ export function useCreateTagMutation () {
           query: TAG_QUERY,
           variables: { postId: variables.postId }
         })
+
         store.writeQuery({
           query: TAG_QUERY,
           data: {

@@ -6,7 +6,7 @@ import {
 import { POSTS_AGGREGATE_QUERY, PROJECTS_QUERY } from '../../graphql/queries'
 import { genKey, genDate } from '../../lib/util'
 
-import { useApolloClient, useMutation } from '@apollo/react-hooks'
+import { useApolloClient, useMutation } from '@apollo/client'
 
 export function useCreatePostMutation (postsAggregateVariables) {
   const client = useApolloClient()

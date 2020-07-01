@@ -4,7 +4,7 @@ import {
   DialogContent,
   DialogTitle
 } from '@material-ui/core'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/client'
 import gql from 'graphql-tag'
 
 function DashboardSettingsModal (props) {

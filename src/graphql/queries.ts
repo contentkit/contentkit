@@ -1,6 +1,6 @@
 import React from 'react'
 import gql from 'graphql-tag'
-import { useQuery, QueryHookOptions, useApolloClient } from '@apollo/react-hooks'
+import { useQuery, useApolloClient } from '@apollo/client'
 import { GraphQL } from '../types'
 import set from 'lodash.set'
 
@@ -135,6 +135,17 @@ export const TAG_QUERY = gql`
   }
 `
 
+export const ALL_TAGS_QUERY = gql`
+  query($userId: String!) {
+    tags(where: { user_id: { _eq: $userId } }) {
+      id
+      name
+      description
+      slug
+    }
+  }
+`
+
 export const SETTINGS_QUERY = gql`
   query {
     settings {
@@ -166,7 +177,6 @@ export function useSettingsQuery () {
       const { projects } = client.cache.readQuery({
         query: PROJECTS_QUERY
       })
-      console.log({ projects })
       setting.dashboard.selected_project_id = projects[0]?.id
     }
 

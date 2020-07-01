@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/client'
 
 const SAVE_POST = gql`
   mutation(

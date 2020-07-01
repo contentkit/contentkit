@@ -3,5 +3,8 @@
   "javascript.validate.enable": false,
   "standard.enable": true,
   "standard.usePackageJson": true,
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "workbench.colorCustomizations": {
+    "editorUnnecessaryCode.border": "#dd7aab"
+  }
 }

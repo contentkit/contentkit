@@ -1,4 +1,4 @@
-import { useMutation, useApolloClient } from '@apollo/react-hooks'
+import { useMutation, useApolloClient } from '@apollo/client'
 import {
   SIGNUP_USER,
   AUTHENTICATE_USER

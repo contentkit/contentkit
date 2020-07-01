@@ -4,12 +4,10 @@ import {
   Grid,
   Tabs,
   Tab,
-  InputAdornment,
-  IconButton,
   Snackbar,
   Box
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import Button from '../../components/Button'
 import { Input } from '@contentkit/components'

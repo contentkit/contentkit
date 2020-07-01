@@ -7,8 +7,8 @@ import {
   SET_SEARCH_LOADING_STATE,
   UPDATE_FEED_VARIABLES,
   SET_STATUS,
-
 } from './fixtures'
+import { LOCATION_CHANGE } from 'connected-react-router'
 
 export const initialState = {
   search: {
@@ -75,6 +75,8 @@ export const reducer = (state = initialState, action) => {
             ...action.payload
           }
         }
+    case LOCATION_CHANGE:
+      return { ...state, editorState: EditorState.createEmpty() }
     default:
       return state
   }
