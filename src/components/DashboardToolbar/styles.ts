@@ -14,7 +14,7 @@ export const useStyles = makeStyles((theme: any) => ({
   },
   root: {
     width: '100%',
-    backgroundColor: '#f4f4f4',
+    backgroundColor: '#fff',
     display: 'flex',
     flexDirection: 'column'
   },
@@ -23,7 +23,7 @@ export const useStyles = makeStyles((theme: any) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    backgroundColor: '#f4f4f4'
+    backgroundColor: '#fff'
   },
   toolbar: {
     display: 'flex',

@@ -19,7 +19,7 @@ import { ModalType, DashboardSettingPropertyNames } from '../../fixtures'
 import DashboardSettingsModal from '../../components/DashboardSettingsModal'
 import { useSetSettingMutation } from '../../graphql/mutations'
 import usePersistentState from '../../hooks/usePersistentState'
-
+import TopBar from '../../components/TopBar'
 const modals = [
   {
     name: ModalType.CREATE_POST,
@@ -179,7 +179,7 @@ function Dashboard (props: DashboardProps) {
   }
 
   return (
-    <AppWrapper renderToolbar={renderToolbar}>
+    <AppWrapper renderToolbar={() => <TopBar />}>
        {modals.map(({ Component, getComponentProps, name }) => {
         return (
           <Component
@@ -199,6 +199,7 @@ function Dashboard (props: DashboardProps) {
         search={search}
         history={history}
         getToolbarProps={getToolbarProps}
+        renderToolbar={renderToolbar}
       />
     </AppWrapper>
   )

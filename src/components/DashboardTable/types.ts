@@ -25,4 +25,5 @@ export type Column = {
 
   Component?: any,
   getOptions?: () => ColumnOption[]
+  getProps?: (row: any) => { [key: string]: any }
 }

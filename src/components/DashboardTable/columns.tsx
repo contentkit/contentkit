@@ -13,14 +13,15 @@ const columns : Column[] = [{
   key: 'title',
   dataIndex: 'title',
   editable: true,
-  render: x => x,
-  Component: TableCellInput
+  render: row => [row.title, { slug: `/posts/${row.id}` }],
+  Component: TableCellInput,
+  getProps: (row) => ({ slug: `/posts/${row.id}` })
 }, {
   title: 'Status',
   key: 'status',
   dataIndex: 'status',
   editable: true,
-  render: x => x,
+  render: row => [row.status]
   Component: TableCellSelect,
   getOptions: () => ([
     { key: 'DRAFT', label: 'DRAFT' },
@@ -30,23 +31,24 @@ const columns : Column[] = [{
   title: 'Project',
   key: 'project',
   dataIndex: 'project',
-  render: (project) => project.name,
+  render: (row) => [row.project.name],
   editable: false
 }, {
   title: 'Date',
   key: 'created_at',
   dataIndex: 'createdAt',
   editable: false,
-  render: (date) => formatDate(date)
+  render: (row) => [formatDate(row.created_at)]
 }, {
   title: 'Tags',
   key: 'posts_tags',
   dataIndex: 'tags',
   editable: false,
-  render: (posts_tags) => {
-    return posts_tags.map(({ tag }) => (
-      <Chip key={tag.id} label={tag.name} style={{ marginRight: 8 }} />
+  render: ({ posts_tags }) => {
+    const chips = posts_tags.map(({ tag }) => (
+      <Chip key={tag.id} label={tag.name} style={{ marginRight: 8, backgroundColor: '#48BB78' }} />
     ))
+    return [chips]
   }
 }]
 

@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   default: {
-    backgroundColor: '#0f62fe',
+    backgroundColor: '#48BB78',
     color: '#fff',
     '&:hover': {}
   },

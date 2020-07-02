@@ -7,7 +7,8 @@ type Direction = 'asc' | 'desc'
 
 const useStyles = makeStyles(theme => ({
   tableHeadCell: {
-    backgroundColor: '#e0e0e0'
+    // backgroundColor: '#e0e0e0'
+    backgroundColor: '#fff'
   }
 }))
 

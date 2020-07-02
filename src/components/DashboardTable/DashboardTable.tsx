@@ -39,6 +39,7 @@ function DashboardTable (props) {
     setSelectedPostIds,
     search,
     getToolbarProps,
+    renderToolbar,
     settings
   } = props
 
@@ -147,7 +148,8 @@ function DashboardTable (props) {
   const toolbarProps = getToolbarProps()
   return (
     <div className={classes.wrapper}>
-      <Paper elevation={0}>
+      <Paper elevation={0} className={classes.paper}>
+        {renderToolbar(toolbarProps)}
         <Table size='small' className={classes.table}>
           <DashboardTableHead sort={sort} onSort={onSort} columns={columns} />
           <TableBody>

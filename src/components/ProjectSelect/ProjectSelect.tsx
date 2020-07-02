@@ -11,7 +11,7 @@ type SelectProjectProps = {
   hideLabel?: boolean
 }
 
-function SelectProject (props) {
+function SelectProject (props: SelectProjectProps) {
   const {
     selectedProjectId,
     setSelectedProjectId,
@@ -28,11 +28,12 @@ function SelectProject (props) {
   const select = (
     <Select
       native
-      labelId={'project-select'}
+      labelId='project-select'
       value={selectedProjectId || ''}
       onChange={onChange}
       className={className}
       input={input}
+      variant='outlined'
     >
       {
         allProjects.map(project => <option key={project.id} value={project.id}>{project.name}</option>)

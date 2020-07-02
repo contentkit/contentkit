@@ -28,15 +28,9 @@ const createClient = () => {
     })
   )
 
-  const keyArgs = (_args, context) => {
-    console.log({ _args, context })
-    return context.fieldName
-  }
-
   return new ApolloClient({
     link: ApolloLink.from([
       middlewareLink,
-      // errorLink,
       authLink,
       hasuraLink
     ]),

@@ -5,15 +5,16 @@ import { GraphQL } from '../../../types'
 import { Column } from '../types'
 
 const useEditableCellStyles = makeStyles(theme => ({
-  adornment: {
-    // @ts-ignore
-    visibility: props => props.isEditing ? 'visible' : 'visible'
-  },
   tableCell: {
-    backgroundColor: '#f4f4f4',
+    position: 'relative',
+    backgroundColor: '#fff',
+    // backgroundColor: '#f4f4f4',
     borderBottom: '1px solid #e0e0e0',
     '&:hover $button': {
       visibility: 'visible'
+    },
+    '&:hover': {
+      backgroundColor: '#e0e0e0'
     }
   },
   icon: {
@@ -44,6 +45,7 @@ function EditableCell (props: EditableCellProps) {
     isEditing,
     onSave
   } = props
+  const [hovering, setHovering] = React.useState(false)
 
   const onClick = (evt: any) => {
     toggleEditing(row, column)
@@ -53,23 +55,35 @@ function EditableCell (props: EditableCellProps) {
     onChange(row, column.key, evt.target.value)
   }
 
-  const value = column.render(row[column.key])
+  const onMouseEnter = evt => {
+    setHovering(true)
+  }
+
+  const onMouseLeave = evt => {
+    setHovering(false)
+  }
+
+  const [value] = column.render(row)
   const { Component } = column
   const content = column.editable
     ? <Component
-      raw={row[column.key]}
-      value={value}
-      onChange={handleChange}
-      isEditing={isEditing}
-      onClick={onClick}
-      getOptions={column.getOptions}
-      classes={classes}
-    />
+        raw={row[column.key]}
+        value={value}
+        onChange={handleChange}
+        isEditing={isEditing}
+        onClick={onClick}
+        getOptions={column.getOptions}
+        classes={classes}
+        hovering={hovering}
+        {...(typeof column.getProps === 'function' ? column.getProps(row) : {})}
+      />
     : value
   return (
     <TableCell
       key={column.key}
       className={classes.tableCell}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       {content}
     </TableCell>
