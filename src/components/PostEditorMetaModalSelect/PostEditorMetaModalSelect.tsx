@@ -1,6 +1,5 @@
 import React from 'react'
-import { Select } from '@material-ui/core'
-import { Input } from '@contentkit/components'
+import { Select, InputBase } from '@material-ui/core'
 
 const PostEditorMetaModalSelect = (props) => {
   const { value, onChange } = props
@@ -21,7 +20,7 @@ const PostEditorMetaModalSelect = (props) => {
       options={options}
       label={'Status'}
       value={value}
-      input={<Input name='select-status' />}
+      input={<InputBase name='select-status' />}
     >
       {
         options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)

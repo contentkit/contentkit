@@ -9,8 +9,8 @@
     "lint": "standard \"src/**/*.js\" --verbose --fix | snazzy"
   },
   "resolutions": {
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "**/react": "16.13.1",
+    "**/react-dom": "16.13.1",
     "draft-js": "^0.11.4",
     "immutable": "3.7.4",
     "@material-ui/styles": "4.10.0"
@@ -47,8 +47,8 @@
     "lodash.set": "^4.3.2",
     "lodash.unescape": "^4.0.1",
     "prop-types": "^15.5.10",
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
     "react-redux": "^7.2.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
@@ -78,7 +78,6 @@
     "@babel/plugin-transform-flow-strip-types": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
-    "@babel/preset-flow": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "@types/react": "^16.8.6",
     "@types/react-router-dom": "^5.1.5",
@@ -87,7 +86,6 @@
     "babel-plugin-import": "^1.12.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.10.0",
-    "execa": "^4.0.2",
     "jest": "^26.1.0",
     "node-sass": "^4.14.1",
     "parcel-bundler": "^1.10.3",
@@ -96,7 +94,6 @@
     "react-addons-perf": "^15.4.2",
     "react-test-renderer": "^16.13.1",
     "sinon": "^9.0.2",
-    "snazzy": "^8.0.0",
     "typescript": "^3.9.5"
   }
 }

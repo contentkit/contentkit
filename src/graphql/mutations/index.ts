@@ -295,6 +295,7 @@ export function useUpdateProjectMutation () {
 export function useCreateOriginMutation () {
   const [createOriginMutation, createOriginData] = useMutation(Mutations.CREATE_ORIGIN)
   const createOrigin = variables => createOriginMutation({
+    variables,
     optimisticResponse: {
       __typename: Typename.MUTATION,
       insert_origins: {
@@ -332,7 +333,7 @@ export function useCreateOriginMutation () {
   })
 
   return {
-    mutation: createOrigin,
+    mutate: createOrigin,
     ...createOriginData
   }
 }

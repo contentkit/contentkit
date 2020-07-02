@@ -1,35 +1,22 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { 
   Grid,
   Tabs,
   Tab,
   Snackbar,
-  Box
+  Box,
+  TextField,
+  Paper,
+  Fade,
+  CircularProgress
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import { Visibility, VisibilityOff } from '@material-ui/icons'
 import Button from '../../components/Button'
-import { Input } from '@contentkit/components'
 import { useAuthenticateUser, useRegisterUser } from './mutations'
 import { useUserQuery } from '../../graphql/queries'
 import useStyles from './styles'
-import PasswordField from './components/PasswordField'
+import LoginField from './components/LoginField'
 import { withRouter } from 'react-router-dom'
-
-const useLoginStyles = makeStyles(theme => ({
-  root: {
-    [`${theme.breakpoints.up('md')} and (-webkit-max-device-pixel-ratio: 2)`]: {
-      fontSize: 14
-    },
-    [`${theme.breakpoints.down('md')}`]: {
-      fontSize: 20
-    },
-    ['@media (pointer: coarse)']: {
-      fontSize: 20
-    }
-  }
-}))
 
 function LoginContainer (props) {
   const { children, classes } = props
@@ -39,20 +26,6 @@ function LoginContainer (props) {
         {children}
       </div>
     </div>
-  )
-}
-
-function SignInEmailTextField (props) {
-  const { value, onChange } = props
-  return (
-    <Input
-      id='email'
-      placeholder='Email'
-      value={value}
-      onChange={onChange}
-      type={'email'}
-      autoComplete={'username'}
-    />
   )
 }
 
@@ -83,7 +56,6 @@ function Login (props) {
   const [loading, setLoading] = React.useState(false)
   const [errors, setErrors] = React.useState([])
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
-
   const authenticateUser = useAuthenticateUser()
   const registerUser = useRegisterUser()
 
@@ -108,6 +80,7 @@ function Login (props) {
     try {
       await authenticateUser({ email, password })
     } catch (err) {
+      setLoading(false)
       return setErrors(err.graphQLErrors)
     }
 
@@ -123,9 +96,10 @@ function Login (props) {
         password
       })
     } catch (err) {
+      setLoading(false)
       return setErrors(err.graphQLErrors)
     }
-
+  
     redirect()
   }
 
@@ -135,7 +109,7 @@ function Login (props) {
 
   const passwordOnChange = evt => setPassword(evt.target.value)
 
-  const { title, backgroundImage } = props
+  const { title } = props
   const showLogin = tab === 0
   return (
     <LoginContainer classes={classes}>
@@ -149,7 +123,12 @@ function Login (props) {
         autoHideDuration={6000}
         onClose={onCloseSnackbar}
       />
-      <div className={classes.left}>
+      <Paper className={classes.paper}>
+        <Fade in={loading} unmountOnExit mountOnEnter>
+          <div className={classes.progress}>
+            <CircularProgress />
+          </div>
+        </Fade>
         <div className={classes.content}>
           <div className={classes.title}>
             {title}
@@ -162,16 +141,18 @@ function Login (props) {
           )}
           <div>
             <Box mb={2}>
-              <SignInEmailTextField
+              <LoginField
                 value={email}
                 onChange={emailOnChange}
+                variant='login'
               />
             </Box>
             <Box mb={2}>
               {showLogin
-                ? <PasswordField
+                ? <LoginField
                     value={password}
                     onChange={passwordOnChange}
+                    variant='password'
                   />
                 : <div className={classes.spacer} />
               }
@@ -204,11 +185,15 @@ function Login (props) {
             )}
           </Grid>
         </div>
-      </div>
-      <div className={classes.right} />
+      </Paper>
     </LoginContainer>
   )
 }
+
+Login.defaultProps = {
+  title: 'ContentKit'
+}
+
 
 export default withRouter(Login)
 

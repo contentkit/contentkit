@@ -31,19 +31,19 @@
   }
 
   h1 {
-    margin: 0px 0px 20px 30px;
+    margin: 24px 0px 24px 30px;
   }
 
   h2 {
-    margin: 0px 0px 20px 42px;
+    margin: 24px 0px 24px 42px;
   }
 
   h3 {
-    margin: 0px 0px 20px 48px;
+    margin: 24px 0px 24px 48px;
   }
 
   h4 {
-    margin: 0px 0px 20px 50px;
+    margin: 24px 0px 24px 50px;
   }
 
   ul li.public-DraftStyleDefault-depth0 {
@@ -55,8 +55,9 @@
   }
 
   pre {
+    box-sizing: border-box;
     margin: 0 0 1em 0;
-    padding: 12px;
+    padding: 20px;
   }
 
   blockquote {
@@ -80,9 +81,8 @@
   }
 }
 
-:global(.public-DraftEditor-content > div > div) {
-  margin: 0;
-  margin-bottom: 10px;
+:global(.paragraph) {
+  margin: 24px 0;
   font-family: Open Sans;
   font-style: normal;
   font-weight: 400;

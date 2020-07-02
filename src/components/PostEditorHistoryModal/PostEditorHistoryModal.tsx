@@ -60,7 +60,7 @@ function PostEditorHistoryModal (props) {
       onClose={onClose}
       open={open}
       PaperProps={{
-        square: true
+
       }}
     >
       <DialogTitle>History</DialogTitle>

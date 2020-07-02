@@ -1,9 +1,10 @@
 import React from 'react'
-import { TableRow, TableCell } from '@material-ui/core'
-import { Checkbox } from '@contentkit/components'
+import { Checkbox, TableRow, TableCell } from '@material-ui/core'
+import clsx from 'clsx'
 import EditableCell from './EditableCell'
 import { GraphQL } from '../../../types'
 import { Column } from '../types'
+import { makeStyles } from '@material-ui/styles'
 
 type Row = {
   id: string,
@@ -16,24 +17,46 @@ type OnSaveOptions = Pick<Row, 'id'> & { project_id: string }
 
 type DashboardTableRowProps = {
   row: GraphQL.Post,
-  className: string,
   selectRow: (id: string) => void,
   selectedPostIds: string[],
   columns: Column[],
-  classes: any,
   onChange: (post: GraphQL.Post, key: string, value: string) => void,
   onContextMenu: (evt: any, row: GraphQL.Post) => void,
   onSave: (options: OnSaveOptions) => void
+  selected: boolean
 }
 
+const useStyles = makeStyles(theme => ({
+  root: {
+
+  },
+  selected: {
+
+  },
+  tableCell: {
+    borderBottom: '1px solid #e0e0e0',
+    backgroundColor: (props: any) => props.selected ? '#ebf8ff' : '#fff'
+  },
+  checkbox: {
+    color: '#a0aec0'
+  },
+  checked: {},
+  colorSecondary: {
+    color: '#8fa6b2',
+    '&:$checked': {
+      color: '#8fa6b2'
+    }
+  }
+}))
+
 function DashboardTableRow (props: DashboardTableRowProps) {
+  const classes = useStyles(props)
   const {
     row,
-    className,
+    selected,
     selectRow,
     selectedPostIds,
     columns,
-    classes,
     onChange,
     onContextMenu,
     onSave
@@ -62,17 +85,25 @@ function DashboardTableRow (props: DashboardTableRowProps) {
     return `${row.id}-${column.key}`
   }
 
+  const className = clsx(classes.root, {
+    [classes.selected]: selected
+  })
   return (
     <TableRow
       className={className}
       onContextMenu={handleContextMenu}
     >
-      <TableCell className={classes.checkboxTableCell}>
+      <TableCell className={classes.tableCell}>
         <Checkbox
           value={row.id}
           checked={selectedPostIds.includes(row.id)}
           id={`checkbox_${row.id}`}
           onChange={handleSelectRow}
+          classes={{
+            root: classes.checkbox,
+            colorSecondary: classes.colorSecondary,
+            checked: classes.colorSecondary
+          }}
         />
       </TableCell>
       {columns.map(column => (
@@ -84,6 +115,7 @@ function DashboardTableRow (props: DashboardTableRowProps) {
           row={row}
           onChange={onChange}
           onSave={onSave}
+          selected={selected}
         />
       ))}
     </TableRow>

@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { IconButton, InputAdornment } from '@material-ui/core'
+import { IconButton, InputAdornment, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { Refresh } from '@material-ui/icons'
-import { Input } from '@contentkit/components'
 
 const useStyles = makeStyles(theme => ({
   input: {},
@@ -28,11 +27,13 @@ const ProfileUserFormKeyInput = React.forwardRef((props: ProfileUserFormKeyInput
   } = props
   const classes = useStyles(props)
   return (
-    <Input
+    <TextField
       className={classes.input}
       value={value}
-      ref={ref}
+      inputRef={ref}
       placeholder={'API key'}
+      variant='outlined'
+      margin='dense'
       endAdornment={
         <InputAdornment position='end' className={classes.adornment}>
           <IconButton

@@ -40,6 +40,7 @@ export const POSTS_AGGREGATE_QUERY = gql`
       }
       nodes {
         id
+        selected @client
         created_at
         published_at
         title

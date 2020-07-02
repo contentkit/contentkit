@@ -146,7 +146,7 @@ function EditPostMetaModal (props) {
       onClose={onClose}
       maxWidth='md'
       PaperProps={{
-        square: true
+
       }}
     >
       <DialogTitle>

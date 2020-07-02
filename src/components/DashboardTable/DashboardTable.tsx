@@ -1,10 +1,8 @@
 import React from 'react'
 
 import { useApolloClient } from '@apollo/client'
-import gql from 'graphql-tag'
-import { Theme, Paper, TableBody, Table } from '@material-ui/core'
+import { Fade, Paper, TableBody, Table, CircularProgress } from '@material-ui/core'
 import { SortDirection } from '@material-ui/core/TableCell'
-import clsx from 'clsx'
 import orderBy from 'lodash/orderBy'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
 import { useOnSave } from './mutations'
@@ -37,12 +35,17 @@ function DashboardTable (props) {
     posts,
     selectedPostIds,
     setSelectedPostIds,
-    search,
+    searchLoading,
     getToolbarProps,
     renderToolbar,
     settings
   } = props
-
+  console.log(posts)
+  // const [togglePost] = useMutation(gql`
+  //   mutation($id: String!) {
+  //     togglePost(id: $id) @client
+  //   }
+  // `)
   const classes = useStyles(props)
   const client = useApolloClient()
   const onSave = useOnSave()
@@ -150,33 +153,35 @@ function DashboardTable (props) {
     <div className={classes.wrapper}>
       <Paper elevation={0} className={classes.paper}>
         {renderToolbar(toolbarProps)}
-        <Table size='small' className={classes.table}>
-          <DashboardTableHead sort={sort} onSort={onSort} columns={columns} />
-          <TableBody>
-            {
-              orderBy(dataSource, [sort.column], [sort.direction]).map(row => {
-                const className = clsx({
-                  [classes.row]: true,
-                  [classes.selected]: selectedPostIds.includes(row.id)
-                })
-                return (
-                  <DashboardTableRow
-                    key={row.id}
-                    row={row}
-                    className={className}
-                    selectRow={selectRow}
-                    selectedPostIds={selectedPostIds}
-                    columns={columns}
-                    classes={classes}
-                    onChange={onChange}
-                    onSave={onSave}
-                    onContextMenu={onContextMenu}
-                  />
-                )
-              })
-            }
-          </TableBody>
-        </Table>
+        <Fade in={searchLoading} unmountOnExit mountOnEnter>
+          <div className={classes.progress}>
+            <CircularProgress />
+          </div>
+        </Fade>
+        <Fade in={!searchLoading} unmountOnExit mountOnEnter>
+          <Table size='small' className={classes.table}>
+            <DashboardTableHead sort={sort} onSort={onSort} columns={columns} />
+              <TableBody>
+                {
+                  orderBy(dataSource, [sort.column], [sort.direction]).map(row => {
+                    return (
+                      <DashboardTableRow
+                        key={row.id}
+                        row={row}
+                        selectRow={selectRow}
+                        selectedPostIds={selectedPostIds}
+                        columns={columns}
+                        onChange={onChange}
+                        onSave={onSave}
+                        onContextMenu={onContextMenu}
+                        selected={selectedPostIds.includes(row.id)}
+                      />
+                    )
+                  })
+                }
+              </TableBody>
+          </Table>
+        </Fade>
         <DashboardPagination getNextPage={getNextPage} />
       </Paper>
     </div>

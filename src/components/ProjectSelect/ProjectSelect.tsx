@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Select, FormControl, InputLabel } from '@material-ui/core'
-import { Input } from '@contentkit/components'
+import { InputBase, Select, FormControl, InputLabel } from '@material-ui/core'
 
 type SelectProjectProps = {
   selectedProjectId: string,
@@ -24,7 +23,7 @@ function SelectProject (props: SelectProjectProps) {
     setSelectedProjectId(value)
   }
 
-  const input = (<Input name='project' id='project' />)
+  const input = (<InputBase name='project' id='project' />)
   const select = (
     <Select
       native

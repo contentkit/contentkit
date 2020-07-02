@@ -10,6 +10,7 @@
     "aws4": "^1.10.0",
     "bcryptjs": "^2.4.3",
     "graphql": "~15.1.0",
+    "graphql-constraint-directive": "^2.0.3",
     "graphql-type-json": "^0.3.2",
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.12.1",

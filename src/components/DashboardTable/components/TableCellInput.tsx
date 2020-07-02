@@ -1,6 +1,5 @@
 import React from 'react'
-import { InputAdornment, IconButton, Typography } from '@material-ui/core'
-import { Input } from '@contentkit/components'
+import { InputAdornment, IconButton, Typography, InputBase } from '@material-ui/core'
 import { SaveIcon, EditIcon } from './Icons'
 import { makeStyles } from '@material-ui/styles'
 
@@ -17,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     fontSize: 12,
-    color: 'rgba(0, 0, 0, 0.87)',
+    color: '#3182ce',
   },
   adornment: {}
 }))
@@ -64,7 +63,7 @@ function TableCellInput (props) {
     )
   }
   return (
-    <Input
+    <InputBase
       inputRef={ref}
       autoFocus={isEditing}      
       disabled={!isEditing}

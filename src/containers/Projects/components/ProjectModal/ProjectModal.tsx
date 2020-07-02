@@ -1,7 +1,7 @@
 import React from 'react'
 import ProjectModalContent from '../ProjectModalContent'
 import PropTypes from 'prop-types'
-import { Grid, Dialog, DialogContent, DialogActions, DialogTitle } from '@material-ui/core'
+import { Button, Grid, Dialog, DialogContent, DialogActions, DialogTitle } from '@material-ui/core'
 import { useQuery, useMutation, useApolloClient } from '@apollo/client'
 import {
   PROJECT_QUERY
@@ -12,8 +12,6 @@ import {
   useCreateOriginMutation,
   useDeleteOriginMutation
 } from '../../../../graphql/mutations'
-
-import Button from '../../../../components/Button'
 
 import { makeStyles } from '@material-ui/styles'
 import { GraphQL } from '../../../../types'
@@ -78,7 +76,7 @@ function ProjectModal (props) {
       className={classes.modal}
       fullWidth
       PaperProps={{
-        square: true
+
       }}
     >
       <DialogTitle>{project?.data?.projects[0]?.name}</DialogTitle>
@@ -94,11 +92,25 @@ function ProjectModal (props) {
       <DialogActions>
         <Grid container className={classes.actions}>
           <Grid item xs={6}>
-            <Button key={'delete'} onClick={onDeleteProject} color='danger'>Delete</Button>
+            <Button variant='outlined' key={'delete'} onClick={onDeleteProject}>Delete</Button>
           </Grid>
           <Grid item xs={6} style={{ justifyContent: 'flex-end', display: 'flex' }}>
-            <Button key={'cancel'} onClick={onClose} style={{ marginRight: 10 }}>Cancel</Button>
-            <Button key={'update'} onClick={onSave}>Update</Button>
+            <Button
+              variant='outlined'
+              key='cancel'
+              onClick={onClose}
+              style={{ marginRight: 10 }}
+            >
+                Cancel
+            </Button>
+
+            <Button
+              variant='outlined'
+              key='update'
+              onClick={onSave}
+              >
+                Update
+            </Button>
           </Grid>
         </Grid>
       </DialogActions>

@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import ProjectAvatar from '../ProjectsListItemAvatar'
 import { ListItem, ListItemText, ListItemAvatar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
+
+import ProjectAvatar from '../ProjectsListItemAvatar'
+
 
 const useStyles = makeStyles((theme: any) => ({
   root: {
@@ -30,13 +32,14 @@ function ProjectsListItem (props) {
     <ListItem
       onClick={handleClick}
       className={classes.root}
+      button
     >
       <ListItemAvatar>
         <ProjectAvatar />
       </ListItemAvatar>
       <ListItemText
         primary={project.name}
-        secondary={'Posts'}
+        secondary='Posts'
       />
     </ListItem>
   )

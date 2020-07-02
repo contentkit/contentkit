@@ -5,7 +5,8 @@ import * as Pool from 'pg-pool'
 import * as pg from 'pg'
 import { Context as LambdaContext, APIGatewayProxyEvent } from 'aws-lambda'
 import GraphQLJSON from 'graphql-type-json'
-
+import ConstraintDirective from 'graphql-constraint-directive'
+import { EMAIL_REGEX } from './fixtures'
 import { createPresignedPost } from './upload'
 
 export type ApolloContext =  {
@@ -42,6 +43,14 @@ function sign (payload, expires): Promise<string> {
 }
 
 async function getUserByEmail (client, email) {
+  if (email.length < 3) {
+    throw new AuthenticationError('Invalid email')
+  }
+
+  if (!EMAIL_REGEX.test(email)) {
+    throw new AuthenticationError('Invalid email')
+  }
+
   return client.query(`SELECT * FROM users WHERE email = $1::text`, [email])
     .then(({ rows }) => rows && rows.length ? rows[0] : null)
 }
@@ -221,8 +230,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    register(email: String!, password: String!): Payload
-    login(email: String!, password: String!): Payload
+    register(email: String! @constraint(format: "email", maxLength: 255), password: String! @constraint(minLength: 3)): Payload
+    login(email: String! @constraint(format: "email", maxLength: 255), password: String! @constraint(minLength: 3)): Payload
     resetPassword(email: String!, password: String!): ResetPasswordPayload
     getSecret(id: String!): Payload
     createPresignedPost(userId: String!, key: String!): PresignedPayload
@@ -248,6 +257,9 @@ async function getClient () {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  schemaDirectives: {
+    constraint: ConstraintDirective
+  },
   introspection: true,
   context: async (ctx: Context) => {
     ctx.context.callbackWaitsForEmptyEventLoop = false

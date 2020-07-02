@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Input } from '@contentkit/components'
+import { Box, TextField } from '@material-ui/core'
 
 type ProjectModalFormProps = {
   onChange: ({ name: string }) => void,
@@ -12,19 +12,20 @@ type ProjectModalFormProps = {
 }
 
 function ProjectModalForm (props: ProjectModalFormProps) {
-  const { classes, project, onChange } = props
+  const { project, onChange } = props
   return (
-    <div
-      className={classes.formControl}
-    >
-      <Input
-        className={classes.input}
+    <Box mb={2}>
+      <TextField
         value={project.name}
         onChange={evt =>
           onChange({ name: evt.target.value })
         }
+        variant='outlined'
+        margin='dense'
+        label='Project name'
+        fullWidth
       />
-    </div>
+    </Box>
   )
 }
 

@@ -78,7 +78,7 @@ function CreatePostModal (props) {
       open={open}
       fullWidth
       PaperProps={{
-        square: true
+
       }}
     >
       <DialogTitle>Create Post</DialogTitle>

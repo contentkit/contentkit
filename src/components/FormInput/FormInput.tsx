@@ -2,11 +2,11 @@ import React from 'react'
 import {
   FormHelperText,
   InputLabel,
-  FormControl
+  FormControl,
+  InputBase as StyledInputBase
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import clsx from 'clsx'
-import { Input as StyledInputBase } from '@contentkit/components'
 
 const useStyles = makeStyles(theme => ({
   root: {

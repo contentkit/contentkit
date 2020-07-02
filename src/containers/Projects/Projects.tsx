@@ -5,7 +5,8 @@ import { AppWrapper } from '@contentkit/components'
 import ProjectModal from './components/ProjectModal'
 import ProjectsList from './components/ProjectsList'
 import Button from '../../components/Button'
-import { useMutation, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
+import TopBar from '../../components/TopBar'
 
 import { PROJECTS_QUERY, useUserQuery } from '../../graphql/queries'
 import { useCreateProjectMutation, useDeleteProjectMutation, useUpdateProjectMutation } from '../../graphql/mutations'
@@ -32,7 +33,8 @@ function Projects (props) {
     createProject,
     updateProject,
     users,
-    projects
+    projects,
+    history
   } = props
 
   const onClick = activeProject => {
@@ -41,11 +43,9 @@ function Projects (props) {
   }
 
   const onClose = () => {
-    console.log('onClose')
     setActiveProject(null)
     setOpen(false)
   }
-
 
   const onSaveProject = (variables) => {
     onClose()
@@ -67,6 +67,7 @@ function Projects (props) {
   return (
     <AppWrapper
       sidebarProps={{}}
+      renderToolbar={() => <TopBar history={history} />}
     >
       <ProjectModal
         {...props}

@@ -12,6 +12,7 @@ import ProjectSelect from '../ProjectSelect'
 import Button from '../Button'
 import { ModalType } from '../../fixtures'
 import { useStyles } from './styles'
+import { useDebounce } from 'react-use'
 
 const EditIcon = props => (
   <svg
@@ -48,13 +49,12 @@ function DashboardToolbar (props) {
     posts,
     projects,
     selectedPostIds,
-    handleSearch,
-    setSearchQuery,
+    onSearch,
     history,
     selectedProjectId,
     setSelectedProjectId,
     settings,
-    search: { query },
+    setSearchLoading,
     onOpen
   } = props
   const classes = useStyles(props)
@@ -124,14 +124,6 @@ function DashboardToolbar (props) {
     history.push(uri)
   }
 
-  const handleChange = ({ currentTarget: { value } }) => {
-    setSearchQuery(value)
-
-    if (value === '' || value.length >= 3) {
-      handleSearch({ query: value })
-    }
-  }
-
   const onMenuOpen = evt => {
     setAnchorEl(evt.target)
   }
@@ -154,16 +146,15 @@ function DashboardToolbar (props) {
       <div className={classes.flex}>
         <div className={classes.toolbar}>
           <SearchInput
-            onChange={handleChange}
-            onSearch={handleSearch}
-            value={query}
-            className={classes.input}
+            onSearch={onSearch}
             placeholder={'Search...'}
+            setSearchLoading={setSearchLoading}
           />
           <ProjectSelect
             selectedProjectId={settings.dashboard.selected_project_id}
             allProjects={projects?.data?.projects}
             setSelectedProjectId={setSelectedProjectId}
+            className={classes.select}
           />
         </div>
         <div className={classes.actions}>

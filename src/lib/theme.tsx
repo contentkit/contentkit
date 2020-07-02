@@ -14,22 +14,22 @@ import { ThemeProvider as MuiThemeProvider } from '@material-ui/styles'
 // @black: #000;
 
 const variables = {
-  primaryColor: '#2f54eb',
-  secondaryColor: '#2f54eb',
+  primaryColor: '#15bd76',
+  secondaryColor: '#8fa6b2',
   colors: {
     default: '#40a9ff',
-    success: '#73d13d',
-    error: '#ff4d4f',
-    danger: '#ff4d4f',
+    success: '#15bd76',
+    error: '#ff4f56',
+    danger: '#ff4f56',
     info: '#40a9ff',
     warning: '#ffc53d'
   },
-  fontFamily: 'IBM Plex Sans',
-  // textColor: '#595959',
-  textColor: '#000000',
-  errorColor: '#e4567b',
-  borderColor: '#f5f5f5',
-  backgroundColor: '#f0f5ff',
+  fontFamily: 'Open Sans',
+  textColor: '#1a202c',
+  linkColor: '#3182ce',
+  errorColor: '#ff4f56',
+  borderColor: '#e2e8f0',
+  backgroundColor: '#f7fafc',
   iconColor: '#bcc1d9',
   iconColorActive: '#2f54eb',
   iconColorHover: '#364ba3',
@@ -53,7 +53,6 @@ const theme = createMuiTheme({
   },
   typography: {
     fontFamily: [
-      'IBM Plex Sans',
       '-apple-system',
       'BlinkMacSystemFont',
       '"Segoe UI"',

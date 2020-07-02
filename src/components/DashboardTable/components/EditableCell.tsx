@@ -5,25 +5,18 @@ import { GraphQL } from '../../../types'
 import { Column } from '../types'
 
 const useEditableCellStyles = makeStyles(theme => ({
+  button: {},
   tableCell: {
     position: 'relative',
-    backgroundColor: '#fff',
-    // backgroundColor: '#f4f4f4',
-    borderBottom: '1px solid #e0e0e0',
+    backgroundColor: (props: any) => props.selected ? '#ebf8ff' : '#fff',
+    borderBottom: '1px solid #e2e8f0',
     '&:hover $button': {
       visibility: 'visible'
     },
     '&:hover': {
-      backgroundColor: '#e0e0e0'
+      backgroundColor: '#ebf8ff'
     }
-  },
-  icon: {
-    color: 'rgba(0, 0, 0, 0.54)',
-    position: 'absolute',
-    pointerEvents: 'none',
-    right: 50
-  },
-  button: {}
+  }
 }))
 
 type EditableCellProps = {
@@ -73,7 +66,6 @@ function EditableCell (props: EditableCellProps) {
         isEditing={isEditing}
         onClick={onClick}
         getOptions={column.getOptions}
-        classes={classes}
         hovering={hovering}
         {...(typeof column.getProps === 'function' ? column.getProps(row) : {})}
       />

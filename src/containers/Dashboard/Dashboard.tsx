@@ -1,5 +1,4 @@
 import React from 'react'
-import debounce from 'lodash.debounce'
 import flowRight from 'lodash.flowright'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -62,21 +61,17 @@ type DashboardProps = {
   settings: any,
   setSetting: (variables: any) => void,
   selectedPostIds: string[],
-  search: any,
-  client: any,
   history: any,
   editorState: EditorState,
   setEditorState: (editorState: EditorState) => void,
-  setSearchLoadingState: (value: boolean) => void,
-  setSearchQuery: () => void,
   setSelectedProjectId: () => void,
   setSelectedPostIds: () => void,
-  postsAggregateVariables: GraphQL.PostsAggregateQueryVariables
   renderToolbar: () => any
 }
 
 function Dashboard (props: DashboardProps) {
   const [open, setOpen] = React.useState(null)
+  const [searchLoading, setSearchLoading] = React.useState(false)
   const [state, setState] = usePersistentState('editorState', { editorState: EditorState.createEmpty() })
   
   const setEditorState = editorState => setState({ editorState })
@@ -90,12 +85,7 @@ function Dashboard (props: DashboardProps) {
     setSetting,
     selectedPostIds,
     setSelectedPostIds,
-    search,
-    client,
-    history,
-    setSearchLoadingState,
-    setSearchQuery,
-    postsAggregateVariables
+    history
   } = props
 
   const updateVariables = (variables: any) => {
@@ -111,15 +101,13 @@ function Dashboard (props: DashboardProps) {
         return fetchMoreResult
       }
     }).then(() => {
-      setSearchLoadingState(false)
+      setTimeout(() => setSearchLoading(false), 5000)
     })
   }
 
-  const handleSearch = ({ query }) => {
+  const onSearch = ({ value: query }) => {
     updateVariables({ query })
   }
-
-  const debouncedSearch = debounce(handleSearch, 1000)
 
   const onClose = () => {
     setOpen(null)
@@ -131,9 +119,8 @@ function Dashboard (props: DashboardProps) {
 
   const getToolbarProps = () => {
     return {
-      setSearchQuery: setSearchQuery,
-      handleSearch: debouncedSearch,
-      search: search,
+      onSearch,
+      setSearchLoading,
       history: history,
       editorState: editorState,
       setEditorState: setEditorState,
@@ -179,7 +166,7 @@ function Dashboard (props: DashboardProps) {
   }
 
   return (
-    <AppWrapper renderToolbar={() => <TopBar />}>
+    <AppWrapper renderToolbar={() => <TopBar history={history} />}>
        {modals.map(({ Component, getComponentProps, name }) => {
         return (
           <Component
@@ -196,10 +183,10 @@ function Dashboard (props: DashboardProps) {
         setSelectedPostIds={setSelectedPostIds}
         selectedPostIds={selectedPostIds}
         settings={settings}
-        search={search}
         history={history}
         getToolbarProps={getToolbarProps}
         renderToolbar={renderToolbar}
+        searchLoading={searchLoading}
       />
     </AppWrapper>
   )

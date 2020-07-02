@@ -1,5 +1,5 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom'
 import { CircularProgress } from '@material-ui/core'
 import { ApolloProvider, useQuery } from '@apollo/client'
 import { BrowserRouter, Route, Redirect } from 'react-router-dom'
@@ -11,9 +11,8 @@ import client from './lib/client'
 import { store, history } from './store'
 import pages from './pages'
 import './css/style.scss'
-import Progress from './components/Progress'
 import { ThemeProvider } from './lib/theme'
-import { USER_QUERY, USER_AUTH_QUERY } from './graphql/queries'
+import { USER_AUTH_QUERY } from './graphql/queries'
 
 const UP_STAGE = process.env.UP_STAGE || undefined
 
@@ -68,13 +67,15 @@ function App (props) {
 
 ;(async () => {
   ReactDOM.render(
-    <ApolloProvider client={client}>
-      <ThemeProvider>
-        <OfflineNotification>
-          <App />
-        </OfflineNotification>
-      </ThemeProvider>
-    </ApolloProvider>,
+    <React.StrictMode>
+      <ApolloProvider client={client}>
+        <ThemeProvider>
+          <OfflineNotification>
+            <App />
+          </OfflineNotification>
+        </ThemeProvider>
+      </ApolloProvider>
+    </React.StrictMode>,
     document.getElementById('root')
-  )  
+  )
 })();

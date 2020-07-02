@@ -1,7 +1,6 @@
 import React from 'react'
-import { Input } from '@contentkit/components'
 import { FileCopy } from '@material-ui/icons'
-import { IconButton, InputAdornment } from '@material-ui/core'
+import { Box, TextField, IconButton, InputAdornment } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
@@ -25,25 +24,31 @@ const ProjectModalIdInput = React.forwardRef((props: ProjectModalIdInputProps, r
   } = props
   const classes = useStyles(props)
   return (
-    <Input
-      className={classes.input}
-      value={value}
-      inputRef={ref}
-      endAdornment={
-        <InputAdornment position='end'>
-          <IconButton
-            edge='end'
-            size='small'
-            onClick={onCopy}
-            onMouseDown={onCopy}
-            className={classes.button}
-
-          >
-            <FileCopy />
-          </IconButton>
-        </InputAdornment>
-      }
-    />
+    <Box mb={2}>
+      <TextField
+        value={value}
+        inputRef={ref}
+        variant='outlined'
+        margin='dense'
+        label='API key'
+        fullWidth
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position='end'>
+              <IconButton
+                edge='end'
+                size='small'
+                onClick={onCopy}
+                onMouseDown={onCopy}
+                className={classes.button}
+              >
+                <FileCopy />
+              </IconButton>
+            </InputAdornment>
+          )
+        }}
+      />
+    </Box>
   )
 })
 

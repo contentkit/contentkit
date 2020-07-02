@@ -33,11 +33,6 @@ export const setSelectedPostIds = (selectedPostIds) => ({
   }
 })
 
-export const setSearchQuery = payload => ({
-  type: SET_SEARCH_QUERY,
-  payload
-})
-
 export const setSearchLoadingState = payload => ({
   type: SET_SEARCH_LOADING_STATE,
   payload
@@ -87,7 +82,6 @@ export const actions = {
   updateFeedVariables,
   setSelectedProjectId,
   setSelectedPostIds,
-  setSearchQuery,
   setSearchLoadingState,
   
   saveEditorState,

@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Chip, Input } from '@contentkit/components'
 import { makeStyles } from '@material-ui/styles'
 import { GraphQL } from '../../../../types'
 import { projectQueryShape } from '../../../../shapes'
-
+import { TextField, Chip } from '@material-ui/core'
 
 const useStyles = makeStyles({
   root: {
@@ -36,7 +35,6 @@ function WhitelistChips (props: WhitelistChipsProps) {
             onDelete={() => onDelete(domain.id)}
             className={classes.chip}
             color='primary'
-            closable
             label={domain.name}
             variant='outlined'
           />
@@ -63,7 +61,6 @@ type WhitelistDomainsProps = {
 
 function WhitelistDomains (props: WhitelistDomainsProps) {
   const [value, setValue] = React.useState('')
-
   const {
     deleteOrigin,
     createOrigin,
@@ -94,10 +91,14 @@ function WhitelistDomains (props: WhitelistDomainsProps) {
         domains={domains}
         onDelete={onDelete}
       />
-      <Input
+      <TextField
         value={value}
         onChange={onChange}
         onKeyDown={onKeyDown}
+        variant='outlined'
+        margin='dense'
+        fullWidth
+        label='Whitelist origins'
       />
     </div>
   )

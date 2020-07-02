@@ -2,11 +2,6 @@ import { makeStyles } from '@material-ui/styles'
 import { MediaQueries } from '../../lib/media'
 
 const styles = makeStyles((theme: any) => ({
-  checkboxTableCell: {
-    backgroundColor: '#fff',
-    // backgroundColor: '#f4f4f4',
-    borderBottom: '1px solid #e0e0e0'
-  },
   tableHeadCell: {
     backgroundColor: '#fff',
     // backgroundColor: '#e0e0e0'
@@ -40,7 +35,15 @@ const styles = makeStyles((theme: any) => ({
     justifyContent: 'flex-end'
   },
   selected: {},
-  row: {}
+  row: {},
+  progress: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '67vh'
+  }
 }))
 
 export default styles
