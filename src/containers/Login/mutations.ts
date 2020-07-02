@@ -14,7 +14,7 @@ export function useAuthenticateUser () {
   return async (variables) => {
     let response
     try {
-      response = await mutate({ variables })
+      response = await mutate({ variables: { credentials: variables } })
 
       const { data: { login: { token } } } = response
       if (response.errors && response.errors.length) {
@@ -41,7 +41,7 @@ export function useRegisterUser () {
   return async (variables) => {
     let response
     try {
-      response = await mutate({ variables })
+      response = await mutate({ variables: { credentials: variables } })
       console.log(response)
       const { data: { register: { token } } } = response
       if (response.errors && response.errors.length) {

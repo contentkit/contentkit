@@ -1,5 +1,5 @@
 import React from 'react'
-import { Toolbar, Button } from '@material-ui/core'
+import { Typography, Toolbar, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import clsx from 'clsx'
 
@@ -16,6 +16,11 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(0, 2)
   },
   brand: {},
+  brandText: {
+    color: '#fff',
+    fontWeight: 700,
+    fontSize: 18
+  },
   nav: {},
   button: {
     color: '#cbd5e0',
@@ -55,7 +60,7 @@ function TopBar (props) {
   return (
     <div className={classes.root}>
       <Toolbar className={classes.brand} variant='dense'>
-
+        <Typography className={classes.brandText}>ContentKit</Typography>
       </Toolbar>
       <Toolbar className={classes.nav} variant='dense'>
         {

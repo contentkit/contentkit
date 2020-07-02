@@ -1,13 +1,14 @@
 import * as jwt from 'jsonwebtoken'
 import { ApolloServer, AuthenticationError, gql } from 'apollo-server-lambda'
 import * as bcrypt from 'bcryptjs'
-import * as Pool from 'pg-pool'
+import Pool from 'pg-pool'
 import * as pg from 'pg'
 import { Context as LambdaContext, APIGatewayProxyEvent } from 'aws-lambda'
 import GraphQLJSON from 'graphql-type-json'
-import ConstraintDirective from 'graphql-constraint-directive'
+import { constraintDirective, constraintDirectiveTypeDefs } from 'graphql-constraint-directive'
 import { EMAIL_REGEX } from './fixtures'
 import { createPresignedPost } from './upload'
+import { makeExecutableSchema } from 'graphql-tools'
 
 export type ApolloContext =  {
   context: LambdaContext,
@@ -55,7 +56,7 @@ async function getUserByEmail (client, email) {
     .then(({ rows }) => rows && rows.length ? rows[0] : null)
 }
 
-async function resetPassword (_, { email, password }, ctx) {
+async function resetPassword (_, { credentials: { email, password } }, ctx) {
   let decoded
   try {
     decoded = jwt.decode(ctx.token)
@@ -87,7 +88,7 @@ function throwAuthenticationError () {
   throw new AuthenticationError('Invalid password or account does not exist.')
 }
 
-async function login (_, { email, password }: LoginVariables, ctx: Context) {
+async function login (_, { credentials: { email, password } }, ctx: Context) {
   const user = await getUserByEmail(ctx.client, email)
 
   if (!user) {
@@ -115,7 +116,7 @@ async function login (_, { email, password }: LoginVariables, ctx: Context) {
   return { token }
 }
 
-async function register (_, { email, password }, ctx) {
+async function register (_, { credentials: { email, password } }, ctx) {
   let user = await getUserByEmail(ctx.client, email)
 
   if (user) {
@@ -229,10 +230,15 @@ const typeDefs = gql`
     success: Boolean!
   }
 
+  input UserCredentials {
+    email: String! @constraint(format: "email", maxLength: 255)
+    password: String! @constraint(minLength: 3)
+  }
+
   type Mutation {
-    register(email: String! @constraint(format: "email", maxLength: 255), password: String! @constraint(minLength: 3)): Payload
-    login(email: String! @constraint(format: "email", maxLength: 255), password: String! @constraint(minLength: 3)): Payload
-    resetPassword(email: String!, password: String!): ResetPasswordPayload
+    register(credentials: UserCredentials!): Payload
+    login(credentials: UserCredentials!): Payload
+    resetPassword(credentials: UserCredentials!): ResetPasswordPayload
     getSecret(id: String!): Payload
     createPresignedPost(userId: String!, key: String!): PresignedPayload
   }
@@ -253,13 +259,14 @@ async function getClient () {
   return pgClient
 }
 
+const schema = makeExecutableSchema({
+  resolvers,
+  typeDefs: [constraintDirectiveTypeDefs, typeDefs],
+  schemaTransforms: [constraintDirective()]
+})
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  schemaDirectives: {
-    constraint: ConstraintDirective
-  },
+  schema,
   introspection: true,
   context: async (ctx: Context) => {
     ctx.context.callbackWaitsForEmptyEventLoop = false

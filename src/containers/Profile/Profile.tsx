@@ -1,9 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Dialog, DialogContent, DialogActions } from '@material-ui/core'
 import { AppWrapper } from '@contentkit/components'
-import { makeStyles } from '@material-ui/styles'
-import { useMutation, useApolloClient } from '@apollo/client'
+import { useApolloClient } from '@apollo/client'
 import { withRouter } from 'react-router-dom'
 
 import UserForm from '../../components/ProfileUserForm'
@@ -11,27 +9,9 @@ import CodeSnippet from '../../components/CodeSnippet'
 import Button from '../../components/Button'
 
 import { USER_QUERY, useUserQuery } from '../../graphql/queries'
-import { GENERATE_TOKEN, UPDATE_USER, DELETE_USER, useGenerateToken, useDeleteUser, useUpdateUser } from '../../graphql/mutations'
-
-const useStyles = makeStyles(theme => ({
-  userForm: {
-    margin: '0 auto 2em auto',
-    padding: 40,
-    maxWidth: 960,
-    backgroundColor: '#fff',
-    borderRadius: 0,
-  },
-  code: {
-    // background: '#121212',
-    // borderRadius: 0,
-    margin: '2em auto 1em auto',
-    padding: '40px',
-    maxWidth: '960px'
-  },
-  container: {
-    backgroundColor: '#f5f5f5'
-  }
-}))
+import { useGenerateToken, useDeleteUser, useUpdateUser } from '../../graphql/mutations'
+import TopBar from '../../components/TopBar'
+import { useStyles } from './styles'
 
 type ProfileProps = {
   deleteUser: { mutate: (id: string) => void },
@@ -48,7 +28,8 @@ function Profile (props) {
     users,
     deleteUser,
     updateUser,
-    generateToken
+    generateToken,
+    history
   } = props
 
   const onChange = (key: string, value: any) => {
@@ -81,38 +62,42 @@ function Profile (props) {
       classes={{
         container: classes.container
       }}
+      disablePadding
     >
-      <UserForm
-        onChange={onChange}
-        updateUser={updateUser}
-        generateToken={generateToken.mutate}
-        onCopy={onCopy}
-        users={users}
-        className={classes.userForm}
-      />
-      <div className={classes.userForm}>
-        <Button color='danger' onClick={evt => setOpen(true)}>
-          Delete Account
-        </Button>
-      </div>
-      <Dialog
-        open={open}
-        onClose={onClose}
-      >
-        <DialogContent>
-          Are you sure?
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>
-            Cancel
-          </Button>
-          <Button color='danger' onClick={onConfirm}>
+      <TopBar history={history} />
+      <div className={classes.cards}>
+        <UserForm
+          onChange={onChange}
+          updateUser={updateUser}
+          generateToken={generateToken.mutate}
+          onCopy={onCopy}
+          users={users}
+          className={classes.userForm}
+        />
+        <div className={classes.userForm}>
+          <Button color='danger' onClick={evt => setOpen(true)}>
             Delete Account
           </Button>
-        </DialogActions>
-      </Dialog>
-      <div className={classes.code}>
-        <CodeSnippet {...props} />
+        </div>
+        <Dialog
+          open={open}
+          onClose={onClose}
+        >
+          <DialogContent>
+            Are you sure?
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onClose}>
+              Cancel
+            </Button>
+            <Button color='danger' onClick={onConfirm}>
+              Delete Account
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <div className={classes.code}>
+          <CodeSnippet {...props} />
+        </div>
       </div>
     </AppWrapper>
   )
@@ -144,4 +129,4 @@ function ProfileWithData (props) {
   )
 }
 
-export default ProfileWithData
+export default withRouter(ProfileWithData)

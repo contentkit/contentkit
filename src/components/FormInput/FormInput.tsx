@@ -3,7 +3,8 @@ import {
   FormHelperText,
   InputLabel,
   FormControl,
-  InputBase as StyledInputBase
+  InputBase as StyledInputBase,
+  TextField
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import clsx from 'clsx'
@@ -25,17 +26,27 @@ const useStyles = makeStyles(theme => ({
 function FormInput (props) {
   const classes = useStyles(props)
   const { fullWidth, label, className, helperText, ...rest } = props
-  return (   
-    <FormControl fullWidth={fullWidth}>
-      {label && (<InputLabel shrink>{label}</InputLabel>)}
-      <StyledInputBase
-        className={clsx(classes.input, className)}
-        fullWidth
-        {...rest}
-      />
-      {helperText && (<FormHelperText>{helperText}</FormHelperText>)}
-    </FormControl>
+  return (
+    <TextField
+      variant='outlined'
+      margin='dense'
+      label={label}
+      fullWidth={fullWidth}
+      helperText={helperText}
+      {...rest}
+    />
   )
+  // return (   
+  //   <FormControl fullWidth={fullWidth}>
+  //     {label && (<InputLabel shrink>{label}</InputLabel>)}
+  //     <StyledInputBase
+  //       className={clsx(classes.input, className)}
+  //       fullWidth
+  //       {...rest}
+  //     />
+  //     {helperText && (<FormHelperText>{helperText}</FormHelperText>)}
+  //   </FormControl>
+  // )
 }
 
 FormInput.defaultProps = {

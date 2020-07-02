@@ -74,7 +74,9 @@ class CodeSnippet extends React.Component {
 const styles = theme => ({
   root: {
     marginBottom: 16,
-    background: '#121212',
+    background: '#2D3748',
+    borderRadius: 6,
+    boxShadow: '0px 1px 3px rgba(0,0,0,0.25)'
   }
 })
 

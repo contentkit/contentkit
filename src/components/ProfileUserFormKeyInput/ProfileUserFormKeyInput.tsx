@@ -34,17 +34,21 @@ const ProfileUserFormKeyInput = React.forwardRef((props: ProfileUserFormKeyInput
       placeholder={'API key'}
       variant='outlined'
       margin='dense'
-      endAdornment={
-        <InputAdornment position='end' className={classes.adornment}>
-          <IconButton
-            edge='end'
-            size='small'
-            className={classes.button}
-            onClick={generateToken}>
-            <Refresh />
-          </IconButton>
-        </InputAdornment>
-      }
+      fullWidth
+      label='API Key'
+      InputProps={{
+        endAdornment: (
+          <InputAdornment position='end' className={classes.adornment}>
+            <IconButton
+              edge='end'
+              size='small'
+              className={classes.button}
+              onClick={generateToken}>
+              <Refresh />
+            </IconButton>
+          </InputAdornment>
+        )
+      }}
       onFocus={onCopy}
     />
   )

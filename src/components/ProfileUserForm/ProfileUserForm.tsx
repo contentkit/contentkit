@@ -3,33 +3,11 @@ import propTypes from 'prop-types'
 import ProfileUserFormKeyInput from '../ProfileUserFormKeyInput'
 import FormInput from '../FormInput'
 import {
-  Grid
+  Grid,
+  Paper,
+  Button
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
-import Button from '../Button'
-
-const useStyles = makeStyles((theme: any) => ({
-  container: {
-    margin: '2em auto 1em auto',
-    padding: 40,
-    maxWidth: 960,
-    backgroundColor: '#fff',
-    borderRadius: 0,
-    boxShadow: theme.variables.shadow1
-  },
-  gutter: {
-    marginBottom: theme.spacing(2)
-  },
-  flex: {
-    display: 'flex',
-    marginLeft: -10,
-    marginRight: -10,
-    justifyContent: 'flex-end'
-  },
-  button: {
-    margin: 10
-  }
-}))
+import { useStyles } from './styles'
 
 type UpdateUserVariables = {
   name: string,
@@ -76,7 +54,7 @@ const UserForm = React.forwardRef((props: UserFormProps, ref) => {
   }
 
   return (
-    <div className={className}>
+    <Paper className={className}>
       <Grid container spacing={4} className={classes.gutter}>
         <Grid item xs={6}>
           <FormInput
@@ -108,13 +86,14 @@ const UserForm = React.forwardRef((props: UserFormProps, ref) => {
       <div className={classes.flex}>
         <Button
           className={classes.button}
-          color='default'
+          color='primary'
           onClick={onSave}
+          variant='contained'
         >
           Update
         </Button>
       </div>
-    </div>
+    </Paper>
   )
 })
 
