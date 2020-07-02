@@ -76,6 +76,7 @@ function EditableCell (props: EditableCellProps) {
       className={classes.tableCell}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      padding='none'
     >
       {content}
     </TableCell>
