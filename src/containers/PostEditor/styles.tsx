@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   content: {
-    backgroundColor: '#f5f5f5'
+    backgroundColor: 'rgb(247, 250, 252)'
   }
 }))
 

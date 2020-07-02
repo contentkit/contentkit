@@ -22,9 +22,15 @@ const useStyles = makeStyles(theme => ({
     zIndex: 10
   },
   editor: {
-    width: '100%',
-    padding: '40px',
-    boxSizing: 'border-box'
+    width: 'calc(100% - 80px)',
+    minHeight: 'calc(100vh - 124px)',
+    marginTop: '40px',
+    marginLeft: '40px',
+    padding: '30px',
+    boxSizing: 'border-box',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    boxShadow: '0px 4px 8px rgba(60,45,111,0.1), 0px 1px 3px rgba(60,45,111,0.15)'
   },
   drag: {
     borderColor: '#ccc',
