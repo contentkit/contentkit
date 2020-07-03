@@ -10,7 +10,7 @@
   h3:before,
   h4:before {
     position: absolute;
-    color: #999;
+    color: #a0aec0;
     left: 0px;
   }
 
@@ -79,6 +79,11 @@
   code > .public-DraftStyleDefault-block {
     padding-bottom: 0;
   }
+}
+
+
+:global(a.link) {
+  color: #3182ce;
 }
 
 :global(.paragraph) {

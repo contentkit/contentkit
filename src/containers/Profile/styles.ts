@@ -4,7 +4,8 @@ import { makeStyles } from '@material-ui/styles'
 
 export const useStyles = makeStyles(theme => ({
   userForm: {
-    margin: '0 auto 2em auto',
+    // @ts-ignore
+    marginBottom: theme.spacing(2)
     padding: 40,
     maxWidth: 960,
     backgroundColor: '#fff',

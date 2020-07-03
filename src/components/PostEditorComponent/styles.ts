@@ -24,7 +24,6 @@ const useStyles = makeStyles(theme => ({
   editor: {
     width: 'calc(100% - 80px)',
     minHeight: 'calc(100vh - 124px)',
-    marginTop: '40px',
     marginLeft: '40px',
     padding: '30px',
     boxSizing: 'border-box',

@@ -68,7 +68,6 @@ function SearchInput (props: SearchInputProps) {
 
 SearchInput.propTypes = {
   onSearch: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
   value: PropTypes.string
 }
 

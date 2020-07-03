@@ -5,7 +5,7 @@ import { ApolloProvider, useQuery } from '@apollo/client'
 import { BrowserRouter, Route, Redirect } from 'react-router-dom'
 import { Provider, ReactReduxContext } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
-
+import { SnackbarProvider } from 'notistack'
 import { OfflineNotification } from './lib/withConnectivity'
 import client from './lib/client'
 import { store, history } from './store'
@@ -71,7 +71,9 @@ function App (props) {
       <ApolloProvider client={client}>
         <ThemeProvider>
           <OfflineNotification>
-            <App />
+            <SnackbarProvider maxSnack={3}>
+              <App />
+            </SnackProvider>
           </OfflineNotification>
         </ThemeProvider>
       </ApolloProvider>

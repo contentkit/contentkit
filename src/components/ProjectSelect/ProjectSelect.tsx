@@ -1,29 +1,29 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { InputBase, Select, FormControl, InputLabel } from '@material-ui/core'
+import { Select, FormControl, InputLabel, OutlinedInput } from '@material-ui/core'
 
 type SelectProjectProps = {
-  selectedProjectId: string,
   setSelectedProjectId: (value: string) => void,
   allProjects: any[],
-  className: string,
-  hideLabel?: boolean
+  className?: string,
+  hideLabel?: boolean,
+  selectedProjectId?: string
 }
 
-function SelectProject (props: SelectProjectProps) {
+function ProjectSelect (props: SelectProjectProps) {
   const {
     selectedProjectId,
     setSelectedProjectId,
     allProjects,
     className,
-    hideLabel
+    hideLabel,
+    ...rest
   } = props
 
   const onChange = ({ currentTarget: { value } }) => {
     setSelectedProjectId(value)
   }
 
-  const input = (<InputBase name='project' id='project' />)
   const select = (
     <Select
       native
@@ -31,8 +31,8 @@ function SelectProject (props: SelectProjectProps) {
       value={selectedProjectId || ''}
       onChange={onChange}
       className={className}
-      input={input}
       variant='outlined'
+      {...rest}
     >
       {
         allProjects.map(project => <option key={project.id} value={project.id}>{project.name}</option>)
@@ -54,19 +54,19 @@ function SelectProject (props: SelectProjectProps) {
   )
 }
 
-SelectProject.propTypes = {
+ProjectSelect.propTypes = {
   setSelectedProjectId: PropTypes.func.isRequired,
   selectedProject: PropTypes.string,
   allProjects: PropTypes.array,
-
   hideLabel: PropTypes.bool
 }
 
-SelectProject.defaultProps = {
+ProjectSelect.defaultProps = {
   allProjects: [],
   selectedProjectId: '',
   hideLabel: true,
-  setSelectedProjectId: () => {}
+  setSelectedProjectId: () => {},
+  input: (<OutlinedInput name='project' id='project' margin='dense' />)
 }
 
-export default SelectProject
+export default ProjectSelect

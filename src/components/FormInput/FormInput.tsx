@@ -1,13 +1,8 @@
 import React from 'react'
 import {
-  FormHelperText,
-  InputLabel,
-  FormControl,
-  InputBase as StyledInputBase,
   TextField
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,17 +31,6 @@ function FormInput (props) {
       {...rest}
     />
   )
-  // return (   
-  //   <FormControl fullWidth={fullWidth}>
-  //     {label && (<InputLabel shrink>{label}</InputLabel>)}
-  //     <StyledInputBase
-  //       className={clsx(classes.input, className)}
-  //       fullWidth
-  //       {...rest}
-  //     />
-  //     {helperText && (<FormHelperText>{helperText}</FormHelperText>)}
-  //   </FormControl>
-  // )
 }
 
 FormInput.defaultProps = {

@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ListItem, ListItemText, ListItemAvatar } from '@material-ui/core'
+import { Typography, Avatar, Divider, ListItem, ListItemText, ListItemAvatar, Divider } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-
+import formatDistanceToNow from 'date-fns/esm/formatDistanceToNow'
 import ProjectAvatar from '../ProjectsListItemAvatar'
 
 
@@ -28,20 +28,29 @@ function ProjectsListItem (props) {
     onClick(project.id)
   }
 
+  const createdAt = React.useMemo(() => {
+    return formatDistanceToNow(new Date(project.created_at))
+  }, [project.created_at])
   return (
-    <ListItem
-      onClick={handleClick}
-      className={classes.root}
-      button
-    >
-      <ListItemAvatar>
-        <ProjectAvatar />
-      </ListItemAvatar>
-      <ListItemText
-        primary={project.name}
-        secondary='Posts'
-      />
-    </ListItem>
+    <>
+      <ListItem
+        onClick={handleClick}
+        className={classes.root}
+        button
+      >
+        <ListItemAvatar>
+          <Avatar />
+        </ListItemAvatar>
+        <ListItemText
+          primary={project.name}
+          secondary={createdAt}
+        />
+        {/* <Typography>
+          Created {createdAt}
+        </Typography> */}
+      </ListItem>
+      <Divider />
+    </>
   )
 }
 

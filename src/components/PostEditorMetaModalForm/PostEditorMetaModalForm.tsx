@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import safeKey from 'safe-s3-key'
 import { useQuery } from '@apollo/client'
 import { ThumbnailUpload } from '@contentkit/components'
-import { Grid, FormControl, InputLabel } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/styles'
 import chunk from 'lodash.chunk'
@@ -76,6 +76,7 @@ function PostEditorMetaModalForm (props) {
       Component: PostStatusSelect,
       size: 6,
       getComponentProps: () => ({
+        fullWidth: true,
         onChange,
         value: post.status
       })
@@ -92,6 +93,7 @@ function PostEditorMetaModalForm (props) {
       type: FieldType.FORM_SELECT,
       Component: ProjectSelect,
       getComponentProps: () => ({
+        fullWidth: true,
         allProjects,
         selectedProjectId: selectedProject,
         setSelectedProjectId: selectProject
@@ -136,29 +138,26 @@ function PostEditorMetaModalForm (props) {
 
     if (type === FieldType.FORM_SELECT) {
       return (
-        <FormControl fullWidth key={key}>
-          <InputLabel shrink>{label}</InputLabel>
-          <Component {...getComponentProps()} />
-        </FormControl>
+        <Component {...getComponentProps()} key={key} />
       )
     }
   })
 
   return (
     <form className={classes.root}>
-      {chunk(children, 2).map((row) => {
+      {chunk(children, 2).map((row, i) => {
         const [left, right] = row
         if (row.length > 1) {
           return (
-            <Grid container spacing={4}>
-              <Grid item xs={6}>{left}</Grid>
-              <Grid item xs={6}>{right}</Grid>
+            <Grid container spacing={4} key={i}>
+              <Grid item xs={6} container alignItems='center'>{left}</Grid>
+              <Grid item xs={6} container alignItems='center'>{right}</Grid>
             </Grid>
           )
         }
 
         return (
-          <Grid container spacing={4}>
+          <Grid container spacing={4} key={i}>
             <Grid item xs={12}>{left}</Grid>
           </Grid>
         )

@@ -30,8 +30,9 @@ const ProjectModalIdInput = React.forwardRef((props: ProjectModalIdInputProps, r
         inputRef={ref}
         variant='outlined'
         margin='dense'
-        label='API key'
+        label='Project ID'
         fullWidth
+        disabled
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>

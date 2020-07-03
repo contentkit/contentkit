@@ -1,47 +1,64 @@
 import React from 'react'
-import { Typography, Toolbar, Button } from '@material-ui/core'
+import { IconButton, Menu, MenuItem, Divider, Paper, Typography, Toolbar, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import clsx from 'clsx'
+import { MoreVert } from '@material-ui/icons'
 
+import clsx from 'clsx'
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     width: '100%',
-    height: 50,
+    height: 48,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#2D3748',
+    backgroundColor: '#fff',
+    color: '#718096',
     boxSizing: 'border-box',
     // @ts-ignore
-    padding: theme.spacing(0, 2)
+    padding: theme.spacing(0, 2),
+    zIndex: 1300,
+    marginBottom: 2,
+    boxShadow: '0px 4px 8px rgba(60,45,111,0.1), 0px 1px 3px rgba(60,45,111,0.15)',
   },
-  brand: {},
-  brandText: {
-    color: '#fff',
+  brand: {
+    color: '#718096',
     fontWeight: 700,
-    fontSize: 18
+    fontSize: 18,
+    textDecoration: 'none'
   },
   nav: {},
   button: {
-    color: '#cbd5e0',
+    backgroundColor: '#f7fafc',
+    borderColor: '#718096',
+    color: '#718096',
     fontWeight: 600,
     textTransform: 'inherit',
     // @ts-ignore
     marginRight: theme.spacing(2),
     '&:hover': {
-      color: '#fff'
+      // color: '#1a202c'
     }
   },
   active: {
-    backgroundColor: '#4a5568'
+    // color: '#fff',
+    // backgroundColor: '#8fa6b2',
+    // '&:hover': {
+    //   color: '#fff',
+    //   backgroundColor: '#3d556b',
+    // }
+  },
+  divider: {
+    // @ts-ignore
+    marginRight: theme.spacing(1)
   }
 }))
 
 
 function TopBar (props) {
-  const { history } = props
+  const { history, buttons, onClick } = props
+  const [anchorEl, setAnchorEl] = React.useState(null)
   const classes = useStyles(props)
-  const buttons = [
+  const nativeButtons = [
     {
       label: 'Posts',
       key: 'posts',
@@ -53,27 +70,61 @@ function TopBar (props) {
       pathname: '/projects'
     }
   ]
-  const onClick = button => evt => {
+  const createClickHandler = button => evt => {
     history.push(button.pathname)
   }
+  const onOpen = (evt) => setAnchorEl(evt.target)
+
+  const onClose = evt => setAnchorEl(null)
 
   return (
-    <div className={classes.root}>
-      <Toolbar className={classes.brand} variant='dense'>
-        <Typography className={classes.brandText}>ContentKit</Typography>
+    <Paper className={classes.root} elevation={2} square>
+      <Toolbar variant='dense'>
+        <Typography className={classes.brand} component='a' href='/'>
+          ContentKit
+        </Typography>
       </Toolbar>
       <Toolbar className={classes.nav} variant='dense'>
         {
           buttons.map(button => {
-            const active = history.location.pathname == button.pathname
             return (
-              <Button key={button.key} classes={{ root: clsx(classes.button, { [classes.active]: active }) }} onClick={onClick(button)}>{button.label}</Button>
+              <Button
+                key={button.key}
+                onClick={evt => onClick(button)}
+                classes={{ root: clsx(classes.button) }}
+                variant='filled'
+              >
+                {button.label}
+              </Button>
             )
           })
         }
+        {buttons.length > 0 && (<Divider orientation='vertical' className={classes.divider} />)}
+        <IconButton onClick={onOpen}>
+          <MoreVert />
+        </IconButton>
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={onClose}>
+          {
+            nativeButtons.map(button => {
+              const active = history.location.pathname == button.pathname
+              return (
+                <MenuItem 
+                  key={button.key}
+                  onClick={createClickHandler(button)}
+                >
+                  {button.label}
+                </MenuItem>
+              )
+            })
+          }
+        </Menu>
       </Toolbar>
-    </div>
+    </Paper>
   )
+}
+
+TopBar.defaultProps = {
+  buttons: []
 }
 
 export default TopBar

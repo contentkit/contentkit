@@ -1,5 +1,5 @@
 import React from 'react'
-import { Snackbar, IconButton, Menu, MenuItem } from '@material-ui/core'
+import { InputBase, Snackbar, IconButton, Menu, MenuItem } from '@material-ui/core'
 import { withStyles } from '@material-ui/styles'
 import keyBy from 'lodash.keyby'
 import { useApolloClient, useQuery } from '@apollo/client'
@@ -155,6 +155,7 @@ function DashboardToolbar (props) {
             allProjects={projects?.data?.projects}
             setSelectedProjectId={setSelectedProjectId}
             className={classes.select}
+            input={<InputBase />}
           />
         </div>
         <div className={classes.actions}>

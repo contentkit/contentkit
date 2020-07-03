@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { InputBase, FormControl, InputLabel } from '@material-ui/core'
+import { TextField } from '@material-ui/core'
 
 function PostMetaDatePicker (props) {
   const { onChange, value } = props
@@ -9,17 +9,16 @@ function PostMetaDatePicker (props) {
   }
 
   return (
-    <div>
-      <FormControl fullWidth>
-        <InputBase
-          type='text'
-          onChange={onInputChange}
-          value={value}
-          fullWidth
-          // label='Date'
-        />
-      </FormControl>
-    </div>
+    <TextField
+      value={value}
+      onChange={onInputChange}
+      variant='outlined'
+      margin='dense'
+      type='date'
+      InputLabelProps={{
+        shrink: true
+      }}
+    />
   )
 }
 

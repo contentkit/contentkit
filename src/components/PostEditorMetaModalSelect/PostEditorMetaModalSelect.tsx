@@ -1,8 +1,8 @@
 import React from 'react'
-import { Select, InputBase } from '@material-ui/core'
+import { Select, OutlinedInput } from '@material-ui/core'
 
 const PostEditorMetaModalSelect = (props) => {
-  const { value, onChange } = props
+  const { value, onChange, ...rest } = props
 
   const onSelectChange = ({ currentTarget }) => onChange(currentTarget.value, 'status')
   const options = [{
@@ -17,10 +17,10 @@ const PostEditorMetaModalSelect = (props) => {
     <Select
       native
       onChange={onSelectChange}
-      options={options}
       label={'Status'}
       value={value}
-      input={<InputBase name='select-status' />}
+      input={<OutlinedInput name='select-status' margin='dense' />}
+      {...rest}
     >
       {
         options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)

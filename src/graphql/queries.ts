@@ -9,6 +9,8 @@ export const PROJECTS_QUERY = gql`
     projects {
       id
       name
+      created_at
+      updated_at
     }
   }
 `

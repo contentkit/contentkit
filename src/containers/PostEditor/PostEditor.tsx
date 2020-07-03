@@ -3,11 +3,12 @@ import PropTypes from 'prop-types'
 import { EditorState } from 'draft-js'
 import { Snackbar, Button } from '@material-ui/core'
 import { DeleteForever } from '@material-ui/icons'
-import { AppWrapper, Toolbar, MediaProvider } from '@contentkit/components'
+import { AppWrapper, EditorToolbar, MediaProvider } from '@contentkit/components'
 import { useQuery, useApolloClient } from '@apollo/client'
 import Alert from '@material-ui/lab/Alert'
 import { expand } from 'draft-js-compact'
 import { useDebounce } from 'react-use'
+import { useSnackbar } from 'notistack'
 
 import PostEditorComponent from '../../components/PostEditorComponent'
 import {
@@ -25,9 +26,11 @@ import { ModalType } from '../../fixtures'
 import EditorCache from '../../store/EditorCache'
 import { AWS_BUCKET_URL } from '../../lib/config'
 import usePersistentState from '../../hooks/usePersistentState'
+import TopBar from '../../components/TopBar'
 
 function PostEditor (props) {
   const client = useApolloClient()
+  const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = React.useState(false)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
   const [open, setOpen] = React.useState({
@@ -121,7 +124,7 @@ function PostEditor (props) {
     await saveDocument()
   }
 
-  const onClick = (key: ModalType) => {
+  const onClick = ({ key }: { key: ModalType }) => {
     if (!open[key]) {
       setOpen({ ...open, [key]: true })
     }
@@ -144,7 +147,7 @@ function PostEditor (props) {
   }
 
   const renderToolbar = () => (
-    <Toolbar
+    <EditorToolbar
       onClick={onClick}
       documentId={posts[0]?.id}
       uploads={posts[0]?.images}
@@ -169,22 +172,6 @@ function PostEditor (props) {
     onCloseSnackbar()
   }
 
-  const getSnackbarProps = () => ({
-    open: snackbarOpen,
-    message: 'Loading unsaved changes backed up in your browser.',
-    autoHideDuration: 6000,
-    onClose: onCloseSnackbar,
-    action: (
-      <Button
-        variant='contained'
-        startIcon={<DeleteForever />}
-        onClick={onClickDiscardChanges}
-      >
-        Discard Changes
-      </Button>
-    )
-  })
-
   const modalProps = {
     ...props,
     editorState,
@@ -195,19 +182,60 @@ function PostEditor (props) {
     mediaProvider: mediaProvider.current,
   }
 
-  const sidebarProps = {}
+  const sidebarProps = {
+    children: renderToolbar()
+  }
   const classes = useStyles(props)
 
+  const buttons = [
+    {
+      key: 'history',
+      label: 'History',
+    },
+    {
+      key: 'postmeta',
+      label: 'Postmeta'
+    },
+    {
+      key: 'json-editor',
+      label: 'Raw'
+    }
+  ]
+
+  React.useEffect(() => {
+    if (snackbarOpen) {
+      enqueueSnackbar('Loading unsaved changes backed up in your browser.', {
+        variant: 'info',
+        action: (
+          <Button
+            variant='text'
+            startIcon={<DeleteForever />}
+            onClick={onClickDiscardChanges}
+            className={classes.button}
+          >
+            Discard Changes
+          </Button>
+        )
+      })
+    }
+  }, [snackbarOpen])
+
+  React.useEffect(() => {
+    if (status.isSavingLocally && !snackbarOpen) {
+      enqueueSnackbar('Saved locally', {
+        variant: 'success'
+      })
+    }
+  }, [status, snackbarOpen])
   return (
     <AppWrapper
-      renderToolbar={renderToolbar}
+      renderToolbar={() => <TopBar history={history} buttons={buttons} onClick={onClick} />}
       sidebarProps={sidebarProps}
       classes={{
         content: classes.content
       }}
       disablePadding
     >
-      <Snackbar {...getSnackbarProps()} />
       {modals.map(({ Component, getComponentProps, name }) => {
         return (
           <Component key={name} {...getComponentProps(modalProps)} open={open[name]} onClose={onClose} />
@@ -222,19 +250,6 @@ function PostEditor (props) {
         posts={posts}
         users={users}
       />
-      <Snackbar
-        open={status.isSavingLocally && !snackbarOpen}
-        autoHideDuration={2000}
-        onClose={onCloseLocalSaveSnackbar}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right'
-        }}
-      >
-        <Alert onClose={onCloseLocalSaveSnackbar} severity="success">
-          Saved locally
-        </Alert>
-      </Snackbar>
     </AppWrapper>
   )
 }
