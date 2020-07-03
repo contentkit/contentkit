@@ -153,6 +153,25 @@ export const ALL_TAGS_QUERY = gql`
       name
       description
       slug
+      created_at
+      updated_at
+    }
+  }
+`
+
+export const ALL_TAGS_AND_POSTS_CONNECTIONS_QUERY = gql`
+  query($userId: String!) {
+    tags(where: { user_id: { _eq: $userId } }) {
+      id
+      name
+      description
+      slug
+      created_at
+      updated_at
+      posts_tags {
+        post_id
+        tag_id
+      }
     }
   }
 `

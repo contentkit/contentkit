@@ -2,12 +2,6 @@ import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    // position: 'absolute',
-    // top: 48,
-    // left: 60,
-    // right: 0,
-    // bottom: 0,
-    // backgroundColor: '#f5f5f5'
     minHeight: '100vh',
     paddingTop: 48,
     boxSizing: 'border-box'

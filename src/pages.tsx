@@ -4,6 +4,7 @@ import Login from './containers/Login'
 import PostEditor from './containers/PostEditor'
 import Projects from './containers/Projects'
 import Profile from './containers/Profile'
+import Tags from './containers/Tags'
 
 // export const Dashboard = React.lazy(() => import('./containers/Dashboard'))
 // export const SignIn = React.lazy(() => import('./containers/Login'))
@@ -31,4 +32,8 @@ export default [{
   component: Projects,
   path: '/projects',
   exact: true
+}, {
+  component: Tags,
+  path: '/tags',
+  exact: true 
 }]

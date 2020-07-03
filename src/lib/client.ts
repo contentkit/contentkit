@@ -33,6 +33,15 @@ const createClient = () => {
 
   const cache = new InMemoryCache({
     typePolicies: {
+      // tags: {
+      //   fields: {
+      //     updated_at: {
+      //       read: (existing, context) => {
+      //         return format(new Date(existing), 'MM/DD/YYYY')
+      //       }
+      //     }
+      //   }
+      // }
       // posts_aggregate_fields: {
       //   fields: {
       //     count: {

@@ -958,7 +958,7 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@contentkit/components@^0.0.59":
+"@contentkit/components@^0.0.59", "@contentkit/components@latest":
   version "0.0.59"
   resolved "https://registry.yarnpkg.com/@contentkit/components/-/components-0.0.59.tgz#ed9af775cd44e52e55d60bb4b7385309dda413e6"
   integrity sha512-E9Wa4tELBEvY0gCDFJFguLv/o/UO2GvvdlS9nvXRnqmVe0B2adHs/+NWl39u1q0s090XzASeXh/6KB12AaIcEA==
@@ -970,7 +970,7 @@
     history "^5.0.0"
     safe-s3-key "^0.0.4"
 
-"@contentkit/convert@^0.0.59":
+"@contentkit/convert@latest":
   version "0.0.59"
   resolved "https://registry.yarnpkg.com/@contentkit/convert/-/convert-0.0.59.tgz#1922237d9d140fac5e32666fe01a388cc567d7f2"
   integrity sha512-OuBioKeCF6LERAlygef8HqY1AOYX8WlyvOdrzZwaQoYQVz+FKNwgu1490eL14AgMenTIQZeml4tYfER8s1E4Rw==
@@ -983,7 +983,7 @@
     lodash.pick "^4.4.0"
     prismjs "^1.20.0"
 
-"@contentkit/editor@^0.0.59":
+"@contentkit/editor@^0.0.59", "@contentkit/editor@latest":
   version "0.0.59"
   resolved "https://registry.yarnpkg.com/@contentkit/editor/-/editor-0.0.59.tgz#a53d4677fcbff932b38ff19487405bfcf46ad1a2"
   integrity sha512-9e76Pm3qRjGUG1BNBAPLhYaWcS3JFP+nEUrHUYjAxmrfIjkfgE0wqdmOxfv9M8d1ColVw/u68GggnTyVsdPuIg==
@@ -1002,7 +1002,7 @@
     prismjs "^1.20.0"
     prop-types "^15.6.1"
 
-"@contentkit/json-editor@^0.0.59":
+"@contentkit/json-editor@latest":
   version "0.0.59"
   resolved "https://registry.yarnpkg.com/@contentkit/json-editor/-/json-editor-0.0.59.tgz#24722d0bc7b3a8e0eebc1329a14f3be627833328"
   integrity sha512-+ZHaFEn4AaG6NEksxazGjKt8VMF+lCjq9vny4wlPRSR2azwhO2CtUoeioGZGc79oOX2r1xMtyTZhHcSkat+y/g==
@@ -1011,7 +1011,7 @@
     "@contentkit/util" "^0.0.59"
     "@types/draft-js" "^0.10.41"
 
-"@contentkit/sidebar@^0.0.59":
+"@contentkit/sidebar@^0.0.59", "@contentkit/sidebar@latest":
   version "0.0.59"
   resolved "https://registry.yarnpkg.com/@contentkit/sidebar/-/sidebar-0.0.59.tgz#8c6c0a318ce74b776ad2428e2bb510c30f400d9f"
   integrity sha512-oyUxbnnZdK8bg7eIB/+ApTPjo0GVkckOhaaqHX4kQBz5tZuveNfPy5rZ7v0zwo0JfUMCF51iWPj4JyRa12HSKA==

@@ -2,8 +2,10 @@ import React from 'react'
 import { IconButton, Menu, MenuItem, Divider, Paper, Typography, Toolbar, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { MoreVert } from '@material-ui/icons'
+import { withRouter } from 'react-router-dom'
 
 import clsx from 'clsx'
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -68,6 +70,11 @@ function TopBar (props) {
       label: 'Projects',
       key: 'projects',
       pathname: '/projects'
+    },
+    {
+      label: 'Tags',
+      key: 'tags',
+      pathname: '/tags'
     }
   ]
   const createClickHandler = button => evt => {
@@ -127,4 +134,4 @@ TopBar.defaultProps = {
   buttons: []
 }
 
-export default TopBar
+export default withRouter(TopBar)

@@ -214,13 +214,23 @@ export const DELETE_ORIGIN = gql`
   }
 `
 
-export const DELETE_TAG = gql`
+export const DELETE_POSTS_TAGS_CONNECTION_AND_TAGS = gql`
   mutation ($tagId: String!, $postId: String!) {
     delete_posts_tags(where: { tag_id: { _eq: $tagId }, post_id: { _eq: $postId } }) {
       returning {
         post_id
       }
     }
+    delete_tags (where: { id: { _eq: $tagId } }) {
+      returning {
+        id
+      }
+    }
+  }
+`
+
+export const DELETE_TAG = gql`
+  mutation ($tagId: String!) {
     delete_tags (where: { id: { _eq: $tagId } }) {
       returning {
         id

@@ -1,6 +1,9 @@
 
 
 :global(.DraftEditor-root) {
+  height: inherit;
+  text-align: initial;
+  position: relative;
   width: 100%;
   font-size: 16px;
   color: #1a202c;
@@ -46,12 +49,45 @@
     margin: 24px 0px 24px 50px;
   }
 
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  ul li {
+    list-style: none;
+    padding-left: 20px;
+    text-indent: 0;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 16px;
+    display: block;
+  }
+
+  ul li:before {
+    content: "\2022";
+    color: #a0aec0;
+    font-weight: 700;
+    font-size: 28px;
+    vertical-align: middle;
+    display: inline-block;
+    transform: translate(-20px, 16px);
+  }
+
+
+  li.public-DraftStyleDefault-unorderedListItem.public-DraftStyleDefault-depth0 {
+    list-style: none;
+  }
+
   ul li.public-DraftStyleDefault-depth0 {
-    margin-left: 18px;
+    list-style-type: none;
   }
     
   ul li.public-DraftStyleDefault-depth1 {
-    margin-left: 36px;
+    list-style-type: none;
   }
 
   pre {

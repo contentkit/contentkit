@@ -19,6 +19,15 @@ const UP_STAGE = process.env.UP_STAGE || undefined
 function AuthProvider (props)  {
   const userQuery = useQuery(USER_AUTH_QUERY)
 
+
+  React.useEffect(() => {
+    if (userQuery?.data?.users?.length) {
+      if (!window.localStorage.getItem('user_id')) {
+        window.localStorage.setItem('user_id', userQuery.data.users[0].id)
+      }
+    }
+  }, [userQuery])
+
   const getContent = () => {
     if (userQuery.data?.users) { 
       return (
@@ -27,6 +36,8 @@ function AuthProvider (props)  {
     }
   
     if (userQuery.error) {
+      window.localStorage.removeItem('token')
+      window.localStorage.removeItem('user_id')
       return (
         <Redirect to='/login' />
       )
@@ -40,11 +51,10 @@ function AuthProvider (props)  {
 
 function App (props) {
   const notistackRef = React.createRef()
-  console.log(notistackRef)
+
   const onDismiss = (key) => {
     // @ts-ignore
     notistackRef.current.closeSnackbar(key)
-    console.log(notistackRef)
   }
 
   return (
