@@ -92,7 +92,7 @@ function TopBar (props) {
                 key={button.key}
                 onClick={evt => onClick(button)}
                 classes={{ root: clsx(classes.button) }}
-                variant='filled'
+                variant='outlined'
               >
                 {button.label}
               </Button>

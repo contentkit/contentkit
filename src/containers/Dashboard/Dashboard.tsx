@@ -67,6 +67,7 @@ type DashboardProps = {
   setSelectedProjectId: () => void,
   setSelectedPostIds: () => void,
   renderToolbar: () => any
+  onDismiss: (key: string) => void
 }
 
 function Dashboard (props: DashboardProps) {

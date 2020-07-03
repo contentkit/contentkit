@@ -1,18 +1,17 @@
 import React from 'react'
-import { InputBase, Snackbar, IconButton, Menu, MenuItem } from '@material-ui/core'
-import { withStyles } from '@material-ui/styles'
+import { InputBase, IconButton, Menu, MenuItem } from '@material-ui/core'
 import keyBy from 'lodash.keyby'
 import { useApolloClient, useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
 
 import SearchInput from '../DashboardToolbarSearchInput'
-import { DELETE_POST } from '../../graphql/mutations'
+import { DELETE_POST, DELETE_POST_TAG_CONNECTION } from '../../graphql/mutations'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
 import ProjectSelect from '../ProjectSelect'
 import Button from '../Button'
 import { ModalType } from '../../fixtures'
 import { useStyles } from './styles'
-import { useDebounce } from 'react-use'
+import { useSnackbar } from 'notistack'
 
 const EditIcon = props => (
   <svg
@@ -59,32 +58,14 @@ function DashboardToolbar (props) {
   } = props
   const classes = useStyles(props)
   const [anchorEl, setAnchorEl] = React.useState(null)
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
-  const [snackbarMessage, setSnackbarMessage] = React.useState('')
   const client = useApolloClient()
   const users = useQuery(gql`query { users { id } }`)
-
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
   const timer = React.useRef(null)
-
-  const resetSnackbar = () => {
-    setSnackbarOpen(false)
-    setSnackbarMessage('')
-  }
-
-  const undoAction = evt => {
-    resetSnackbar()
-  }
-
-  const onCloseSnackbar = evt => {
-    resetSnackbar()
-  }
 
   const onDelete = async () => {
     const { data: { posts_aggregate: { nodes } } } = posts
     const lookup = keyBy(nodes, 'id')
-
-    setSnackbarOpen(true)
-    setSnackbarMessage(`Deleted ${selectedPostIds.map(id => lookup[id].title).join(', ')}`)
 
     const writeNodes = (nodes) => {
       return client.writeQuery({
@@ -99,22 +80,47 @@ function DashboardToolbar (props) {
       })
     }
 
-    writeNodes(
-      nodes.filter((post) => !selectedPostIds.includes(post.id))
-    )
-
-    const cancel = () => {
+    const cancel = key => () => {
+      closeSnackbar(key)
       clearInterval(timer.current)
       writeNodes(nodes)
     }
 
+    enqueueSnackbar(`Deleted ${selectedPostIds.map(id => lookup[id].title).join(', ')}`, {
+      variant: 'info',
+      action: key => (
+        <Button color="inherit" size="small" onClick={cancel(key)}>
+          Undo
+        </Button>
+      )
+    })
+
+
+    writeNodes(
+      nodes.filter((post) => !selectedPostIds.includes(post.id))
+    )
+
     timer.current = window.setTimeout(async () => {
       const userId = users.data.users[0].id
       await Promise.all(
-        selectedPostIds.map(id => posts.client.mutate({
-          mutation: DELETE_POST,
-          variables: { id, userId }
-        }))
+        selectedPostIds.map(async id => {
+          const post = lookup[id]
+          await Promise.all(
+            post.posts_tags.map(({ tag }) => {
+              return client.mutate({
+                mutation: DELETE_POST_TAG_CONNECTION,
+                variables: {
+                  postId: id,
+                  tagId: tag.id
+                }
+              })
+            })
+          )
+          return posts.client.mutate({
+            mutation: DELETE_POST,
+            variables: { id, userId }
+          })
+        })
       )
     }, 4000)
   }
@@ -140,7 +146,6 @@ function DashboardToolbar (props) {
     onOpen(ModalType.CREATE_POST)
   }
 
-  const open = selectedPostIds.length > 0
   return (
     <div className={classes.root}>
       <div className={classes.flex}>
@@ -176,21 +181,6 @@ function DashboardToolbar (props) {
           <Button onClick={onOpenCreatePostModal} className={classes.newPostButton}>New Post</Button>
         </div>
       </div>
-      <Snackbar
-        open={snackbarOpen}
-        onClose={onCloseSnackbar}
-        autoHideDuration={4000}
-        ContentProps={{
-          'aria-describedby': 'snackbar-fab-message-id',
-        }}
-        message={<span id="snackbar-fab-message-id">{snackbarMessage}</span>}
-        action={(
-          <Button color="inherit" size="small" onClick={undoAction}>
-            Undo
-          </Button>
-        )}
-        className={classes.snackbar}
-      />
     </div>
   )
 }

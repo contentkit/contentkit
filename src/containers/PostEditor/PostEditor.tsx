@@ -1,11 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { EditorState } from 'draft-js'
-import { Snackbar, Button } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import { DeleteForever } from '@material-ui/icons'
 import { AppWrapper, EditorToolbar, MediaProvider } from '@contentkit/components'
 import { useQuery, useApolloClient } from '@apollo/client'
-import Alert from '@material-ui/lab/Alert'
 import { expand } from 'draft-js-compact'
 import { useDebounce } from 'react-use'
 import { useSnackbar } from 'notistack'
@@ -45,16 +44,13 @@ function PostEditor (props) {
   const { editorState } = state
 
   const {
+    onDismiss,
     localRawEditorState,
     setStatus,
     saveEditorState,
     saveEditorStateLocally,
     discardLocalEditorState,
     history,
-    createImage,
-    deleteImage,
-    mediaProviderActions,
-    logged,
     users,
     posts: {
       data: {
@@ -166,7 +162,8 @@ function PostEditor (props) {
     setStatus({ isSavingLocally: false })
   }
   
-  const onClickDiscardChanges = () => {
+  const onClickDiscardChanges = key => () => {
+    onDismiss(key)
     discardLocalEditorState()
     setEditorState(expandCompressedRawContentBlocks(editorState, rawEditorStateRef.current))
     onCloseSnackbar()
@@ -206,11 +203,11 @@ function PostEditor (props) {
     if (snackbarOpen) {
       enqueueSnackbar('Loading unsaved changes backed up in your browser.', {
         variant: 'info',
-        action: (
+        action: key => (
           <Button
             variant='text'
             startIcon={<DeleteForever />}
-            onClick={onClickDiscardChanges}
+            onClick={onClickDiscardChanges(key)}
             className={classes.button}
           >
             Discard Changes
@@ -223,10 +220,13 @@ function PostEditor (props) {
   React.useEffect(() => {
     if (status.isSavingLocally && !snackbarOpen) {
       enqueueSnackbar('Saved locally', {
-        variant: 'success'
+        variant: 'success',
+        autoHideDuration: 1000,
+        persist: false,
+        preventDuplicate: true
       })
     }
-  }, [status, snackbarOpen])
+  }, [status])
   return (
     <AppWrapper
       renderToolbar={() => <TopBar history={history} buttons={buttons} onClick={onClick} />}

@@ -10,7 +10,8 @@ import {
   DialogTitle,
   DialogActions,
   Grid,
-  Button
+  Button,
+  FormControl
 } from '@material-ui/core'
 import FormInput from '../FormInput'
 import Haikunator from 'haikunator'
@@ -83,7 +84,7 @@ function CreatePostModal (props) {
     >
       <DialogTitle>Create Post</DialogTitle>
       <DialogContent className={classes.content}>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} alignItems='center'>
           <Grid item xs={6}>
             <FormInput
               value={title}
@@ -92,12 +93,13 @@ function CreatePostModal (props) {
             />
           </Grid>
           <Grid item xs={6}>
-            <ProjectSelect
-              selectedProjectId={settings.dashboard.selected_project_id}
-              allProjects={projects?.data?.projects}
-              hideLabel={false}
-              setSelectedProjectId={setSelectedProjectId}
-            />
+            <FormControl fullWidth>
+              <ProjectSelect
+                selectedProjectId={settings.dashboard.selected_project_id}
+                allProjects={projects?.data?.projects}
+                setSelectedProjectId={setSelectedProjectId}
+              />
+            </FormControl>
           </Grid>
         </Grid>
       </DialogContent>

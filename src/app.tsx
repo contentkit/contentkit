@@ -39,28 +39,39 @@ function AuthProvider (props)  {
 }
 
 function App (props) {
+  const notistackRef = React.createRef()
+  console.log(notistackRef)
+  const onDismiss = (key) => {
+    // @ts-ignore
+    notistackRef.current.closeSnackbar(key)
+    console.log(notistackRef)
+  }
+
   return (
-    <Provider store={store} context={ReactReduxContext}>
-      <ConnectedRouter history={history} context={ReactReduxContext}>
-        <BrowserRouter basename={UP_STAGE}>
-          <Route component={AuthProvider} path='/' exact />
-          {
-            pages.map(({ component: Component, ...rest }) =>
-              <Route
-                key={rest.path}
-                render={routeProps => (
-                  <Component
-                    {...routeProps}
-                    {...props}
-                  />
-                )}
-                {...rest}
-              />
-            )
-          }
-        </BrowserRouter>
-      </ConnectedRouter>
-    </Provider>
+    <SnackbarProvider maxSnack={3} ref={notistackRef}>
+      <Provider store={store} context={ReactReduxContext}>
+        <ConnectedRouter history={history} context={ReactReduxContext}>
+          <BrowserRouter basename={UP_STAGE}>
+            <Route component={AuthProvider} path='/' exact />
+            {
+              pages.map(({ component: Component, ...rest }) =>
+                <Route
+                  key={rest.path}
+                  render={routeProps => (
+                    <Component
+                      {...routeProps}
+                      {...props}
+                      onDismiss={onDismiss}
+                    />
+                  )}
+                  {...rest}
+                />
+              )
+            }
+          </BrowserRouter>
+        </ConnectedRouter>
+      </Provider>
+    </SnackbarProvider>
   )
 }
 
@@ -71,9 +82,7 @@ function App (props) {
       <ApolloProvider client={client}>
         <ThemeProvider>
           <OfflineNotification>
-            <SnackbarProvider maxSnack={3}>
-              <App />
-            </SnackProvider>
+            <App />
           </OfflineNotification>
         </ThemeProvider>
       </ApolloProvider>

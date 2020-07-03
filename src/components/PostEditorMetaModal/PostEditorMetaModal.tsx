@@ -77,11 +77,12 @@ function EditPostMetaModal (props) {
         id: projectId
       }
     } = posts[0]
+
     const variables = {
       id,
       title,
       status,
-      publishedAt: published_at || created_at,
+      publishedAt: published_at,
       projectId: projectId,
       excerpt: excerpt,
       coverImageId: cover_image_id
