@@ -72,7 +72,8 @@ type DashboardProps = {
 
 function Dashboard (props: DashboardProps) {
   const [open, setOpen] = React.useState(null)
-  const [searchLoading, setSearchLoading] = React.useState(false)
+  const [searchLoading, setSearchLoading] = React.useState(true)
+  const [offset, setOffset] = React.useState(0)
   const [state, setState] = usePersistentState('editorState', { editorState: EditorState.createEmpty() })
   
   const setEditorState = editorState => setState({ editorState })
@@ -91,18 +92,25 @@ function Dashboard (props: DashboardProps) {
 
   const updateVariables = (variables: any) => {
     const query = variables.query || ''
+    let cursor = offset
+
+    if (query) {
+      setOffset(0)
+      cursor = 0
+    }
 
     posts.fetchMore({
       variables: {
         ...posts.variables,
         ...variables,
+        offset: cursor,
         query: query ? `%${query}%` : null
       },
       updateQuery: (_, { fetchMoreResult }) => {
         return fetchMoreResult
       }
     }).then(() => {
-      setTimeout(() => setSearchLoading(false), 5000)
+      setTimeout(() => setSearchLoading(false), 1000)
     })
   }
 
@@ -188,6 +196,9 @@ function Dashboard (props: DashboardProps) {
         getToolbarProps={getToolbarProps}
         renderToolbar={renderToolbar}
         searchLoading={searchLoading}
+        setSearchLoading={setSearchLoading}
+        offset={offset}
+        setOffset={setOffset}
       />
     </AppWrapper>
   )

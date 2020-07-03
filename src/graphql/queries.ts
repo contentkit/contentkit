@@ -42,7 +42,15 @@ export const POSTS_AGGREGATE_QUERY = gql`
       }
       nodes {
         id
-        selected @client
+        cover_image_id
+        image {
+          id 
+          url
+        }
+        images {
+          id
+          url
+        }
         created_at
         published_at
         title

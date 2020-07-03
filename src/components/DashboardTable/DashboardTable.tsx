@@ -1,7 +1,9 @@
 import React from 'react'
 
 import { useApolloClient } from '@apollo/client'
-import { Fade, Paper, TableBody, Table, CircularProgress } from '@material-ui/core'
+import { Grow, Paper, TableBody, TableRow, TableCell, Table, CircularProgress } from '@material-ui/core'
+import { Skeleton } from '@material-ui/lab'
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import { SortDirection } from '@material-ui/core/TableCell'
 import orderBy from 'lodash/orderBy'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
@@ -36,20 +38,18 @@ function DashboardTable (props) {
     selectedPostIds,
     setSelectedPostIds,
     searchLoading,
+    setSearchLoading,
     getToolbarProps,
     renderToolbar,
-    settings
+    settings,
+    offset,
+    setOffset,
+    placeholders
   } = props
-  console.log(posts)
-  // const [togglePost] = useMutation(gql`
-  //   mutation($id: String!) {
-  //     togglePost(id: $id) @client
-  //   }
-  // `)
+
   const classes = useStyles(props)
   const client = useApolloClient()
   const onSave = useOnSave()
-  const [offset, setOffset] = React.useState(0)
   const [sort, setSort] = React.useState(initialSortState)
 
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -107,10 +107,12 @@ function DashboardTable (props) {
     .then(() => {
       setSelectedPostIds([])
       setOffset(nextOffset)
+      setSearchLoading(false)
     })
   }
 
   const getNextPage = (direction: PaginationDirection) => {
+    setSearchLoading(true)
     load(direction)
   }
 
@@ -142,46 +144,72 @@ function DashboardTable (props) {
     })
   }
 
-  const dataSource = React.useMemo(() => {
-    return (posts?.data?.posts_aggregate?.nodes || [])
+  const rows = React.useMemo(() => {
+    const dataSource = (posts?.data?.posts_aggregate?.nodes || [])
       .slice(offset, offset + 10)
       .map(row => ({ ...row, key: row.id }))
-  }, [offset, posts])
+
+    return orderBy(dataSource, [sort.column], [sort.direction])
+  }, [offset, posts, sort])
  
   const toolbarProps = getToolbarProps()
   return (
     <div className={classes.wrapper}>
       <Paper elevation={0} className={classes.paper}>
         {renderToolbar(toolbarProps)}
-        <Fade in={searchLoading} unmountOnExit mountOnEnter>
+        {/* <Grow in={searchLoading} unmountOnExit mountOnEnter>
           <div className={classes.progress}>
             <CircularProgress />
           </div>
-        </Fade>
-        <Fade in={!searchLoading} unmountOnExit mountOnEnter>
-          <Table size='small' className={classes.table}>
-            <DashboardTableHead sort={sort} onSort={onSort} columns={columns} />
-              <TableBody>
-                {
-                  orderBy(dataSource, [sort.column], [sort.direction]).map(row => {
-                    return (
-                      <DashboardTableRow
-                        key={row.id}
-                        row={row}
-                        selectRow={selectRow}
-                        selectedPostIds={selectedPostIds}
-                        columns={columns}
-                        onChange={onChange}
-                        onSave={onSave}
-                        onContextMenu={onContextMenu}
-                        selected={selectedPostIds.includes(row.id)}
-                      />
-                    )
-                  })
-                }
-              </TableBody>
-          </Table>
-        </Fade>
+        </Grow> */}
+        <Table size='small' className={classes.table}>
+          <DashboardTableHead sort={sort} onSort={onSort} columns={columns} />
+            <TableBody>
+            {
+            searchLoading
+            ? placeholders.map(placeholder => (
+                <TableRow>
+                  <TableCell>
+                    <CheckBoxOutlineBlankIcon className={classes.checkbox} />
+                  </TableCell>
+                  <TableCell>
+                    {placeholder}
+                  </TableCell>
+                  <TableCell>
+                    {placeholder}
+                  </TableCell>
+                  <TableCell>
+                    {placeholder}
+                  </TableCell>
+                  <TableCell>
+                    {placeholder}
+                  </TableCell>
+                  <TableCell>
+                    {placeholder}
+                  </TableCell>
+                  <TableCell>
+                    {placeholder}
+                  </TableCell>
+                </TableRow>
+              ))
+            : rows.map(row => {
+                return (
+                  <DashboardTableRow
+                    key={row.id}
+                    row={row}
+                    selectRow={selectRow}
+                    selectedPostIds={selectedPostIds}
+                    columns={columns}
+                    onChange={onChange}
+                    onSave={onSave}
+                    onContextMenu={onContextMenu}
+                    selected={selectedPostIds.includes(row.id)}
+                  />
+                )
+              })
+            }
+            </TableBody>
+        </Table>
         <DashboardPagination getNextPage={getNextPage} />
       </Paper>
     </div>
@@ -189,7 +217,8 @@ function DashboardTable (props) {
 }
 
 DashboardTable.defaultProps = {
-  selectedPostIds: []
+  selectedPostIds: [],
+  placeholders: new Array(10).fill(0).map(_ => (<Skeleton variant="rect" width={175} height={40} />))
 }
 
 export default DashboardTable

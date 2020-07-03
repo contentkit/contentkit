@@ -43,6 +43,10 @@ const styles = makeStyles((theme: any) => ({
     alignItems: 'center',
     width: '100%',
     height: '67vh'
+  },
+
+  checkbox: {
+    color: '#a0aec0'
   }
 }))
 

@@ -31,8 +31,9 @@ export const modals : ModalItem[] = [
   {
     name: ModalType.JSON_EDITOR,
     Component: JsonEditorModal,
-    getComponentProps: ({ editorState, onSaveRawEditor }) => ({
+    getComponentProps: ({ editorState, onSaveRawEditor, onClose }) => ({
       editorState,
+      onClose,
       onSave: onSaveRawEditor
     })
   }

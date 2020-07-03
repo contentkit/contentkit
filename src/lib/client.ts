@@ -33,124 +33,32 @@ const createClient = () => {
 
   const cache = new InMemoryCache({
     typePolicies: {
-      posts_aggregate_fields: {
-        fields: {
-          count: {
-            merge: (existing, incoming, { variables, storage, ...rest }) => {
-              return (existing || 0) + incoming
-            }
-          }
-        }
-      },
-      posts: {
-        keyFields: ['id'],
-        fields: {
-          selected: {
-            read: (existing, { variables }) => {
-              return existing || false
-            },
-            merge: (existing, incoming, context) => {
-              return incoming
-            }
-          }
-        }
-      }
-    }
-  })
-
-  cache.writeQuery({
-    query: gql`
-      query {
-        selectedPostIds
-        selectedProjectIds
-      }
-    `,
-    data: {
-      selectedPostIds: [],
-      selectedProjectIds: []
+      // posts_aggregate_fields: {
+      //   fields: {
+      //     count: {
+      //       merge: (existing, incoming, { variables, storage, ...rest }) => {
+      //         return (existing || 0) + incoming
+      //       }
+      //     }
+      //   }
+      // },
+      // posts: {
+      //   keyFields: ['id'],
+      //   fields: {
+      //     selected: {
+      //       read: (existing, { variables }) => {
+      //         return existing || false
+      //       },
+      //       merge: (existing, incoming, context) => {
+      //         return incoming
+      //       }
+      //     }
+      //   }
+      // }
     }
   })
 
   return new ApolloClient({
-    typeDefs: gql`
-      extend type Query {
-        selectedPostIds: [String!]
-        selectedProjectIds: [String!]
-      }
-
-      extend type posts {
-        selected: Boolean
-        date: String
-      }
-    `,
-    resolvers: {
-      Mutation: {
-        // togglePost: (_root, variables, { cache }) => {
-        //   const SELECTED_POST_IDS = gql`
-        //     query {
-        //       selectedPostIds
-        //     }
-        //   `
-        //   const data = cache.readQuery({
-        //     query: SELECTED_POST_IDS
-        //   })
-          
-        //   const selectedPostIds = data.selectedPostIds.includes(variables.id)
-        //     ? data.selectedPostIds.filter(id => id !== variables.id)
-        //     : data.selectedPostIds.concat([variables.id])
-
-        //     cache.writeQuery({
-        //     query: SELECTED_POST_IDS,
-        //     data: {
-        //       selectedPostIds 
-        //     }
-        //   })        
-        //   return selectedPostIds
-        // }
-        togglePost: (_root, variables, { cache, ...rest }) => {
-          console.log({
-            _root,
-            variables,
-            rest
-          })
-          cache.writeFragment({
-            id: cache.identify({
-              __typename: 'posts',
-              id: variables.id,
-            }),
-            fragment: gql`
-              fragment post on posts {
-                selected @client
-              } 
-            `,
-            data: {
-              selected: true
-            }
-          })
-          return null
-        }
-      },
-      Query: {
-        user: (_, variables, { cache }) => {
-          const { users } = cache.readQuery({
-            query: gql`
-              query {
-                users {
-                  id
-                  email
-                  name
-                  secret
-                }
-              }
-            `
-          })
-
-          return users?.length
-            ? users[0]
-            : null
-        }
-      }
-    },
     link: ApolloLink.from([
       middlewareLink,
       authLink,

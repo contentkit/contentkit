@@ -171,6 +171,7 @@ function PostEditor (props) {
 
   const modalProps = {
     ...props,
+    onClose,
     editorState,
     setEditorState,
     getFormData,
