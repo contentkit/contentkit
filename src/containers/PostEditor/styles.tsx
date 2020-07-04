@@ -4,7 +4,24 @@ const useStyles = makeStyles(theme => ({
   content: {
   },
   button: {
-    color: '#fff'
+    color: '#A0AEC0'
+  },
+  iconButton: {
+    padding: '0px !important'
+  },
+  listItem: {
+    //backgroundColor: '#2D3748',
+    display: 'inline-flex',
+    justifyContent: 'center',
+    height: 50,
+    width: 50,
+    margin: 5,
+    '& > img': {
+      margin: 0
+    }
+  },
+  divider: {
+    borderColor: '#2D3748'
   }
 }))
 

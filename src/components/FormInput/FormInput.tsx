@@ -6,16 +6,29 @@ import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(theme => ({
   root: {
-
-  },
-  input: {
-    backgroundColor: '#f4f4f4',
-    border: '2px solid #f4f4f4',
-    '&:focus-within': {
-      borderRadius: 0,
-      border: '2px solid #0f62fe'
+    color: '#fff',
+    '&:hover $notchedOutline, &$focused $notchedOutline': {
+      borderColor: '#e2e8f0'
     }
-  }
+  },
+  // input: {
+  //   backgroundColor: '#f4f4f4',
+  //   border: '2px solid #f4f4f4',
+  //   '&:focus-within': {
+  //     borderRadius: 0,
+  //     border: '2px solid #0f62fe'
+  //   }
+  // }
+  notchedOutline: {
+    borderColor: '#e2e8f0'
+  },
+  formLabelRoot: {
+    color: '#fff',
+    '&$focused': {
+      color: '#fff'
+    }
+  },
+  focused: {}
 }))
 
 function FormInput (props) {
@@ -28,6 +41,18 @@ function FormInput (props) {
       label={label}
       fullWidth={fullWidth}
       helperText={helperText}
+      InputLabelProps={{
+        classes: {
+          root: classes.formLabelRoot,
+          focused: classes.focused
+        }
+      }}
+      InputProps={{
+        classes: {
+          root: classes.root,
+          notchedOutline: classes.notchedOutline
+        }
+      }}
       {...rest}
     />
   )

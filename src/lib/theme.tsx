@@ -64,6 +64,10 @@ const theme = createMuiTheme({
         '*:focus': {
           outline: 'none'
         },
+        '::selection': {
+          background: '#0c344b',
+          color: '#fff'
+        },
         body: {
           '-webkit-font-smoothing': 'antialiased',
           lineHeight: 1.2,

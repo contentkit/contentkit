@@ -7,12 +7,12 @@ const useStyles = makeStyles(theme => ({
     boxSizing: 'border-box'
   },
   progress: {
-    position: 'absolute',
+    position: 'sticky',
     left: 0,
     right: 0,
     width: '100%',
     height: 5,
-    top: 48,
+    top: 0,
     zIndex: 10
   },
   editor: {
@@ -22,7 +22,6 @@ const useStyles = makeStyles(theme => ({
     padding: '30px',
     boxSizing: 'border-box',
     backgroundColor: '#fff',
-    borderRadius: 8,
     boxShadow: '0px 4px 8px rgba(60,45,111,0.1), 0px 1px 3px rgba(60,45,111,0.15)'
   },
   drag: {

@@ -1,12 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Dialog, DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
+import { Toolbar } from '@material-ui/core'
 import { useApolloClient } from '@apollo/client'
 import gql from 'graphql-tag'
 
 import PostMetaForm from '../PostEditorMetaModalForm'
 import { POST_QUERY } from '../../graphql/queries'
 import Button from '../Button'
+import { makeStyles } from '@material-ui/styles'
+
+const useStyles = makeStyles(theme => ({
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%'
+  },
+  button: {
+    backgroundColor: '#fff',
+    color: '#2D3748'
+  }
+}))
+
 
 const UPDATE_POSTS = gql`
   mutation(
@@ -45,6 +59,7 @@ const getDate = ({ posts }) => {
 }
 
 function EditPostMetaModal (props) {
+  const classes = useStyles()
   const client = useApolloClient()
   const [dateInputState, setDateInput] = React.useState(getDate(props))
   const {
@@ -141,19 +156,7 @@ function EditPostMetaModal (props) {
 
   const title = (<h2>Update Postmeta</h2>)
   return (
-    <Dialog
-      fullWidth
-      open={open}
-      onClose={onClose}
-      maxWidth='md'
-      PaperProps={{
-
-      }}
-    >
-      <DialogTitle>
-        {title}
-      </DialogTitle>
-      <DialogContent>
+      <>
         <PostMetaForm
           users={users}
           post={posts[0]}
@@ -166,17 +169,16 @@ function EditPostMetaModal (props) {
           deleteImage={deleteImage}
           mediaProvider={mediaProvider}
           client={client}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button color='secondary' onClick={onClose}>
+        /> 
+      <Toolbar className={classes.toolbar} disableGutters>
+        <Button variant='outlined' onClick={onClose} className={classes.button}>
           Cancel
         </Button>
-        <Button color='default' onClick={handlePostMetaUpdate}>
-          OK
+        <Button variant='outlined' onClick={handlePostMetaUpdate} className={classes.button}>
+          Save
         </Button>
-      </DialogActions>
-    </Dialog>
+      </Toolbar>
+    </>
   )
 }
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { Select, OutlinedInput } from '@material-ui/core'
 
 const PostEditorMetaModalSelect = (props) => {
-  const { value, onChange, ...rest } = props
+  const { value, onChange, input, ...rest } = props
 
   const onSelectChange = ({ currentTarget }) => onChange(currentTarget.value, 'status')
   const options = [{
@@ -19,7 +19,7 @@ const PostEditorMetaModalSelect = (props) => {
       onChange={onSelectChange}
       label={'Status'}
       value={value}
-      input={<OutlinedInput name='select-status' margin='dense' />}
+      input={input}
       {...rest}
     >
       {
@@ -29,6 +29,8 @@ const PostEditorMetaModalSelect = (props) => {
   )
 }
 
-PostEditorMetaModalSelect.propTypes = {}
+PostEditorMetaModalSelect.propTypes = {
+  input: <OutlinedInput name='select-status' margin='dense' />
+}
 
 export default PostEditorMetaModalSelect

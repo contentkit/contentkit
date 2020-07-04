@@ -25,7 +25,34 @@ const useStyles = makeStyles(theme => ({
   inputWrapper: {
     width: '100%'
   },
-  chip: {}
+  chip: {},
+  notchedOutline: {
+    borderColor: '#e2e8f0'
+  },
+  inputLabelRoot: {
+    color: '#e2e8f0',
+    '&$focused': {
+      color: '#e2e8f0',
+    }
+  },
+  inputRoot: {
+    '&:hover $notchedOutline': {
+      borderColor: '#fff'
+    },
+    '&$focused $notchedOutline': {
+      borderColor: '#fff'
+    },
+    '&$error $notchedOutline': {
+      borderColor: '#fff'
+    },
+    '&$disabled $notchedOutline': {
+      borderColor: '#fff'
+    },
+    color: '#fff'
+  },
+  focused: {},
+  error: {},
+  disabled: {}
 }))
 
 type Option = {
@@ -99,15 +126,37 @@ function CreateTagInput (props: CreateTagInputProps) {
     setSelection(value)
   }, [])
 
-  const renderInput = params => (
-    <TextField
-      {...params}
-      variant='outlined'
-      label={'Tag'}
-      placeholder=''
-      margin='dense'
-    />
-  )
+  const renderInput = params => {
+    const { InputProps, InputLabelProps, ...rest } = params
+    return (
+      <TextField
+        variant='outlined'
+        label={'Tag'}
+        placeholder=''
+        margin='dense'
+        InputLabelProps={{
+          ...InputLabelProps,
+          classes: {
+            ...InputLabelProps.classes,
+            root: classes.inputLabelRoot,
+            focused: classes.focused
+          }
+        }}
+        InputProps={{
+          ...InputProps,
+          classes: {
+            ...InputProps.classes,
+            root: classes.inputRoot,
+            notchedOutline: classes.notchedOutline,
+            focused: classes.focused,
+            error: classes.error,
+            disabled: classes.disabled
+          }
+        }}
+        {...rest}
+      />
+    )
+  }
 
   const getOptionLabel = (option: Option | string) => typeof option === 'string' ? option : option.label
 
@@ -183,7 +232,15 @@ function PostTagChips (props) {
     <Fade in={!tagQuery.loading} mountOnEnter unmountOnExit>
       <CreateTagInput
         post={post}
-        classes={{ inputWrapper: classes.inputWrapper }}
+        classes={{
+          inputWrapper: classes.inputWrapper,
+          inputRoot: classes.inputRoot,
+          notchedOutline: classes.notchedOutline,
+          focused: classes.focused,
+          error: classes.error,
+          disabled: classes.disabled,
+          inputLabelRoot: classes.inputLabelRoot
+        }}
         options={options}
         tags={tags}
         onCreateTag={onCreateTag}

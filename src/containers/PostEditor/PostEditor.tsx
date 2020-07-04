@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { EditorState } from 'draft-js'
-import { Button } from '@material-ui/core'
+import { Divider, IconButton, List, ListItem, Button } from '@material-ui/core'
 import { DeleteForever } from '@material-ui/icons'
 import { AppWrapper, EditorToolbar, MediaProvider } from '@contentkit/components'
 import { useQuery, useApolloClient } from '@apollo/client'
@@ -26,21 +26,26 @@ import EditorCache from '../../store/EditorCache'
 import { AWS_BUCKET_URL } from '../../lib/config'
 import usePersistentState from '../../hooks/usePersistentState'
 import TopBar from '../../components/TopBar'
+import p from '../../assets/p.svg'
+import pen from '../../assets/pen.svg'
+import code from '../../assets/code.svg'
+import Drawer from '../../components/Drawer'
 
 function PostEditor (props) {
+  const classes = useStyles(props)
   const client = useApolloClient()
   const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = React.useState(false)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+
   const [open, setOpen] = React.useState({
     [ModalType.HISTORY]: false,
     [ModalType.POSTMETA]: false,
     [ModalType.JSON_EDITOR]: false
   })
   const [state, setState] = usePersistentState('editorState', { editorState: EditorState.createEmpty() })
-  
   const setEditorState = editorState => setState({ editorState })
-
   const { editorState } = state
 
   const {
@@ -68,6 +73,20 @@ function PostEditor (props) {
 
   const onChange = editorState => {
     setEditorState(editorState)
+  }
+  
+  const onToggleDrawer = (key) => (evt) => {
+    setOpen({
+      ...open,
+      [key]: !open[key]
+    })
+  }
+
+  const onCloseDrawer = (key) => () => {
+    setOpen({
+      ...open,
+      [key]: false,
+    })
   }
 
   const mediaProvider : React.RefObject<any> = React.useRef(null)
@@ -158,10 +177,6 @@ function PostEditor (props) {
     setSnackbarOpen(false)
   }
 
-  const onCloseLocalSaveSnackbar = () => {
-    setStatus({ isSavingLocally: false })
-  }
-  
   const onClickDiscardChanges = key => () => {
     onDismiss(key)
     discardLocalEditorState()
@@ -181,24 +196,25 @@ function PostEditor (props) {
   }
 
   const sidebarProps = {
-    children: renderToolbar()
+    children: (
+      <List disablePadding>
+        <ListItem disableGutters className={classes.listItem}>
+          <img src={p} width='18' />
+        </ListItem>
+        <Divider className={classes.divider} />
+        <ListItem disableGutters className={classes.listItem}>
+          <IconButton className={classes.iconButton} onClick={onToggleDrawer(ModalType.POSTMETA)}>
+            <img src={pen} width='18' />
+          </IconButton>
+        </ListItem>
+        <ListItem disableGutters className={classes.listItem}>
+          <IconButton className={classes.iconButton} onClick={onToggleDrawer(ModalType.JSON_EDITOR)}>
+            <img src={code} width='18' />
+          </IconButton>
+        </ListItem>
+      </List>
+    )
   }
-  const classes = useStyles(props)
-
-  const buttons = [
-    {
-      key: 'history',
-      label: 'History',
-    },
-    {
-      key: 'postmeta',
-      label: 'Postmeta'
-    },
-    {
-      key: 'json-editor',
-      label: 'Raw'
-    }
-  ]
 
   React.useEffect(() => {
     if (snackbarOpen) {
@@ -230,7 +246,7 @@ function PostEditor (props) {
   }, [status])
   return (
     <AppWrapper
-      renderToolbar={() => <TopBar history={history} buttons={buttons} onClick={onClick} />}
+      renderToolbar={() => <TopBar history={history} onClick={onClick} />}
       sidebarProps={sidebarProps}
       classes={{
         content: classes.content
@@ -250,6 +266,7 @@ function PostEditor (props) {
         getFormData={getFormData}
         posts={posts}
         users={users}
+        renderToolbar={renderToolbar}
       />
     </AppWrapper>
   )

@@ -56,7 +56,8 @@ function PostEditorComponent(props) {
     onChange,
     save,
     posts,
-    users
+    users,
+    renderToolbar
   } = props
 
   const addImage = (src) => {
@@ -113,6 +114,7 @@ function PostEditorComponent(props) {
         onUpload={onUpload}
         variant={DropzoneVariant.FULL_WIDTH}
       >
+        {renderToolbar()}
         <div className={classes.editor}>
           <Editor
             editorState={editorState}

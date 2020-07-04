@@ -1,8 +1,7 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
-import { CircularProgress } from '@material-ui/core'
 import { ApolloProvider, useQuery } from '@apollo/client'
-import { Router, BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Provider, ReactReduxContext } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 import { SnackbarProvider } from 'notistack'
@@ -11,7 +10,7 @@ import client from './lib/client'
 import { store, history } from './store'
 import pages from './pages'
 import { ThemeProvider } from './lib/theme'
-import { USER_AUTH_QUERY, USER_QUERY } from './graphql/queries'
+import {  USER_QUERY } from './graphql/queries'
 import Login from './containers/Login'
 import Landing from './containers/Landing'
 
@@ -33,7 +32,7 @@ function AuthedApp (props) {
   }, [rootQuery])
 
   return (
-    <SnackbarProvider maxSnack={3} ref={notistackRef}>
+    <SnackbarProvider maxSnack={3} ref={notistackRef} anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
       <Switch>
         <Route component={Login} path='/login' exact />
         {

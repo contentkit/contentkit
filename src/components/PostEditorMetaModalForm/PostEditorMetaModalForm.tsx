@@ -4,10 +4,9 @@ import gql from 'graphql-tag'
 import safeKey from 'safe-s3-key'
 import { useQuery } from '@apollo/client'
 import { ThumbnailUpload } from '@contentkit/components'
-import { Grid } from '@material-ui/core'
+import { OutlinedInput, Box, Grid } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/styles'
-import chunk from 'lodash.chunk'
 
 import PostStatusSelect from '../PostEditorMetaModalSelect'
 import ProjectSelect from '../ProjectSelect'
@@ -17,6 +16,9 @@ import FormInput from '../FormInput'
 
 
 const useStyles = makeStyles((theme: any) => ({
+  root: {
+    width: '100%'
+  },
   thumbnail: {
     width: '100%',
     height: '100%'
@@ -26,6 +28,18 @@ const useStyles = makeStyles((theme: any) => ({
   },
   gutter: {
     marginBottom: theme.spacing(2)
+  },
+  notchedOutline: {
+    borderColor: '#e2e8f0'
+  },
+  selectIcon: {
+    color: '#e2e8f0'
+  },
+  inputRoot: {
+    color: '#fff',
+    '&:hover $notchedOutline,&$focused $notchedOutline': {
+      borderColor: '#e2e8f0'
+    }
   }
 }))
 
@@ -78,7 +92,11 @@ function PostEditorMetaModalForm (props) {
       getComponentProps: () => ({
         fullWidth: true,
         onChange,
-        value: post.status
+        value: post.status,
+        input: (<OutlinedInput margin='dense' classes={{ notchedOutline: classes.notchedOutline, root: classes.inputRoot }} />),
+        classes: {
+          icon: classes.selectIcon
+        }
       })
     },
     {
@@ -94,7 +112,11 @@ function PostEditorMetaModalForm (props) {
       Component: ProjectSelect,
       getComponentProps: () => ({
         fullWidth: true,
-        onChange: selectProject
+        onChange: selectProject,
+        input: (<OutlinedInput margin='dense' classes={{ notchedOutline: classes.notchedOutline, root: classes.inputRoot }} />)
+        classes: {
+          icon: classes.selectIcon
+        }
       }),
       size: 6
     },
@@ -143,44 +165,34 @@ function PostEditorMetaModalForm (props) {
 
   return (
     <form className={classes.root}>
-      {chunk(children, 2).map((row, i) => {
-        const [left, right] = row
-        if (row.length > 1) {
+      {
+        children.map(component => {
           return (
-            <Grid container spacing={4} key={i}>
-              <Grid item xs={6} container alignItems='center'>{left}</Grid>
-              <Grid item xs={6} container alignItems='center'>{right}</Grid>
-            </Grid>
+            <Box mb={3}>{component}</Box>
           )
-        }
-
-        return (
-          <Grid container spacing={4} key={i}>
-            <Grid item xs={12}>{left}</Grid>
-          </Grid>
-        )
-      })}
+        })
+      }
       <Grid container spacing={4} className={classes.gutter}>
-         <Grid item xs={12}>
-           <ThumbnailUpload
-             getUploadMediaOptions={getUploadMediaOptions}
-             images={images}
-             onClick={onCoverImageChange}
-             mediaProvider={mediaProvider}
-             selection={thumbnailUploadSelection}
-           >
-             <div>
-               <Add />
-               <div className='ant-upload-text'>Upload</div>
-             </div>
-           </ThumbnailUpload>
-         </Grid>
-       </Grid>
-       <Grid container>
-         <Grid item xs={12}>
-           <PostTagChips post={post} users={users} />
-         </Grid>
-       </Grid>
+        <Grid item xs={12}>
+          <ThumbnailUpload
+            getUploadMediaOptions={getUploadMediaOptions}
+            images={images}
+            onClick={onCoverImageChange}
+            mediaProvider={mediaProvider}
+            selection={thumbnailUploadSelection}
+          >
+            <div>
+              <Add />
+              <div className='ant-upload-text'>Upload</div>
+            </div>
+          </ThumbnailUpload>
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={12}>
+          <PostTagChips post={post} users={users} />
+        </Grid>
+      </Grid>
     </form>
   )
 }

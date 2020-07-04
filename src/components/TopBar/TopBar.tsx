@@ -37,16 +37,9 @@ const useStyles = makeStyles(theme => ({
     // @ts-ignore
     marginRight: theme.spacing(2),
     '&:hover': {
-      // color: '#1a202c'
     }
   },
   active: {
-    // color: '#fff',
-    // backgroundColor: '#8fa6b2',
-    // '&:hover': {
-    //   color: '#fff',
-    //   backgroundColor: '#3d556b',
-    // }
   },
   divider: {
     // @ts-ignore
