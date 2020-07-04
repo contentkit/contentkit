@@ -19,7 +19,7 @@ export const modals : ModalItem[] = [
   {
     name: ModalType.POSTMETA,
     Component: Drawer,
-    getComponentProps: ({ users, client, posts, createImage, deleteImage, getFormData, mediaProvider }) => ({
+    getComponentProps: ({ users, posts, createImage, deleteImage, getFormData, mediaProvider }) => ({
       users,
       posts,
       createImage,

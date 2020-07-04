@@ -26,10 +26,9 @@ import EditorCache from '../../store/EditorCache'
 import { AWS_BUCKET_URL } from '../../lib/config'
 import usePersistentState from '../../hooks/usePersistentState'
 import TopBar from '../../components/TopBar'
-import p from '../../assets/p.svg'
+import p from '../../assets/paragraph.svg'
 import pen from '../../assets/pen.svg'
 import code from '../../assets/code.svg'
-import Drawer from '../../components/Drawer'
 
 function PostEditor (props) {
   const classes = useStyles(props)
@@ -37,7 +36,6 @@ function PostEditor (props) {
   const { enqueueSnackbar } = useSnackbar()
   const [loading, setLoading] = React.useState(false)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
-  const [anchorEl, setAnchorEl] = React.useState(null)
 
   const [open, setOpen] = React.useState({
     [ModalType.HISTORY]: false,
@@ -51,7 +49,6 @@ function PostEditor (props) {
   const {
     onDismiss,
     localRawEditorState,
-    setStatus,
     saveEditorState,
     saveEditorStateLocally,
     discardLocalEditorState,

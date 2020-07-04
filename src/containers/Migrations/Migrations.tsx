@@ -1,5 +1,5 @@
 import React from 'react' 
-import { useQuery, useMutation } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { Toolbar, Box, Fade, Avatar, IconButton, Collapse, Typography, Grid, Button, Paper, Card, CardContent, CardActions, CardHeader } from '@material-ui/core'
 import { AppWrapper } from '@contentkit/components'
 import { makeStyles } from '@material-ui/styles'
@@ -101,7 +101,7 @@ function Migrations (props) {
   const { rootQuery } = props
   const classes = useStyles(props)
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar()
   const [selectedProjectId, setSelectedProjectId] = React.useState(null)
   const [isStartingNewTask, setIsStartingNewTask] = React.useState(false)
   const insertTask = useInsertTask()
