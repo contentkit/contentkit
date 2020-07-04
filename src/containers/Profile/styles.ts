@@ -15,7 +15,6 @@ export const useStyles = makeStyles(theme => ({
     margin: '2em auto 1em auto',
   },
   container: {
-    backgroundColor: '#f5f5f5'
   },
   cards: {
     padding: 40

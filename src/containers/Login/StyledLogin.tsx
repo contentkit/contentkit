@@ -3,9 +3,7 @@ import {
   Grid,
   Tabs,
   Tab,
-  Snackbar,
   Box,
-  TextField,
   Paper,
   Fade,
   CircularProgress
@@ -17,6 +15,8 @@ import { useUserQuery } from '../../graphql/queries'
 import useStyles from './styles'
 import LoginField from './components/LoginField'
 import { withRouter } from 'react-router-dom'
+
+import { useSnackbar } from 'notistack'
 
 function LoginContainer (props) {
   const { children, classes } = props
@@ -48,40 +48,33 @@ function Login (props) {
   const user = useUserQuery({
     skip: !window.localStorage.getItem('token')
   })
+  const { enqueueSnackbar } = useSnackbar()
   const classes = useStyles(props)
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [tab, setTab] = React.useState(0)
   const [passwordResetSent, setPasswordResetSent] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
-  const [errors, setErrors] = React.useState([])
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
   const authenticateUser = useAuthenticateUser()
   const registerUser = useRegisterUser()
 
-  const onCloseSnackbar = () => setSnackbarOpen(false)
   
   const handleTabChange = (evt, value) => {
     setTab(value)
   }
 
   const redirect = () => {
-    history.push('/dashboard')
+    history.push('/posts')
   }
-
-  React.useEffect(() => {
-    if (errors.length) {
-      setSnackbarOpen(true)
-    }
-  }, [errors])
 
   const login = async () => {
     setLoading(true)
     try {
       await authenticateUser({ email, password })
     } catch (err) {
+      console.log({ err })
       setLoading(false)
-      return setErrors(err.graphQLErrors)
+      return err.graphQLErrors.forEach(e => enqueueSnackbar(e.message, { variant: 'error' }))
     }
 
     redirect()
@@ -97,7 +90,7 @@ function Login (props) {
       })
     } catch (err) {
       setLoading(false)
-      return setErrors(err.graphQLErrors)
+      return err.graphQLErrors.forEach(e => enqueueSnackbar(e.message, { variant: 'error' }))
     }
   
     redirect()
@@ -113,16 +106,6 @@ function Login (props) {
   const showLogin = tab === 0
   return (
     <LoginContainer classes={classes}>
-      <Snackbar
-        open={snackbarOpen}
-        message={errors.length ? errors[0].message : null}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        autoHideDuration={6000}
-        onClose={onCloseSnackbar}
-      />
       <Paper className={classes.paper}>
         <Fade in={loading} unmountOnExit mountOnEnter>
           <div className={classes.progress}>

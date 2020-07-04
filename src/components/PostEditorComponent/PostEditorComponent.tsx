@@ -7,8 +7,6 @@ import { useApolloClient } from '@apollo/client'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import gql from 'graphql-tag'
 
-// import '@contentkit/editor/src/css/Draft.css'
-import '@contentkit/editor/src/css/prism.css'
 import '@contentkit/editor/src/css/CheckableListItem.css'
 
 import { CREATE_IMAGE } from '../../graphql/mutations'

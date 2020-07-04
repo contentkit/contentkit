@@ -156,9 +156,7 @@ function DashboardToolbar (props) {
             setSearchLoading={setSearchLoading}
           />
           <ProjectSelect
-            selectedProjectId={settings.dashboard.selected_project_id}
-            allProjects={projects?.data?.projects}
-            setSelectedProjectId={setSelectedProjectId}
+            onChange={setSelectedProjectId}
             className={classes.select}
             input={<InputBase />}
           />

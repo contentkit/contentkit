@@ -95,9 +95,9 @@ function CreatePostModal (props) {
           <Grid item xs={6}>
             <FormControl fullWidth>
               <ProjectSelect
-                selectedProjectId={settings.dashboard.selected_project_id}
-                allProjects={projects?.data?.projects}
-                setSelectedProjectId={setSelectedProjectId}
+                // selectedProjectId={settings.dashboard.selected_project_id}
+                // allProjects={projects?.data?.projects}
+                onChange={setSelectedProjectId}
               />
             </FormControl>
           </Grid>

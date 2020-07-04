@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     width: '100%',
-    height: 48,
+    height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: '#fff',
@@ -19,7 +19,6 @@ const useStyles = makeStyles(theme => ({
     // @ts-ignore
     padding: theme.spacing(0, 2),
     zIndex: 1300,
-    marginBottom: 2,
     boxShadow: '0px 4px 8px rgba(60,45,111,0.1), 0px 1px 3px rgba(60,45,111,0.15)',
   },
   brand: {
@@ -64,7 +63,7 @@ function TopBar (props) {
     {
       label: 'Posts',
       key: 'posts',
-      pathname: '/dashboard'
+      pathname: '/posts'
     },
     {
       label: 'Projects',

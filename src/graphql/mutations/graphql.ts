@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import * as fragments from '../fragments'
 
 export const DELETE_POST = gql`
   mutation ($id: String!, $userId: String!) {
@@ -341,6 +342,34 @@ export const UPSERT_SETTINGS_MUTATION = gql`
         user_id,
         property_name,
         property_value
+      }
+    }
+  }
+`
+
+export const INSERT_TASK = gql`
+  mutation($projectId: String!, $userId: String!) {
+    insert_tasks(objects: { project_id: $projectId, user_id: $userId }) {
+      returning {
+        id 
+        user_id
+        project_id
+        status
+        created_at
+        updated_at
+        metadata
+        storage_key
+      }
+    }
+  }
+`
+
+
+export const DELETE_TASK = gql`
+  mutation($id: String!) {
+    delete_tasks(where: { id: { _eq: $id } }) {
+      returning {
+        id 
       }
     }
   }

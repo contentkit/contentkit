@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 import { useQuery, useApolloClient } from '@apollo/client'
 import { GraphQL } from '../types'
 import set from 'lodash.set'
+import * as fragments from './fragments'
 
 export const PROJECTS_QUERY = gql`
   query {
@@ -184,6 +185,20 @@ export const SETTINGS_QUERY = gql`
       property_value
     }
   }
+`
+
+
+export const TASKS_QUERY = gql`
+  query($userId: String!) {
+    tasks(where: { user_id: { _eq: $userId } }) {
+      ...task
+      project {
+        id
+        name
+      }
+    }
+  }
+  ${fragments.TASKS_FRAGMENT}
 `
 
 export function useSettingsQuery () {

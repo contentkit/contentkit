@@ -1,8 +1,7 @@
 import gql from 'graphql-tag'
-import { POST_QUERY, USER_QUERY, PROJECTS_QUERY, PROJECT_QUERY, TAG_QUERY, SETTINGS_QUERY } from '../queries'
+import { TASKS_QUERY, POST_QUERY, USER_QUERY, PROJECTS_QUERY, PROJECT_QUERY, TAG_QUERY, SETTINGS_QUERY } from '../queries'
 import { useMutation, useApolloClient } from '@apollo/client'
-import { genKey, genDate } from '../../lib/util'
-import ApolloClient from '@apollo/client'
+import { genKey, genDate, genId } from '../../lib/util'
 import { GraphQL } from '../../types'
 import { Typename } from '../constants'
 import * as Mutations from './graphql'
@@ -561,4 +560,71 @@ export function useSetSettingMutation () {
   })
 
   return setSetting
+}
+
+
+export function useInsertTask () {
+  const [mutate] = useMutation(Mutations.INSERT_TASK)
+
+  return variables => {
+    return mutate({
+      variables,
+      optimisticResponse: {
+        __typename: Typename.MUTATION,
+        insert_tasks: {
+          __typename: 'insert_tasks',
+          returning: [{
+            __typename: 'tasks',
+            id: genId(),
+            created_at: genDate(),
+            updated_at: genDate(),
+            project_id: variables.projectId,
+            status: 'PENDING',
+            storage_key: null
+         }]
+       } 
+      },
+      update: (store, { data: { insert_tasks } }) => {
+        const { tasks } = store.readQuery({
+          query: TASKS_QUERY,
+          variables: variables
+        })
+
+        store.writeQuery({
+          query: TASKS_QUERY,
+          variables: variables,
+          data: {
+            tasks: tasks.concat(insert_tasks.returning)
+          }
+        })
+      }
+    })
+  }
+}
+
+export function useDeleteTask () {
+  const [mutate] = useMutation(Mutations.DELETE_TASK)
+
+  return ({ id }) => {
+    return mutate({
+      variables: { id },
+      optimisticResponse: {
+        __typename: Typename.MUTATION,
+        delete_tasks: {
+          __typename: 'delete_tasks',
+          returning: [{
+            __typename: 'tasks',
+            id: id
+          }]
+        }
+      },
+      update: (store, { data: { delete_tasks } }) => {
+        const cacheKey = store.identify({
+          id,
+          __typename: 'tasks'
+        })
+        store.evict(cacheKey)
+      }
+    }) 
+  }
 }

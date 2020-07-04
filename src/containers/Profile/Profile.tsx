@@ -63,8 +63,8 @@ function Profile (props) {
         container: classes.container
       }}
       disablePadding
+      renderToolbar={() => <TopBar history={history} />}
     >
-      <TopBar history={history} />
       <div className={classes.cards}>
         <UserForm
           onChange={onChange}

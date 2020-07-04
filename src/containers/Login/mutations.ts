@@ -15,7 +15,7 @@ export function useAuthenticateUser () {
     let response
     try {
       response = await mutate({ variables: { credentials: variables } })
-
+      console.log(response)
       const { data: { login: { token } } } = response
       if (response.errors && response.errors.length) {
         throw response.errors
@@ -25,7 +25,7 @@ export function useAuthenticateUser () {
         await client.clearStore()
       }
     } catch (err) {
-      throw err
+      throw { graphQLErrors: err?.graphQLErrors?.length ? err.graphQLErrors : [err] }
     }
 
     return response
@@ -52,7 +52,7 @@ export function useRegisterUser () {
         await client.clearStore()
       }
     } catch (err) {
-      throw err
+      throw { graphQLErrors: err?.graphQLErrors?.length ? err.graphQLErrors : [err] }
     }
 
     return response

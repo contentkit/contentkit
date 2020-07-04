@@ -94,9 +94,7 @@ function PostEditorMetaModalForm (props) {
       Component: ProjectSelect,
       getComponentProps: () => ({
         fullWidth: true,
-        allProjects,
-        selectedProjectId: selectedProject,
-        setSelectedProjectId: selectProject
+        onChange: selectProject
       }),
       size: 6
     },
