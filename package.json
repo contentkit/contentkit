@@ -11,7 +11,7 @@
   "resolutions": {
     "**/react": "16.13.1",
     "**/react-dom": "16.13.1",
-    "**/draft-js": "^0.11.4",
+    "**/draft-js": "^0.11.6",
     "**/immutable": "3.7.4",
     "**/@material-ui/core": "^5.0.0-alpha.1",
     "**/@material-ui/icons": "^5.0.0-alpha.1",
@@ -21,16 +21,15 @@
   "dependencies": {
     "@apollo/client": "^3.0.0-rc.10",
     "@babel/runtime": "^7.10.4",
-    "@contentkit/components": "latest",
-    "@contentkit/convert": "latest",
-    "@contentkit/editor": "latest",
-    "@contentkit/json-editor": "latest",
-    "@contentkit/sidebar": "latest",
+    "@contentkit/components": "0.0.62",
+    "@contentkit/convert": "0.0.62",
+    "@contentkit/editor": "0.0.62",
+    "@contentkit/json-editor": "0.0.62",
+    "@contentkit/sidebar": "0.0.62",
     "@material-ui/core": "^5.0.0-alpha.1",
     "@material-ui/icons": "^5.0.0-alpha.1",
     "@material-ui/lab": "^5.0.0-alpha.1",
     "@material-ui/styles": "^5.0.0-alpha.1",
-    "@types/draft-js": "^0.10.41",
     "base64-unicode": "^0.0.1",
     "connected-react-router": "^6.8.0",
     "date-fns": "^2.14.0",
@@ -75,6 +74,7 @@
     ]
   },
   "devDependencies": {
+    "@types/draft-js": "^0.10.41",
     "@babel/core": "^7.10.3",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.10.4",

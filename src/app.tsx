@@ -1,7 +1,7 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
 import { ApolloProvider, useQuery } from '@apollo/client'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
 import { Provider, ReactReduxContext } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 import { SnackbarProvider } from 'notistack'
@@ -12,7 +12,6 @@ import pages from './pages'
 import { ThemeProvider } from './lib/theme'
 import {  USER_QUERY } from './graphql/queries'
 import Login from './containers/Login'
-import Landing from './containers/Landing'
 
 const UP_STAGE = process.env.UP_STAGE || undefined
 
@@ -51,7 +50,7 @@ function AuthedApp (props) {
             />
           )
         }
-        <Route component={Landing} path='/' />
+       <Redirect to='/posts' />
       </Switch>
     </SnackbarProvider>
   )

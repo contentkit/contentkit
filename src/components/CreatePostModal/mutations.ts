@@ -17,7 +17,7 @@ export function useCreatePostMutation (postsAggregateVariables) {
       variables: postsAggregateVariables
     })
   
-    createPostMutation({
+    return createPostMutation({
       variables: variables,
       optimisticResponse: {
         __typename: 'Mutation',

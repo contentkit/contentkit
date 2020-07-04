@@ -11,8 +11,10 @@ import {
   DialogActions,
   Grid,
   Button,
-  FormControl
+  FormControl,
+  TextField
 } from '@material-ui/core'
+import { withRouter } from 'react-router-dom'
 import FormInput from '../FormInput'
 import Haikunator from 'haikunator'
 import { useMutation, useApolloClient } from '@apollo/client'
@@ -33,7 +35,8 @@ function CreatePostModal (props) {
     setSelectedProjectId,
     open,
     createPost,
-    onClose
+    onClose,
+    history
   } = props
   const classes = useStyles(props)
   const [title, setTitle] = React.useState('')
@@ -44,11 +47,15 @@ function CreatePostModal (props) {
     onClose()
 
     const selectedProject = await getProjectId()
-    createPost.mutate({
+    const data = await createPost.mutate({
       title: title,
       projectId: settings.dashboard.selected_project_id,
       userId: props.users.data.users[0].id
     })
+
+    const { insert_posts: { returning } } = data
+
+    history.push(`/${returning[0].id}`)
   }
 
   const getProjectId = () => {
@@ -86,20 +93,19 @@ function CreatePostModal (props) {
       <DialogContent className={classes.content}>
         <Grid container spacing={4} alignItems='center'>
           <Grid item xs={6}>
-            <FormInput
+            <TextField
               value={title}
               onChange={handleInputChange}
               label={'Post title'}
+              margin='dense'
+              variant='outlined'
+              fullWidth
             />
           </Grid>
           <Grid item xs={6}>
-            <FormControl fullWidth>
-              <ProjectSelect
-                // selectedProjectId={settings.dashboard.selected_project_id}
-                // allProjects={projects?.data?.projects}
-                onChange={setSelectedProjectId}
-              />
-            </FormControl>
+            <ProjectSelect
+              onChange={setSelectedProjectId}
+            />
           </Grid>
         </Grid>
       </DialogContent>
@@ -128,4 +134,4 @@ function CreatePostModalMutations (props) {
   )
 }
 
-export default CreatePostModalMutations
+export default withRouter(CreatePostModalMutations)

@@ -1,12 +1,18 @@
 import React from 'react'
 import propTypes from 'prop-types'
+
 import ProfileUserFormKeyInput from '../ProfileUserFormKeyInput'
 import FormInput from '../FormInput'
 import {
   Grid,
   Paper,
-  Button
+  Button,
+  TextField,
+  Adormentm,
+  InputAdornment,
+  IconButton
 } from '@material-ui/core'
+import { Save, Edit } from '@material-ui/icons'
 import { useStyles } from './styles'
 
 type UpdateUserVariables = {
@@ -25,6 +31,10 @@ type UserFormProps = {
 }
 
 const UserForm = React.forwardRef((props: UserFormProps, ref) => {
+  const [editing, setEditing] = React.useState({
+    name: false,
+    email: false
+  })
   const classes = useStyles(props)
   const {
     onCopy,
@@ -53,25 +63,56 @@ const UserForm = React.forwardRef((props: UserFormProps, ref) => {
     })
   }
 
+  const toggleEditing = key => evt => {
+    setEditing({
+      ...editing,
+      [key]: !editing[key]
+    })
+  }
+
   return (
     <Paper className={className}>
       <Grid container spacing={4} className={classes.gutter}>
         <Grid item xs={6}>
-          <FormInput
+          <TextField
+            disabled={!editing.name}
             placeholder='Name'
             value={name}
             onChange={onNameChange}
             label='Name'
             fullWidth
+            variant='outlined'
+            margin='dense'
+            InputProps={{
+              endAdornment: (
+                  <InputAdornment position='end' className={classes.adornment}>
+                    <IconButton onClick={toggleEditing('name')}>
+                      {editing.name ? <Save /> : <Edit />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+            }}
           />
         </Grid>
         <Grid item xs={6}>
-          <FormInput
+          <TextField
+            disabled={!editing.email}
             placeholder='Email'
             value={email}
             onChange={onEmailChange}
             label='Email'
             fullWidth
+            variant='outlined'
+            margin='dense'
+            InputProps={{
+              endAdornment: (
+                  <InputAdornment position='end' className={classes.adornment}>
+                    <IconButton onClick={toggleEditing('email')}>
+                      {editing.email ? <Save /> : <Edit />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+            }}
           />
         </Grid>
       </Grid>

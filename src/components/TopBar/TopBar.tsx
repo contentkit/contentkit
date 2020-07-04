@@ -67,6 +67,11 @@ function TopBar (props) {
       label: 'Tags',
       key: 'tags',
       pathname: '/tags'
+    },
+    {
+      label: 'Migrations',
+      key: 'migrations',
+      pathname: '/migrations'
     }
   ]
   const createClickHandler = button => evt => {
@@ -79,7 +84,7 @@ function TopBar (props) {
   return (
     <Paper className={classes.root} elevation={2} square>
       <Toolbar variant='dense'>
-        <Typography className={classes.brand} component='a' href='/'>
+        <Typography className={classes.brand} component='a' href='/posts'>
           ContentKit
         </Typography>
       </Toolbar>
