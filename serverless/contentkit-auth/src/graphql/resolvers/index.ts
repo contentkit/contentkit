@@ -3,9 +3,12 @@ import { AuthenticationError } from 'apollo-server-lambda'
 import * as bcrypt from 'bcryptjs'
 import { Context as LambdaContext, APIGatewayProxyEvent } from 'aws-lambda'
 import GraphQLJSON from 'graphql-type-json'
+import * as pg from 'pg'
 
+import mailgun from './mailgun'
 import { EMAIL_REGEX } from '../fixtures'
 import { createPresignedPost } from './upload'
+import { getHasuraClaims } from '../util'
 
 export type ApolloContext =  {
   context: LambdaContext,
@@ -13,8 +16,8 @@ export type ApolloContext =  {
 }
 
 export type Context = ApolloContext & {
-  client?: pg.Client,
-  token?: string
+  client: pg.Client,
+  token: string
 }
 
 export type LoginVariables = {
@@ -40,7 +43,7 @@ function sign (payload, expires): Promise<string> {
   )
 }
 
-async function getUserByEmail (client, email) {
+async function getUserByEmail (client: pg.Client, email: string) {
   if (email.length < 3) {
     throw new AuthenticationError('Invalid email')
   }
@@ -101,13 +104,7 @@ async function login (_, { credentials: { email, password } }, ctx: Context) {
   const token = await sign({
     sub: user.id,
     email: email,
-    'https://hasura.io/jwt/claims': {
-      'x-hasura-default-role': 'user',
-      'x-hasura-allowed-roles': [
-        'user'
-      ],
-      'x-hasura-user-id': user.id
-    }
+    ...getHasuraClaims(user.id)
   }, '168h')
 
   return { token }
@@ -132,13 +129,7 @@ async function register (_, { credentials: { email, password } }, ctx) {
   const token = await sign({
     sub: user.id,
     email: email,
-    'https://hasura.io/jwt/claims': {
-      'x-hasura-default-role': 'user',
-      'x-hasura-allowed-roles': [
-        'user'
-      ],
-      'x-hasura-user-id': user.id
-    }
+    ...getHasuraClaims(user.id)
   }, '168h')
 
   return { token }
@@ -148,13 +139,7 @@ async function getToken () {
   const token = await sign({
     email: null,
     sub: '000000000',
-    'https://hasura.io/jwt/claims': {
-      'x-hasura-default-role': 'anonymous',
-      'x-hasura-allowed-roles': [
-        'anonymous'
-      ],
-      'x-hasura-user-id': '000000000'
-    }
+    ...getHasuraClaims('000000000', 'anonymous')
   }, '1y')
 
   return { token }
@@ -184,19 +169,50 @@ async function getSecret (_, { id }, ctx) {
   const token = await sign({
     sub: user.id,
     email: user.email,
-    'https://hasura.io/jwt/claims': {
-      'x-hasura-default-role': 'user',
-      'x-hasura-allowed-roles': [
-        'user'
-      ],
-      'x-hasura-user-id': user.id
-    }
+    ...getHasuraClaims(user.id)
   }, '1y')
 
   return { token }
 }
 
 
+async function sendResetPasswordLink (parent, variables, context) {
+  const user = await getUserByEmail(context.client, variables.email)
+  const nonce = await sign({
+    sub: user.id,
+    email: variables.email,
+    ...getHasuraClaims(user.id)
+  }, '1d')
+
+  const link = `https://contentkit.co/login?none=${nonce}`
+
+  const data = {
+    from: 'Ben <ben@mail.contentkit.co>',
+    to: variables.email,
+    subject: 'Password Reset',
+    text: [
+      'Hi',
+      'Please follow this password reset link to restore access to your account.',
+      '',
+      link,
+      '',
+      'Thanks'
+    ].join('\n')
+  }
+
+  console.log(data)
+   
+  try {
+    const body = await mailgun.messages().send(data)
+    console.log(body)
+  } catch (err) {
+    console.error(err)
+    return { succes: false }
+  }
+  return {
+    succes: true
+  }
+}
 
 export default {
   Mutation: {
@@ -204,7 +220,8 @@ export default {
     register,
     getSecret,
     resetPassword,
-    createPresignedPost
+    createPresignedPost,
+    sendResetPasswordLink
   },
   Payload: {},
   Query: {

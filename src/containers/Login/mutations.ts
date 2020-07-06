@@ -1,7 +1,9 @@
 import { useMutation, useApolloClient } from '@apollo/client'
 import {
   SIGNUP_USER,
-  AUTHENTICATE_USER
+  AUTHENTICATE_USER,
+  RESET_PASSWORD,
+  REQUEST_PASSWORD_RESET_LINK
 } from '../../graphql/mutations'
 import { GraphQLContexts } from '../../graphql/constants'
 
@@ -56,5 +58,34 @@ export function useRegisterUser () {
     }
 
     return response
+  }
+}
+
+
+export function useResetPassword () {
+  const [mutate] = useMutation(RESET_PASSWORD, {
+    context: GraphQLContexts.AUTH
+  })
+
+
+  return async (variables) => {
+    const data = await mutate({
+      variables
+    })
+    console.log(data)
+  }
+}
+
+export function useRequestPasswordResetLink () {
+  const [mutate] = useMutation(REQUEST_PASSWORD_RESET_LINK, {
+    context: GraphQLContexts.AUTH
+  })
+
+
+  return async (variables) => {
+    const data = await mutate({
+      variables
+    })
+    console.log(data)
   }
 }

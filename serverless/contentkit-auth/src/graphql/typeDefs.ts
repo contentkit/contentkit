@@ -25,6 +25,7 @@ const typeDefs = gql`
     register(credentials: UserCredentials!): Payload
     login(credentials: UserCredentials!): Payload
     resetPassword(credentials: UserCredentials!): ResetPasswordPayload
+    sendResetPasswordLink(email: String!): ResetPasswordPayload
     getSecret(id: String!): Payload
     createPresignedPost(userId: String!, key: String!): PresignedPayload
   }

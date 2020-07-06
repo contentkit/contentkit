@@ -11,14 +11,6 @@ const useStyles = makeStyles(theme => ({
       borderColor: '#e2e8f0'
     }
   },
-  // input: {
-  //   backgroundColor: '#f4f4f4',
-  //   border: '2px solid #f4f4f4',
-  //   '&:focus-within': {
-  //     borderRadius: 0,
-  //     border: '2px solid #0f62fe'
-  //   }
-  // }
   notchedOutline: {
     borderColor: '#e2e8f0'
   },

@@ -205,6 +205,22 @@ export const SIGNUP_USER = gql`
   }
 `
 
+export const RESET_PASSWORD = gql`
+  mutation($credentials: UserCredentials!) {
+    resetPassword(credentials: $credentials) {
+      success
+    }
+  }
+`
+
+export const REQUEST_PASSWORD_RESET_LINK = gql`
+  mutation($email: String!) {
+    sendResetPasswordLink(email: $email) {
+      success
+    }
+  }
+`
+
 export const DELETE_ORIGIN = gql`
   mutation ($id: String!) {
     delete_origins (where: { id: { _eq: $id } }) {

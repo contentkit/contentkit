@@ -33,6 +33,8 @@ provider:
     CLIENT_SESSION_ID: ${ssm:/contentkit/client_session_id}
     CLIENT_SESSION_SECRET: ${ssm:/contentkit/client_secret~true}
     AWS_BUCKET: contentkit
+    MAILGUN_DOMAIN: ${ssm:/contentkit/mailgun_domain}
+    MAILGUN_API_KEY: ${ssm:/contentkit/mailgun_api_key~true}
   iamRoleStatements:
     - Effect: Allow
       Action:

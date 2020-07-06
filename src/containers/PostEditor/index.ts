@@ -7,13 +7,9 @@ import * as actions from '../../store/actions'
 
 const mapStateToProps = (state) => ({
   status: state.app.status,
-  localRawEditorState: selectors.getRawEditorState(state)
 })
 
 const mapDispatchToProps = {
-  saveEditorState: actions.saveEditorState,
-  saveEditorStateLocally: actions.saveEditorStateLocally,
-  discardLocalEditorState: actions.discardLocalEditorState,
   setStatus: actions.setStatus
 }
 

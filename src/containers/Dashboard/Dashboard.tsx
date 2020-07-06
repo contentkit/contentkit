@@ -19,6 +19,7 @@ import DashboardSettingsModal from '../../components/DashboardSettingsModal'
 import { useSetSettingMutation } from '../../graphql/mutations'
 import usePersistentState from '../../hooks/usePersistentState'
 import TopBar from '../../components/TopBar'
+
 const modals = [
   {
     name: ModalType.CREATE_POST,

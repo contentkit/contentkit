@@ -6,7 +6,6 @@ import { DeleteForever } from '@material-ui/icons'
 import { AppWrapper, EditorToolbar, MediaProvider } from '@contentkit/components'
 import { useQuery, useApolloClient } from '@apollo/client'
 import { expand } from 'draft-js-compact'
-import { useDebounce } from 'react-use'
 import { useSnackbar } from 'notistack'
 
 import PostEditorComponent from '../../components/PostEditorComponent'
@@ -25,6 +24,9 @@ import { ModalType } from '../../fixtures'
 import EditorCache from '../../store/EditorCache'
 import { AWS_BUCKET_URL } from '../../lib/config'
 import usePersistentState from '../../hooks/usePersistentState'
+import useLocalStorage from '../../hooks/useLocalStorage'
+import useSaveEditorState from '../../hooks/useSaveEditorState'
+
 import TopBar from '../../components/TopBar'
 import p from '../../assets/paragraph.svg'
 import pen from '../../assets/pen.svg'
@@ -34,7 +36,7 @@ function PostEditor (props) {
   const classes = useStyles(props)
   const client = useApolloClient()
   const { enqueueSnackbar } = useSnackbar()
-  const [loading, setLoading] = React.useState(false)
+  // const [loading, setLoading] = React.useState(false)
   const [snackbarOpen, setSnackbarOpen] = React.useState(false)
 
   const [open, setOpen] = React.useState({
@@ -48,10 +50,7 @@ function PostEditor (props) {
 
   const {
     onDismiss,
-    localRawEditorState,
-    saveEditorState,
-    saveEditorStateLocally,
-    discardLocalEditorState,
+    // localRawEditorState,
     history,
     users,
     posts: {
@@ -59,7 +58,7 @@ function PostEditor (props) {
         posts
       }
     },
-    status
+    // status
   } = props
 
   const postId = posts[0]?.id
@@ -79,20 +78,11 @@ function PostEditor (props) {
     })
   }
 
-  const onCloseDrawer = (key) => () => {
-    setOpen({
-      ...open,
-      [key]: false,
-    })
-  }
-
   const mediaProvider : React.RefObject<any> = React.useRef(null)
   const rawEditorStateRef = React.useRef(null)
   const raw = posts[0]?.raw
 
-  useDebounce(() => {
-    saveEditorStateLocally(editorState)
-  }, 3000, [editorState])
+  const [isReady, cancel] = useLocalStorage(postId, editorState)
 
   React.useEffect(() => {
     if (!raw) {
@@ -106,6 +96,7 @@ function PostEditor (props) {
     EditorCache.hash(JSON.stringify(rawEditorState)).then(hash => {
       rawEditorStateRef.current = rawEditorState
     
+      const localRawEditorState = EditorCache.create(postId).getRawState()
       if (localRawEditorState && hash !== editorCache.getHash()) {
         rawEditorState = localRawEditorState
         setSnackbarOpen(true)
@@ -125,15 +116,10 @@ function PostEditor (props) {
 
   const getEditorState = () => editorState
 
-  const saveDocument = async () => {
-    const id = posts[0].id
-    await saveEditorState({ editorState, id })
-    setLoading(false)
-  }
+  const [saveDocument, loading] = useSaveEditorState(postId)
 
   const manualSave = async () => {
-    setLoading(true)
-    await saveDocument()
+    await saveDocument(editorState)
   }
 
   const onClick = ({ key }: { key: ModalType }) => {
@@ -176,7 +162,6 @@ function PostEditor (props) {
 
   const onClickDiscardChanges = key => () => {
     onDismiss(key)
-    discardLocalEditorState()
     setEditorState(expandCompressedRawContentBlocks(editorState, rawEditorStateRef.current))
     onCloseSnackbar()
   }
@@ -231,16 +216,6 @@ function PostEditor (props) {
     }
   }, [snackbarOpen])
 
-  React.useEffect(() => {
-    if (status.isSavingLocally && !snackbarOpen) {
-      enqueueSnackbar('Saved locally', {
-        variant: 'success',
-        autoHideDuration: 1000,
-        persist: false,
-        preventDuplicate: true
-      })
-    }
-  }, [status])
   return (
     <AppWrapper
       renderToolbar={() => <TopBar history={history} onClick={onClick} />}

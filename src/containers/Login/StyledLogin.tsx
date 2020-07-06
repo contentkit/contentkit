@@ -8,9 +8,8 @@ import {
   Fade,
   CircularProgress
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
 import Button from '../../components/Button'
-import { useAuthenticateUser, useRegisterUser } from './mutations'
+import { useAuthenticateUser, useRegisterUser, useResetPassword, useRequestPasswordResetLink } from './mutations'
 import { useUserQuery } from '../../graphql/queries'
 import useStyles from './styles'
 import LoginField from './components/LoginField'
@@ -54,10 +53,23 @@ function Login (props) {
   const [password, setPassword] = React.useState('')
   const [tab, setTab] = React.useState(0)
   const [passwordResetSent, setPasswordResetSent] = React.useState(false)
+  const [isResetting, setIsResetting] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
+
+  const resetPassword = useResetPassword()
   const authenticateUser = useAuthenticateUser()
   const registerUser = useRegisterUser()
+  const requestPasswordResetLink = useRequestPasswordResetLink()
 
+  React.useEffect(() => {
+    const params = new URLSearchParams(history.location.search)
+    if (params.has('nonce')) {
+      setIsResetting(true)
+      setTab(1)
+      // @ts-ignore
+      window.localStorage.setItem('token', params.get('nonce'))
+    }
+  }, [history.location.search]) 
   
   const handleTabChange = (evt, value) => {
     setTab(value)
@@ -96,7 +108,22 @@ function Login (props) {
     redirect()
   }
 
-  const resetPassword = () => {}
+  const onResetPassword = async () => {
+    setLoading(true)
+
+    if (isResetting) {
+      await resetPassword({
+        credentials: {
+          email,
+          password
+        }
+      })
+    } else {
+      await requestPasswordResetLink({ email })
+    }
+
+    setLoading(false)
+  }
 
   const emailOnChange = evt => setEmail(evt.target.value)
 
@@ -131,7 +158,7 @@ function Login (props) {
               />
             </Box>
             <Box mb={2}>
-              {showLogin
+              {(showLogin || isResetting)
                 ? <LoginField
                     value={password}
                     onChange={passwordOnChange}
@@ -163,7 +190,7 @@ function Login (props) {
               </React.Fragment>
             ) : (
               <Grid item>
-                <Button onClick={resetPassword} size={'large'}>Reset</Button>
+                <Button onClick={onResetPassword} size={'large'}>Reset</Button>
               </Grid>
             )}
           </Grid>

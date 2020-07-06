@@ -183,7 +183,7 @@ CreateTagInput.defaultProps = {
 }
 
 CreateTagInput.propTypes = {
-  createTag: PropTypes.func.isRequired
+  onCreateTag: PropTypes.func.isRequired
 }
 
 function PostTagChips (props) {
