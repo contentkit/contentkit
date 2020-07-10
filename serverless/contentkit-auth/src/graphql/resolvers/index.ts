@@ -184,7 +184,7 @@ async function sendResetPasswordLink (parent, variables, context) {
     ...getHasuraClaims(user.id)
   }, '1d')
 
-  const link = `https://contentkit.co/login?none=${nonce}`
+  const link = `https://contentkit.co/login?nonce=${nonce}`
 
   const data = {
     from: 'Ben <ben@mail.contentkit.co>',

@@ -56,7 +56,7 @@ function EditableCell (props: EditableCellProps) {
     setHovering(false)
   }
 
-  const [value] = column.render(row)
+  const value = column.render(row)
   const { Component } = column
   const content = column.editable
     ? <Component

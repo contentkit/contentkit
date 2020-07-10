@@ -6,9 +6,9 @@ import { Autocomplete } from '@material-ui/lab'
 import { makeStyles } from '@material-ui/styles'
 import { createFilterOptions } from '@material-ui/lab/Autocomplete'
 
-import { useDeletePostTagConnectionMutation, useCreateTagMutation, useCreatePostTagConnectionMutation } from '../../graphql/mutations'
-import { useTagQuery, ALL_TAGS_QUERY } from '../../graphql/queries'
-import { genId } from '../../lib/util'
+import { useDeletePostTagConnectionMutation, useCreateTagMutation, useCreatePostTagConnectionMutation } from '../../../graphql/mutations'
+import { useTagQuery, ALL_TAGS_QUERY } from '../../../graphql/queries'
+import { genId } from '../../../lib/util'
 
 const useStyles = makeStyles(theme => ({
   tags: {
@@ -186,7 +186,7 @@ CreateTagInput.propTypes = {
   onCreateTag: PropTypes.func.isRequired
 }
 
-function PostTagChips (props) {
+function TagManager (props) {
   const { post, users } = props
   const classes = useStyles(props)
   const tagQuery = useTagQuery({ variables: { postId: post.id } })
@@ -250,4 +250,4 @@ function PostTagChips (props) {
   )
 }
 
-export default PostTagChips
+export default TagManager

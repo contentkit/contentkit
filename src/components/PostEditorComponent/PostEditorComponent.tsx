@@ -1,10 +1,9 @@
 import React from 'react'
-import { CSSTransition } from 'react-transition-group'
 
 import { Editor } from '@contentkit/editor'
 import { HANDLED, Command, insertAtomic, Block } from '@contentkit/util'
 import { useApolloClient } from '@apollo/client'
-import LinearProgress from '@material-ui/core/LinearProgress'
+import { Fade, LinearProgress } from '@material-ui/core'
 import gql from 'graphql-tag'
 
 import '@contentkit/editor/src/css/CheckableListItem.css'
@@ -68,7 +67,7 @@ function PostEditorComponent(props) {
   const onUpload = async (file: File): Promise<void> => {
     const postId = posts[0].id
     const userId = users.data.users[0].id
-    const { name, type, size } = file
+    const { name } = file
     const filename = sanitizeFileName(name)
     const key = `static/${postId}/${filename}`
     const createPresignedPost = await getFormData({ key, userId })
@@ -99,16 +98,9 @@ function PostEditorComponent(props) {
 
   return (
     <>
-      <CSSTransition
-        classNames={'transition'}
-        unmountOnExit
-        timeout={1000}
-        in={loading}
-      >
-        {state => (
-          <LinearProgress className={classes.progress} />
-        )}
-      </CSSTransition>
+      <Fade in={loading} unmountOnExit mountOnEnter>
+        <LinearProgress className={classes.progress} />
+      </Fade>
       <Dropzone
         className={classes.root}
         onUpload={onUpload}

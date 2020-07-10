@@ -10,7 +10,6 @@ const useStyles = makeStyles(theme => ({
     padding: '0px !important'
   },
   listItem: {
-    //backgroundColor: '#2D3748',
     display: 'inline-flex',
     justifyContent: 'center',
     height: 50,

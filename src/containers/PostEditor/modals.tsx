@@ -4,6 +4,13 @@ import { ModalItem } from '../../types'
 import PostEditorHistoryModal from '../../components/PostEditorHistoryModal'
 import { JsonEditorModal } from '@contentkit/json-editor'
 import Drawer from '../../components/Drawer'
+import PostSettings from '../../components/PostSettings'
+
+const PostMetaDrawer = props => (
+  <Drawer {...props}>
+    <PostSettings {...props} />
+  </Drawer>
+)
 
 export const modals : ModalItem[] = [
   {
@@ -18,7 +25,7 @@ export const modals : ModalItem[] = [
   },
   {
     name: ModalType.POSTMETA,
-    Component: Drawer,
+    Component: PostMetaDrawer,
     getComponentProps: ({ users, posts, createImage, deleteImage, getFormData, mediaProvider }) => ({
       users,
       posts,

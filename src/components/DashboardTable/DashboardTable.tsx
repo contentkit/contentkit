@@ -2,8 +2,6 @@ import React from 'react'
 
 import { useApolloClient } from '@apollo/client'
 import { Grow, Paper, TableBody, TableRow, TableCell, Table, CircularProgress } from '@material-ui/core'
-import { Skeleton } from '@material-ui/lab'
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank'
 import { SortDirection } from '@material-ui/core/TableCell'
 import orderBy from 'lodash/orderBy'
 import { POSTS_AGGREGATE_QUERY } from '../../graphql/queries'
@@ -14,6 +12,7 @@ import DashboardPagination from './components/DashboardPagination'
 import DashboardTableHead from './components/TableHead'
 import { GraphQL } from '../../types'
 import useStyles from './styles'
+import PlaceholderTableRows from './components/PlaceholderTableRows'
 
 enum PaginationDirection {
   FORWARD = 'forward',
@@ -44,7 +43,6 @@ function DashboardTable (props) {
     settings,
     offset,
     setOffset,
-    placeholders
   } = props
 
   const classes = useStyles(props)
@@ -81,7 +79,6 @@ function DashboardTable (props) {
 
   const load = (direction: PaginationDirection) => {
     const { variables, data: { posts_aggregate } } = posts
-    const { nodes } = posts_aggregate
     const nextOffset = direction === PaginationDirection.FORWARD ? offset + 10 : Math.max(0, offset - 10)
     const nextVariables = {
       ...variables,
@@ -157,42 +154,12 @@ function DashboardTable (props) {
     <div className={classes.wrapper}>
       <Paper elevation={0} className={classes.paper}>
         {renderToolbar(toolbarProps)}
-        {/* <Grow in={searchLoading} unmountOnExit mountOnEnter>
-          <div className={classes.progress}>
-            <CircularProgress />
-          </div>
-        </Grow> */}
         <Table size='small' className={classes.table}>
           <DashboardTableHead sort={sort} onSort={onSort} columns={columns} />
             <TableBody>
-            {
-            searchLoading
-            ? placeholders.map(placeholder => (
-                <TableRow>
-                  <TableCell>
-                    <CheckBoxOutlineBlankIcon className={classes.checkbox} />
-                  </TableCell>
-                  <TableCell>
-                    {placeholder}
-                  </TableCell>
-                  <TableCell>
-                    {placeholder}
-                  </TableCell>
-                  <TableCell>
-                    {placeholder}
-                  </TableCell>
-                  <TableCell>
-                    {placeholder}
-                  </TableCell>
-                  <TableCell>
-                    {placeholder}
-                  </TableCell>
-                  <TableCell>
-                    {placeholder}
-                  </TableCell>
-                </TableRow>
-              ))
-            : rows.map(row => {
+            {searchLoading
+              ? <PlaceholderTableRows classes={{ checkbox: classes.checkbox }} />
+              : rows.map(row => {
                 return (
                   <DashboardTableRow
                     key={row.id}
@@ -217,8 +184,7 @@ function DashboardTable (props) {
 }
 
 DashboardTable.defaultProps = {
-  selectedPostIds: [],
-  placeholders: new Array(10).fill(0).map(_ => (<Skeleton variant="rect" width={175} height={40} />))
+  selectedPostIds: []
 }
 
 export default DashboardTable

@@ -3,7 +3,7 @@ import React from 'react'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import TableCellInput from './components/TableCellInput'
 import TableCellSelect from './components/TableCellSelect'
-import { Chip } from '@contentkit/components'
+import { Chip } from '@material-ui/core'
 import { Column } from './types'
 import { makeStyles } from '@material-ui/styles'
 
@@ -39,7 +39,7 @@ const columns: Column[] = [{
   key: 'title',
   dataIndex: 'title',
   editable: true,
-  render: row => [row.title, { slug: `/posts/${row.id}` }],
+  render: row => row.title,
   Component: TableCellInput,
   getProps: (row) => ({ slug: `/posts/${row.id}` })
 }, {
@@ -47,7 +47,7 @@ const columns: Column[] = [{
   key: 'status',
   dataIndex: 'status',
   editable: true,
-  render: row => [row.status]
+  render: row => row.status,
   Component: TableCellSelect,
   getOptions: () => ([
     { key: 'DRAFT', label: 'DRAFT' },
@@ -57,14 +57,14 @@ const columns: Column[] = [{
   title: 'Project',
   key: 'project',
   dataIndex: 'project',
-  render: (row) => [row.project.name],
+  render: (row) => row.project.name,
   editable: false
 }, {
   title: 'Date',
   key: 'created_at',
   dataIndex: 'createdAt',
   editable: false,
-  render: (row) => [formatDate(row.created_at)]
+  render: (row) => formatDate(row.created_at)
 }, {
   title: 'Tags',
   key: 'posts_tags',
@@ -74,18 +74,17 @@ const columns: Column[] = [{
     const chips = posts_tags.map(({ tag }) => (
       <Chip key={tag.id} label={tag.name} style={{ marginRight: 8, backgroundColor: '#48BB78' }} />
     ))
-    return [chips]
+    return chips
 },{
   title: 'Image',
   key: 'image',
   dataIndex: 'image',
   editable: false,
   render: (row) => {
-    console.log(row)
-    if (!row?.image?.id) return ['']
-    return [
+    if (!row?.image?.id) return ''
+    return (
       <Thumbail image={row.image} />
-    ]
+    )
   }
 }]
 

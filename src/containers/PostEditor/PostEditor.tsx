@@ -2,11 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { EditorState } from 'draft-js'
 import { Divider, IconButton, List, ListItem, Button } from '@material-ui/core'
-import { DeleteForever } from '@material-ui/icons'
-import { AppWrapper, EditorToolbar, MediaProvider } from '@contentkit/components'
+import { AppWrapper, EditorToolbar } from '@contentkit/components'
 import { useQuery, useApolloClient } from '@apollo/client'
-import { expand } from 'draft-js-compact'
-import { useSnackbar } from 'notistack'
 
 import PostEditorComponent from '../../components/PostEditorComponent'
 import {
@@ -21,23 +18,19 @@ import { POST_QUERY, USER_QUERY } from '../../graphql/queries'
 import useStyles from './styles'
 import modals from './modals'
 import { ModalType } from '../../fixtures'
-import EditorCache from '../../store/EditorCache'
-import { AWS_BUCKET_URL } from '../../lib/config'
 import usePersistentState from '../../hooks/usePersistentState'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import useSaveEditorState from '../../hooks/useSaveEditorState'
+import useMediaProvider from '../../hooks/useMediaProvider'
 
 import TopBar from '../../components/TopBar'
-import p from '../../assets/paragraph.svg'
+import paragraph from '../../assets/paragraph.svg'
 import pen from '../../assets/pen.svg'
 import code from '../../assets/code.svg'
 
 function PostEditor (props) {
   const classes = useStyles(props)
   const client = useApolloClient()
-  const { enqueueSnackbar } = useSnackbar()
-  // const [loading, setLoading] = React.useState(false)
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
 
   const [open, setOpen] = React.useState({
     [ModalType.HISTORY]: false,
@@ -50,7 +43,6 @@ function PostEditor (props) {
 
   const {
     onDismiss,
-    // localRawEditorState,
     history,
     users,
     posts: {
@@ -58,7 +50,6 @@ function PostEditor (props) {
         posts
       }
     },
-    // status
   } = props
 
   const postId = posts[0]?.id
@@ -78,41 +69,17 @@ function PostEditor (props) {
     })
   }
 
-  const mediaProvider : React.RefObject<any> = React.useRef(null)
-  const rawEditorStateRef = React.useRef(null)
   const raw = posts[0]?.raw
 
-  const [isReady, cancel] = useLocalStorage(postId, editorState)
 
-  React.useEffect(() => {
-    if (!raw) {
-      return
-    }
-    if (rawEditorStateRef.current) {
-      return
-    }
-    let rawEditorState = expand(posts[0]?.raw)
-    const editorCache = new EditorCache({ id: postId })
-    EditorCache.hash(JSON.stringify(rawEditorState)).then(hash => {
-      rawEditorStateRef.current = rawEditorState
-    
-      const localRawEditorState = EditorCache.create(postId).getRawState()
-      if (localRawEditorState && hash !== editorCache.getHash()) {
-        rawEditorState = localRawEditorState
-        setSnackbarOpen(true)
-      }
+  const onDiscard = (key, rawEditorStateRef) => () => {
+    onDismiss(key)
+    setEditorState(expandCompressedRawContentBlocks(editorState, rawEditorStateRef.current))
+  }
 
-      onChange(expandCompressedRawContentBlocks(editorState, rawEditorState))
-    })
-  }, [raw])
+  const [isReady, cancel] = useLocalStorage({ postId, editorState, onDiscard, onChange, raw })
 
-  React.useEffect(() => {
-    const config = {
-      baseUrl: `${AWS_BUCKET_URL}/`
-    }
-    // @ts-ignore
-    mediaProvider.current = new MediaProvider(config, client)
-  }, [])
+  const mediaProvider = useMediaProvider()
 
   const getEditorState = () => editorState
 
@@ -151,20 +118,10 @@ function PostEditor (props) {
       uploads={posts[0]?.images}
       getEditorState={getEditorState}
       setEditorState={onChange}
-      mediaProvider={mediaProvider.current}
+      mediaProvider={mediaProvider}
       client={client}
     />
   )
-
-  const onCloseSnackbar = () => {
-    setSnackbarOpen(false)
-  }
-
-  const onClickDiscardChanges = key => () => {
-    onDismiss(key)
-    setEditorState(expandCompressedRawContentBlocks(editorState, rawEditorStateRef.current))
-    onCloseSnackbar()
-  }
 
   const modalProps = {
     ...props,
@@ -174,16 +131,12 @@ function PostEditor (props) {
     getFormData,
     saveDocument,
     onSaveRawEditor,
-    mediaProvider: mediaProvider.current,
+    mediaProvider
   }
 
   const sidebarProps = {
     children: (
       <List disablePadding>
-        <ListItem disableGutters className={classes.listItem}>
-          <img src={p} width='18' />
-        </ListItem>
-        <Divider className={classes.divider} />
         <ListItem disableGutters className={classes.listItem}>
           <IconButton className={classes.iconButton} onClick={onToggleDrawer(ModalType.POSTMETA)}>
             <img src={pen} width='18' />
@@ -197,24 +150,6 @@ function PostEditor (props) {
       </List>
     )
   }
-
-  React.useEffect(() => {
-    if (snackbarOpen) {
-      enqueueSnackbar('Loading unsaved changes backed up in your browser.', {
-        variant: 'info',
-        action: key => (
-          <Button
-            variant='text'
-            startIcon={<DeleteForever />}
-            onClick={onClickDiscardChanges(key)}
-            className={classes.button}
-          >
-            Discard Changes
-          </Button>
-        )
-      })
-    }
-  }, [snackbarOpen])
 
   return (
     <AppWrapper
@@ -259,7 +194,7 @@ function EditorWithData (props) {
   const users = useQuery(USER_QUERY)
   const createImage = useCreateImage()
   const deleteImage = useDeleteImage()
-  const componentProps = {
+  const componentProps = React.useMemo(() => ({
     posts,
     users,
     createImage,
@@ -269,7 +204,7 @@ function EditorWithData (props) {
       onCreate: createImage
     },
     ...props
-  }
+  }), [posts, users])
 
   if (posts.loading) {
     return null

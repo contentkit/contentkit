@@ -8,11 +8,11 @@ import { OutlinedInput, Box, Grid } from '@material-ui/core'
 import { Add } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/styles'
 
-import PostStatusSelect from '../PostEditorMetaModalSelect'
-import ProjectSelect from '../ProjectSelect'
-import PostMetaDatePicker from '../PostEditorMetaModalDatePicker'
-import PostTagChips from '../PostTagChips'
-import FormInput from '../FormInput'
+import PostStatusSelect from '../../PostEditorMetaModalSelect'
+import ProjectSelect from '../../ProjectSelect'
+import PostMetaDatePicker from '../../PostEditorMetaModalDatePicker'
+import TagManager from './TagManager'
+import FormInput from '../../FormInput'
 
 
 const useStyles = makeStyles((theme: any) => ({
@@ -49,7 +49,7 @@ enum FieldType {
   CUSTOM = 'custom'
 }
 
-function PostEditorMetaModalForm (props) {
+function PostSettingsForm (props) {
   const classes = useStyles(props)
   const {
     onChange,
@@ -190,14 +190,14 @@ function PostEditorMetaModalForm (props) {
       </Grid>
       <Grid container>
         <Grid item xs={12}>
-          <PostTagChips post={post} users={users} />
+          <TagManager post={post} users={users} />
         </Grid>
       </Grid>
     </form>
   )
 }
 
-PostEditorMetaModalForm.propTypes = {
+PostSettingsForm.propTypes = {
   projects: PropTypes.object.isRequired,
   post: PropTypes.object.isRequired,
   onChange: PropTypes.func,
@@ -221,7 +221,7 @@ function MetaModalWithQuery (props) {
   }
 
   return (
-    <PostEditorMetaModalForm {...props} projects={projects} /> 
+    <PostSettingsForm {...props} projects={projects} /> 
   )
 }
 

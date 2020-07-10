@@ -247,3 +247,9 @@ export function usePostsAggregateQuery (options): GraphQL.PostsAggregateQueryRes
 export function useTagQuery (options): GraphQL.TagQueryResult {
   return useQuery(TAG_QUERY, options)
 }
+
+export const IS_LOGGED_IN = gql`
+  query IsUserLoggedIn {
+    isLoggedIn @client
+  }
+`

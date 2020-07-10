@@ -4,7 +4,7 @@ import { Toolbar } from '@material-ui/core'
 import { useApolloClient } from '@apollo/client'
 import gql from 'graphql-tag'
 
-import PostMetaForm from '../PostEditorMetaModalForm'
+import PostSettingsForm from './components/PostSettingsForm'
 import { POST_QUERY } from '../../graphql/queries'
 import Button from '../Button'
 import { makeStyles } from '@material-ui/styles'
@@ -58,10 +58,9 @@ const getDate = ({ posts }) => {
   return date
 }
 
-function EditPostMetaModal (props) {
+function PostSettings (props) {
   const classes = useStyles()
   const client = useApolloClient()
-  const [dateInputState, setDateInput] = React.useState(getDate(props))
   const {
     onClose,
     open,
@@ -154,14 +153,12 @@ function EditPostMetaModal (props) {
   const post = props?.posts?.data?.posts[0]
   if (!post) return false
 
-  const title = (<h2>Update Postmeta</h2>)
   return (
       <>
-        <PostMetaForm
+        <PostSettingsForm
           users={users}
           post={posts[0]}
           onChange={onChange}
-          onDateInputChange={setDateInput}
           onCoverImageChange={onCoverImageChange}
           selectProject={selectProject}
           getFormData={getFormData}
@@ -183,7 +180,7 @@ function EditPostMetaModal (props) {
 }
 
 
-EditPostMetaModal.propTypes = {
+PostSettings.propTypes = {
   createImage: PropTypes.func.isRequired,
   updatePost: PropTypes.func,
   onClose: PropTypes.func,
@@ -193,4 +190,4 @@ EditPostMetaModal.propTypes = {
   users: PropTypes.object.isRequired
 }
 
-export default EditPostMetaModal
+export default PostSettings

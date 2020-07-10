@@ -10,14 +10,17 @@ import client from './lib/client'
 import { store, history } from './store'
 import pages from './pages'
 import { ThemeProvider } from './lib/theme'
-import {  USER_QUERY } from './graphql/queries'
+import {  USER_QUERY, IS_LOGGED_IN } from './graphql/queries'
 import Login from './containers/Login'
 
 const UP_STAGE = process.env.UP_STAGE || undefined
 
 function AuthedApp (props) {
-  const rootQuery = useQuery(USER_QUERY)
   const notistackRef = React.createRef()
+  const authQuery =  useQuery(IS_LOGGED_IN)
+  const rootQuery = useQuery(USER_QUERY, {
+    skip: !authQuery.data.isLoggedIn
+  })
 
   const onDismiss = (key) => {
     // @ts-ignore
@@ -25,10 +28,12 @@ function AuthedApp (props) {
   }
 
   React.useEffect(() => {
-    if (rootQuery.error) {
-      history.push('/login') 
+    if (authQuery.data.isLoggedIn) {
+      history.push('/dashboard') 
+    } else {
+      history.push('/login')
     }
-  }, [rootQuery])
+  }, [authQuery])
 
   return (
     <SnackbarProvider maxSnack={3} ref={notistackRef} anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>

@@ -2,13 +2,11 @@ import React from 'react'
 import ProjectModalContent from '../ProjectModalContent'
 import PropTypes from 'prop-types'
 import { Button, Grid, Dialog, DialogContent, DialogActions, DialogTitle } from '@material-ui/core'
-import { useQuery, useMutation, useApolloClient } from '@apollo/client'
+import { useQuery, useApolloClient } from '@apollo/client'
 import {
   PROJECT_QUERY
 } from '../../../../graphql/queries'
 import {
-  CREATE_ORIGIN,
-  DELETE_ORIGIN,
   useCreateOriginMutation,
   useDeleteOriginMutation
 } from '../../../../graphql/mutations'
