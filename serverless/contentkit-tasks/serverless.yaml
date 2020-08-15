@@ -1,0 +1,48 @@
+service: contentkit-tasks
+
+plugins:
+  - serverless-plugin-typescript
+
+custom:
+  stage: prod
+  debug: "*"
+  deploymentBucket: 'global-deployment-bucket'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${self:custom.stage}
+  region: us-east-1
+  disableLogs: false
+  logRetentionInDays: 7
+  deploymentBucket:
+    name: ${self:custom.deploymentBucket}
+  environment:
+    PGHOST: ${ssm:/contentkit/pg_host}
+    PGUSER: postgres
+    PGDATABASE: contentkit
+    PGPASSWORD: ${ssm:/contentkit/pg_password~true}
+    PGPORT: 5432
+    AWS_BUCKET: contentkit
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: "*"
+
+functions:
+  handler:
+    timeout: 30
+    handler: src/handler.handler
+    events:
+      - http:
+          path: graphql
+          method: any
+          integration: lambda-proxy
+          cors: true
+
+resources:
+  Resources:
+    HandlerLogGroup:
+      Properties:
+        RetentionInDays: 7

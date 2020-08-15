@@ -1,0 +1,22 @@
+{
+  "name": "contentkit-tasks",
+  "version": "0.0.1",
+  "main": "src/handler.js",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.709.0",
+    "aws4": "^1.10.0",
+    "mailgun-js": "^0.22.0",
+    "pg": "^7.12.1",
+    "pg-pool": "^2.0.7"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.56",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/node": "^14.0.13",
+    "@types/pg": "^7.14.3",
+    "@types/pg-pool": "^2.0.2",
+    "serverless-plugin-typescript": "^1.1.9",
+    "typescript": "^3.9.5"
+  }
+}

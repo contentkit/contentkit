@@ -1,0 +1,26 @@
+language: node_js
+node_js:
+- 12
+branches:
+  only:
+  - master
+install:
+  - yarn install
+  - yarn add @contentkit/editor@latest
+before_script:
+script: 
+  - sudo apt-get install jq
+  - yarn add travis-up
+  - yarn run build
+  - sh bin/vault.sh
+before_deploy:
+  - ls -lat
+  - ./bin/up version
+deploy:
+  provider: script
+  script: ./bin/up deploy production
+  skip_cleanup: true
+
+env:
+  global:
+    AWS_REGION: us-east-1

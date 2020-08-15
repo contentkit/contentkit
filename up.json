@@ -1,0 +1,27 @@
+{
+  "name": "contentkit",
+  "regions": [
+    "us-east-1"
+  ],
+  "type": "static",
+  "static": {
+    "dir": "dist",
+    "prefix": "/assets/"
+  },
+  "redirects": {
+    "/*": {
+      "location": "/",
+      "status": 200
+    }
+  },
+  "stages": {
+    "staging": {
+      "domain": "dev.contentkit.co",
+      "zone": "contentkit.co"
+    },
+    "production": {
+      "domain": "contentkit.co",
+      "zone": "contentkit.co"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+.input::-webkit-inner-spin-button,
+.input::-webkit-calendar-picker-indicator,
+.input::-webkit-datetime-edit-fields-wrapper,
+.input::-webkit-datetime-edit {
+  color: red;
+}
+
+.input::-webkit-clear-button {
+  display: none;
+}
+.input::-webkit-calendar-picker-indicator {
+  display: none;
+}

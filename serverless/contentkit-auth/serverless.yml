@@ -1,0 +1,70 @@
+service: ck-auth
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-domain-manager
+
+custom:
+  stage: prod
+  debug: "*"
+  deploymentBucket: 'global-deployment-bucket'
+  customDomain:
+    domainName: auth.contentkit.co
+    stage: ${self:provider.stage}
+    certificateName: '*.contentkit.co'
+    createRoute53Record: true
+    certificateArn: 'arn:aws:acm:us-east-1:761245233224:certificate/7a2b47a6-22c6-4d1a-898d-53615bf9ff61'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${self:custom.stage}
+  region: us-east-1
+  disableLogs: false
+  logRetentionInDays: 7
+  deploymentBucket:
+    name: ${self:custom.deploymentBucket}
+  environment:
+    PGHOST: ${ssm:/contentkit/pg_host}
+    PGUSER: postgres
+    PGDATABASE: contentkit
+    PGPASSWORD: ${ssm:/contentkit/pg_password~true}
+    PGPORT: 5432
+    CLIENT_SESSION_ID: ${ssm:/contentkit/client_session_id}
+    CLIENT_SESSION_SECRET: ${ssm:/contentkit/client_secret~true}
+    AWS_BUCKET: contentkit
+    MAILGUN_DOMAIN: ${ssm:/contentkit/mailgun_domain}
+    MAILGUN_API_KEY: ${ssm:/contentkit/mailgun_api_key~true}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: "*"
+
+functions:
+  auth:
+    handler: src/auth/handler.handler
+  handler:
+    handler: src/graphql/handler.handler
+    events:
+      - http:
+          path: graphql
+          method: any
+          integration: lambda-proxy
+          authorizer: auth
+          cors: true
+      - http:
+          path: graphql
+          method: any
+          integration: lambda-proxy
+          authorizer: auth
+          cors: true
+
+resources:
+  Resources:
+    HandlerLogGroup:
+      Properties:
+        RetentionInDays: 7
+    AuthLogGroup:
+      Properties:
+        RetentionInDays: 7

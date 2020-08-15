@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "esModuleInterop": true,
+    "module": "es2015",
+    "baseUrl": ".",
+    "target": "es6",
+    "jsx": "react",
+    "paths": {
+      "~*": ["src/*"]
+    },
+    "lib": ["dom", "es2015", "esnext.asynciterable"],
+    "outDir": "./dist",
+    "strict": false,
+    "noUnusedParameters": false,
+    "moduleResolution": "node"
+  }
+}
