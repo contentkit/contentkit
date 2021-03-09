@@ -958,39 +958,39 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@contentkit/components@0.0.64", "@contentkit/components@^0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/components/-/components-0.0.64.tgz#603cab0e4818ab02583365de97f14612a9a20254"
-  integrity sha512-qWyTND84g82voeIHO0GdAGFo/a0fFRuUxOUQEQt7vY5Sh+TDuXD+Cc3OM1MujBDS6OD9E36HN/zd1GdK46YchA==
+"@contentkit/components@0.0.65", "@contentkit/components@^0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/components/-/components-0.0.65.tgz#24c9977435a4f0e85a0c225e75c172a0f1a3ea27"
+  integrity sha512-6Cl8n/XIl7SZ5FZTWURmW6ZezgFDaLU23xpaXviCijLAqPPRHn1lmA/G9cZZ9miuFqcKXgL8Km7lkK4RLcsqBQ==
   dependencies:
-    "@contentkit/sidebar" "^0.0.64"
-    "@contentkit/types" "^0.0.64"
-    "@contentkit/util" "^0.0.64"
+    "@contentkit/sidebar" "^0.0.65"
+    "@contentkit/types" "^0.0.65"
+    "@contentkit/util" "^0.0.65"
     clsx "^1.1.1"
     history "^5.0.0"
     safe-s3-key "^0.0.4"
 
-"@contentkit/convert@0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/convert/-/convert-0.0.64.tgz#10fc456beb16e0c0735eb705fad1436c845d8b59"
-  integrity sha512-1VB3Imc0QMbMCk2FKweIJbt5N5L0cCB6BksowlhaolfFwFXnwYSqyFGUS2ERMINLPgOpFvWyxrQN8OqY7gadQg==
+"@contentkit/convert@0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/convert/-/convert-0.0.65.tgz#5ca1417d55ec9cfd336bdec6fa232d13fbe68a7a"
+  integrity sha512-y4lZsqNvXbuOnq3pqQqo9WhyRlEMYVD2YfKEjCmKkzMGj7l9FOQ+BH8PrvPmikltHsDB4ujSSAzh5Du7pkJWdw==
   dependencies:
-    "@contentkit/types" "^0.0.64"
-    "@contentkit/util" "^0.0.64"
+    "@contentkit/types" "^0.0.65"
+    "@contentkit/util" "^0.0.65"
     draft-js-export-html "^1.4.1"
     html-element-attributes "^2.2.1"
     lodash.groupby "^4.6.0"
     lodash.pick "^4.4.0"
     prismjs "^1.20.0"
 
-"@contentkit/editor@0.0.64", "@contentkit/editor@^0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/editor/-/editor-0.0.64.tgz#32ee9129c5c49d8dc7f86ae542741d3fdf16964a"
-  integrity sha512-wO7tzzg46aljycMkIvGkSYfoLL1fnv3YCmMmY+ntJQkm2aYlV5ODGOJno/3I8LPl+iHp74aSxHZ4yJMM8/1IRA==
+"@contentkit/editor@0.0.65", "@contentkit/editor@^0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/editor/-/editor-0.0.65.tgz#e23e6e811b9532bfdb7a8dae92e52dd2de5de748"
+  integrity sha512-3MdejoZHJPQom22yey4WN19n0fL6sRtlxMF2xQpYVQ5UZrMk0MtopCfVqyq/8akc38v/rwiaeoI07JEvj2xh5Q==
   dependencies:
-    "@contentkit/components" "^0.0.64"
-    "@contentkit/types" "^0.0.64"
-    "@contentkit/util" "^0.0.64"
+    "@contentkit/components" "^0.0.65"
+    "@contentkit/types" "^0.0.65"
+    "@contentkit/util" "^0.0.65"
     append-stylesheet "^0.0.2"
     clsx "^1.1.1"
     decorate-component-with-props "^1.1.0"
@@ -1002,31 +1002,31 @@
     prismjs "^1.20.0"
     prop-types "^15.6.1"
 
-"@contentkit/json-editor@0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/json-editor/-/json-editor-0.0.64.tgz#b8a7df0b9654ba2b8f2810ac155432e12a757328"
-  integrity sha512-TxyhgeYqce5hEd3Bz0U+T48mV1wVOHOUML/lKdf+xL2OuhYHyzgsk67EsaaTkP4CLY0IATQ4pppsuUSYS09AAw==
+"@contentkit/json-editor@0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/json-editor/-/json-editor-0.0.65.tgz#5457be49706630ec3acc557f7f887c375aed822e"
+  integrity sha512-97iYF/M0vH4UNCKkWp7YdraV+poQTWgs9CPyya2ScMRm32yAxPe8wURLQC/qvpOytsbSZRbE2zpb0qP73qY7SQ==
   dependencies:
-    "@contentkit/editor" "^0.0.64"
-    "@contentkit/util" "^0.0.64"
+    "@contentkit/editor" "^0.0.65"
+    "@contentkit/util" "^0.0.65"
 
-"@contentkit/sidebar@0.0.64", "@contentkit/sidebar@^0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/sidebar/-/sidebar-0.0.64.tgz#bfdea1452494bb561551bbe8d146ccf32f5bc3d6"
-  integrity sha512-POAx1Ljr0fH5hpkB7iW3Iajb7/XvYcD+EVe4iQQ4ncPwNl9tt/cAtE34ym9SQfyLVJsbi74Sh7pt0oAcxM7Fog==
+"@contentkit/sidebar@0.0.65", "@contentkit/sidebar@^0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/sidebar/-/sidebar-0.0.65.tgz#1cc359f05013de92e2a3a5dec9216d11c949a94a"
+  integrity sha512-srZups8COSWZj2swNnVo1U5OOjYc9/v7wCRhP6Z+R+xVJ6F5rmu24fX0w5iSj0NspVxLAlvJQcMpdWcc9EiHdQ==
   dependencies:
-    "@contentkit/types" "^0.0.64"
-    "@contentkit/util" "^0.0.64"
+    "@contentkit/types" "^0.0.65"
+    "@contentkit/util" "^0.0.65"
 
-"@contentkit/types@^0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/types/-/types-0.0.64.tgz#55ffc8699d4402feeb30af8854a7bf6a12dba08a"
-  integrity sha512-3LA4iw0ughEioCRJotTalBLXR2aFGg8MimJ7UnPwkBdXO6s0Q4AOdiLhPKoNVpuvqiBeSXCMMLDj54mBd7iFkQ==
+"@contentkit/types@^0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/types/-/types-0.0.65.tgz#89ff1f0920df08af975ea2d262235b46ae594350"
+  integrity sha512-s2cAUQ+trbg4boBWJs9GeOAYSyY5ncdnI7HleMcR6unYV9IoSbzWcaoQhvB5E/bE6B7WUILHKtHdGEoINuo7KA==
 
-"@contentkit/util@^0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/util/-/util-0.0.64.tgz#b0d9d95a24eb5ca9cbcab1a3db83cd05ac274aac"
-  integrity sha512-aiLB1Xef1qQ5+ZXM9xM4rR2vnVza0VpYn1q5LSu/mDcA5IRCPW7BU2DlXFNiCTg/FRKVrGNiYgCfEugiNk2PYQ==
+"@contentkit/util@^0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/util/-/util-0.0.65.tgz#83ca2f834dcb2ac21de859a538aff429be968b3c"
+  integrity sha512-l5tkGy5VkYBOBZe8zieOZq2/Ix4JHx1zvkkWR9tdnRcE71+pxKtQrScNrNMUOybDHm1H8RVdfQXctfERzxUdDw==
   dependencies:
     left-indent "^0.0.6"
 
@@ -2089,10 +2089,10 @@ block-stream@*:
   dependencies:
     inherits "~2.0.0"
 
-bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.4.0:
-  version "4.11.9"
-  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.9.tgz#26d556829458f9d1e81fc48952493d0ba3507828"
-  integrity sha512-E6QoYqCKZfgatHTdHzs1RRKP7ip4vvm+EyRUeE2RF0NblwVvb0p6jSVeNTOFxPn26QXN2o6SMfNxKp6kU8zQaw==
+bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.11.9:
+  version "4.12.0"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.12.0.tgz#775b3f278efbb9718eec7361f483fb36fbbfea88"
+  integrity sha512-c98Bf3tPniI+scsdk237ku1Dc3ujXQTSgyiPUDEOe7tRkhrqridvh8klBv0HCEso1OLOYcHuCv/cS6DNxKH+ZA==
 
 bn.js@^5.1.1:
   version "5.1.2"
@@ -2150,7 +2150,7 @@ brfs@^1.2.0:
     static-module "^2.2.0"
     through2 "^2.0.0"
 
-brorand@^1.0.1:
+brorand@^1.0.1, brorand@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/brorand/-/brorand-1.1.0.tgz#12c25efe40a45e3c323eb8675a0a0ce57b22371f"
   integrity sha1-EsJe/kCkXjwyPrhnWgoM5XsiNx8=
@@ -3342,17 +3342,17 @@ electron-to-chromium@^1.3.483:
   integrity sha512-esh5mmjAGl6HhAaYgHlDZme+jCIc+XIrLrBTwxviE+pM64UBmdLUIHLlrPzJGbit7hQI1TR/oGDQWCvQZ5yrFA==
 
 elliptic@^6.0.0, elliptic@^6.5.2:
-  version "6.5.3"
-  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.3.tgz#cb59eb2efdaf73a0bd78ccd7015a62ad6e0f93d6"
-  integrity sha512-IMqzv5wNQf+E6aHeIqATs0tOLeOTwj1QKbRcS3jBbYkl5oLAserA8yJTT7/VyHUYG91PRmPyeQDObKLPpeS4dw==
+  version "6.5.4"
+  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.4.tgz#da37cebd31e79a1367e941b592ed1fbebd58abbb"
+  integrity sha512-iLhC6ULemrljPZb+QutR5TQGB+pdW6KGD5RSegS+8sorOZT+rdQFbsQFJgvN3eRqNALqJer4oQ16YvJHlU8hzQ==
   dependencies:
-    bn.js "^4.4.0"
-    brorand "^1.0.1"
+    bn.js "^4.11.9"
+    brorand "^1.1.0"
     hash.js "^1.0.0"
-    hmac-drbg "^1.0.0"
-    inherits "^2.0.1"
-    minimalistic-assert "^1.0.0"
-    minimalistic-crypto-utils "^1.0.0"
+    hmac-drbg "^1.0.1"
+    inherits "^2.0.4"
+    minimalistic-assert "^1.0.1"
+    minimalistic-crypto-utils "^1.0.1"
 
 emoji-regex@^7.0.1:
   version "7.0.3"
@@ -4242,7 +4242,7 @@ history@^5.0.0:
   dependencies:
     "@babel/runtime" "^7.7.6"
 
-hmac-drbg@^1.0.0:
+hmac-drbg@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"
   integrity sha1-0nRXAQJabHdabFRXk+1QL8DGSaE=
@@ -5886,7 +5886,7 @@ minimalistic-assert@^1.0.0, minimalistic-assert@^1.0.1:
   resolved "https://registry.yarnpkg.com/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz#2e194de044626d4a10e7f7fbc00ce73e83e4d5c7"
   integrity sha512-UtJcAD4yEaGtjPezWuO9wC4nwUnVH/8/Im3yEHQP4b67cXlD/Qr9hdITCU1xDbSEXg2XKNaP8jsReV7vQd00/A==
 
-minimalistic-crypto-utils@^1.0.0, minimalistic-crypto-utils@^1.0.1:
+minimalistic-crypto-utils@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/minimalistic-crypto-utils/-/minimalistic-crypto-utils-1.0.1.tgz#f6c00c1c0b082246e5c4d99dfb8c7c083b2b582a"
   integrity sha1-9sAMHAsIIkblxNmd+4x8CDsrWCo=
