@@ -958,39 +958,39 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@contentkit/components@0.0.64", "@contentkit/components@^0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/components/-/components-0.0.64.tgz#603cab0e4818ab02583365de97f14612a9a20254"
-  integrity sha512-qWyTND84g82voeIHO0GdAGFo/a0fFRuUxOUQEQt7vY5Sh+TDuXD+Cc3OM1MujBDS6OD9E36HN/zd1GdK46YchA==
+"@contentkit/components@0.0.65", "@contentkit/components@^0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/components/-/components-0.0.65.tgz#24c9977435a4f0e85a0c225e75c172a0f1a3ea27"
+  integrity sha512-6Cl8n/XIl7SZ5FZTWURmW6ZezgFDaLU23xpaXviCijLAqPPRHn1lmA/G9cZZ9miuFqcKXgL8Km7lkK4RLcsqBQ==
   dependencies:
-    "@contentkit/sidebar" "^0.0.64"
-    "@contentkit/types" "^0.0.64"
-    "@contentkit/util" "^0.0.64"
+    "@contentkit/sidebar" "^0.0.65"
+    "@contentkit/types" "^0.0.65"
+    "@contentkit/util" "^0.0.65"
     clsx "^1.1.1"
     history "^5.0.0"
     safe-s3-key "^0.0.4"
 
-"@contentkit/convert@0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/convert/-/convert-0.0.64.tgz#10fc456beb16e0c0735eb705fad1436c845d8b59"
-  integrity sha512-1VB3Imc0QMbMCk2FKweIJbt5N5L0cCB6BksowlhaolfFwFXnwYSqyFGUS2ERMINLPgOpFvWyxrQN8OqY7gadQg==
+"@contentkit/convert@0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/convert/-/convert-0.0.65.tgz#5ca1417d55ec9cfd336bdec6fa232d13fbe68a7a"
+  integrity sha512-y4lZsqNvXbuOnq3pqQqo9WhyRlEMYVD2YfKEjCmKkzMGj7l9FOQ+BH8PrvPmikltHsDB4ujSSAzh5Du7pkJWdw==
   dependencies:
-    "@contentkit/types" "^0.0.64"
-    "@contentkit/util" "^0.0.64"
+    "@contentkit/types" "^0.0.65"
+    "@contentkit/util" "^0.0.65"
     draft-js-export-html "^1.4.1"
     html-element-attributes "^2.2.1"
     lodash.groupby "^4.6.0"
     lodash.pick "^4.4.0"
     prismjs "^1.20.0"
 
-"@contentkit/editor@0.0.64", "@contentkit/editor@^0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/editor/-/editor-0.0.64.tgz#32ee9129c5c49d8dc7f86ae542741d3fdf16964a"
-  integrity sha512-wO7tzzg46aljycMkIvGkSYfoLL1fnv3YCmMmY+ntJQkm2aYlV5ODGOJno/3I8LPl+iHp74aSxHZ4yJMM8/1IRA==
+"@contentkit/editor@0.0.65", "@contentkit/editor@^0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/editor/-/editor-0.0.65.tgz#e23e6e811b9532bfdb7a8dae92e52dd2de5de748"
+  integrity sha512-3MdejoZHJPQom22yey4WN19n0fL6sRtlxMF2xQpYVQ5UZrMk0MtopCfVqyq/8akc38v/rwiaeoI07JEvj2xh5Q==
   dependencies:
-    "@contentkit/components" "^0.0.64"
-    "@contentkit/types" "^0.0.64"
-    "@contentkit/util" "^0.0.64"
+    "@contentkit/components" "^0.0.65"
+    "@contentkit/types" "^0.0.65"
+    "@contentkit/util" "^0.0.65"
     append-stylesheet "^0.0.2"
     clsx "^1.1.1"
     decorate-component-with-props "^1.1.0"
@@ -1002,31 +1002,31 @@
     prismjs "^1.20.0"
     prop-types "^15.6.1"
 
-"@contentkit/json-editor@0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/json-editor/-/json-editor-0.0.64.tgz#b8a7df0b9654ba2b8f2810ac155432e12a757328"
-  integrity sha512-TxyhgeYqce5hEd3Bz0U+T48mV1wVOHOUML/lKdf+xL2OuhYHyzgsk67EsaaTkP4CLY0IATQ4pppsuUSYS09AAw==
+"@contentkit/json-editor@0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/json-editor/-/json-editor-0.0.65.tgz#5457be49706630ec3acc557f7f887c375aed822e"
+  integrity sha512-97iYF/M0vH4UNCKkWp7YdraV+poQTWgs9CPyya2ScMRm32yAxPe8wURLQC/qvpOytsbSZRbE2zpb0qP73qY7SQ==
   dependencies:
-    "@contentkit/editor" "^0.0.64"
-    "@contentkit/util" "^0.0.64"
+    "@contentkit/editor" "^0.0.65"
+    "@contentkit/util" "^0.0.65"
 
-"@contentkit/sidebar@0.0.64", "@contentkit/sidebar@^0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/sidebar/-/sidebar-0.0.64.tgz#bfdea1452494bb561551bbe8d146ccf32f5bc3d6"
-  integrity sha512-POAx1Ljr0fH5hpkB7iW3Iajb7/XvYcD+EVe4iQQ4ncPwNl9tt/cAtE34ym9SQfyLVJsbi74Sh7pt0oAcxM7Fog==
+"@contentkit/sidebar@0.0.65", "@contentkit/sidebar@^0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/sidebar/-/sidebar-0.0.65.tgz#1cc359f05013de92e2a3a5dec9216d11c949a94a"
+  integrity sha512-srZups8COSWZj2swNnVo1U5OOjYc9/v7wCRhP6Z+R+xVJ6F5rmu24fX0w5iSj0NspVxLAlvJQcMpdWcc9EiHdQ==
   dependencies:
-    "@contentkit/types" "^0.0.64"
-    "@contentkit/util" "^0.0.64"
+    "@contentkit/types" "^0.0.65"
+    "@contentkit/util" "^0.0.65"
 
-"@contentkit/types@^0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/types/-/types-0.0.64.tgz#55ffc8699d4402feeb30af8854a7bf6a12dba08a"
-  integrity sha512-3LA4iw0ughEioCRJotTalBLXR2aFGg8MimJ7UnPwkBdXO6s0Q4AOdiLhPKoNVpuvqiBeSXCMMLDj54mBd7iFkQ==
+"@contentkit/types@^0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/types/-/types-0.0.65.tgz#89ff1f0920df08af975ea2d262235b46ae594350"
+  integrity sha512-s2cAUQ+trbg4boBWJs9GeOAYSyY5ncdnI7HleMcR6unYV9IoSbzWcaoQhvB5E/bE6B7WUILHKtHdGEoINuo7KA==
 
-"@contentkit/util@^0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@contentkit/util/-/util-0.0.64.tgz#b0d9d95a24eb5ca9cbcab1a3db83cd05ac274aac"
-  integrity sha512-aiLB1Xef1qQ5+ZXM9xM4rR2vnVza0VpYn1q5LSu/mDcA5IRCPW7BU2DlXFNiCTg/FRKVrGNiYgCfEugiNk2PYQ==
+"@contentkit/util@^0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@contentkit/util/-/util-0.0.65.tgz#83ca2f834dcb2ac21de859a538aff429be968b3c"
+  integrity sha512-l5tkGy5VkYBOBZe8zieOZq2/Ix4JHx1zvkkWR9tdnRcE71+pxKtQrScNrNMUOybDHm1H8RVdfQXctfERzxUdDw==
   dependencies:
     left-indent "^0.0.6"
 
@@ -4259,9 +4259,9 @@ hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.3.0, hoist-non-react-
     react-is "^16.7.0"
 
 hosted-git-info@^2.1.4:
-  version "2.8.8"
-  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.8.tgz#7539bd4bc1e0e0a895815a2e0262420b12858488"
-  integrity sha512-f/wzC2QaWBs7t9IYqB4T3sR1xviIViXJRJTWBlx2Gf3g0Xi5vI7Yy4koXQ1c9OYDGHN9sBy1DQ2AB8fqZBWhUg==
+  version "2.8.9"
+  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.9.tgz#dffc0bf9a21c02209090f2aa69429e1414daf3f9"
+  integrity sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==
 
 hsl-regex@^1.0.0:
   version "1.0.0"
