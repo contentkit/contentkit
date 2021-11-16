@@ -4,7 +4,7 @@
   "main": "src/handler.js",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.709.0",
+    "aws-sdk": "^2.814.0",
     "aws4": "^1.10.0",
     "mailgun-js": "^0.22.0",
     "pg": "^7.12.1",
